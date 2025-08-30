@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 
@@ -61,9 +62,11 @@ export function CarRentalGallery({ vehicle }: CarRentalGalleryProps) {
               className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-transform duration-300 hover:scale-105"
               onClick={() => openLightbox(index)}
             >
-              <img
+              <Image
                 src={image}
                 alt={`${vehicle.name} - Image ${index + 1}`}
+                width={400}
+                height={256}
                 className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
@@ -125,9 +128,11 @@ export function CarRentalGallery({ vehicle }: CarRentalGalleryProps) {
               </button>
 
               {/* Main Image */}
-              <img
+              <Image
                 src={vehicle.images[selectedImage]}
                 alt={`${vehicle.name} - Image ${selectedImage + 1}`}
+                width={1200}
+                height={800}
                 className="max-w-full max-h-full object-contain"
                 onClick={(e) => e.stopPropagation()}
               />

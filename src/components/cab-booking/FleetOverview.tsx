@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Users, Car, Shield, Wifi, Snowflake, Zap } from "lucide-react";
 
 export function FleetOverview() {
@@ -56,9 +57,11 @@ export function FleetOverview() {
             <div key={index} className="bg-white rounded-2xl shadow-lg border border-border/50 overflow-hidden group hover:shadow-xl transition-all duration-300">
               {/* Vehicle Image */}
               <div className="relative h-48 overflow-hidden">
-                <img
+                <Image
                   src={`/${vehicle.image}`}
                   alt={vehicle.name}
+                  width={400}
+                  height={192}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

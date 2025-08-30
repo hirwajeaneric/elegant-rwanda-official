@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Star, MapPin, Users, Car } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 
@@ -30,9 +31,11 @@ export function RelatedVehicles({ vehicles }: RelatedVehiclesProps) {
             <div key={vehicle.id} className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden">
               {/* Vehicle Image */}
               <div className="relative h-48 overflow-hidden">
-                <img
+                <Image
                   src={vehicle.images[0]}
                   alt={vehicle.name}
+                  width={400}
+                  height={192}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                 />
                 <div className="absolute top-4 left-4">

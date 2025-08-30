@@ -35,7 +35,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
     resolver: zodResolver(generalInquirySchema),
   });
 
-  const onSubmit = async (_data: GeneralInquiryForm) => {
+  const onSubmit = async (data: GeneralInquiryForm) => {
     setIsSubmitting(true);
     try {
       // Simulate API call

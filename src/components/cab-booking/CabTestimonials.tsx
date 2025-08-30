@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Star, Quote } from "lucide-react";
 
 export function CabTestimonials() {
@@ -79,9 +80,11 @@ export function CabTestimonials() {
               {/* Author */}
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden bg-muted">
-                  <img
+                  <Image
                     src={`/${testimonial.image}`}
                     alt={testimonial.name}
+                    width={48}
+                    height={48}
                     className="w-full h-full object-cover"
                   />
                 </div>

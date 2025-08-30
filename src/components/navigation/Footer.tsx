@@ -46,7 +46,7 @@ export function Footer() {
     resolver: zodResolver(newsletterSchema),
   });
 
-  const onSubmit = async (_data: NewsletterForm) => {
+  const onSubmit = async (data: NewsletterForm) => {
     setIsSubmitting(true);
     try {
       // Simulate API call
