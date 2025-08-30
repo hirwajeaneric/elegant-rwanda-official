@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   Car,
   Plane,
@@ -19,9 +18,7 @@ const services = [
     description: "Custom itineraries for unforgettable adventures across Rwanda&apos;s most stunning landscapes.",
     features: ["Gorilla Trekking", "Cultural Experiences", "Luxury Lodges", "Expert Guides"],
     href: "/tours",
-    color: "from-emerald-500 to-emerald-600",
-    bgColor: "bg-emerald-50",
-    iconColor: "text-emerald-600"
+    image: "/photo-1551632811-561732d1e306.avif"
   },
   {
     icon: Car,
@@ -31,7 +28,8 @@ const services = [
     href: "/cab-booking",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
-    iconColor: "text-emerald-600"
+    iconColor: "text-emerald-600",
+    image: "/photo-1551632811-561732d1e306.avif"
   },
   {
     icon: Car,
@@ -41,7 +39,8 @@ const services = [
     href: "/car-rental",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
-    iconColor: "text-emerald-600"
+    iconColor: "text-emerald-600",
+    image: "/photo-1551632811-561732d1e306.avif"
   },
   {
     icon: Plane,
@@ -51,7 +50,8 @@ const services = [
     href: "/air-travel-assistance",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
-    iconColor: "text-emerald-600"
+    iconColor: "text-emerald-600",
+    image: "/photo-1551632811-561732d1e306.avif"
   },
   {
     icon: Calendar,
@@ -61,7 +61,8 @@ const services = [
     href: "/upcoming-events",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
-    iconColor: "text-emerald-600"
+    iconColor: "text-emerald-600",
+    image: "/photo-1551632811-561732d1e306.avif"
   },
   {
     icon: Star,
@@ -71,7 +72,8 @@ const services = [
     href: "/contact",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
-    iconColor: "text-emerald-600"
+    iconColor: "text-emerald-600",
+    image: "/photo-1551632811-561732d1e306.avif"
   }
 ];
 
@@ -96,46 +98,55 @@ export function ServicesOverview() {
           {services.map((service, index) => (
             <div
               key={service.title}
-              className={`bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden p-6 group ${service.bgColor} hover:shadow-xl transition-all duration-300`}
+              className="relative rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden p-6 group min-h-[500px]"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Service Icon */}
-              <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <service.icon className="h-8 w-8 text-white" />
+              {/* Background Image & Overlay */}
+              <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-cover bg-center" style={{
+                  backgroundImage: `url('${service.image}')`
+                }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50" />
               </div>
 
-              {/* Service Content */}
-              <div className="space-y-4">
-                <h3 className="text-2xl font-display font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                  {service.title}
-                </h3>
+              {/* Content Container */}
+              <div className="relative z-10">
+                {/* Service Icon */}
+                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <service.icon className="h-8 w-8 text-white" />
+                </div>
 
-                <p className="text-muted-foreground leading-relaxed">
-                  {service.description}
-                </p>
+                {/* Service Content */}
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-display font-semibold text-white group-hover:text-yellow-500 transition-colors duration-300">
+                    {service.title}
+                  </h3>
 
-                {/* Features List */}
-                <ul className="space-y-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${service.color}`} />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                  <p className="text-white/90 leading-relaxed">
+                    {service.description}
+                  </p>
 
-                {/* CTA Button */}
-                <div className="pt-4">
-                  <Button
-                    variant="ghost"
-                    className={`group-hover:bg-gradient-to-r ${service.color} group-hover:text-white transition-all duration-300 w-full justify-between rounded-full px-6 py-3`}
-                    asChild
-                  >
-                    <Link href={service.href}>
-                      Learn More
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Link>
-                  </Button>
+                  {/* Features List */}
+                  <ul className="space-y-2">
+                    {service.features.map((feature) => (
+                      <li key={feature} className="flex items-center space-x-2 text-sm text-white/80">
+                        <div className={`w-2 h-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600`} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA Button */}
+                  <div className="pt-4">
+                    <button
+                      className="bg-white/10 hover:bg-white text-white hover:text-primary transition-all duration-300 w-full justify-between rounded-full px-6 py-3 backdrop-blur-sm flex flex-nowrap"
+                    >
+                      <Link href={service.href}>
+                        <span className="whitespace-nowrap mr-2">Learn More</span>
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300 inline-block" />
+                      </Link>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

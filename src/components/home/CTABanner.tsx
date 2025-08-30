@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, ArrowRight, CheckCircle } from "lucide-react";
+import { Send, ArrowRight, CheckCircle, LucidePhone, LucideMail } from "lucide-react";
 import { generalInquirySchema, type GeneralInquiryForm } from "@/lib/schemas";
+import { LucideClock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -45,12 +46,8 @@ export function CTABanner() {
   };
 
   return (
-    <section className="section-padding bg-gradient-to-br from-primary to-secondary relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30px_30px,rgba(255,255,255,0.4)_2px,transparent_0)] opacity-20" />
-      </div>
-
+    <section className="section-padding bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/70 to-black/60 z-10" />
       <div className="container-elegant relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
@@ -89,9 +86,18 @@ export function CTABanner() {
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <h3 className="text-lg font-semibold mb-3">Get in Touch</h3>
               <div className="space-y-2 text-sm text-white/90">
-                <p>📞 +250 788 123 456</p>
-                <p>📧 info@elegantrwanda.com</p>
-                <p>🕒 Mon - Fri: 8:00 AM - 6:00 PM</p>
+                <p className="flex items-center space-x-2">
+                  <LucidePhone className="h-4 w-4" /> 
+                  <span>+250 788 123 456</span>
+                </p>
+                <p className="flex items-center space-x-2">
+                  <LucideMail className="h-4 w-4" />
+                  <span>info@elegantrwanda.com</span>
+                </p>
+                <p className="flex items-center space-x-2">
+                  <LucideClock className="h-4 w-4" />
+                  <span>Mon - Fri: 8:00 AM - 6:00 PM</span>
+                </p>
               </div>
             </div>
           </div>
