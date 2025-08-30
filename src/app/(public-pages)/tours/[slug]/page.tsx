@@ -10,13 +10,12 @@ import { RelatedTours } from "@/components/tours/RelatedTours";
 import { getTourBySlug, getToursByCategory } from "@/data/tours";
 
 interface TourPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: TourPageProps): Promise<Metadata> {
-  const tour = getTourBySlug(params.slug);
+  const { slug } = await params;
+  const tour = getTourBySlug(slug);
   
   if (!tour) {
     return {
@@ -45,8 +44,9 @@ export async function generateMetadata({ params }: TourPageProps): Promise<Metad
   };
 }
 
-export default function TourPage({ params }: TourPageProps) {
-  const tour = getTourBySlug(params.slug);
+export default async function TourPage({ params }: TourPageProps) {
+  const { slug } = await params;
+  const tour = getTourBySlug(slug);
   
   if (!tour) {
     notFound();

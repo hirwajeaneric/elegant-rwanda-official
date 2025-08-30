@@ -7,6 +7,8 @@ import { FleetOverview } from "@/components/cab-booking/FleetOverview";
 import { CabBenefits } from "@/components/cab-booking/CabBenefits";
 import { CabTestimonials } from "@/components/cab-booking/CabTestimonials";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Premium Cab Booking in Rwanda: Reliable & Comfortable Rides | Elegant Rwanda",
   description: "Book premium cab services in Rwanda with Elegant Rwanda. Professional drivers, 24/7 availability, and custom routes for seamless transfers across the country.",

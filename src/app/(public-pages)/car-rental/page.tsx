@@ -1,11 +1,13 @@
 import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
-import { CarRentalHero } from "@/components/car-rental/CarRentalHero";
+import { CarRentalMainHero } from "@/components/car-rental/CarRentalMainHero";
 import { RentalOptions } from "@/components/car-rental/RentalOptions";
 import { FleetGallery } from "@/components/car-rental/FleetGallery";
 import { CarBookingForm } from "@/components/car-rental/CarBookingForm";
 import { TermsConditions } from "@/components/car-rental/TermsConditions";
 import { CarRentalFAQ } from "@/components/car-rental/CarRentalFAQ";
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options | Elegant Rwanda",
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
 export default function CarRentalPage() {
   return (
     <PageWrapper>
-      <CarRentalHero />
+      <CarRentalMainHero />
       <RentalOptions />
       <FleetGallery />
       <CarBookingForm />

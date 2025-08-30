@@ -10,11 +10,12 @@ import { RelatedVehicles } from "@/components/car-rental/RelatedVehicles";
 import { getVehicleBySlug, getVehiclesByCategory } from "@/data/car-rental";
 
 interface CarRentalPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: CarRentalPageProps): Promise<Metadata> {
-  const vehicle = getVehicleBySlug(params.slug);
+  const { slug } = await params;
+  const vehicle = getVehicleBySlug(slug);
   
   if (!vehicle) {
     return {
@@ -40,8 +41,9 @@ export async function generateMetadata({ params }: CarRentalPageProps): Promise<
   };
 }
 
-export default function CarRentalPage({ params }: CarRentalPageProps) {
-  const vehicle = getVehicleBySlug(params.slug);
+export default async function CarRentalPage({ params }: CarRentalPageProps) {
+  const { slug } = await params;
+  const vehicle = getVehicleBySlug(slug);
   
   if (!vehicle) {
     notFound();

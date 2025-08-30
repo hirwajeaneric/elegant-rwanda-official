@@ -4,6 +4,8 @@ import { BlogHero } from "@/components/blog/BlogHero";
 import { BlogGrid } from "@/components/blog/BlogGrid";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Rwanda Travel Blog: Tips, Stories & Insights | Elegant Rwanda",
   description: "Discover Rwanda through our travel blog featuring expert tips, cultural insights, wildlife stories, and insider knowledge about Rwanda's hidden gems.",

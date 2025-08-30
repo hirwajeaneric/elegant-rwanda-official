@@ -4,6 +4,8 @@ import { ToursHero } from "@/components/tours/ToursHero";
 import { ToursGrid } from "@/components/tours/ToursGrid";
 import { ToursSidebar } from "@/components/tours/ToursSidebar";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Luxury Rwanda Tours: Gorilla Treks, Safaris & Cultural Experiences | Elegant Rwanda",
   description: "Discover our exclusive luxury tours in Rwanda including gorilla trekking, wildlife safaris, cultural experiences, and luxury retreats. Expert guides and personalized itineraries.",

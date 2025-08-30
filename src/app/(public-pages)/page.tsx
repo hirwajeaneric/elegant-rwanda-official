@@ -8,6 +8,8 @@ import { WhyChooseUs } from "@/components/home/WhyChooseUs";
 import { CTABanner } from "@/components/home/CTABanner";
 import { LatestBlogPosts } from "@/components/home/LatestBlogPosts";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Elegant Rwanda: Luxury Tours, Car Rentals & Travel Services in Rwanda",
   description: "Discover Rwanda's elegance with our luxury tours, premium car rentals, cab services, and air travel assistance. Experience the heart of Africa with personalized luxury travel services.",

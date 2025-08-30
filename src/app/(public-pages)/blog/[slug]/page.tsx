@@ -6,16 +6,15 @@ import { BlogPostSidebar } from "@/components/blog/BlogPostSidebar";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog";
 import { Calendar, Clock, User, Share2, Bookmark } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+
 
 interface BlogPostPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     return {
@@ -44,8 +43,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   };
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();

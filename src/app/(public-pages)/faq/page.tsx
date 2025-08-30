@@ -4,6 +4,8 @@ import { FAQHero } from "@/components/faq/FAQHero";
 import { FAQAccordion } from "@/components/faq/FAQAccordion";
 import { ContactCTA } from "@/components/faq/ContactCTA";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Frequently Asked Questions - Elegant Rwanda Travel Services",
   description: "Find answers to common questions about our luxury tours, cab booking, car rental, and air travel assistance services in Rwanda.",

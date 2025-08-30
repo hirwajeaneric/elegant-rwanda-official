@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "About Elegant Rwanda: Premier Luxury Travel Experts in Rwanda",
   description: "Learn about Elegant Rwanda's mission to provide exceptional luxury travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",

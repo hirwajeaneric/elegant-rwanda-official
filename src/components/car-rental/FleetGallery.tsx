@@ -1,72 +1,19 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import { Car, Users, Zap, Shield, Star } from "lucide-react";
+import { getAllVehicles } from "@/data/car-rental";
 
 export function FleetGallery() {
-  const vehicles = [
-    {
-      name: "Toyota Corolla",
-      category: "Economy",
-      image: "hotel-exterior-daytime.jpg",
-      features: ["4 passengers", "Automatic", "AC", "Bluetooth"],
-      price: "From $35/day",
-      rating: 4.5,
-      reviews: 128,
-      available: true
-    },
-    {
-      name: "Honda CR-V",
-      category: "SUV",
-      image: "hotel-exterior.jpg",
-      features: ["6 passengers", "4WD", "Spacious", "Safety features"],
-      price: "From $65/day",
-      rating: 4.8,
-      reviews: 95,
-      available: true
-    },
-    {
-      name: "Mercedes C-Class",
-      category: "Luxury",
-      image: "kigali-serena-hotel.jpg",
-      features: ["4 passengers", "Premium", "Navigation", "Leather seats"],
-      price: "From $120/day",
-      rating: 4.9,
-      reviews: 67,
-      available: true
-    },
-    {
-      name: "Toyota Hiace",
-      category: "Minivan",
-      image: "Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
-      features: ["8 passengers", "Large luggage", "Comfortable", "Business ready"],
-      price: "From $80/day",
-      rating: 4.6,
-      reviews: 89,
-      available: true
-    },
-    {
-      name: "Land Rover Defender",
-      category: "Adventure",
-      image: "green-hills-of-rwanda.jpg",
-      features: ["4 passengers", "Off-road", "Rugged", "Adventure ready"],
-      price: "From $150/day",
-      rating: 4.7,
-      reviews: 45,
-      available: false
-    },
-    {
-      name: "BMW 5 Series",
-      category: "Executive",
-      image: "Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
-      features: ["4 passengers", "Executive", "Premium audio", "Driver assistance"],
-      price: "From $140/day",
-      rating: 4.9,
-      reviews: 78,
-      available: true
-    }
-  ];
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  
+  const vehicles = getAllVehicles();
+  const categories = ["All", "Economy", "Compact", "SUV", "Luxury", "Minivan", "Adventure", "Executive"];
 
-  const categories = ["All", "Economy", "SUV", "Luxury", "Minivan", "Adventure", "Executive"];
+  const filteredVehicles = activeCategory === "all" 
+    ? vehicles 
+    : vehicles.filter(vehicle => vehicle.category === activeCategory);
 
   return (
     <section className="section-padding bg-white">
@@ -86,21 +33,26 @@ export function FleetGallery() {
           {categories.map((category) => (
             <button
               key={category}
-              className="px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-muted text-muted-foreground hover:bg-muted/80"
+              onClick={() => setActiveCategory(category)}
+              className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${
+                activeCategory === category
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
             >
-              {category}
+              {category === "All" ? `All (${vehicles.length})` : `${category} (${vehicles.filter(v => v.category === category).length})`}
             </button>
           ))}
         </div>
 
         {/* Vehicle Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {vehicles.map((vehicle, index) => (
+          {filteredVehicles.map((vehicle, index) => (
             <div key={index} className="bg-white rounded-2xl shadow-lg border border-border/50 overflow-hidden group hover:shadow-xl transition-all duration-300">
               {/* Vehicle Image */}
               <div className="relative h-48 overflow-hidden">
                 <img
-                  src={`/${vehicle.image}`}
+                  src={`/${vehicle.images[0]}`}
                   alt={vehicle.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -154,7 +106,7 @@ export function FleetGallery() {
 
                 {/* Features */}
                 <div className="grid grid-cols-2 gap-2 mb-6">
-                  {vehicle.features.map((feature, featureIndex) => (
+                  {vehicle.features.slice(0, 4).map((feature, featureIndex) => (
                     <div key={featureIndex} className="flex items-center space-x-2 text-sm text-muted-foreground">
                       <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
                       <span>{feature}</span>
@@ -164,12 +116,12 @@ export function FleetGallery() {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-3">
-                  <button className="flex-1 bg-primary text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+                  <Link 
+                    href={`/car-rental/${vehicle.slug}`}
+                    className="flex-1 bg-primary text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors text-center"
+                  >
                     View Details
-                  </button>
-                  <button className="flex-1 border border-primary text-primary py-2 px-4 rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-colors">
-                    Book Now
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
