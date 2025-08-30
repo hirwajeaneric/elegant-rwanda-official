@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Calendar, MapPin, Users, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar, MapPin, Users } from "lucide-react";
 import { getFeaturedTours } from "@/data/tours";
-import { getCategoryColor, formatPrice } from "@/lib/utils";
 
 export function FeaturedTours() {
   const [currentIndex, setCurrentIndex] = useState(0);

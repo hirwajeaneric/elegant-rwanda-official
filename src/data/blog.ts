@@ -197,7 +197,7 @@ Luxury travel in Rwanda offers a unique combination of natural beauty, cultural 
     readTime: '7 min read',
     category: 'Luxury',
     tags: ['Luxury', 'Accommodations', 'Exclusive Experiences', 'Personalized Service'],
-    featuredImage: '/nyungwe_national_park.jpg',
+    featuredImage: '/landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg',
     featured: false,
     slug: 'luxury-travel-rwanda-beyond-ordinary',
     metaTitle: 'Luxury Travel in Rwanda: Beyond the Ordinary - Premium Tours | Elegant Rwanda',
@@ -209,3 +209,6 @@ export const getFeaturedPosts = () => blogPosts.filter(post => post.featured);
 export const getPostBySlug = (slug: string) => blogPosts.find(post => post.slug === slug);
 export const getPostsByCategory = (category: BlogPost['category']) => blogPosts.filter(post => post.category === category);
 export const getRecentPosts = (limit: number = 3) => blogPosts.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()).slice(0, limit);
+export const getAllPosts = () => blogPosts;
+export const getRelatedPosts = (currentSlug: string, category: BlogPost['category']) => 
+  blogPosts.filter(post => post.slug !== currentSlug && post.category === category).slice(0, 3);

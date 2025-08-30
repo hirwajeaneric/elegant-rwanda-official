@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause } from "lucide-react";
 import { GeneralInquiryModal } from "../modals/GeneralInquiryModal";
+import Link from "next/link";
 
 export function HeroSection() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
@@ -64,11 +65,12 @@ export function HeroSection() {
               Request a Quote
             </button>
             
-            <button 
+            <Link 
               className="btn-outline text-lg px-8 py-4 border-2 rounded-full border-white text-white hover:bg-white hover:text-foreground hover:scale-105 transition-all duration-200"
+              href="/tours"
             >
               Explore Tours
-            </button>
+            </Link>
           </div>
 
           {/* Trust Indicators */}

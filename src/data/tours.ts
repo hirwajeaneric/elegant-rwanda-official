@@ -261,3 +261,4 @@ export const getFeaturedTours = () => tours.filter(tour => tour.featured);
 export const getTourById = (id: string) => tours.find(tour => tour.id === id);
 export const getTourBySlug = (slug: string) => tours.find(tour => tour.slug === slug);
 export const getToursByCategory = (category: Tour['category']) => tours.filter(tour => tour.category === category);
+export const getAllTours = () => tours;

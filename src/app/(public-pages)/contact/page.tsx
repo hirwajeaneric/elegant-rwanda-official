@@ -20,7 +20,7 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">
             Get in{" "}
-            <span className="gradient-text">Touch</span>
+            <span className="text-primary">Touch</span>
           </h1>
                       <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Ready to start planning your Rwanda adventure? We&apos;re here to help create the perfect 

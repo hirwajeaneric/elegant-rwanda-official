@@ -20,7 +20,7 @@ export default function AboutPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">
             About{" "}
-            <span className="gradient-text">Elegant Rwanda</span>
+            <span className="text-primary">Elegant Rwanda</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Crafting Timeless Journeys in the Heart of Africa
@@ -56,8 +56,8 @@ export default function AboutPage() {
                 <span className="font-semibold">25+</span>
               </div>
               <div className="flex justify-between items-center">
-                <span>Countries Served</span>
-                <span className="font-semibold">30+</span>
+                <span>Locations Covered</span>
+                <span className="font-semibold">Rwanda</span>
               </div>
               <div className="flex justify-between items-center">
                 <span>Customer Satisfaction</span>
