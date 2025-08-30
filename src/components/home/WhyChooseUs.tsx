@@ -97,7 +97,7 @@ export function WhyChooseUs() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
             Why Choose{" "}
-            <span className="gradient-text">Elegant Rwanda</span>
+            <span className="text-yellow-500">Elegant Rwanda</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             We&apos;re not just another travel company. We&apos;re your partners in creating extraordinary 
@@ -167,19 +167,19 @@ export function WhyChooseUs() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-primary" />``
                   <span>24/7 Customer Support</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-primary" />
                   <span>Flexible Cancellation</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-primary" />
                   <span>Local Expertise</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-primary" />
                   <span>Quality Guaranteed</span>
                 </div>
               </div>
@@ -198,10 +198,10 @@ export function WhyChooseUs() {
               our luxury services. Let us create your perfect adventure.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary">
+              <button className="btn-primary rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
                 Start Planning Your Trip
               </button>
-              <button className="btn-outline">
+              <button className="btn-outline rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
                 View Our Gallery
               </button>
             </div>

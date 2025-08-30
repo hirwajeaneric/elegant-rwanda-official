@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, ArrowRight, CheckCircle } from "lucide-react";
@@ -168,10 +167,10 @@ export function CTABanner() {
                   </div>
 
                   {/* Submit Button */}
-                  <Button
+                  <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full btn-primary text-lg py-3"
+                    className="w-full btn-primary text-lg py-3 rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-primary hover:scale-105 transition-all duration-300 flex items-center justify-center"
                   >
                     {isSubmitting ? (
                       <>
@@ -185,7 +184,7 @@ export function CTABanner() {
                         <ArrowRight className="h-5 w-5 ml-2" />
                       </>
                     )}
-                  </Button>
+                  </button>
 
                   {/* Privacy Note */}
                   <p className="text-xs text-muted-foreground text-center">
@@ -200,20 +199,20 @@ export function CTABanner() {
             ) : (
               /* Success State */
               <div className="text-center py-8">
-                <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                <CheckCircle className="h-16 w-16 text-primary mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-foreground mb-2">
                   Inquiry Sent Successfully!
                 </h3>
                 <p className="text-muted-foreground mb-4">
                   Thank you for your inquiry. Our travel experts will get back to you within 24 hours with a personalized quote.
                 </p>
-                <Button
-                  variant="outline"
+                <button
+                  
                   onClick={() => setIsSubmitted(false)}
-                  className="btn-outline"
+                  className="btn-outline rounded-full border-2 border-primary px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-primary hover:scale-105 transition-all duration-300 flex items-center justify-center"
                 >
                   Send Another Inquiry
-                </Button>
+                </button>
               </div>
             )}
           </div>

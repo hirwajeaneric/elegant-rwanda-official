@@ -7,6 +7,7 @@ export interface Tour {
     description: string;
     duration: string;
     price: string;
+    location: string;
     difficulty: 'Easy' | 'Moderate' | 'Challenging';
     maxGroupSize: number;
     highlights: string[];
@@ -38,6 +39,7 @@ export const tours: Tour[] = [
         description: 'Experience the magic of encountering mountain gorillas in their natural habitat. This exclusive tour takes you deep into the misty forests of Volcanoes National Park for an unforgettable wildlife encounter.',
         duration: '3 Days / 2 Nights',
         price: 'From $1,500',
+        location: 'North',
         difficulty: 'Moderate',
         maxGroupSize: 8,
         highlights: [
@@ -87,9 +89,9 @@ export const tours: Tour[] = [
             'Tips for guides'
         ],
         images: [
-            '/images/tours/gorilla-1.jpg',
-            '/images/tours/gorilla-2.jpg',
-            '/images/tours/gorilla-3.jpg'
+            'Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg',
+            'Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg',
+            'Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg'
         ],
         category: 'Wildlife',
         featured: true,
@@ -104,6 +106,7 @@ export const tours: Tour[] = [
         description: 'Unwind in the serene beauty of Lake Kivu with this exclusive lakeside retreat. Enjoy water activities, spa treatments, and breathtaking sunset views.',
         duration: '4 Days / 3 Nights',
         price: 'From $1,200',
+        location: 'West',
         difficulty: 'Easy',
         maxGroupSize: 12,
         highlights: [
@@ -161,9 +164,9 @@ export const tours: Tour[] = [
             'Optional activities'
         ],
         images: [
-            '/images/tours/lake-kivu-1.jpg',
-            '/images/tours/lake-kivu-2.jpg',
-            '/images/tours/lake-kivu-3.jpg'
+            'lake-kivu_Photo-from-Getty-Images.jpg',
+            'lake-kivu_Photo-from-Getty-Images.jpg',
+            'lake-kivu_Photo-from-Getty-Images.jpg'
         ],
         category: 'Luxury',
         featured: true,
@@ -178,6 +181,7 @@ export const tours: Tour[] = [
         description: 'Immerse yourself in Rwanda\'s rich cultural heritage with visits to historical sites, traditional villages, and cultural performances.',
         duration: '5 Days / 4 Nights',
         price: 'From $1,800',
+        location: 'Kigali',
         difficulty: 'Easy',
         maxGroupSize: 10,
         highlights: [
@@ -243,9 +247,9 @@ export const tours: Tour[] = [
             'Optional activities'
         ],
         images: [
-            '/images/tours/cultural-1.jpg',
-            '/images/tours/cultural-2.jpg',
-            '/images/tours/cultural-3.jpg'
+            'IbyIwacu-Cultural-Village.jpg',
+            'IbyIwacu-Cultural-Village.jpg',
+            'IbyIwacu-Cultural-Village.jpg'
         ],
         category: 'Cultural',
         featured: false,

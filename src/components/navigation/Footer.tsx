@@ -52,7 +52,7 @@ export function Footer() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       toast.success("Thank you for subscribing to our newsletter!");
       reset();
     } catch {
@@ -63,25 +63,21 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-gradient-to-br from-secondary to-secondary/80 text-white">
+    <footer className="bg-gradient-to-br from-primary to-secondary/80 text-white">
       {/* Main Footer Content */}
       <div className="container-elegant py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">ER</span>
-              </div>
               <div>
-                <h3 className="text-xl font-display font-bold">Elegant Rwanda</h3>
-                <p className="text-sm text-white/80">Your Luxury Travel Partner</p>
+                <span className="text-2xl font-display font-bold text-yellow-500">Elegant Travel & Tours</span>
               </div>
             </div>
-                          <p className="text-white/90 leading-relaxed">
-                Discover Rwanda&apos;s elegance with our premium tours, luxury accommodations, and personalized travel experiences.
-              </p>
-            
+            <p className="text-white/90 leading-relaxed">
+              Experience Rwanda&apos;s elegance with our premium tours, luxury accommodations, and personalized travel experiences.
+            </p>
+
             {/* Contact Info */}
             <div className="space-y-3 pt-4">
               <div className="flex items-center space-x-3">
@@ -142,7 +138,7 @@ export function Footer() {
           {/* Newsletter & Social */}
           <div className="space-y-4">
             <h4 className="text-lg font-semibold font-display">Stay Connected</h4>
-            
+
             {/* Newsletter Signup */}
             <div className="space-y-3">
               <p className="text-sm text-white/80">
@@ -154,20 +150,20 @@ export function Footer() {
                     {...register("email")}
                     type="email"
                     placeholder="Enter your email"
-                    className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-accent focus:ring-accent/20"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-accent focus:ring-accent/20 rounded-full"
                   />
                   {errors.email && (
                     <p className="text-red-300 text-xs mt-1">{errors.email.message}</p>
                   )}
                 </div>
-                <Button
+                <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                  className="w-full bg-accent text-accent-foreground rounded-full px-6 py-2 hover:bg-white hover:text-primary hover:border hover:border-primary hover:scale-105 transition-all duration-300 flex items-center justify-center"
                 >
                   {isSubmitting ? "Subscribing..." : "Subscribe"}
                   <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
+                </button>
               </form>
             </div>
 

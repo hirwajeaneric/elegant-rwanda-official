@@ -13,12 +13,12 @@ export function HeroSection() {
     <section className="hero-section relative">
       {/* Background Video/Image */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60 z-10" />
         
         {/* Placeholder for video - replace with actual video */}
-        <div className="w-full h-full bg-gradient-to-br from-primary/20 via-secondary/30 to-accent/20">
+        <div className="w-full h-full inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60">
           {/* This would be replaced with an actual video or high-quality image */}
-          <div className="absolute inset-0 bg-[url('/images/hero-rwanda-landscape.jpg')] bg-cover bg-center bg-no-repeat opacity-30" />
+          <div className="absolute inset-0 bg-[url('/landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg')] bg-cover bg-center bg-no-repeat opacity-30" />
         </div>
         
         {/* Video Controls Overlay */}
@@ -42,36 +42,33 @@ export function HeroSection() {
       <div className="relative z-20 text-center text-white px-4 max-w-5xl mx-auto">
         <div className="animate-fade-in">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-tight">
-            Discover Rwanda&apos;s{" "}
-            <span className="gradient-text">Elegance</span>
+            Explore Rwanda&apos;s{" "}
+            <span className="text-yellow-500">Elegance</span>
           </h1>
           
           <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-light leading-relaxed max-w-4xl mx-auto">
-            Tailored Tours & Premium Travel Experiences
+            Tailored Tours & Premium Travel Experience
           </p>
           
-          <p className="text-lg md:text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-tight">
             From the misty mountains of Volcanoes National Park to the serene shores of Lake Kivu, 
             experience Rwanda&apos;s natural beauty and rich culture through our luxury travel services.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
-              className="btn-primary text-lg px-8 py-4 hover:scale-105 transition-transform duration-200"
+            <button  
+              className="btn-primary hover:bg-white hover:text-primary rounded-full text-lg px-8 py-4 hover:scale-105 transition-transform duration-200"
               onClick={() => setShowModal(true)}
             >
               Request a Quote
-            </Button>
+            </button>
             
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="btn-outline text-lg px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-foreground hover:scale-105 transition-all duration-200"
+            <button 
+              className="btn-outline text-lg px-8 py-4 border-2 rounded-full border-white text-white hover:bg-white hover:text-foreground hover:scale-105 transition-all duration-200"
             >
               Explore Tours
-            </Button>
+            </button>
           </div>
 
           {/* Trust Indicators */}
@@ -89,13 +86,6 @@ export function HeroSection() {
               <div className="text-sm">Service Rating</div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
 

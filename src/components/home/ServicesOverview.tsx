@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { 
-  Car, 
-  Plane, 
-  Calendar, 
+import {
+  Car,
+  Plane,
+  Calendar,
   ArrowRight,
   Mountain,
   Users,
@@ -29,9 +29,9 @@ const services = [
     description: "Premium cab services with professional drivers for seamless transfers across Rwanda.",
     features: ["Professional Drivers", "24/7 Availability", "Luxury Vehicles", "Fixed Rates"],
     href: "/cab-booking",
-    color: "from-blue-500 to-blue-600",
-    bgColor: "bg-blue-50",
-    iconColor: "text-blue-600"
+    color: "from-emerald-500 to-emerald-600",
+    bgColor: "bg-emerald-50",
+    iconColor: "text-emerald-600"
   },
   {
     icon: Car,
@@ -39,9 +39,9 @@ const services = [
     description: "Flexible car rental options from economy to luxury vehicles for your self-drive adventures.",
     features: ["Self-Drive Options", "Chauffeur Service", "4x4 Vehicles", "Insurance Included"],
     href: "/car-rental",
-    color: "from-purple-500 to-purple-600",
-    bgColor: "bg-purple-50",
-    iconColor: "text-purple-600"
+    color: "from-emerald-500 to-emerald-600",
+    bgColor: "bg-emerald-50",
+    iconColor: "text-emerald-600"
   },
   {
     icon: Plane,
@@ -49,9 +49,9 @@ const services = [
     description: "Comprehensive support for visa applications, airport pickups, and hotel bookings.",
     features: ["Visa Assistance", "Airport Pickup", "Hotel Booking", "Travel Support"],
     href: "/air-travel-assistance",
-    color: "from-amber-500 to-amber-600",
-    bgColor: "bg-amber-50",
-    iconColor: "text-amber-600"
+    color: "from-emerald-500 to-emerald-600",
+    bgColor: "bg-emerald-50",
+    iconColor: "text-emerald-600"
   },
   {
     icon: Calendar,
@@ -59,9 +59,9 @@ const services = [
     description: "Join exclusive group tours and cultural events for a shared adventure experience.",
     features: ["Group Tours", "Cultural Events", "Adventure Challenges", "Luxury Retreats"],
     href: "/upcoming-events",
-    color: "from-rose-500 to-rose-600",
-    bgColor: "bg-rose-50",
-    iconColor: "text-rose-600"
+    color: "from-emerald-500 to-emerald-600",
+    bgColor: "bg-emerald-50",
+    iconColor: "text-emerald-600"
   },
   {
     icon: Star,
@@ -69,9 +69,9 @@ const services = [
     description: "Tailored travel packages designed around your specific interests and requirements.",
     features: ["Personalized Itineraries", "Flexible Dates", "Special Requests", "VIP Service"],
     href: "/contact",
-    color: "from-indigo-500 to-indigo-600",
-    bgColor: "bg-indigo-50",
-    iconColor: "text-indigo-600"
+    color: "from-emerald-500 to-emerald-600",
+    bgColor: "bg-emerald-50",
+    iconColor: "text-emerald-600"
   }
 ];
 
@@ -83,10 +83,10 @@ export function ServicesOverview() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
             Our{" "}
-            <span className="gradient-text">Services</span>
+            <span className="text-yellow-500">Services</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Discover the full range of luxury travel services we offer to make your Rwanda experience 
+            Discover the full range of luxury travel services we offer to make your Rwanda experience
             truly exceptional and unforgettable.
           </p>
         </div>
@@ -109,7 +109,7 @@ export function ServicesOverview() {
                 <h3 className="text-2xl font-display font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                   {service.title}
                 </h3>
-                
+
                 <p className="text-muted-foreground leading-relaxed">
                   {service.description}
                 </p>
@@ -128,7 +128,7 @@ export function ServicesOverview() {
                 <div className="pt-4">
                   <Button
                     variant="ghost"
-                    className={`group-hover:bg-gradient-to-r ${service.color} group-hover:text-white transition-all duration-300 w-full justify-between`}
+                    className={`group-hover:bg-gradient-to-r ${service.color} group-hover:text-white transition-all duration-300 w-full justify-between rounded-full px-6 py-3`}
                     asChild
                   >
                     <Link href={service.href}>
@@ -143,21 +143,23 @@ export function ServicesOverview() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-border">
-            <h3 className="text-2xl font-display font-semibold mb-4">
-              Need a Custom Package?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Can&apos;t find exactly what you&apos;re looking for? Let us create a personalized travel package 
-              tailored to your specific interests, schedule, and preferences.
-            </p>
-            <Button size="lg" className="btn-primary" asChild>
-              <Link href="/contact">
+        <div className="text-center mt-16 rounded-2xl">
+          <div className="text-white rounded-2xl p-8 shadow-lg border border-border relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('/landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg')] rounded-2xl bg-cover bg-center bg-no-repeat" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
+            <div className="relative z-10 rounded-2xl">
+              <h3 className="text-xl md:text-4xl font-display font-semibold mb-4 text-yellow-500">
+                Need a Custom Package?
+              </h3>
+              <p className="text-white mb-6 max-w-2xl mx-auto">
+                Can&apos;t find exactly what you&apos;re looking for? Let us create a personalized travel package
+                tailored to your specific interests, schedule, and preferences.
+              </p>
+              <Link href="/contact" className="btn-primary w-fit mx-auto rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
                 <Users className="h-5 w-5 mr-2" />
                 Request Custom Package
               </Link>
-            </Button>
+            </div>
           </div>
         </div>
       </div>

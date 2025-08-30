@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { getFeaturedTestimonials } from "@/data/testimonials";
 
 export function TestimonialsSection() {
@@ -26,7 +25,7 @@ export function TestimonialsSection() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
             What Our{" "}
-            <span className="gradient-text">Clients Say</span>
+            <span className="text-primary">Clients Say</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Don&apos;t just take our word for it. Here&apos;s what our satisfied clients have to say about 
@@ -38,13 +37,13 @@ export function TestimonialsSection() {
         <div className="relative max-w-4xl mx-auto">
           {/* Quote Icon */}
           <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
-            <div className="w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-lg">
               <Quote className="h-8 w-8 text-white" />
             </div>
           </div>
 
           {/* Main Testimonial */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative">
+          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-20 relative">
             <div className="text-center">
               {/* Rating Stars */}
               <div className="flex justify-center space-x-1 mb-6">
@@ -86,23 +85,21 @@ export function TestimonialsSection() {
           </div>
 
           {/* Navigation Arrows */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-white border-border hover:scale-110 transition-all duration-200 z-10 shadow-lg"
+          <button
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-white hover:text-primary border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center rounded-full px-3 py-3"
             onClick={prevTestimonial}
           >
+            <span className="sr-only">Previous</span>
             <ChevronLeft className="h-5 w-5" />
-          </Button>
+          </button>
           
-          <Button
-            variant="outline"
-            size="sm"
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-white border-border hover:scale-110 transition-all duration-200 z-10 shadow-lg"
+          <button
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-white hover:text-primary border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center rounded-full px-3 py-3"
             onClick={nextTestimonial}
           >
+            <span className="sr-only">Next</span>
             <ChevronRight className="h-5 w-5" />
-          </Button>
+          </button>
 
           {/* Dots Indicator */}
           <div className="flex justify-center mt-8 space-x-2">
@@ -112,7 +109,7 @@ export function TestimonialsSection() {
                 className={`w-3 h-3 rounded-full transition-all duration-200 ${
                   index === currentIndex 
                     ? 'bg-primary scale-125' 
-                    : 'bg-muted hover:bg-primary/50'
+                    : 'bg-white hover:bg-primary/50'
                 }`}
                 onClick={() => setCurrentIndex(index)}
                 aria-label={`Go to testimonial ${index + 1}`}

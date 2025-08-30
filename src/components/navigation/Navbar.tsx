@@ -101,17 +101,12 @@ export function Navbar() {
         <div className="container-elegant">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">ER</span>
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-2xl font-display font-bold text-foreground">
-                  Elegant Rwanda
-                </h1>
-                <p className="text-xs text-muted-foreground">
-                  Luxury Travel & Tours
-                </p>
+            <Link href="/" className="flex items-center gap-0">
+              <div className="hidden sm:block leading-tight">
+                <span className="text-2xl font-display block font-semibold text-primary">
+                  Elegant Travel & Tours
+                </span>
+                <span className="text-xl font-display block font-semibold text-black">ET&E</span>
               </div>
             </Link>
 
@@ -233,15 +228,9 @@ export function Navbar() {
 
             {/* Right Side Actions */}
             <div className="hidden lg:flex items-center space-x-4">
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/contact">
-                  <Search className="h-4 w-4 mr-2" />
-                  Search
-                </Link>
-              </Button>
-              <Button className="btn-primary" size="sm" asChild>
-                <Link href="/contact">Request Quote</Link>
-              </Button>
+              <button className="border-2 border-primary text-primary rounded-full px-4 py-2 hover:bg-primary hover:text-white">
+                <Link href="/contact" className="rounded-full px-4 py-2">Request Quote</Link>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
