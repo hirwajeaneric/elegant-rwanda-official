@@ -10,7 +10,6 @@ import { formatPrice, getCategoryColor, getDifficultyColor } from "@/lib/utils";
 export function ToursGrid() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>("all");
   const [selectedDuration, setSelectedDuration] = useState<string>("all");
 
   const allTours = getAllTours();
@@ -20,10 +19,6 @@ export function ToursGrid() {
   
   if (selectedCategory !== "all") {
     filteredTours = filteredTours.filter(tour => tour.category === selectedCategory);
-  }
-  
-  if (selectedDifficulty !== "all") {
-    filteredTours = filteredTours.filter(tour => tour.difficulty === selectedDifficulty);
   }
   
   if (selectedDuration !== "all") {
@@ -52,14 +47,7 @@ export function ToursGrid() {
     { id: "Luxury", name: "Luxury", count: getToursByCategory("Luxury").length },
     { id: "Nature", name: "Nature", count: getToursByCategory("Nature").length },
   ];
-
-  const difficulties = [
-    { id: "all", name: "All Difficulties" },
-    { id: "Easy", name: "Easy" },
-    { id: "Moderate", name: "Moderate" },
-    { id: "Challenging", name: "Challenging" },
-  ];
-
+ 
   const durations = [
     { id: "all", name: "All Durations" },
     { id: "1-3", name: "1-3 Days" },
@@ -106,26 +94,7 @@ export function ToursGrid() {
           </div>
 
           {/* Difficulty and Duration */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">Difficulty</h3>
-              <div className="flex flex-wrap gap-2">
-                {difficulties.map((difficulty) => (
-                  <button
-                    key={difficulty.id}
-                    onClick={() => setSelectedDifficulty(difficulty.id)}
-                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      selectedDifficulty === difficulty.id
-                        ? "bg-primary text-white shadow-lg"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {difficulty.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
+          <div className="grid grid-cols-1 gap-4">
             <div>
               <h3 className="text-sm font-medium text-muted-foreground mb-3">Duration</h3>
               <div className="flex flex-wrap gap-2">
@@ -154,7 +123,7 @@ export function ToursGrid() {
       </div>
 
       {/* Tours Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {filteredTours.map((tour) => (
           <article
             key={tour.id}
@@ -177,16 +146,6 @@ export function ToursGrid() {
                   className={`${getCategoryColor(tour.category)} text-white`}
                 >
                   {tour.category}
-                </Badge>
-              </div>
-
-              {/* Difficulty Badge */}
-              <div className="absolute top-4 right-4">
-                <Badge 
-                  variant="secondary" 
-                  className={`${getDifficultyColor(tour.difficulty)} text-white`}
-                >
-                  {tour.difficulty}
                 </Badge>
               </div>
 
@@ -252,9 +211,6 @@ export function ToursGrid() {
 
               {/* Price and CTA */}
               <div className="flex items-center justify-between">
-                <div className="text-2xl font-display font-bold text-primary">
-                  {formatPrice(tour.price)}
-                </div>
                 <Link
                   href={`/tours/${tour.slug}`}
                   className="inline-flex items-center text-primary hover:text-primary/80 font-medium group-hover:translate-x-1 transition-all duration-200"
@@ -280,7 +236,6 @@ export function ToursGrid() {
             onClick={() => {
               setSearchQuery("");
               setSelectedCategory("all");
-              setSelectedDifficulty("all");
               setSelectedDuration("all");
             }}
             className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"

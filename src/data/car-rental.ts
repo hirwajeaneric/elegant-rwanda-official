@@ -56,9 +56,9 @@ export const vehicles: Vehicle[] = [
     weeklyRate: 210,
     monthlyRate: 840,
     images: [
-      "hotel-exterior-daytime.jpg",
-      "hotel-exterior.jpg",
-      "kigali-serena-hotel.jpg"
+      "/hotel-exterior-daytime.jpg",
+      "/hotel-exterior.jpg",
+      "/kigali-serena-hotel.jpg"
     ],
     features: [
       "4 passengers",
@@ -129,9 +129,9 @@ export const vehicles: Vehicle[] = [
     weeklyRate: 390,
     monthlyRate: 1560,
     images: [
-      "hotel-exterior.jpg",
-      "Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
-      "green-hills-of-rwanda.jpg"
+      "/hotel-exterior.jpg",
+      "/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
+      "/green-hills-of-rwanda.jpg"
     ],
     features: [
       "6 passengers",
@@ -202,9 +202,9 @@ export const vehicles: Vehicle[] = [
     weeklyRate: 720,
     monthlyRate: 2880,
     images: [
-      "kigali-serena-hotel.jpg",
-      "Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
-      "hotel-exterior-daytime.jpg"
+      "/kigali-serena-hotel.jpg",
+      "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
+      "/hotel-exterior-daytime.jpg"
     ],
     features: [
       "4 passengers",
@@ -277,9 +277,9 @@ export const vehicles: Vehicle[] = [
     weeklyRate: 480,
     monthlyRate: 1920,
     images: [
-      "Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
-      "hotel-exterior.jpg",
-      "kigali-serena-hotel.jpg"
+      "/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
+      "/hotel-exterior.jpg",
+      "/kigali-serena-hotel.jpg"
     ],
     features: [
       "8 passengers",
@@ -350,9 +350,9 @@ export const vehicles: Vehicle[] = [
     weeklyRate: 900,
     monthlyRate: 3600,
     images: [
-      "green-hills-of-rwanda.jpg",
-      "Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
-      "volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg"
+      "/green-hills-of-rwanda.jpg",
+      "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
+      "/volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg"
     ],
     features: [
       "4 passengers",
@@ -426,9 +426,9 @@ export const vehicles: Vehicle[] = [
     weeklyRate: 840,
     monthlyRate: 3360,
     images: [
-      "Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
-      "kigali-serena-hotel.jpg",
-      "hotel-exterior-daytime.jpg"
+      "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
+      "/kigali-serena-hotel.jpg",
+      "/hotel-exterior-daytime.jpg"
     ],
     features: [
       "4 passengers",

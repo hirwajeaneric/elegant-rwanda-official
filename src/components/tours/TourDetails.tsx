@@ -11,7 +11,7 @@ interface TourDetailsProps {
 
 export function TourDetails({ tour }: TourDetailsProps) {
   return (
-    <section className="mb-16">
+    <section>
       <h2 className="text-3xl font-display font-semibold mb-8">Tour Overview</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -92,19 +92,6 @@ export function TourDetails({ tour }: TourDetailsProps) {
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="bg-muted/30 rounded-xl p-6">
-            <h3 className="text-xl font-semibold mb-3">Pricing</h3>
-            <div className="text-3xl font-bold text-primary mb-2">
-              {formatPrice(tour.price)}
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">
-              Price per person based on double occupancy
-            </p>
-            <button className="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primary/90 transition-colors duration-200">
-              Request Custom Quote
-            </button>
           </div>
         </div>
       </div>

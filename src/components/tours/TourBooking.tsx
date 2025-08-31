@@ -16,13 +16,13 @@ export function TourBooking({ tour }: TourBookingProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     setIsSubmitted(true);
     setIsSubmitting(false);
-    
+
     // Reset form after 5 seconds
     setTimeout(() => {
       setIsSubmitted(false);
@@ -30,20 +30,15 @@ export function TourBooking({ tour }: TourBookingProps) {
   };
 
   return (
-    <div className="sticky top-8">
+    <div className="sticky top-28">
       <div className="bg-card border border-border rounded-xl shadow-lg p-6">
         <h3 className="text-2xl font-display font-semibold mb-4">Book This Tour</h3>
-        
+
         {!isSubmitted ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Tour Info */}
-            <div className="bg-muted/30 rounded-lg p-4">
-              <div className="text-2xl font-bold text-primary mb-2">
-                {formatPrice(tour.price)}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                per person • {tour.duration}
-              </div>
+            <div className="text-sm text-muted-foreground">
+              {tour.duration}
             </div>
 
             {/* Form Fields */}
@@ -51,7 +46,7 @@ export function TourBooking({ tour }: TourBookingProps) {
               <label htmlFor="travelers" className="block text-sm font-medium text-foreground mb-2">
                 Number of Travelers
               </label>
-              <select 
+              <select
                 id="travelers"
                 className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                 aria-label="Select number of travelers"
@@ -68,7 +63,7 @@ export function TourBooking({ tour }: TourBookingProps) {
               <label htmlFor="startDate" className="block text-sm font-medium text-foreground mb-2">
                 Preferred Start Date
               </label>
-              <select 
+              <select
                 id="startDate"
                 className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                 aria-label="Select preferred start date"
@@ -76,11 +71,11 @@ export function TourBooking({ tour }: TourBookingProps) {
                 <option value="">Select a date</option>
                 {tour.availableDates.map((date) => (
                   <option key={date} value={date}>
-                    {new Date(date).toLocaleDateString('en-US', { 
+                    {new Date(date).toLocaleDateString('en-US', {
                       weekday: 'long',
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
                     })}
                   </option>
                 ))}
@@ -102,7 +97,7 @@ export function TourBooking({ tour }: TourBookingProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-primary text-white font-semibold py-4 rounded-lg hover:bg-primary/90 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-primary text-white font-semibold py-3 rounded-full hover:bg-primary/90 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <>
@@ -117,7 +112,7 @@ export function TourBooking({ tour }: TourBookingProps) {
             {/* Contact Info */}
             <div className="text-center text-sm text-muted-foreground">
               <p>Need immediate assistance?</p>
-              <div className="flex items-center justify-center space-x-4 mt-2">
+              <div className="flex items-center flex-wrap justify-center space-x-4 mt-2">
                 <div className="flex items-center space-x-1">
                   <Phone className="h-4 w-4 text-primary" />
                   <span>+250 788 123 456</span>

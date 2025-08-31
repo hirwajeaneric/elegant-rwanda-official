@@ -9,7 +9,7 @@ interface TourItineraryProps {
 
 export function TourItinerary({ tour }: TourItineraryProps) {
   return (
-    <section className="mb-16">
+    <section className="mb-16 pt-28" id="itinerary">
       <h2 className="text-3xl font-display font-semibold mb-8">Detailed Itinerary</h2>
       
       <div className="space-y-6">

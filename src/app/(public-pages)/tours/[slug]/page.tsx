@@ -63,8 +63,8 @@ export default async function TourPage({ params }: TourPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2">
             <TourDetails tour={tour} />
-            <TourItinerary tour={tour} />
-            <TourGallery tour={tour} />
+            {tour.itinerary.length > 0 && <TourItinerary tour={tour} />}
+            {tour.images.length > 0 && <TourGallery tour={tour} />}
           </div>
           <div className="lg:col-span-1">
             <TourBooking tour={tour} />

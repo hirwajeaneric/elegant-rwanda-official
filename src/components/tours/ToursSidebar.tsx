@@ -1,12 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { MapPin, Phone, Mail, Star } from "lucide-react";
 import { getFeaturedTours } from "@/data/tours";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Input } from "../ui/input";
 
 export function ToursSidebar() {
   const featuredTours = getFeaturedTours();
-
+  const router = useRouter();
   return (
     <div className="space-y-8">
       {/* Quick Contact */}
@@ -25,13 +27,13 @@ export function ToursSidebar() {
             <span>tours@elegantrwanda.com</span>
           </div>
         </div>
-        <button className="w-full mt-4 bg-white text-primary font-medium py-3 rounded-lg hover:bg-white/90 transition-colors duration-200">
+        <button onClick={() => router.push("/contact")} className="w-full mt-4 bg-white text-primary font-medium py-3 hover:bg-white/90 transition-colors duration-200 rounded-full cursor-pointer">
           Contact Us
         </button>
       </div>
 
       {/* Featured Tours */}
-      <div className="bg-muted/30 rounded-xl p-6">
+      <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Featured Tours</h3>
         <div className="space-y-4">
           {featuredTours.slice(0, 3).map((tour) => (
@@ -66,7 +68,7 @@ export function ToursSidebar() {
       </div>
 
       {/* Tour Categories */}
-      <div className="bg-muted/30 rounded-xl p-6">
+      <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Tour Categories</h3>
         <div className="space-y-3">
           {[
@@ -96,7 +98,7 @@ export function ToursSidebar() {
       </div>
 
       {/* Why Choose Us */}
-      <div className="bg-muted/30 rounded-xl p-6">
+      <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Why Choose Us</h3>
         <div className="space-y-3 text-sm text-muted-foreground">
           <div className="flex items-start space-x-2">
@@ -129,12 +131,12 @@ export function ToursSidebar() {
           Get the latest tour updates and exclusive offers delivered to your inbox.
         </p>
         <div className="space-y-3">
-          <input
+          <Input
             type="email"
             placeholder="Enter your email"
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder:text-white/60 focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all duration-200"
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-full text-white placeholder:text-white/60 focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all duration-200"
           />
-          <button className="w-full bg-white text-primary font-medium py-3 rounded-lg hover:bg-white/90 transition-colors duration-200">
+          <button className="w-full bg-white text-primary font-medium py-1 hover:bg-white/90 transition-colors duration-200 rounded-full cursor-pointer">
             Subscribe
           </button>
         </div>
