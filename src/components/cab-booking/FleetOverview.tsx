@@ -104,7 +104,7 @@ export function FleetOverview() {
         </div>
 
         {/* Fleet Stats */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="text-center">
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Car className="h-8 w-8 text-primary" />
