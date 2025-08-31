@@ -10,7 +10,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
   return (
     <>
       <Navbar />
-      <main className="pt-32">
+      <main className="pt-24">
         {children}
       </main>
       <Footer />

@@ -5,8 +5,9 @@ import { Phone, Mail, MessageCircle } from "lucide-react";
 
 export function ContactCTA() {
   return (
-    <section className="bg-gradient-to-br from-primary to-secondary py-16">
-      <div className="container-elegant text-center">
+    <section className="bg-[url('/kigali.jpeg')] bg-cover bg-center bg-no-repeat py-16 relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
+      <div className="container-elegant relative z-10 text-center">
         <h2 className="text-3xl md:text-4xl font-display font-semibold text-white mb-6">
           Still Have Questions?
         </h2>
@@ -64,13 +65,13 @@ export function ContactCTA() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="px-8 py-4 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-colors duration-200"
+              className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:bg-primary/90 hover:text-white transition-colors duration-200"
             >
               Contact Page
             </Link>
             <Link
               href="/tours"
-              className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-lg border border-white/30 hover:bg-white/30 transition-colors duration-200"
+              className="px-8 py-4 text-white font-semibold rounded-full border-2 border-white hover:bg-primary transition-colors duration-200"
             >
               Browse Tours
             </Link>

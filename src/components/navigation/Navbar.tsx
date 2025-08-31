@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Search, Phone, Mail } from "lucide-react";
+import { Menu, X, Search, Phone, Mail, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -99,10 +99,10 @@ export function Navbar() {
       {/* Main Navigation */}
       <div className="bg-white border-b border-border">
         <div className="container-elegant">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-0">
-              <div className="hidden sm:block leading-tight">
+              <div className="leading-tight">
                 <span className="text-2xl font-display block font-semibold text-primary">
                   Elegant Travel & Tours
                 </span>
@@ -278,7 +278,9 @@ export function Navbar() {
                       className="w-full justify-between px-4 py-2 h-auto"
                     >
                       Services
-                      <span className="ml-2">▼</span>
+                      <span className="ml-2">
+                        <ChevronDown className="h-4 w-4" />
+                      </span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-full">
@@ -304,7 +306,9 @@ export function Navbar() {
                       className="w-full justify-between px-4 py-2 h-auto"
                     >
                       Resources
-                      <span className="ml-2">▼</span>
+                      <span className="ml-2">
+                        <ChevronDown className="h-4 w-4" />
+                      </span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-full">
@@ -352,12 +356,6 @@ export function Navbar() {
               {/* Mobile Actions */}
               <div className="pt-4 border-t border-border">
                 <div className="space-y-2">
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Search className="h-4 w-4 mr-2" />
-                      Search
-                    </Link>
-                  </Button>
                   <Button className="btn-primary w-full" asChild>
                     <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
                       Request Quote

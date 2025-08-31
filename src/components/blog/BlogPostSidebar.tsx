@@ -17,7 +17,7 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
   return (
     <div className="space-y-8">
       {/* Post Info */}
-      <div className="bg-muted/30 rounded-xl p-6">
+      <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Post Information</h3>
         <div className="space-y-3 text-sm">
           <div className="flex items-center space-x-2">
@@ -44,7 +44,7 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
       </div>
 
       {/* Tags */}
-      <div className="bg-muted/30 rounded-xl p-6">
+      <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Tags</h3>
         <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (
@@ -60,14 +60,14 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
 
       {/* Related Posts from Same Category */}
       {categoryPosts.length > 0 && (
-        <div className="bg-muted/30 rounded-xl p-6">
+        <div className="bg-muted/80 rounded-xl p-6">
           <h3 className="text-lg font-display font-semibold mb-4">More {post.category} Posts</h3>
           <div className="space-y-4">
             {categoryPosts.map((relatedPost) => (
               <article key={relatedPost.id} className="group">
                 <Link href={`/blog/${relatedPost.slug}`} className="block">
                   <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden">
+                    <div className="flex-shrink-0 w-16 h-16 rounded-full overflow-hidden">
                       <div
                         className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-300"
                         style={{
@@ -93,14 +93,14 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
       )}
 
       {/* Recent Posts */}
-      <div className="bg-muted/30 rounded-xl p-6">
+      <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Recent Posts</h3>
         <div className="space-y-4">
           {recentPosts.map((recentPost) => (
             <article key={recentPost.id} className="group">
               <Link href={`/blog/${recentPost.slug}`} className="block">
                 <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden">
+                  <div className="flex-shrink-0 w-16 h-16 rounded-full overflow-hidden">
                     <div
                       className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-300"
                       style={{
@@ -134,9 +134,9 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
           <input
             type="email"
             placeholder="Enter your email"
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder:text-white/60 focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all duration-200"
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-full text-white placeholder:text-white/60 focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all duration-200"
           />
-          <button className="w-full bg-white text-primary font-medium py-3 rounded-lg hover:bg-white/90 transition-colors duration-200">
+          <button className="w-full bg-white text-primary font-medium py-3 hover:bg-white/90 transition-colors duration-200 rounded-full">
             Subscribe
           </button>
         </div>

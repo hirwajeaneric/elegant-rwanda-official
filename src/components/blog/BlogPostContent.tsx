@@ -13,15 +13,6 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
       {/* Article Content */}
       <div className="">
         <div className="max-w-4xl mx-auto">
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {post.tags.map((tag) => (
-              <Badge key={tag} variant="outline" className="text-sm">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-
           {/* Content */}
           <div className="prose prose-lg max-w-none">
             <div 
@@ -31,7 +22,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
           </div>
 
           {/* Author Bio */}
-          <div className="mt-12 p-6 bg-muted/30 rounded-xl">
+          <div className="mt-12 p-6 bg-muted/80 rounded-xl">
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 rounded-full overflow-hidden">
                 <div

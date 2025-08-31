@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 
@@ -38,7 +39,7 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">📍</span>
+                    <span className="text-2xl"><MapPin className="h-6 w-6" /></span>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Office Address</h3>
@@ -51,7 +52,7 @@ export default function ContactPage() {
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">📞</span>
+                    <span className="text-2xl"><Phone className="h-6 w-6" /></span>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
@@ -64,7 +65,7 @@ export default function ContactPage() {
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">✉️</span>
+                    <span className="text-2xl"><Mail className="h-6 w-6" /></span>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
@@ -77,7 +78,7 @@ export default function ContactPage() {
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">🕒</span>
+                    <span className="text-2xl"><Clock className="h-6 w-6" /></span>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Business Hours</h3>
@@ -168,7 +169,7 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full btn-primary text-lg py-3"
+                className="w-full btn-primary rounded-full text-lg py-3"
               >
                 Send Message
               </button>
