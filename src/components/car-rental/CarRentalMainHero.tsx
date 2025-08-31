@@ -4,8 +4,8 @@ import { Car, Shield, Clock, MapPin } from "lucide-react";
 
 export function CarRentalMainHero() {
   return (
-    <section className="relative py-24 bg-[url('/hotel-exterior-daytime.jpg')] bg-cover bg-center bg-no-repeat">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
+    <section className="relative py-24 bg-[url('/pexels-mikebirdy-170811.jpg')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/80 to-black/70" />
       <div className="container-elegant relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -21,19 +21,19 @@ export function CarRentalMainHero() {
             {/* Quick Stats */}
             <div className="grid grid-cols-4 gap-6 mb-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">50+</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">50+</div>
                 <div className="text-sm text-white/80">Vehicles Available</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">24/7</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">24/7</div>
                 <div className="text-sm text-white/80">Support</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">100%</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">100%</div>
                 <div className="text-sm text-white/80">Insurance</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">Flexible</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">Flexible</div>
                 <div className="text-sm text-white/80">Rental Periods</div>
               </div>
             </div>

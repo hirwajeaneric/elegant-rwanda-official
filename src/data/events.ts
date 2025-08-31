@@ -49,8 +49,8 @@ export const events: Event[] = [
       'Nature walks'
     ],
     images: [
-      '/images/events/group-gorilla-1.jpg',
-      '/images/events/group-gorilla-2.jpg'
+      '/Umuganura-Muhondo-Gakenke-Paying-tribute-to-the-king.jpg',
+      '/Umuganura-Muhondo-Gakenke-Paying-tribute-to-the-king.jpg',
     ],
     featured: true,
     registrationDeadline: '2025-01-15',
@@ -85,8 +85,8 @@ export const events: Event[] = [
       'Cultural discussions'
     ],
     images: [
-      '/images/events/culture-festival-1.jpg',
-      '/images/events/culture-festival-2.jpg'
+      '/Nyanza-Traditional-Intore-Dancers-1650x1100.jpg',
+      '/Nyanza-Traditional-Intore-Dancers-1650x1100.jpg',
     ],
     featured: true,
     registrationDeadline: '2025-02-20',

@@ -50,9 +50,9 @@ export const vehicles: Vehicle[] = [
     shortDescription: "Reliable and fuel-efficient compact sedan for city driving",
 
     images: [
-      "/hotel-exterior-daytime.jpg",
-      "/hotel-exterior.jpg",
-      "/kigali-serena-hotel.jpg"
+      "/pexels-mikebirdy-170811.jpg",
+      "/pexels-mikebirdy-170811.jpg",
+      "/pexels-mikebirdy-170811.jpg"
     ],
     features: [
       "4 passengers",
@@ -120,9 +120,9 @@ export const vehicles: Vehicle[] = [
     shortDescription: "Spacious SUV with all-wheel drive for family adventures",
 
     images: [
-      "/hotel-exterior.jpg",
-      "/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
-      "/green-hills-of-rwanda.jpg"
+      "/pexels-mikebirdy-170811.jpg",
+      "/pexels-mikebirdy-170811.jpg",
+      "/pexels-mikebirdy-170811.jpg"
     ],
     features: [
       "6 passengers",
@@ -190,7 +190,7 @@ export const vehicles: Vehicle[] = [
     shortDescription: "Premium luxury sedan with cutting-edge technology",
 
     images: [
-      "/kigali-serena-hotel.jpg",
+      "/pexels-mikebirdy-170811.jpg",
       "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
       "/hotel-exterior-daytime.jpg"
     ],
@@ -262,9 +262,9 @@ export const vehicles: Vehicle[] = [
     shortDescription: "Spacious minivan for groups and business travel",
 
     images: [
-      "/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
-      "/hotel-exterior.jpg",
-      "/kigali-serena-hotel.jpg"
+      "/pexels-esmihel-20200900.jpg",
+      "/pexels-esmihel-20200900.jpg",
+      "/pexels-mikebirdy-170811.jpg"
     ],
     features: [
       "8 passengers",
@@ -332,9 +332,8 @@ export const vehicles: Vehicle[] = [
     shortDescription: "Rugged 4x4 for off-road adventures and exploration",
 
     images: [
-      "/green-hills-of-rwanda.jpg",
-      "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
-      "/volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg"
+      "/pexels-esmihel-20200900.jpg",
+      "/pexels-esmihel-20200900.jpg"
     ],
     features: [
       "4 passengers",
@@ -405,8 +404,8 @@ export const vehicles: Vehicle[] = [
     shortDescription: "Executive sedan with luxury and performance",
 
     images: [
-      "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
-      "/kigali-serena-hotel.jpg",
+      "/pexels-esmihel-20200900.jpg",
+      "/pexels-esmihel-20200900.jpg",
       "/hotel-exterior-daytime.jpg"
     ],
     features: [

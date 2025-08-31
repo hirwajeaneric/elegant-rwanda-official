@@ -9,7 +9,7 @@ interface CarRentalHeroProps {
 
 export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
   return (
-    <section className="relative py-24 bg-[url('/hotel-exterior-daytime.jpg')] bg-cover bg-center bg-no-repeat">
+    <section className="relative py-24 bg-[url('/pexels-mikebirdy-170811.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/80 to-black/70" />
       <div className="container-elegant relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

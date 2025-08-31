@@ -97,7 +97,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
   }
 
   return (
-    <section className="py-20 bg-gray-50" id="booking">
+    <section className="py-30 bg-gray-100" id="booking">
       <div className="container-elegant">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left Column - Booking Form */}

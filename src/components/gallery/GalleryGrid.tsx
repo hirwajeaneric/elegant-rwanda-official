@@ -11,13 +11,13 @@ export function GalleryGrid() {
 
   const galleryData = {
     "Wildlife": [
-      { src: "volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg", title: "Mountain Gorilla", category: "Wildlife" },
+      { src: "Lake-Kivu-Kayak-Phto-from-Arcadiasafaris-1024x552.jpg", title: "Mountain Gorilla", category: "Wildlife" },
       { src: "giraffe-at-akagera-national-park_Photo-from-Getty-Images.jpg", title: "Giraffe at Akagera", category: "Wildlife" },
       { src: "COPYRIGHT_HoneyTrek_20230901-6_Kwita.jpg", title: "Wildlife Encounter", category: "Wildlife" },
       { src: "Sun-bird-rwanda-750x450.jpg", title: "Sun Bird", category: "Wildlife" },
     ],
     "Landscapes": [
-      { src: "green-hills-of-rwanda.jpg", title: "Green Hills of Rwanda", category: "Landscapes" },
+      { src: "nyungwe_national_park.jpg", title: "Green Hills of Rwanda", category: "Landscapes" },
       { src: "Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg", title: "Virunga Mountains", category: "Landscapes" },
       { src: "landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg", title: "Lake Kivu", category: "Landscapes" },
       { src: "Visit-Rwanda-Crater-Lake-Volcanoes-e1533416621808-1920x1267.jpg", title: "Crater Lake", category: "Landscapes" },
