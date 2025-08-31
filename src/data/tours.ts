@@ -6,7 +6,7 @@ export interface Tour {
     title: string;
     description: string;
     duration: string;
-    price: string;
+  
     location: string;
     difficulty: 'Easy' | 'Moderate' | 'Challenging';
     maxGroupSize: number;
@@ -38,7 +38,7 @@ export const tours: Tour[] = [
         title: 'Gorilla Trekking Adventure',
         description: 'Experience the magic of encountering mountain gorillas in their natural habitat. This exclusive tour takes you deep into the misty forests of Volcanoes National Park for an unforgettable wildlife encounter.',
         duration: '3 Days / 2 Nights',
-        price: 'From $1,500',
+    
         location: 'North',
         difficulty: 'Moderate',
         maxGroupSize: 8,
@@ -105,7 +105,7 @@ export const tours: Tour[] = [
         title: 'Lake Kivu Luxury Retreat',
         description: 'Unwind in the serene beauty of Lake Kivu with this exclusive lakeside retreat. Enjoy water activities, spa treatments, and breathtaking sunset views.',
         duration: '4 Days / 3 Nights',
-        price: 'From $1,200',
+    
         location: 'West',
         difficulty: 'Easy',
         maxGroupSize: 12,
@@ -180,7 +180,7 @@ export const tours: Tour[] = [
         title: 'Cultural Heritage Tour',
         description: 'Immerse yourself in Rwanda\'s rich cultural heritage with visits to historical sites, traditional villages, and cultural performances.',
         duration: '5 Days / 4 Nights',
-        price: 'From $1,800',
+    
         location: 'Kigali',
         difficulty: 'Easy',
         maxGroupSize: 10,

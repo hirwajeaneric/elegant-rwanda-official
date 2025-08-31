@@ -82,7 +82,6 @@ export function FleetGallery() {
                 {/* Vehicle Info Overlay */}
                 <div className="absolute bottom-4 left-4 text-white">
                   <h3 className="text-lg font-semibold mb-1">{vehicle.name}</h3>
-                  <p className="text-sm text-white/90">{vehicle.price}</p>
                 </div>
               </div>
 

@@ -57,7 +57,7 @@ export function ToursSidebar() {
                       <span>{tour.location}</span>
                     </div>
                     <div className="text-xs text-primary font-medium mt-1">
-                      {tour.price}
+  
                     </div>
                   </div>
                 </div>

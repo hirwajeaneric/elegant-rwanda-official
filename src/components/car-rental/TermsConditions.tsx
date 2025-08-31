@@ -24,7 +24,7 @@ export function TermsConditions() {
       content: [
         "Comprehensive insurance coverage included in all rentals",
         "Collision damage waiver (CDW) with zero excess",
-        "Third-party liability coverage up to $1,000,000",
+        "Third-party liability coverage up to 1,000,000 USD",
         "Personal accident insurance for driver and passengers",
         "Theft protection coverage included"
       ]
@@ -35,7 +35,7 @@ export function TermsConditions() {
       content: [
         "Vehicle must be returned with the same fuel level as at pickup",
         "Fuel charges apply if vehicle is returned with less fuel",
-        "Fuel prices are based on current market rates",
+        "Fuel costs are based on current market rates",
         "Pre-paid fuel options available for convenience",
         "Fuel efficiency varies by vehicle type"
       ]
@@ -45,7 +45,7 @@ export function TermsConditions() {
       icon: CreditCard,
       content: [
         "Full payment required at time of booking",
-        "Security deposit of $500 required for all rentals",
+        "Security deposit required for all rentals",
         "Deposit is refunded within 7 business days after return",
         "We accept major credit cards and cash payments",
         "Additional charges may apply for late returns or damages"

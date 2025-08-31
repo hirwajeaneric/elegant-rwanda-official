@@ -67,11 +67,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
-  const calculateTotal = () => {
-    const days = calculateDays();
-    if (days === 0) return 0;
-    return days * vehicle.dailyRate;
-  };
+
 
   if (isSubmitted) {
     return (
@@ -91,7 +87,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
                 <div><strong>Vehicle:</strong> {vehicle.name}</div>
                 <div><strong>Rental Type:</strong> {formData.rentalType === "self-drive" ? "Self Drive" : "Chauffeur Driven"}</div>
                 <div><strong>Duration:</strong> {calculateDays()} days</div>
-                <div><strong>Estimated Total:</strong> ${calculateTotal()}</div>
+                <div><strong>Quote Request:</strong> We&apos;ll provide a detailed quote within 2 hours</div>
               </div>
             </div>
           </div>
@@ -341,7 +337,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Daily Rate</span>
-                  <span className="font-semibold text-yellow-600">${vehicle.dailyRate}</span>
+                  <span className="font-semibold text-yellow-600">Contact for Quote</span>
                 </div>
                 {formData.startDate && formData.endDate && (
                   <>
@@ -351,7 +347,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Estimated Total</span>
-                      <span className="font-semibold text-yellow-600">${calculateTotal()}</span>
+                      <span className="font-semibold text-yellow-600">Quote Required</span>
                     </div>
                   </>
                 )}

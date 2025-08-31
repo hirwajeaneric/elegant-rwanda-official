@@ -86,14 +86,9 @@ export function FeaturedTours() {
                   {/* Price and CTA */}
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div className="flex space-x-3">
-                      <button className="btn-outline rounded-full w-fit mx-auto px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
+                      <button className="btn-outline text-white border-2 border-white rounded-full w-fit mx-auto px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
                         <Link href={`/tours/${featuredTours[currentIndex].slug}`}>
                           View Details
-                        </Link>
-                      </button>
-                      <button className="btn-primary rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
-                        <Link href={`/tours/${featuredTours[currentIndex].slug}`}>
-                          Book Now
                         </Link>
                       </button>
                     </div>

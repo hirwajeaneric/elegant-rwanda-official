@@ -186,27 +186,6 @@ export function WhyChooseUs() {
             </div>
           </div>
         </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20">
-            <h3 className="text-2xl font-display font-semibold mb-4">
-              Ready to Experience the Difference?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Join hundreds of satisfied travelers who have discovered Rwanda&apos;s beauty through 
-              our luxury services. Let us create your perfect adventure.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
-                Start Planning Your Trip
-              </button>
-              <button className="btn-outline rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center">
-                View Our Gallery
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

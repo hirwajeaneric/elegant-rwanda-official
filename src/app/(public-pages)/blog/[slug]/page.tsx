@@ -4,7 +4,8 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 import { BlogPostContent } from "@/components/blog/BlogPostContent";
 import { BlogPostSidebar } from "@/components/blog/BlogPostSidebar";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog";
-import { Calendar, Clock, User, Share2, Bookmark } from "lucide-react";
+import { Calendar, Clock, User, Bookmark } from "lucide-react";
+import { ShareButton } from "@/components/ui/share-button";
 import { formatDate } from "@/lib/utils";
 
 
@@ -74,12 +75,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Action Buttons */}
         <div className="absolute top-6 right-6 flex space-x-2">
-          <button
+          <ShareButton
+            url={`https://elegantrwanda.com/blog/${post.slug}`}
+            title={post.title}
+            description={post.excerpt}
+            variant="ghost"
+            size="sm"
             className="p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
-            aria-label="Share this post"
-          >
-            <Share2 className="h-4 w-4" />
-          </button>
+          />
           <button
             className="p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
             aria-label="Bookmark this post"

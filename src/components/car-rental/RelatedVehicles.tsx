@@ -101,14 +101,7 @@ export function RelatedVehicles({ vehicles }: RelatedVehiclesProps) {
                   </span>
                 </div>
 
-                {/* Price */}
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <div className="text-sm text-gray-500">Starting from</div>
-                    <div className="text-2xl font-bold text-primary">${vehicle.dailyRate}</div>
-                    <div className="text-sm text-gray-500">per day</div>
-                  </div>
-                </div>
+
 
                 {/* Action Button */}
                 <Link

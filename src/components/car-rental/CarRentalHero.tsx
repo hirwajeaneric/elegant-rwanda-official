@@ -87,29 +87,15 @@ export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
             </div>
           </div>
 
-          {/* Right Content - Pricing Card */}
+          {/* Right Content - Availability Card */}
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
             <h3 className="text-2xl font-display font-semibold text-white mb-6">
-              Rental Rates
+              Vehicle Availability
             </h3>
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center">
-                <span className="text-white/90">Daily Rate</span>
-                <span className="text-2xl font-bold text-yellow-500">${vehicle.dailyRate}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-white/90">Weekly Rate</span>
-                <span className="text-xl font-semibold text-white">${vehicle.weeklyRate}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-white/90">Monthly Rate</span>
-                <span className="text-xl font-semibold text-white">${vehicle.monthlyRate}</span>
-              </div>
-            </div>
             
             <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-6">
               <div className="text-center">
-                <div className="text-sm text-yellow-400 mb-2">Availability</div>
+                <div className="text-sm text-yellow-400 mb-2">Status</div>
                 <div className={`text-lg font-semibold ${vehicle.available ? 'text-green-400' : 'text-red-400'}`}>
                   {vehicle.available ? 'Available Now' : 'Currently Unavailable'}
                 </div>
@@ -117,11 +103,11 @@ export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
             </div>
 
             <button className="w-full bg-yellow-500 text-black font-semibold py-3 px-6 rounded-lg hover:bg-yellow-400 transition-colors duration-200">
-              {vehicle.available ? 'Book This Vehicle' : 'Check Availability'}
+              {vehicle.available ? 'Request Quote' : 'Check Availability'}
             </button>
             
             <p className="text-xs text-white/60 mt-4 text-center">
-              All rates include comprehensive insurance and 24/7 support
+              Contact us for personalized pricing and availability
             </p>
           </div>
         </div>

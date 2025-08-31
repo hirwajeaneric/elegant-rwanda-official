@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Calendar, Users, ArrowRight } from "lucide-react";
-import { formatPrice, getCategoryColor } from "@/lib/utils";
+import { getCategoryColor } from "@/lib/utils";
 import type { Tour } from "@/data/tours";
 
 interface RelatedToursProps {
@@ -91,11 +91,8 @@ export function RelatedTours({ tours }: RelatedToursProps) {
                   </div>
                 </div>
 
-                {/* Price and CTA */}
-                <div className="flex items-center justify-between">
-                  <div className="text-xl font-bold text-primary">
-                    {formatPrice(tour.price)}
-                  </div>
+                {/* CTA */}
+                <div className="flex justify-center">
                   <Link
                     href={`/tours/${tour.slug}`}
                     className="inline-flex items-center text-primary hover:text-primary/80 font-medium group-hover:translate-x-1 transition-all duration-200"

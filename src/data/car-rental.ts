@@ -5,10 +5,7 @@ export interface Vehicle {
   category: 'Economy' | 'Compact' | 'SUV' | 'Luxury' | 'Minivan' | 'Adventure' | 'Executive';
   description: string;
   shortDescription: string;
-  price: string;
-  dailyRate: number;
-  weeklyRate: number;
-  monthlyRate: number;
+
   images: string[];
   features: string[];
   specifications: {
@@ -51,10 +48,7 @@ export const vehicles: Vehicle[] = [
     category: "Economy",
     description: "The Toyota Corolla is a reliable and fuel-efficient compact sedan perfect for city driving and short trips. With its comfortable interior and excellent fuel economy, it's an ideal choice for budget-conscious travelers.",
     shortDescription: "Reliable and fuel-efficient compact sedan for city driving",
-    price: "From $35/day",
-    dailyRate: 35,
-    weeklyRate: 210,
-    monthlyRate: 840,
+
     images: [
       "/hotel-exterior-daytime.jpg",
       "/hotel-exterior.jpg",
@@ -124,10 +118,7 @@ export const vehicles: Vehicle[] = [
     category: "SUV",
     description: "The Honda CR-V offers spacious comfort and versatility for families and groups. With its all-wheel drive capability and generous cargo space, it's perfect for exploring Rwanda's diverse landscapes.",
     shortDescription: "Spacious SUV with all-wheel drive for family adventures",
-    price: "From $65/day",
-    dailyRate: 65,
-    weeklyRate: 390,
-    monthlyRate: 1560,
+
     images: [
       "/hotel-exterior.jpg",
       "/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
@@ -197,10 +188,7 @@ export const vehicles: Vehicle[] = [
     category: "Luxury",
     description: "Experience luxury and sophistication with the Mercedes C-Class. This premium sedan combines elegant design with cutting-edge technology, offering an exceptional driving experience for discerning travelers.",
     shortDescription: "Premium luxury sedan with cutting-edge technology",
-    price: "From $120/day",
-    dailyRate: 120,
-    weeklyRate: 720,
-    monthlyRate: 2880,
+
     images: [
       "/kigali-serena-hotel.jpg",
       "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
@@ -272,10 +260,7 @@ export const vehicles: Vehicle[] = [
     category: "Minivan",
     description: "The Toyota Hiace is perfect for larger groups and business travel. With seating for up to 8 passengers and ample luggage space, it's ideal for corporate events, family trips, and airport transfers.",
     shortDescription: "Spacious minivan for groups and business travel",
-    price: "From $80/day",
-    dailyRate: 80,
-    weeklyRate: 480,
-    monthlyRate: 1920,
+
     images: [
       "/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
       "/hotel-exterior.jpg",
@@ -345,10 +330,7 @@ export const vehicles: Vehicle[] = [
     category: "Adventure",
     description: "Conquer any terrain with the legendary Land Rover Defender. Built for adventure, this rugged 4x4 is perfect for exploring Rwanda's national parks, mountains, and off-road destinations.",
     shortDescription: "Rugged 4x4 for off-road adventures and exploration",
-    price: "From $150/day",
-    dailyRate: 150,
-    weeklyRate: 900,
-    monthlyRate: 3600,
+
     images: [
       "/green-hills-of-rwanda.jpg",
       "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
@@ -421,10 +403,7 @@ export const vehicles: Vehicle[] = [
     category: "Executive",
     description: "The BMW 5 Series represents the perfect balance of luxury and performance. With its sophisticated design, advanced technology, and exceptional driving dynamics, it's the choice for executive travel.",
     shortDescription: "Executive sedan with luxury and performance",
-    price: "From $140/day",
-    dailyRate: 140,
-    weeklyRate: 840,
-    monthlyRate: 3360,
+
     images: [
       "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
       "/kigali-serena-hotel.jpg",

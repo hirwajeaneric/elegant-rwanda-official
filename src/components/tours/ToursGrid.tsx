@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Calendar, Users, ArrowRight, Search } from "lucide-react";
 import { getAllTours, getToursByCategory } from "@/data/tours";
-import { formatPrice, getCategoryColor, getDifficultyColor } from "@/lib/utils";
+import { getCategoryColor } from "@/lib/utils";
 
 export function ToursGrid() {
   const [searchQuery, setSearchQuery] = useState("");

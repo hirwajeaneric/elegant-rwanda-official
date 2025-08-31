@@ -10,7 +10,6 @@ export interface Event {
   location: string;
   maxParticipants: number;
   currentParticipants: number;
-  price: string;
   category: 'Group Tour' | 'Cultural Event' | 'Adventure' | 'Luxury Experience';
   highlights: string[];
   activities: string[];
@@ -33,7 +32,7 @@ export const events: Event[] = [
     location: 'Volcanoes National Park',
     maxParticipants: 8,
     currentParticipants: 6,
-    price: 'From $1,400',
+
     category: 'Group Tour',
     highlights: [
       'Exclusive group experience',
@@ -69,7 +68,7 @@ export const events: Event[] = [
     location: 'Kigali & Surrounding Areas',
     maxParticipants: 25,
     currentParticipants: 18,
-    price: 'From $800',
+
     category: 'Cultural Event',
     highlights: [
       'Traditional dance performances',
@@ -105,7 +104,7 @@ export const events: Event[] = [
     location: 'Lake Kivu',
     maxParticipants: 12,
     currentParticipants: 8,
-    price: 'From $2,200',
+
     category: 'Luxury Experience',
     highlights: [
       'Exclusive resort access',
@@ -141,7 +140,7 @@ export const events: Event[] = [
     location: 'Multiple Locations',
     maxParticipants: 20,
     currentParticipants: 15,
-    price: 'From $1,600',
+
     category: 'Adventure',
     highlights: [
       'Multi-activity challenge',

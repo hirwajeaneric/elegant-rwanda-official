@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Phone, Mail, CheckCircle } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+
 import type { Tour } from "@/data/tours";
 
 interface TourBookingProps {

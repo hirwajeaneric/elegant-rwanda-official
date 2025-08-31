@@ -255,13 +255,9 @@ export function EventsList() {
                   </div>
                 </div>
 
-                {/* Price and CTA */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm text-gray-500">Starting from</div>
-                    <div className="text-2xl font-bold text-primary">{event.price}</div>
-                  </div>
-                  <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200 flex items-center space-x-2">
+                {/* CTA */}
+                <div className="flex justify-center">
+                  <button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200 flex items-center space-x-2">
                     <span>Register Now</span>
                     <ArrowRight className="h-4 w-4" />
                   </button>

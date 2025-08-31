@@ -85,7 +85,7 @@ export default function TermsOfServicePage() {
                       <li>All bookings must be made through our official channels</li>
                       <li>Reservations are confirmed upon receipt of payment or deposit</li>
                       <li>We reserve the right to refuse service to anyone</li>
-                      <li>Prices are subject to change without notice</li>
+                      <li>Service rates are subject to change without notice</li>
                     </ul>
                   </div>
                   
@@ -95,7 +95,7 @@ export default function TermsOfServicePage() {
                       <li>Full payment may be required at time of booking</li>
                       <li>Deposits are non-refundable unless otherwise specified</li>
                       <li>We accept major credit cards and bank transfers</li>
-                      <li>All prices are quoted in USD unless otherwise stated</li>
+                      <li>All rates are quoted in USD unless otherwise stated</li>
                     </ul>
                   </div>
                 </div>

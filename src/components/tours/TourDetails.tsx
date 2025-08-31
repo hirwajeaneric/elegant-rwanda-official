@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Check, X, MapPin, Calendar, Users, Star } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+
 import type { Tour } from "@/data/tours";
 
 interface TourDetailsProps {

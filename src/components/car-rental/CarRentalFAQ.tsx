@@ -24,8 +24,8 @@ export function CarRentalFAQ() {
     ],
     "Pricing": [
       {
-        question: "What's included in the rental price?",
-        answer: "Our rental prices include comprehensive insurance, roadside assistance, GPS navigation, and unlimited mileage. Fuel, additional drivers, and optional extras are charged separately."
+        question: "What's included in the rental?",
+        answer: "Our rentals include comprehensive insurance, roadside assistance, GPS navigation, and unlimited mileage. Fuel, additional drivers, and optional extras are charged separately."
       },
       {
         question: "Are there any hidden fees?",

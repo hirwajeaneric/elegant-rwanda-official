@@ -1,8 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Share2, Bookmark, Heart } from "lucide-react";
-import { formatPrice, getCategoryColor, getDifficultyColor } from "@/lib/utils";
+import { MapPin, Share2 } from "lucide-react";
 import type { Tour } from "@/data/tours";
 
 interface TourHeroProps {

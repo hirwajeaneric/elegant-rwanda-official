@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { X, ChevronLeft, ChevronRight, Download, Share2, Heart } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Download, Heart } from "lucide-react";
+import { ShareButton } from "@/components/ui/share-button";
 import Image from "next/image";
 
 export function GalleryGrid() {
@@ -137,9 +138,14 @@ export function GalleryGrid() {
                 <button className="p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors" aria-label="Like image">
                   <Heart className="h-4 w-4" />
                 </button>
-                <button className="p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors" aria-label="Share image">
-                  <Share2 className="h-4 w-4" />
-                </button>
+                <ShareButton
+                  url={`https://elegantrwanda.com/gallery`}
+                  title={`${image.title || 'Rwanda Gallery Image'}`}
+                  description={`Beautiful ${image.category.toLowerCase()} image from Rwanda`}
+                  variant="ghost"
+                  size="sm"
+                  className="p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
+                />
               </div>
             </div>
           </div>
@@ -197,9 +203,14 @@ export function GalleryGrid() {
               <button className="p-3 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors" aria-label="Download image">
                 <Download className="h-5 w-5" />
               </button>
-              <button className="p-3 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors" aria-label="Share image">
-                <Share2 className="h-5 w-5" />
-              </button>
+              <ShareButton
+                url={`https://elegantrwanda.com/gallery`}
+                title={`${selectedImage.title || 'Rwanda Gallery Image'}`}
+                description={`Beautiful ${selectedImage.category.toLowerCase()} image from Rwanda`}
+                variant="ghost"
+                size="sm"
+                className="p-3 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
+              />
             </div>
 
             {/* Image Counter */}
