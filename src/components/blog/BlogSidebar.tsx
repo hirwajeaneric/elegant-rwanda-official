@@ -3,18 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Search, Calendar } from "lucide-react";
-import { getRecentPosts, getPostsByCategory } from "@/data/blog";
+import { getRecentPosts } from "@/data/blog";
 import { formatDate } from "@/lib/utils";
 
 export function BlogSidebar() {
   const [searchQuery, setSearchQuery] = useState("");
   const recentPosts = getRecentPosts(5);
-  const popularCategories = [
-    { name: "Tours", count: getPostsByCategory("Tours").length },
-    { name: "Wildlife", count: getPostsByCategory("Wildlife").length },
-    { name: "Culture", count: getPostsByCategory("Culture").length },
-    { name: "Luxury", count: getPostsByCategory("Luxury").length },
-  ];
+
 
   return (
     <div className="space-y-8">

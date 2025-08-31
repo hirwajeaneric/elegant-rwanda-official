@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import type { BlogPost } from "@/data/blog";
 
 interface BlogPostContentProps {
@@ -16,8 +15,8 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
           {/* Content */}
           <div className="prose prose-lg max-w-none">
             <div 
-              className="text-muted-foreground leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />') }}
+              className="blog-content-wrapper"
+              dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
 
