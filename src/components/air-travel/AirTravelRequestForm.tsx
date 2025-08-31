@@ -9,9 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Users, Clock, CheckCircle } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Users, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export function AirTravelRequestForm() {
@@ -66,17 +65,17 @@ export function AirTravelRequestForm() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       toast.success("Thank you for your air travel assistance request! We&apos;ll get back to you within 2 hours.");
       setIsSubmitted(true);
       reset();
-      
+
       // Reset form after 5 seconds
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    } catch (_error) {
-      toast.error("Failed to send request. Please try again.");
+    } catch (error) {
+      toast.error(error as string);
     }
   };
 
@@ -95,17 +94,17 @@ export function AirTravelRequestForm() {
   }
 
   return (
-    <Card className="shadow-xl border-0">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-display font-bold text-foreground">
+    <div className="mx-auto p-8 bg-[url('/pexels-matoga-27982027.jpg')] bg-cover bg-center bg-no-repeat rounded-0">
+      <div className="text-center">
+        <h2 className="text-3xl font-display font-bold text-white">
           Request Air Travel Assistance
-        </CardTitle>
-        <CardDescription className="text-lg text-muted-foreground">
+        </h2>
+        <p className="text-lg text-white">
           Let us know how we can help with your travel arrangements
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        </p>
+      </div>
+      <div className="p-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-screen-lg mx-auto rounded-2xl p-8 border border-border bg-white backdrop-blur-sm">
           {/* Service Type Selection */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Services Required *</Label>
@@ -120,6 +119,7 @@ export function AirTravelRequestForm() {
                 <div key={service} className="flex items-center space-x-2">
                   <Checkbox
                     id={service}
+                    className="rounded-full border-black"
                     checked={watchedServices.includes(service)}
                     onCheckedChange={() => handleServiceChange(service)}
                   />
@@ -147,7 +147,7 @@ export function AirTravelRequestForm() {
                 type="number"
                 min="1"
                 max="10"
-                className="pl-10"
+                className="pl-10 border-black"
                 aria-label="Enter number of travelers"
               />
             </div>
@@ -165,7 +165,7 @@ export function AirTravelRequestForm() {
               {...register("preferences")}
               id="preferences"
               placeholder="Any specific requirements, dietary restrictions, accessibility needs, or preferences..."
-              className="min-h-[100px] resize-none"
+              className="min-h-[100px] resize-none border-black"
               aria-label="Enter special requests or preferences"
             />
             {errors.preferences && (
@@ -183,6 +183,7 @@ export function AirTravelRequestForm() {
               id="contactInfo.name"
               placeholder="Enter your full name"
               aria-label="Enter your full name"
+              className="border-black"
             />
             {errors.contactInfo?.name && (
               <p className="text-sm text-destructive">{errors.contactInfo.name.message}</p>
@@ -199,6 +200,7 @@ export function AirTravelRequestForm() {
               type="email"
               placeholder="Enter your email address"
               aria-label="Enter your email address"
+              className="border-black"
             />
             {errors.contactInfo?.email && (
               <p className="text-sm text-destructive">{errors.contactInfo.email.message}</p>
@@ -215,6 +217,7 @@ export function AirTravelRequestForm() {
               type="tel"
               placeholder="Enter your phone number"
               aria-label="Enter your phone number"
+              className="border-black"
             />
             {errors.contactInfo?.phone && (
               <p className="text-sm text-destructive">{errors.contactInfo.phone.message}</p>
@@ -230,6 +233,7 @@ export function AirTravelRequestForm() {
               id="contactInfo.country"
               placeholder="Enter your country"
               aria-label="Enter your country"
+              className="border-black"
             />
             {errors.contactInfo?.country && (
               <p className="text-sm text-destructive">{errors.contactInfo.country.message}</p>
@@ -240,7 +244,7 @@ export function AirTravelRequestForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-lg py-3"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-lg py-3 rounded-full"
           >
             {isSubmitting ? (
               <>
@@ -253,14 +257,13 @@ export function AirTravelRequestForm() {
           </Button>
 
           {/* Response Time Info */}
-          <div className="text-center">
-            <Badge variant="secondary" className="text-sm">
-              <Clock className="h-3 w-3 mr-1" />
-              Response within 2 hours
-            </Badge>
+          <div className="text-center mt-4">
+            <p className="text-sm text-muted-foreground">
+              We&apos;ll get back to you within 2 hours
+            </p>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

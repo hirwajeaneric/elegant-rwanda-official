@@ -10,7 +10,7 @@ interface CarRentalHeroProps {
 export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
   return (
     <section className="relative py-24 bg-[url('/hotel-exterior-daytime.jpg')] bg-cover bg-center bg-no-repeat">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/80 to-black/70" />
       <div className="container-elegant relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -22,27 +22,27 @@ export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
               <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
                 {vehicle.name}
               </h1>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
+              <p className="text-xl text-white/90 mb-8 leading-tight">
                 {vehicle.description}
               </p>
             </div>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-4 gap-6 mb-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">{vehicle.specifications.passengers}</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">{vehicle.specifications.passengers}</div>
                 <div className="text-sm text-white/80">Passengers</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">{vehicle.specifications.doors}</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">{vehicle.specifications.doors}</div>
                 <div className="text-sm text-white/80">Doors</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">{vehicle.specifications.transmission}</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">{vehicle.specifications.transmission}</div>
                 <div className="text-sm text-white/80">Transmission</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">{vehicle.specifications.fuelType}</div>
+                <div className="text-2xl font-bold text-yellow-500 mb-2">{vehicle.specifications.fuelType}</div>
                 <div className="text-sm text-white/80">Fuel Type</div>
               </div>
             </div>
@@ -93,7 +93,7 @@ export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
               Vehicle Availability
             </h3>
             
-            <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-6">
+            <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-full p-4 mb-6">
               <div className="text-center">
                 <div className="text-sm text-yellow-400 mb-2">Status</div>
                 <div className={`text-lg font-semibold ${vehicle.available ? 'text-green-400' : 'text-red-400'}`}>
@@ -102,8 +102,8 @@ export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
               </div>
             </div>
 
-            <button className="w-full bg-yellow-500 text-black font-semibold py-3 px-6 rounded-lg hover:bg-yellow-400 transition-colors duration-200">
-              {vehicle.available ? 'Request Quote' : 'Check Availability'}
+            <button className="w-full bg-yellow-500 text-black font-semibold py-3 px-6 rounded-full hover:bg-yellow-400 transition-colors duration-200" onClick={() => window.location.href = vehicle.available ? '#booking' : '/car-rental'}>
+              {vehicle.available ? 'Request Quote' : 'View All Vehicles'}
             </button>
             
             <p className="text-xs text-white/60 mt-4 text-center">

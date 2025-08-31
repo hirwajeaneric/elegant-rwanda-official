@@ -97,7 +97,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
   }
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50" id="booking">
       <div className="container-elegant">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left Column - Booking Form */}
@@ -312,7 +312,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-primary text-white font-semibold py-4 px-6 rounded-lg hover:bg-primary/90 transition-colors duration-200 text-lg"
+                className="w-full bg-primary text-white font-semibold py-4 px-6 rounded-full hover:bg-primary/90 transition-colors duration-200 text-lg"
               >
                 Request Quote
               </button>
