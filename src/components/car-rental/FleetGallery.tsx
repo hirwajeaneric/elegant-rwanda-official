@@ -8,12 +8,12 @@ import { getAllVehicles } from "@/data/car-rental";
 
 export function FleetGallery() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  
+
   const vehicles = getAllVehicles();
   const categories = ["All", "Economy", "Compact", "SUV", "Luxury", "Minivan", "Adventure", "Executive"];
 
-  const filteredVehicles = activeCategory === "all" 
-    ? vehicles 
+  const filteredVehicles = activeCategory === "all"
+    ? vehicles
     : vehicles.filter(vehicle => vehicle.category === activeCategory);
 
   return (
@@ -24,7 +24,7 @@ export function FleetGallery() {
             Our <span className="text-primary">Fleet</span> Gallery
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Explore our diverse fleet of well-maintained vehicles, from economy options to luxury models. 
+            Explore our diverse fleet of well-maintained vehicles, from economy options to luxury models.
             Each vehicle is carefully selected to ensure your comfort and safety.
           </p>
         </div>
@@ -35,11 +35,10 @@ export function FleetGallery() {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${
-                activeCategory === category
+              className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${activeCategory === category
                   ? "bg-primary text-white shadow-lg"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
+                }`}
             >
               {category === "All" ? `All (${vehicles.length})` : `${category} (${vehicles.filter(v => v.category === category).length})`}
             </button>
@@ -53,14 +52,14 @@ export function FleetGallery() {
               {/* Vehicle Image */}
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={`/${vehicle.images[0]}`}
+                  src={vehicle.images[0]}
                   alt={vehicle.name}
                   width={400}
                   height={192}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                
+
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4">
                   <span className="bg-primary text-white px-3 py-1 rounded-full text-xs font-medium">
@@ -70,11 +69,10 @@ export function FleetGallery() {
 
                 {/* Availability Badge */}
                 <div className="absolute top-4 right-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    vehicle.available 
-                      ? "bg-green-500 text-white" 
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${vehicle.available
+                      ? "bg-green-500 text-white"
                       : "bg-red-500 text-white"
-                  }`}>
+                    }`}>
                     {vehicle.available ? "Available" : "Unavailable"}
                   </span>
                 </div>
@@ -86,18 +84,17 @@ export function FleetGallery() {
               </div>
 
               {/* Vehicle Details */}
-              <div className="p-6">
+              <div className="p-6 flex flex-col justify-between">
                 {/* Rating */}
                 <div className="flex items-center space-x-2 mb-4">
                   <div className="flex items-center space-x-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`h-4 w-4 ${
-                          i < Math.floor(vehicle.rating) 
-                            ? "fill-yellow-400 text-yellow-400" 
+                      <Star
+                        key={i}
+                        className={`h-4 w-4 ${i < Math.floor(vehicle.rating)
+                            ? "fill-yellow-400 text-yellow-400"
                             : "text-gray-300"
-                        }`} 
+                          }`}
                       />
                     ))}
                   </div>
@@ -118,9 +115,9 @@ export function FleetGallery() {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-3">
-                  <Link 
+                  <Link
                     href={`/car-rental/${vehicle.slug}`}
-                    className="flex-1 bg-primary text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors text-center"
+                    className="flex-1 bg-primary text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors text-center"
                   >
                     View Details
                   </Link>

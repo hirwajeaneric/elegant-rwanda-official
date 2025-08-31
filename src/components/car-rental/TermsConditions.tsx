@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, FileText, Shield, Clock, CreditCard, AlertTriangle } from "lucide-react";
+import Link from "next/link";
 
 export function TermsConditions() {
   const [openSection, setOpenSection] = useState<string | null>("general");
@@ -162,12 +163,9 @@ export function TermsConditions() {
               before you make your booking.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">
+              <Link href="/contact" className="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-colors">
                 Contact Support
-              </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors">
-                Download PDF
-              </button>
+              </Link>
             </div>
           </div>
         </div>

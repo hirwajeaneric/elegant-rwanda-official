@@ -65,11 +65,11 @@ export function RentalOptions() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex justify-center mb-12">
-          <div className="bg-white rounded-2xl p-2 shadow-lg border border-border/50">
+        <div className="flex justify-center mb-12 rounded-full">
+          <div className="bg-white rounded-full p-2 shadow-lg border border-border/50">
             <button
               onClick={() => setActiveTab("self-drive")}
-              className={`px-8 py-3 rounded-xl font-medium transition-all duration-200 ${
+              className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${
                 activeTab === "self-drive"
                   ? "bg-primary text-white shadow-lg"
                   : "text-muted-foreground hover:text-foreground"
@@ -80,7 +80,7 @@ export function RentalOptions() {
             </button>
             <button
               onClick={() => setActiveTab("chauffeur")}
-              className={`px-8 py-3 rounded-xl font-medium transition-all duration-200 ${
+              className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${
                 activeTab === "chauffeur"
                   ? "bg-primary text-white shadow-lg"
                   : "text-muted-foreground hover:text-foreground"
@@ -194,20 +194,7 @@ export function RentalOptions() {
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
-            <h3 className="text-3xl font-display font-bold mb-4">
-              Ready to Choose Your Rental Option?
-            </h3>
-            <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-              Get a detailed quote and start planning your perfect journey across Rwanda.
-            </p>
-            <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">
-              Get Your Quote Now
-            </button>
-          </div>
-        </div>
+        
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, Search, Car, CreditCard, Shield, Clock } from "lucide-react";
+import Link from "next/link";
 
 export function CarRentalFAQ() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -116,14 +117,14 @@ export function CarRentalFAQ() {
         <div className="max-w-4xl mx-auto mb-12">
           <div className="bg-white rounded-2xl p-6 shadow-lg border border-border/50">
             {/* Search Bar */}
-            <div className="relative mb-6">
+            <div className="relative mb-6 rounded-full">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search FAQs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-12 pr-4 py-3 rounded-full border border-border focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -131,7 +132,7 @@ export function CarRentalFAQ() {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => setActiveCategory("all")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   activeCategory === "all"
                     ? "bg-primary text-white"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -143,7 +144,7 @@ export function CarRentalFAQ() {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     activeCategory === category
                       ? "bg-primary text-white"
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -202,7 +203,7 @@ export function CarRentalFAQ() {
                   setSearchTerm("");
                   setActiveCategory("all");
                 }}
-                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+                className="bg-primary text-white px-6 py-3 rounded-full hover:bg-primary/90 transition-colors"
               >
                 View All FAQs
               </button>
@@ -252,12 +253,9 @@ export function CarRentalFAQ() {
               Our customer service team is here to help with any questions about our car rental services.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">
+              <Link href="/contact" className="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-colors">
                 Contact Support
-              </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors">
-                Live Chat
-              </button>
+              </Link>
             </div>
           </div>
         </div>

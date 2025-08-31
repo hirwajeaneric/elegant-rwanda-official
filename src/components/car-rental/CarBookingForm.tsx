@@ -365,7 +365,7 @@ export function CarBookingForm() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-primary text-white px-12 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors duration-200 shadow-lg hover:shadow-xl"
+                className="bg-primary text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 transition-colors duration-200 shadow-lg hover:shadow-xl"
               >
                 Submit Rental Request
               </button>
