@@ -61,7 +61,7 @@ export function AirTravelRequestForm() {
     }
   };
 
-  const onSubmit = async (_data: AirTravelForm) => {
+  const onSubmit = async () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -74,8 +74,8 @@ export function AirTravelRequestForm() {
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    } catch (error) {
-      toast.error(error as string);
+    } catch {
+      toast.error("An error occurred. Please try again.");
     }
   };
 

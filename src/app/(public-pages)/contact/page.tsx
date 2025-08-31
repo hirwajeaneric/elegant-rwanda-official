@@ -42,7 +42,7 @@ export default function ContactPage() {
                     <span className="text-2xl"><MapPin className="h-6 w-6" /></span>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Office Address</h3>
+                    <h3 className="font-semibold mb-1 text-2xl">Office Address</h3>
                     <p className="text-muted-foreground">
                       KG 123 Street<br />
                       Kigali, Rwanda
@@ -55,7 +55,7 @@ export default function ContactPage() {
                     <span className="text-2xl"><Phone className="h-6 w-6" /></span>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Phone</h3>
+                    <h3 className="font-semibold mb-1 text-2xl">Phone</h3>
                     <p className="text-muted-foreground">
                       +250 788 123 456<br />
                       +250 788 123 457
@@ -68,7 +68,7 @@ export default function ContactPage() {
                     <span className="text-2xl"><Mail className="h-6 w-6" /></span>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Email</h3>
+                    <h3 className="font-semibold mb-1 text-2xl">Email</h3>
                     <p className="text-muted-foreground">
                       info@elegantrwanda.com<br />
                       bookings@elegantrwanda.com
@@ -81,7 +81,7 @@ export default function ContactPage() {
                     <span className="text-2xl"><Clock className="h-6 w-6" /></span>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Business Hours</h3>
+                    <h3 className="font-semibold mb-1 text-2xl">Business Hours</h3>
                     <p className="text-muted-foreground">
                       Monday - Friday: 8:00 AM - 6:00 PM<br />
                       Saturday: 9:00 AM - 4:00 PM<br />
@@ -178,7 +178,7 @@ export default function ContactPage() {
         </div>
 
         {/* Map Section */}
-        <div className="mt-16">
+        {/* <div className="mt-16">
           <h2 className="text-2xl font-display font-semibold mb-6 text-center">Find Us</h2>
           <div className="bg-muted rounded-2xl p-8 text-center">
             <p className="text-muted-foreground mb-4">
@@ -188,7 +188,7 @@ export default function ContactPage() {
               <span className="text-muted-foreground">Google Maps Integration</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </PageWrapper>
   );

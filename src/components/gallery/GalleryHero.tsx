@@ -2,16 +2,15 @@
 
 export function GalleryHero() {
   return (
-    <section className="relative py-24 bg-[url('/nyungwe-forests.jpg')] bg-cover bg-center bg-no-repeat">
+    <section className="relative py-24 bg-[url('/pexels-gjpzoom-33707404.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
       <div className="container-elegant relative z-10 text-center">
         <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-6">
           Explore{" "}
-          <span className="text-yellow-500">Rwanda With Us</span> Through Photos
+          <span className="text-yellow-500">Our Services</span> Through Photos
         </h1>
         <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
-          Immerse yourself in the breathtaking beauty of Rwanda through our curated collection 
-          of stunning photographs capturing wildlife, landscapes, culture, and luxury experiences.
+          Explore our fleet of vehicles, places we have been, experience with our previous clients and the services we offer.
         </p>
         
         {/* Gallery Stats */}

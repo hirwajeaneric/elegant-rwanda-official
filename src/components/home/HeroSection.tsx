@@ -19,7 +19,7 @@ export function HeroSection() {
         {/* Placeholder for video - replace with actual video */}
         <div className="w-full h-full inset-0 bg-gradient-to-r from-black/50 via-black/70 to-black/60">
           {/* This would be replaced with an actual video or high-quality image */}
-          <div className="absolute inset-0 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat" />
+          <div className="absolute inset-0 bg-[url('/pexels-isaac-mitchell-278678383-16884778.jpg')] bg-cover bg-center bg-no-repeat" />
         </div>
         
         {/* Video Controls Overlay */}
@@ -47,7 +47,7 @@ export function HeroSection() {
             <span className="text-yellow-500">Elegance</span>
           </h1>
           
-          <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-light leading-relaxed max-w-4xl mx-auto">
+          <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-light leading-relaxed max-w-4xl mx-auto italic">
             Tailored Tours & Premium Travel Experience
           </p>
           

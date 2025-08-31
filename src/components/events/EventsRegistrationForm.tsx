@@ -38,7 +38,7 @@ export function EventsRegistrationForm() {
   const watchedEventId = watch("eventId");
   const selectedEvent = upcomingEvents.find(event => event.id === watchedEventId);
 
-  const onSubmit = async (_data: EventRegistrationForm) => {
+  const onSubmit = async () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -51,7 +51,7 @@ export function EventsRegistrationForm() {
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    } catch (_error) {
+    } catch {
       toast.error("Failed to submit registration. Please try again.");
     }
   };

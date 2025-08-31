@@ -18,7 +18,7 @@ const services = [
     description: "Custom itineraries for unforgettable adventures across Rwanda&apos;s most stunning landscapes.",
     features: ["Gorilla Trekking", "Cultural Experiences", "Luxury Lodges", "Expert Guides"],
     href: "/tours",
-    image: "/photo-1551632811-561732d1e306.avif"
+    image: "/pexels-isaac-mitchell-278678383-16884778.jpg"
   },
   {
     icon: Car,
@@ -29,7 +29,7 @@ const services = [
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
     iconColor: "text-emerald-600",
-    image: "/photo-1551632811-561732d1e306.avif"
+    image: "/pexels-kadiravsarr-20170205.jpg"
   },
   {
     icon: Car,
@@ -40,7 +40,7 @@ const services = [
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
     iconColor: "text-emerald-600",
-    image: "/photo-1551632811-561732d1e306.avif"
+    image: "/pexels-mikebirdy-170811.jpg"
   },
   {
     icon: Plane,
@@ -51,7 +51,7 @@ const services = [
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
     iconColor: "text-emerald-600",
-    image: "/photo-1551632811-561732d1e306.avif"
+    image: "/pexels-matoga-27982027.jpg"
   },
   {
     icon: Calendar,
@@ -62,7 +62,7 @@ const services = [
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
     iconColor: "text-emerald-600",
-    image: "/photo-1551632811-561732d1e306.avif"
+    image: "/events.jpeg"
   },
   {
     icon: Star,
@@ -73,7 +73,7 @@ const services = [
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
     iconColor: "text-emerald-600",
-    image: "/photo-1551632811-561732d1e306.avif"
+    image: "/photo-1516426122078-c23e76319801.jpg"
   }
 ];
 

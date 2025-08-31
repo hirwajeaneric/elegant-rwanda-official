@@ -11,28 +11,42 @@ export function GalleryGrid() {
 
   const galleryData = {
     "Wildlife": [
-      { src: "Lake-Kivu-Kayak-Phto-from-Arcadiasafaris-1024x552.jpg", title: "Mountain Gorilla", category: "Wildlife" },
+      { src: "Lake-Kivu-Kayak-Phto-from-Arcadiasafaris-1024x552.jpg", title: "Lake Kivu Kayaking", category: "Wildlife" },
       { src: "giraffe-at-akagera-national-park_Photo-from-Getty-Images.jpg", title: "Giraffe at Akagera", category: "Wildlife" },
       { src: "COPYRIGHT_HoneyTrek_20230901-6_Kwita.jpg", title: "Wildlife Encounter", category: "Wildlife" },
       { src: "Sun-bird-rwanda-750x450.jpg", title: "Sun Bird", category: "Wildlife" },
+      { src: "volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg", title: "Mountain Gorilla", category: "Wildlife" },
     ],
     "Landscapes": [
-      { src: "nyungwe_national_park.jpg", title: "Green Hills of Rwanda", category: "Landscapes" },
+      { src: "nyungwe_national_park.jpg", title: "Nyungwe National Park", category: "Landscapes" },
+      { src: "nyungwe-forests.jpg", title: "Nyungwe Forests", category: "Landscapes" },
       { src: "Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg", title: "Virunga Mountains", category: "Landscapes" },
-      { src: "landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg", title: "Lake Kivu", category: "Landscapes" },
+      { src: "landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg", title: "Lake Kivu Landscape", category: "Landscapes" },
       { src: "Visit-Rwanda-Crater-Lake-Volcanoes-e1533416621808-1920x1267.jpg", title: "Crater Lake", category: "Landscapes" },
+      { src: "green-hills-of-rwanda.jpg", title: "Green Hills of Rwanda", category: "Landscapes" },
+      { src: "lake-kivu_Photo-from-Getty-Images.jpg", title: "Lake Kivu View", category: "Landscapes" },
+      { src: "photo-1551632811-561732d1e306.avif", title: "Rwanda Countryside", category: "Landscapes" },
+      { src: "photo-1517457373958-b7bdd4587205.jpg", title: "Mountain Vista", category: "Landscapes" },
+      { src: "photo-1566073771259-6a8506099945.jpg", title: "Scenic Valley", category: "Landscapes" },
+      { src: "photo-1516426122078-c23e76319801.jpg", title: "Rolling Hills", category: "Landscapes" },
     ],
     "Culture": [
       { src: "Umuganura-Muhondo-Gakenke-Paying-tribute-to-the-king.jpg", title: "Traditional Ceremony", category: "Culture" },
       { src: "Nyanza-Traditional-Intore-Dancers-1650x1100.jpg", title: "Traditional Dancers", category: "Culture" },
       { src: "IbyIwacu-Cultural-Village.jpg", title: "Cultural Village", category: "Culture" },
       { src: "butare-museum-750x450.jpg", title: "Butare Museum", category: "Culture" },
+      { src: "Kandt-House-Museum-of-Natural-History-Photo-from-Arcadiasafaris1024x683.jpg", title: "Kandt House Museum", category: "Culture" },
     ],
     "Accommodation": [
       { src: "Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg", title: "Bisate Lodge", category: "Accommodation" },
       { src: "kigali-serena-hotel.jpg", title: "Kigali Serena Hotel", category: "Accommodation" },
       { src: "hotel-exterior.jpg", title: "Luxury Hotel", category: "Accommodation" },
       { src: "hotel-exterior-daytime.jpg", title: "Hotel Exterior", category: "Accommodation" },
+      { src: "m-hotel-kigali-is-located.jpg", title: "M Hotel Kigali", category: "Accommodation" },
+      { src: "park-inn-by-radisson.jpg", title: "Park Inn by Radisson", category: "Accommodation" },
+      { src: "onomo-pool-deck.jpg", title: "Onomo Pool Deck", category: "Accommodation" },
+      { src: "grand-legacy-hotel.jpg", title: "Grand Legacy Hotel", category: "Accommodation" },
+      { src: "heaven-restaurant-boutique.jpg", title: "Heaven Restaurant", category: "Accommodation" },
     ],
     "Food & Cuisine": [
       { src: "Foods-to-Try-in-Rwanda.jpg", title: "Traditional Foods", category: "Food & Cuisine" },
@@ -42,7 +56,17 @@ export function GalleryGrid() {
     "City & Architecture": [
       { src: "kigali.jpeg", title: "Kigali City", category: "City & Architecture" },
       { src: "Kigali-Convention-Center-Credits-to-Arcadiasafaris.jpg", title: "Convention Center", category: "City & Architecture" },
-      { src: "Kandt-House-Museum-of-Natural-History-Photo-from-Arcadiasafaris1024x683.jpg", title: "Kandt House Museum", category: "City & Architecture" },
+      { src: "image_750x_64fcd300a2a6e.jpg", title: "City Architecture", category: "City & Architecture" },
+    ],
+    "Events": [
+      { src: "events.jpeg", title: "Cultural Events", category: "Events" },
+    ],
+    "Transportation": [
+      { src: "pexels-mikebirdy-170811.jpg", title: "Luxury Vehicle", category: "Transportation" },
+      { src: "pexels-esmihel-20200900.jpg", title: "Modern Car", category: "Transportation" },
+      { src: "pexels-kadiravsarr-20170205.jpg", title: "SUV Vehicle", category: "Transportation" },
+      { src: "pexels-joshsorenson-976866.jpg", title: "Premium Car", category: "Transportation" },
+      { src: "pexels-matoga-27982027.jpg", title: "Luxury Transport", category: "Transportation" },
     ]
   };
 
@@ -116,12 +140,12 @@ export function GalleryGrid() {
             className="break-inside-avoid group cursor-pointer"
             onClick={() => openLightbox(image)}
           >
-            <div className="relative overflow-hidden rounded-lg bg-muted">
+            <div className="relative overflow-hidden rounded-lg bg-muted aspect-square">
               <Image
                 src={`/${image.src}`}
                 alt={image.title}
                 fill
-                className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-500"
+                className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
               
@@ -183,12 +207,12 @@ export function GalleryGrid() {
             </button>
 
             {/* Main Image */}
-            <div className="relative">
+            <div className="relative w-full h-[80vh]">
               <Image
                 src={`/${selectedImage.src}`}
                 alt={selectedImage.title}
                 fill
-                className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                className="object-contain rounded-lg"
               />  
             </div>
 
