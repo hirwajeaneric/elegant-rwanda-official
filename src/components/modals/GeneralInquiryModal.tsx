@@ -94,7 +94,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
                 <Input
                   {...register("name")}
                   placeholder="Enter your full name"
-                  className="form-input"
+                  className="form-input border-gray-500"
                 />
                 {errors.name && (
                   <p className="form-error">{errors.name.message}</p>
@@ -108,7 +108,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
                   {...register("email")}
                   type="email"
                   placeholder="Enter your email address"
-                  className="form-input"
+                  className="form-input border-gray-500"
                 />
                 {errors.email && (
                   <p className="form-error">{errors.email.message}</p>
@@ -121,7 +121,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
                 <Input
                   {...register("phone")}
                   placeholder="Enter your phone number"
-                  className="form-input"
+                  className="form-input border-gray-500"
                 />
                 {errors.phone && (
                   <p className="form-error">{errors.phone.message}</p>
@@ -134,7 +134,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
                 <Select onValueChange={() => {
                   // Handle select change
                 }}>
-                  <SelectTrigger className="form-input">
+                  <SelectTrigger className="form-input w-full border-gray-500">
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent>
@@ -142,6 +142,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
                     <SelectItem value="Cab Booking">Cab Booking</SelectItem>
                     <SelectItem value="Car Rental">Car Rental</SelectItem>
                     <SelectItem value="Air Travel Assistance">Air Travel Assistance</SelectItem>
+                    <SelectItem value="Air Ticket Booking">Air Ticket Booking</SelectItem>
                     <SelectItem value="Events">Upcoming Events</SelectItem>
                     <SelectItem value="General">General Inquiry</SelectItem>
                   </SelectContent>
@@ -158,7 +159,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
                   {...register("message")}
                   placeholder="Tell us about your travel plans and requirements..."
                   rows={4}
-                  className="form-input resize-none"
+                  className="form-input resize-none border-gray-500"
                 />
                 {errors.message && (
                   <p className="form-error">{errors.message.message}</p>

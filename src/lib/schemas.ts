@@ -4,7 +4,7 @@ import { z } from "zod"
 export const generalInquirySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  service: z.enum(["Tours", "Cab Booking", "Car Rental", "Air Travel Assistance", "Events", "General"]),
+  service: z.enum(["Tours", "Cab Booking", "Car Rental", "Air Travel Assistance", "Air Ticket Booking", "Events", "General"]),
   message: z.string().min(10, "Message must be at least 10 characters"),
   phone: z.string().optional(),
 })
@@ -110,20 +110,20 @@ export const contactSchema = z.object({
   phone: z.string().optional(),
   subject: z.string().min(5, "Subject must be at least 5 characters"),
   message: z.string().min(20, "Message must be at least 20 characters"),
-  serviceType: z.enum(["Tours", "Cab Booking", "Car Rental", "Air Travel Assistance", "Events", "General", "Other"]).optional(),
+  serviceType: z.enum(["Tours", "Cab Booking", "Car Rental", "Air Travel Assistance", "Air Ticket Booking", "Events", "General", "Other"]).optional(),
 })
 
 // Newsletter Signup Schema
 export const newsletterSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   firstName: z.string().min(2, "First name must be at least 2 characters").optional(),
-  interests: z.array(z.enum(["Tours", "Events", "Travel Tips", "Special Offers", "All"])).optional(),
+  interests: z.array(z.enum(["Tours", "Cab Booking", "Car Rental", "Air Travel Assistance", "Air Ticket Booking", "Events", "General", "Other"])).optional(),
 })
 
 // Search Form Schema
 export const searchSchema = z.object({
   query: z.string().min(1, "Please enter a search term"),
-  category: z.enum(["All", "Tours", "Events", "Blog", "Gallery"]).optional(),
+  category: z.enum(["All", "Tours", "Cab Booking", "Car Rental", "Air Travel Assistance", "Air Ticket Booking", "Events", "General", "Other"]).optional(),
   date: z.date().optional(),
   location: z.string().optional(),
 })

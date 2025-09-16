@@ -117,7 +117,7 @@ export function CTABanner() {
                     <Input
                       {...register("name")}
                       placeholder="Enter your full name"
-                      className="form-input"
+                      className="form-input border-gray-500"
                     />
                     {errors.name && (
                       <p className="form-error">{errors.name.message}</p>
@@ -131,7 +131,7 @@ export function CTABanner() {
                       {...register("email")}
                       type="email"
                       placeholder="Enter your email address"
-                      className="form-input"
+                      className="form-input border-gray-500"
                     />
                     {errors.email && (
                       <p className="form-error">{errors.email.message}</p>
@@ -143,10 +143,11 @@ export function CTABanner() {
                     <label className="form-label">Service Interested In *</label>
                     <select
                       {...register("service")}
-                      className="form-input"
+                      className="form-input border-gray-500"
                     >
                       <option value="">Select a service</option>
                       <option value="Tours">Luxury Tours</option>
+                      <option value="Air Ticket Booking">Air Ticket Booking</option>
                       <option value="Cab Booking">Cab Booking</option>
                       <option value="Car Rental">Car Rental</option>
                       <option value="Air Travel Assistance">Air Travel Assistance</option>
@@ -165,7 +166,7 @@ export function CTABanner() {
                       {...register("message")}
                       placeholder="Tell us about your travel plans..."
                       rows={4}
-                      className="form-input resize-none"
+                      className="form-input resize-none border-gray-500"
                     />
                     {errors.message && (
                       <p className="form-error">{errors.message.message}</p>

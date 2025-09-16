@@ -71,7 +71,7 @@ export function EventsRegistrationForm() {
   }
 
   return (
-    <Card className="shadow-xl border-0">
+    <Card className="border-0 max-w-md mx-auto">
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-display font-bold text-foreground">
           Register for Events
@@ -91,7 +91,7 @@ export function EventsRegistrationForm() {
               value={watchedEventId}
               onValueChange={(value) => setValue("eventId", value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="border-gray-500 w-full">
                 <SelectValue placeholder="Choose an event to register for" />
               </SelectTrigger>
               <SelectContent>
@@ -148,7 +148,7 @@ export function EventsRegistrationForm() {
                 type="number"
                 min="1"
                 max={selectedEvent?.maxParticipants || 20}
-                className="pl-10"
+                className="pl-10 border-gray-500"
                 aria-label="Enter number of participants"
               />
             </div>
@@ -171,7 +171,7 @@ export function EventsRegistrationForm() {
               {...register("specialRequests")}
               id="specialRequests"
               placeholder="Any dietary restrictions, accessibility needs, or special requirements..."
-              className="min-h-[100px] resize-none"
+              className="min-h-[100px] resize-none border-gray-500"
               aria-label="Enter special requests or requirements"
             />
             {errors.specialRequests && (

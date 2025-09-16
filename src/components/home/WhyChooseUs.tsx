@@ -167,7 +167,7 @@ export function WhyChooseUs() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-primary" />``
+                  <CheckCircle className="h-4 w-4 text-primary" />
                   <span>24/7 Customer Support</span>
                 </div>
                 <div className="flex items-center space-x-2">
