@@ -44,7 +44,7 @@ const services = [
   },
   {
     title: "Upcoming Events",
-    href: "/upcoming-events",
+    href: "/events",
     description: "Group tours and cultural events",
   },
 ];
@@ -135,7 +135,7 @@ export function Navbar() {
                         pathname.startsWith("/cab-booking") || 
                         pathname.startsWith("/car-rental") || 
                         pathname.startsWith("/air-travel-assistance") || 
-                        pathname.startsWith("/upcoming-events") && "bg-accent text-accent-foreground"
+                        pathname.startsWith("/events") && "bg-accent text-accent-foreground"
                       )}
                     >
                       Services

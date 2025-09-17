@@ -207,12 +207,14 @@ export function GalleryGrid() {
             </button>
 
             {/* Main Image */}
-            <div className="relative w-full h-[80vh]">
+            <div className="relative max-w-full max-h-[80vh]">
               <Image
                 src={`/${selectedImage.src}`}
                 alt={selectedImage.title}
-                fill
-                className="object-contain rounded-lg"
+                width={1200}
+                height={800}
+                className="max-w-full max-h-full object-contain rounded-lg"
+                onClick={(e) => e.stopPropagation()}
               />  
             </div>
 

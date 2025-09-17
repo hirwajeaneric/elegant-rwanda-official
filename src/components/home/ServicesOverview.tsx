@@ -58,7 +58,7 @@ const services = [
     title: "Upcoming Events",
     description: "Join exclusive group tours and cultural events for a shared adventure experience.",
     features: ["Group Tours", "Cultural Events", "Adventure Challenges", "Luxury Retreats"],
-    href: "/upcoming-events",
+    href: "/events",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
     iconColor: "text-emerald-600",

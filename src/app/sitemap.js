@@ -39,7 +39,7 @@ export default function sitemap() {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/upcoming-events`,
+      url: `${baseUrl}/events`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,

@@ -21,7 +21,7 @@ const services = [
   { name: "Cab Booking", href: "/cab-booking" },
   { name: "Car Rental", href: "/car-rental" },
   { name: "Air Travel Assistance", href: "/air-travel-assistance" },
-  { name: "Upcoming Events", href: "/upcoming-events" },
+  { name: "Upcoming Events", href: "/events" },
 ];
 
 const quickLinks = [
