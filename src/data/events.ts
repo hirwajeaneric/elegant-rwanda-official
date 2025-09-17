@@ -29,7 +29,7 @@ export const events: Event[] = [
     title: 'Group Gorilla Trek Adventure',
     description: 'Join like-minded adventurers for an exclusive group gorilla trekking experience. Limited to 8 participants for an intimate and personalized adventure.',
     date: '2025-10-15',
-    endDate: '2025-02-18',
+    endDate: '2025-10-18',
     location: 'Volcanoes National Park',
     maxParticipants: 8,
     currentParticipants: 6,
@@ -137,8 +137,8 @@ export const events: Event[] = [
     metaDescription: 'Push your limits with this multi-day adventure challenge featuring hiking, cycling, and water activities across Rwanda\'s diverse landscapes.',
     title: 'Rwanda Adventure Challenge',
     description: 'Push your limits with this multi-day adventure challenge featuring hiking, cycling, and water activities across Rwanda\'s diverse landscapes.',
-    date: '2025-05-05',
-    endDate: '2025-05-08',
+    date: '2025-09-20',
+    endDate: '2025-09-22',
     location: 'Multiple Locations',
     maxParticipants: 20,
     currentParticipants: 15,
@@ -198,7 +198,7 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2025-05-15',
-    status: 'Open'
+    status: 'Closed'
   },
   {
     id: 'bird-watching-expedition-2025',
@@ -233,7 +233,7 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2025-06-10',
-    status: 'Open'
+    status: 'Closed'
   },
 
   // PAST EVENTS

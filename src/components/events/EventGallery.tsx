@@ -44,18 +44,18 @@ export function EventGallery({ event }: EventGalleryProps) {
 
   return (
     <section className="py-20 bg-white">
-      <div className="container-elegant">
-        <div className="text-center mb-16">
+      <div className="">
+        <div className="text-start mb-8">
           <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
             Event Gallery
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-start text-gray-600 max-w-3xl">
             Explore images from this event to get a glimpse of what you can expect during your experience.
           </p>
         </div>
 
         {/* Main Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-8">
           {event.images.map((image, index) => (
             <div 
               key={index} 
@@ -80,7 +80,7 @@ export function EventGallery({ event }: EventGalleryProps) {
         <div className="flex justify-center space-x-4">
           <button
             onClick={() => openLightbox(0)}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors duration-200"
+            className="px-6 py-3 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors duration-200"
           >
             View All Images
           </button>
