@@ -31,12 +31,12 @@ export function EventHero({ event }: EventHeroProps) {
   const daysUntil = getDaysUntil(event.date);
 
   return (
-    <section className="relative min-h-[70vh] flex items-center">
+    <section className="relative min-h-[70vh] flex items-center w-full">
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 w-full">
         {event.images.length > 0 ? (
           <Image
-            src={`/${event.images[0]}`}
+            src={event.images[0]}
             alt={event.title}
             fill
             className="object-cover"
@@ -49,7 +49,7 @@ export function EventHero({ event }: EventHeroProps) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container-elegant py-20">
+      <div className="relative z-10 container-elegant py-20 w-full flex justify-start items-start">
         <div className="max-w-4xl">
           {/* Category Badge */}
           <div className="mb-6">
@@ -70,11 +70,13 @@ export function EventHero({ event }: EventHeroProps) {
 
           {/* Event Meta */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="flex items-center space-x-3 text-white">
-              <Calendar className="h-6 w-6 text-primary" />
-              <div>
+            <div className="flex flex-col justify-start items-start space-y-2 text-white">
+              <div className="flex items-center space-x-3">
+                <Calendar className="h-6 w-6 text-white" />
                 <p className="text-sm text-white/70">Date</p>
-                <p className="font-semibold">{formatDate(event.date)}</p>
+              </div>
+              <div className="flex flex-col justify-start items-start">
+                <p className="font-semibold text-yellow-500">{formatDate(event.date)}</p>
                 {event.endDate && (
                   <p className="text-sm text-white/70">
                     to {formatDate(event.endDate)}
@@ -82,56 +84,58 @@ export function EventHero({ event }: EventHeroProps) {
                 )}
               </div>
             </div>
-
-            <div className="flex items-center space-x-3 text-white">
-              <MapPin className="h-6 w-6 text-primary" />
-              <div>
-                <p className="text-sm text-white/70">Location</p>
-                <p className="font-semibold">{event.location}</p>
+            <div className="flex flex-col justify-start items-start space-y-2 text-white">
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3">
+                  <MapPin className="h-6 w-6 text-white" />
+                  <p className="text-sm text-white/70">Location</p>
+                </div>
               </div>
+              <p className="font-semibold text-yellow-500">{event.location}</p>
             </div>
 
-            <div className="flex items-center space-x-3 text-white">
-              <Users className="h-6 w-6 text-primary" />
-              <div>
+            <div className="flex flex-col justify-start items-start space-y-2 text-white">
+              <div className="flex items-center space-x-3">
+                <Users className="h-6 w-6 text-white" />
                 <p className="text-sm text-white/70">Participants</p>
-                <p className="font-semibold">
-                  {event.currentParticipants}/{event.maxParticipants}
-                </p>
               </div>
+              <p className="font-semibold text-yellow-500">
+                {event.currentParticipants}/{event.maxParticipants}
+              </p>
             </div>
 
-            <div className="flex items-center space-x-3 text-white">
-              <Clock className="h-6 w-6 text-primary" />
-              <div>
+            <div className="flex flex-col justify-start items-start space-y-2 text-white">
+              <div className="flex items-center space-x-3">
+                <Clock className="h-6 w-6 text-white" />
                 <p className="text-sm text-white/70">Status</p>
-                <p className="font-semibold">{event.status}</p>
               </div>
+              <p className="font-semibold text-yellow-500">{event.status}</p>
             </div>
           </div>
 
           {/* Status Badge */}
           <div className="flex flex-wrap gap-4">
             {isUpcoming && (
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-col justify-start items-start space-x-2">
                 <Star className="h-5 w-5 text-yellow-400" />
                 <span className="text-white font-medium">
                   {daysUntil <= 0 ? 'Registration Closed' :
-                   daysUntil === 1 ? 'Tomorrow' :
-                   `${daysUntil} days left`}
+                    daysUntil === 1 ? 'Tomorrow' :
+                      `${daysUntil} days left`}
                 </span>
               </div>
             )}
-            
+
             {event.featured && (
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-col justify-start items-start space-x-2">
                 <Star className="h-5 w-5 text-yellow-400" />
                 <span className="text-white font-medium">Featured Event</span>
               </div>
             )}
           </div>
         </div>
+
       </div>
-    </section>
+    </section >
   );
 }

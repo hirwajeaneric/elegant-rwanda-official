@@ -47,7 +47,7 @@ export function EventDetails({ event }: EventDetailsProps) {
               <div className="flex items-start space-x-3">
                 <Calendar className="h-6 w-6 text-primary mt-1" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">Event Date</h3>
+                  <h3 className="font-semibold text-lg text-gray-900">Event Date</h3>
                   <p className="text-gray-600">{formatDate(event.date)}</p>
                   {event.endDate && (
                     <p className="text-gray-600">to {formatDate(event.endDate)}</p>
@@ -58,7 +58,7 @@ export function EventDetails({ event }: EventDetailsProps) {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-6 w-6 text-primary mt-1" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">Location</h3>
+                  <h3 className="font-semibold text-lg text-gray-900">Location</h3>
                   <p className="text-gray-600">{event.location}</p>
                 </div>
               </div>
@@ -66,7 +66,7 @@ export function EventDetails({ event }: EventDetailsProps) {
               <div className="flex items-start space-x-3">
                 <Users className="h-6 w-6 text-primary mt-1" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">Group Size</h3>
+                  <h3 className="font-semibold text-lg text-gray-900">Group Size</h3>
                   <p className="text-gray-600">
                     {event.currentParticipants} of {event.maxParticipants} participants
                   </p>
@@ -84,7 +84,7 @@ export function EventDetails({ event }: EventDetailsProps) {
               <div className="flex items-start space-x-3">
                 <Clock className="h-6 w-6 text-primary mt-1" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">Registration Deadline</h3>
+                  <h3 className="font-semibold text-lg text-gray-900">Registration Deadline</h3>
                   <p className="text-gray-600">{formatDate(event.registrationDeadline)}</p>
                 </div>
               </div>
@@ -92,13 +92,13 @@ export function EventDetails({ event }: EventDetailsProps) {
               <div className="flex items-start space-x-3">
                 <AlertCircle className="h-6 w-6 text-primary mt-1" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">Status</h3>
-                  <p className="text-gray-600">{event.status}</p>
+                  <h3 className="font-semibold text-lg text-gray-900">Status</h3>
+                  <p className="text-gray-600">{new Date(event.date) > new Date() ? 'Open' : 'Closed'}</p>
                 </div>
               </div>
 
               {!isUpcoming && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-full p-4">
                   <div className="flex items-center space-x-2">
                     <AlertCircle className="h-5 w-5 text-yellow-600" />
                     <p className="text-yellow-800 font-medium">This event has already occurred</p>
@@ -107,7 +107,7 @@ export function EventDetails({ event }: EventDetailsProps) {
               )}
 
               {isUpcoming && !isRegistrationOpen && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="bg-red-50 border border-red-200 rounded-full p-4">
                   <div className="flex items-center space-x-2">
                     <AlertCircle className="h-5 w-5 text-red-600" />
                     <p className="text-red-800 font-medium">Registration is closed</p>
@@ -124,10 +124,10 @@ export function EventDetails({ event }: EventDetailsProps) {
         <h2 className="text-3xl font-display font-bold text-gray-900 mb-6">
           Event Highlights
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {event.highlights.map((highlight, index) => (
-            <div key={index} className="flex items-start space-x-3">
-              <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+            <div key={index} className="flex items-start space-x-2">
+              <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
               <p className="text-gray-700">{highlight}</p>
             </div>
           ))}
@@ -139,10 +139,10 @@ export function EventDetails({ event }: EventDetailsProps) {
         <h2 className="text-3xl font-display font-bold text-gray-900 mb-6">
           What&apos;s Included
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {event.activities.map((activity, index) => (
-            <div key={index} className="flex items-start space-x-3">
-              <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+            <div key={index} className="flex items-start space-x-2">
+              <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
               <p className="text-gray-700">{activity}</p>
             </div>
           ))}

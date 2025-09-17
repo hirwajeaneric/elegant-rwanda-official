@@ -232,7 +232,7 @@ export function EventsList() {
                   <div className="flex justify-center">
                     <Link
                       href={`/events/${event.slug}`}
-                      className="bg-white text-primary border-2 border-primary font-semibold py-2 px-8 rounded-full w-full hover:bg-primary hover:text-white transition-colors duration-200 flex items-center space-x-2">
+                      className="flex-1 bg-primary text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors text-center inline-flex items-center space-x-2">
                       <span>View Details</span>
                       <ArrowRight className="h-4 w-4" />
                     </Link>

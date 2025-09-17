@@ -56,7 +56,7 @@ export function RelatedEvents({ events }: RelatedEventsProps) {
                 <div className="relative h-48 overflow-hidden">
                   {event.images.length > 0 ? (
                     <Image
-                      src={`/${event.images[0]}`}
+                      src={event.images[0]}
                       alt={event.title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"

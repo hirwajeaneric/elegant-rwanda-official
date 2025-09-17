@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Users, MapPin, Clock, CheckCircle, AlertCircle, Ticket } from "lucide-react";
+import { Calendar, Users, MapPin, CheckCircle, AlertCircle, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -49,16 +49,16 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
             <span>Event Registration</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-2">
           {/* Event Status */}
-          <div className="text-center">
+          <div className="text-start">
             {!isUpcoming ? (
               <Badge variant="secondary" className="text-sm">
                 <AlertCircle className="h-4 w-4 mr-1" />
                 Event Completed
               </Badge>
             ) : !isRegistrationOpen ? (
-              <Badge variant="destructive" className="text-sm">
+              <Badge variant="destructive" className="text-sm rounded-full">
                 <AlertCircle className="h-4 w-4 mr-1" />
                 Registration Closed
               </Badge>
@@ -71,17 +71,17 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
           </div>
 
           {/* Event Quick Info */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             <div className="flex items-center space-x-3 text-sm">
               <Calendar className="h-4 w-4 text-gray-500" />
               <span className="text-gray-600">{formatDate(event.date)}</span>
             </div>
-            
+
             <div className="flex items-center space-x-3 text-sm">
               <MapPin className="h-4 w-4 text-gray-500" />
               <span className="text-gray-600">{event.location}</span>
             </div>
-            
+
             <div className="flex items-center space-x-3 text-sm">
               <Users className="h-4 w-4 text-gray-500" />
               <span className="text-gray-600">
@@ -92,13 +92,13 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
 
           {/* Spots Available */}
           {isUpcoming && isRegistrationOpen && (
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-50 rounded-lg p-2">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-700">Spots Available</span>
                 <span className="text-sm font-bold text-primary">{spotsLeft}</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
+                <div
                   className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{ width: `${Math.min((event.currentParticipants / event.maxParticipants) * 100, 100)}%` }}
                 />
@@ -109,26 +109,13 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
             </div>
           )}
 
-          {/* Registration Deadline */}
-          {isUpcoming && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-center space-x-2 mb-2">
-                <Clock className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-blue-800">Registration Deadline</span>
-              </div>
-              <p className="text-sm text-blue-700">
-                {formatDate(event.registrationDeadline)}
-              </p>
-            </div>
-          )}
-
           {/* Action Buttons */}
           <div className="space-y-3">
             {isUpcoming && isRegistrationOpen ? (
-              <Button 
+              <Button
                 onClick={handleRegistration}
                 disabled={isRegistering || spotsLeft <= 0}
-                className="w-full"
+                className="w-full rounded-full"
                 size="lg"
               >
                 {isRegistering ? (
@@ -140,28 +127,28 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
                 )}
               </Button>
             ) : !isUpcoming ? (
-              <Button 
-                disabled 
-                variant="outline" 
-                className="w-full"
+              <Button
+                disabled
+                variant="outline"
+                className="w-full rounded-full"
                 size="lg"
               >
                 Event Completed
               </Button>
             ) : (
-              <Button 
-                disabled 
-                variant="outline" 
-                className="w-full"
+              <Button
+                disabled
+                variant="outline"
+                className="w-full rounded-full"
                 size="lg"
               >
                 Registration Closed
               </Button>
             )}
 
-            <Button 
-              variant="outline" 
-              className="w-full"
+            <Button
+              variant="outline"
+              className="w-full rounded-full"
               onClick={() => window.location.href = '/contact'}
             >
               Contact Us
@@ -170,7 +157,7 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
 
           {/* Event Highlights */}
           <div>
-            <h4 className="font-semibold text-gray-900 mb-3">What&apos;s Included</h4>
+            <h4 className="font-semibold text-lg text-gray-900 mb-3">What&apos;s Included</h4>
             <div className="space-y-2">
               {event.highlights.slice(0, 4).map((highlight, index) => (
                 <div key={index} className="flex items-start space-x-2">
@@ -185,34 +172,31 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Share Event */}
-      <Card>
-        <CardContent className="pt-6">
-          <h4 className="font-semibold text-gray-900 mb-3">Share This Event</h4>
-          <div className="flex space-x-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Event link copied to clipboard!");
-              }}
-            >
-              Copy Link
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => {
-                const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this amazing event: ${event.title}`)}&url=${encodeURIComponent(window.location.href)}`;
-                window.open(url, '_blank');
-              }}
-            >
-              Share on Twitter
-            </Button>
+          <div className="pt-6">
+            <h4 className="font-semibold text-lg text-gray-900 mb-3">Share This Event</h4>
+            <div className="flex space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert("Event link copied to clipboard!");
+                }}
+              >
+                Copy Link
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this amazing event: ${event.title}`)}&url=${encodeURIComponent(window.location.href)}`;
+                  window.open(url, '_blank');
+                }}
+              >
+                Share on Twitter
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

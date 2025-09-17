@@ -115,26 +115,25 @@ export function Navbar() {
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <Link href="/" passHref>
-                      <NavigationMenuLink
-                        className={cn(
-                          "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                          isActive("/") && "bg-accent text-accent-foreground"
-                        )}
-                      >
-                        Home
-                      </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink
+                      className={cn(
+                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        isActive("/") && "bg-accent text-accent-foreground"
+                      )}
+                      href="/"
+                    >
+                      Home
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
                     <NavigationMenuTrigger
                       className={cn(
                         "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                        pathname.startsWith("/tours") || 
-                        pathname.startsWith("/cab-booking") || 
-                        pathname.startsWith("/car-rental") || 
-                        pathname.startsWith("/air-travel-assistance") || 
+                        pathname.startsWith("/tours") ||
+                        pathname.startsWith("/cab-booking") ||
+                        pathname.startsWith("/car-rental") ||
+                        pathname.startsWith("/air-travel-assistance") ||
                         pathname.startsWith("/events") && "bg-accent text-accent-foreground"
                       )}
                     >
@@ -167,8 +166,8 @@ export function Navbar() {
                     <NavigationMenuTrigger
                       className={cn(
                         "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                        pathname.startsWith("/blog") || 
-                        pathname.startsWith("/gallery") || 
+                        pathname.startsWith("/blog") ||
+                        pathname.startsWith("/gallery") ||
                         pathname.startsWith("/faq") && "bg-accent text-accent-foreground"
                       )}
                     >
@@ -198,29 +197,27 @@ export function Navbar() {
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <Link href="/about" passHref>
-                      <NavigationMenuLink
-                        className={cn(
-                          "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                          isActive("/about") && "bg-accent text-accent-foreground"
-                        )}
-                      >
-                        About Us
-                      </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink
+                      className={cn(
+                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        isActive("/about") && "bg-accent text-accent-foreground"
+                      )}
+                      href="/about"
+                    >
+                      About Us
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <Link href="/contact" passHref>
-                      <NavigationMenuLink
-                        className={cn(
-                          "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                          isActive("/contact") && "bg-accent text-accent-foreground"
-                        )}
-                      >
-                        Contact
-                      </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink
+                      className={cn(
+                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        isActive("/contact") && "bg-accent text-accent-foreground"
+                      )}
+                      href="/contact"
+                    >
+                      Contact
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
