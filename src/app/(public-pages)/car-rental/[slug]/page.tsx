@@ -19,12 +19,12 @@ export async function generateMetadata({ params }: CarRentalPageProps): Promise<
   
   if (!vehicle) {
     return {
-      title: "Vehicle Not Found | Elegant Rwanda",
+      title: "Vehicle Not Found | Elegant Travel and Tours",
     };
   }
 
   return {
-    title: `${vehicle.name} - Car Rental in Rwanda | Elegant Rwanda`,
+    title: `${vehicle.name} - Car Rental in Rwanda | Elegant Travel and Tours`,
     description: vehicle.description,
     keywords: `car rental Rwanda, ${vehicle.name}, ${vehicle.category} rental, luxury car hire Rwanda`,
     openGraph: {

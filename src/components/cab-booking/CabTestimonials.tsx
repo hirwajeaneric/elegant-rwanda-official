@@ -26,7 +26,7 @@ export function CabTestimonials() {
       role: "Event Organizer",
       image: "IbyIwacu-Cultural-Village.jpg",
       rating: 5,
-      text: "For our corporate event, we needed reliable transportation for 20+ people. Elegant Rwanda delivered perfectly with their fleet of vehicles and professional service.",
+      text: "For our corporate event, we needed reliable transportation for 20+ people. Elegant Travel and Tours delivered perfectly with their fleet of vehicles and professional service.",
       service: "Group Transport"
     },
     {
@@ -124,7 +124,7 @@ export function CabTestimonials() {
               Ready to Experience the Best Cab Service in Rwanda?
             </h3>
             <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-              Join our satisfied customers and discover why Elegant Rwanda is the preferred choice 
+              Join our satisfied customers and discover why Elegant Travel and Tours is the preferred choice 
               for premium transportation services.
             </p>
             <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">

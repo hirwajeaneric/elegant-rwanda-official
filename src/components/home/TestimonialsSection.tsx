@@ -29,7 +29,7 @@ export function TestimonialsSection() {
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Don&apos;t just take our word for it. Here&apos;s what our satisfied clients have to say about 
-            their experiences with Elegant Rwanda.
+            their experiences with Elegant Travel and Tours.
           </p>
         </div>
 

@@ -24,7 +24,7 @@ export const events: Event[] = [
   {
     id: 'group-gorilla-trek-2025',
     slug: 'group-gorilla-trek-2025',
-    metaTitle: 'Group Gorilla Trek Adventure 2025 - Rwanda Wildlife Tours | Elegant Rwanda',
+    metaTitle: 'Group Gorilla Trek Adventure 2025 - Rwanda Wildlife Tours | Elegant Travel and Tours',
     metaDescription: 'Join like-minded adventurers for an exclusive group gorilla trekking experience in Rwanda. Limited to 8 participants for an intimate adventure.',
     title: 'Group Gorilla Trek Adventure',
     description: 'Join like-minded adventurers for an exclusive group gorilla trekking experience. Limited to 8 participants for an intimate and personalized adventure.',
@@ -59,7 +59,7 @@ export const events: Event[] = [
   {
     id: 'rwanda-culture-festival',
     slug: 'rwanda-culture-festival',
-    metaTitle: 'Rwanda Cultural Festival 2025 - Traditional Arts & Culture | Elegant Rwanda',
+    metaTitle: 'Rwanda Cultural Festival 2025 - Traditional Arts & Culture | Elegant Travel and Tours',
     metaDescription: 'Celebrate Rwanda\'s rich cultural heritage with traditional performances, craft workshops, and authentic cuisine experiences in March 2025.',
     title: 'Rwanda Cultural Festival',
     description: 'Celebrate Rwanda\'s rich cultural heritage with traditional performances, craft workshops, and authentic cuisine experiences.',
@@ -94,7 +94,7 @@ export const events: Event[] = [
   {
     id: 'lake-kivu-luxury-retreat',
     slug: 'lake-kivu-luxury-retreat',
-    metaTitle: 'Lake Kivu Luxury Group Retreat 2025 - Premium Rwanda Tours | Elegant Rwanda',
+    metaTitle: 'Lake Kivu Luxury Group Retreat 2025 - Premium Rwanda Tours | Elegant Travel and Tours',
     metaDescription: 'Experience the ultimate luxury retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services at Lake Kivu.',
     title: 'Lake Kivu Luxury Group Retreat',
     description: 'Experience the ultimate luxury retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services.',
@@ -133,7 +133,7 @@ export const events: Event[] = [
   {
     id: 'adventure-challenge-2025',
     slug: 'adventure-challenge-2025',
-    metaTitle: 'Rwanda Adventure Challenge 2025 - Multi-Activity Tours | Elegant Rwanda',
+    metaTitle: 'Rwanda Adventure Challenge 2025 - Multi-Activity Tours | Elegant Travel and Tours',
     metaDescription: 'Push your limits with this multi-day adventure challenge featuring hiking, cycling, and water activities across Rwanda\'s diverse landscapes.',
     title: 'Rwanda Adventure Challenge',
     description: 'Push your limits with this multi-day adventure challenge featuring hiking, cycling, and water activities across Rwanda\'s diverse landscapes.',
@@ -168,7 +168,7 @@ export const events: Event[] = [
   {
     id: 'coffee-tea-experience-2025',
     slug: 'coffee-tea-experience-2025',
-    metaTitle: 'Coffee & Tea Experience 2025 - Rwanda Plantation Tours | Elegant Rwanda',
+    metaTitle: 'Coffee & Tea Experience 2025 - Rwanda Plantation Tours | Elegant Travel and Tours',
     metaDescription: 'Discover Rwanda\'s world-renowned tea and coffee production. Tour plantations, learn processing methods, and enjoy tastings.',
     title: 'Coffee & Tea Experience',
     description: 'Discover Rwanda\'s world-renowned tea and coffee production. Tour plantations, learn processing methods, and enjoy tastings.',
@@ -203,7 +203,7 @@ export const events: Event[] = [
   {
     id: 'bird-watching-expedition-2025',
     slug: 'bird-watching-expedition-2025',
-    metaTitle: 'Bird Watching Expedition 2025 - Nyungwe Forest Rwanda | Elegant Rwanda',
+    metaTitle: 'Bird Watching Expedition 2025 - Nyungwe Forest Rwanda | Elegant Travel and Tours',
     metaDescription: 'Explore Rwanda\'s diverse bird species in the pristine Nyungwe Forest. Perfect for bird enthusiasts and nature photographers.',
     title: 'Bird Watching Expedition',
     description: 'Explore Rwanda\'s diverse bird species in the pristine Nyungwe Forest. Perfect for bird enthusiasts and nature photographers.',
@@ -240,7 +240,7 @@ export const events: Event[] = [
   {
     id: 'past-gorilla-trek-2024',
     slug: 'past-gorilla-trek-2024',
-    metaTitle: 'Past Gorilla Trek Adventure 2024 - Rwanda Wildlife Tours | Elegant Rwanda',
+    metaTitle: 'Past Gorilla Trek Adventure 2024 - Rwanda Wildlife Tours | Elegant Travel and Tours',
     metaDescription: 'A completed group gorilla trekking experience in Rwanda that took place in 2024.',
     title: 'Gorilla Trek Adventure 2024',
     description: 'A completed group gorilla trekking experience that took place in 2024. Participants enjoyed an intimate and personalized adventure.',
@@ -275,7 +275,7 @@ export const events: Event[] = [
   {
     id: 'past-culture-festival-2024',
     slug: 'past-culture-festival-2024',
-    metaTitle: 'Past Rwanda Cultural Festival 2024 - Traditional Arts & Culture | Elegant Rwanda',
+    metaTitle: 'Past Rwanda Cultural Festival 2024 - Traditional Arts & Culture | Elegant Travel and Tours',
     metaDescription: 'A completed cultural festival that celebrated Rwanda\'s rich cultural heritage in 2024.',
     title: 'Rwanda Cultural Festival 2024',
     description: 'A completed celebration of Rwanda\'s rich cultural heritage with traditional performances, craft workshops, and authentic cuisine experiences.',
@@ -310,7 +310,7 @@ export const events: Event[] = [
   {
     id: 'past-lake-kivu-retreat-2024',
     slug: 'past-lake-kivu-retreat-2024',
-    metaTitle: 'Past Lake Kivu Retreat 2024 - Luxury Rwanda Tours | Elegant Rwanda',
+    metaTitle: 'Past Lake Kivu Retreat 2024 - Luxury Rwanda Tours | Elegant Travel and Tours',
     metaDescription: 'A completed luxury retreat experience at Lake Kivu that took place in 2024.',
     title: 'Lake Kivu Luxury Retreat 2024',
     description: 'A completed luxury retreat experience at Lake Kivu. Participants enjoyed exclusive access to premium amenities and personalized services.',
@@ -345,7 +345,7 @@ export const events: Event[] = [
   {
     id: 'past-adventure-challenge-2024',
     slug: 'past-adventure-challenge-2024',
-    metaTitle: 'Past Adventure Challenge 2024 - Multi-Activity Rwanda Tours | Elegant Rwanda',
+    metaTitle: 'Past Adventure Challenge 2024 - Multi-Activity Rwanda Tours | Elegant Travel and Tours',
     metaDescription: 'A completed multi-day adventure challenge that took place in Rwanda in 2024.',
     title: 'Rwanda Adventure Challenge 2024',
     description: 'A completed multi-day adventure challenge featuring hiking, cycling, and water activities across Rwanda\'s diverse landscapes.',

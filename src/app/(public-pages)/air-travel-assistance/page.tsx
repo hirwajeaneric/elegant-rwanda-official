@@ -9,7 +9,7 @@ import { AirTravelPartnerships } from "@/components/air-travel/AirTravelPartners
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Seamless Air Travel Assistance: Visas, Pickups & Hotel Bookings in Rwanda | Elegant Rwanda",
+  title: "Seamless Air Travel Assistance: Visas, Pickups & Hotel Bookings in Rwanda | Elegant Travel and Tours",
   description: "Get comprehensive air travel assistance in Rwanda including visa support, airport pickups, hotel bookings, and travel coordination services.",
   keywords: "air travel assistance Rwanda, visa assistance Rwanda, airport pickup Rwanda, hotel booking Rwanda, travel coordination Rwanda",
   openGraph: {

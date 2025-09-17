@@ -4,19 +4,19 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Elegant Rwanda",
-  description: "Learn about how Elegant Rwanda collects, uses, and protects your personal information. Read our comprehensive privacy policy.",
-  keywords: "privacy policy, data protection, personal information, Elegant Rwanda",
+  title: "Privacy Policy | Elegant Travel and Tours",
+  description: "Learn about how Elegant Travel and Tours collects, uses, and protects your personal information. Read our comprehensive privacy policy.",
+  keywords: "privacy policy, data protection, personal information, Elegant Travel and Tours",
   openGraph: {
-    title: "Privacy Policy | Elegant Rwanda",
-    description: "Learn about how Elegant Rwanda collects, uses, and protects your personal information.",
+    title: "Privacy Policy | Elegant Travel and Tours",
+    description: "Learn about how Elegant Travel and Tours collects, uses, and protects your personal information.",
     type: "website",
     url: "https://elegantrwanda.com/privacy",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Policy | Elegant Rwanda",
-    description: "Learn about how Elegant Rwanda collects, uses, and protects your personal information.",
+    title: "Privacy Policy | Elegant Travel and Tours",
+    description: "Learn about how Elegant Travel and Tours collects, uses, and protects your personal information.",
   },
 };
 
@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
                 Last Updated: January 2025
               </h2>
               <p className="text-gray-600">
-                Elegant Rwanda (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
+                Elegant Travel and Tours (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
               </p>
             </div>
 
@@ -192,7 +192,7 @@ export default function PrivacyPolicyPage() {
                   If you have any questions about this Privacy Policy or our data practices, please contact us:
                 </p>
                 <div className="bg-gray-50 rounded-lg p-6">
-                  <p className="text-gray-700"><strong>Elegant Rwanda</strong></p>
+                  <p className="text-gray-700"><strong>Elegant Travel and Tours</strong></p>
                   <p className="text-gray-600">Email: privacy@elegantrwanda.com</p>
                   <p className="text-gray-600">Phone: +250 788 123 456</p>
                   <p className="text-gray-600">Address: Kigali, Rwanda</p>

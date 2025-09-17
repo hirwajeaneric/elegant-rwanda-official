@@ -10,8 +10,8 @@ import { CabTestimonials } from "@/components/cab-booking/CabTestimonials";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Premium Cab Booking in Rwanda: Reliable & Comfortable Rides | Elegant Rwanda",
-  description: "Book premium cab services in Rwanda with Elegant Rwanda. Professional drivers, 24/7 availability, and custom routes for seamless transfers across the country.",
+  title: "Premium Cab Booking in Rwanda: Reliable & Comfortable Rides | Elegant Travel and Tours",
+  description: "Book premium cab services in Rwanda with Elegant Travel and Tours. Professional drivers, 24/7 availability, and custom routes for seamless transfers across the country.",
   keywords: "cab booking Rwanda, taxi service Rwanda, airport transfer Rwanda, luxury cab Rwanda, reliable taxi Rwanda",
   openGraph: {
     title: "Premium Cab Booking in Rwanda: Reliable & Comfortable Rides",

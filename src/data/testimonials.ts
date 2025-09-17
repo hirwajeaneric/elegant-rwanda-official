@@ -18,13 +18,13 @@ export const testimonials: Testimonial[] = [
     name: 'Sarah Johnson',
     location: 'New York, USA',
     rating: 5,
-    review: 'The gorilla trekking experience was absolutely incredible! Elegant Rwanda handled everything perfectly - from airport pickup to the final goodbye. Our guide was knowledgeable and the lodge was luxurious. Worth every penny!',
+    review: 'The gorilla trekking experience was absolutely incredible! Elegant Travel and Tours handled everything perfectly - from airport pickup to the final goodbye. Our guide was knowledgeable and the lodge was luxurious. Worth every penny!',
     service: 'Tour',
     image: '/images/testimonials/sarah-johnson.jpg',
     date: '2024-12-15',
     featured: true,
-    metaTitle: 'Sarah Johnson - Gorilla Trekking Review | Elegant Rwanda',
-    metaDescription: 'Read Sarah Johnson\'s 5-star review of her gorilla trekking experience with Elegant Rwanda. Perfect service from airport pickup to final goodbye.'
+    metaTitle: 'Sarah Johnson - Gorilla Trekking Review | Elegant Travel and Tours',
+    metaDescription: 'Read Sarah Johnson\'s 5-star review of her gorilla trekking experience with Elegant Travel and Tours. Perfect service from airport pickup to final goodbye.'
   },
   {
     id: 'testimonial-2',
@@ -36,20 +36,20 @@ export const testimonials: Testimonial[] = [
     image: '/images/testimonials/michael-chen.jpg',
     date: '2024-12-10',
     featured: true,
-    metaTitle: 'Michael Chen - Cab Booking Review | Elegant Rwanda',
-    metaDescription: 'Read Michael Chen\'s 5-star review of Elegant Rwanda\'s cab booking service. Professional drivers and punctual pickups throughout Rwanda.'
+    metaTitle: 'Michael Chen - Cab Booking Review | Elegant Travel and Tours',
+    metaDescription: 'Read Michael Chen\'s 5-star review of Elegant Travel and Tours\'s cab booking service. Professional drivers and punctual pickups throughout Rwanda.'
   },
   {
     id: 'testimonial-3',
     name: 'Emma Rodriguez',
     location: 'Toronto, Canada',
     rating: 5,
-    review: 'The Lake Kivu retreat exceeded all expectations. The team at Elegant Rwanda created a perfect blend of luxury and adventure. The spa treatments and water activities were world-class.',
+    review: 'The Lake Kivu retreat exceeded all expectations. The team at Elegant Travel and Tours created a perfect blend of luxury and adventure. The spa treatments and water activities were world-class.',
     service: 'Tour',
     image: '/images/testimonials/emma-rodriguez.jpg',
     date: '2024-12-08',
     featured: true,
-    metaTitle: 'Emma Rodriguez - Lake Kivu Retreat Review | Elegant Rwanda',
+    metaTitle: 'Emma Rodriguez - Lake Kivu Retreat Review | Elegant Travel and Tours',
     metaDescription: 'Read Emma Rodriguez\'s 5-star review of the Lake Kivu retreat. Perfect blend of luxury and adventure with world-class spa treatments.'
   },
   {
@@ -62,8 +62,8 @@ export const testimonials: Testimonial[] = [
     image: '/images/testimonials/david-thompson.jpg',
     date: '2024-12-05',
     featured: true,
-    metaTitle: 'David Thompson - Car Rental Review | Elegant Rwanda',
-    metaDescription: 'Read David Thompson\'s 5-star review of Elegant Rwanda\'s car rental service. Perfect 4x4 for safari adventures with excellent support.'
+    metaTitle: 'David Thompson - Car Rental Review | Elegant Travel and Tours',
+    metaDescription: 'Read David Thompson\'s 5-star review of Elegant Travel and Tours\'s car rental service. Perfect 4x4 for safari adventures with excellent support.'
   },
   {
     id: 'testimonial-5',
@@ -75,21 +75,21 @@ export const testimonials: Testimonial[] = [
     image: '/images/testimonials/lisa-wang.jpg',
     date: '2024-12-01',
     featured: false,
-    metaTitle: 'Lisa Wang - Air Travel Assistance Review | Elegant Rwanda',
-    metaDescription: 'Read Lisa Wang\'s 5-star review of Elegant Rwanda\'s air travel assistance. Perfect visa handling and stress-free airport transfers.'
+    metaTitle: 'Lisa Wang - Air Travel Assistance Review | Elegant Travel and Tours',
+    metaDescription: 'Read Lisa Wang\'s 5-star review of Elegant Travel and Tours\'s air travel assistance. Perfect visa handling and stress-free airport transfers.'
   },
   {
     id: 'testimonial-6',
     name: 'James Wilson',
     location: 'Dublin, Ireland',
     rating: 5,
-    review: 'Attended the cultural festival and it was an amazing experience. Elegant Rwanda organized everything flawlessly. The traditional performances and workshops were authentic and engaging.',
+    review: 'Attended the cultural festival and it was an amazing experience. Elegant Travel and Tours organized everything flawlessly. The traditional performances and workshops were authentic and engaging.',
     service: 'Event',
     image: '/images/testimonials/james-wilson.jpg',
     date: '2024-11-28',
     featured: false,
-    metaTitle: 'James Wilson - Cultural Festival Review | Elegant Rwanda',
-    metaDescription: 'Read James Wilson\'s 5-star review of the cultural festival organized by Elegant Rwanda. Authentic performances and engaging workshops.'
+    metaTitle: 'James Wilson - Cultural Festival Review | Elegant Travel and Tours',
+    metaDescription: 'Read James Wilson\'s 5-star review of the cultural festival organized by Elegant Travel and Tours. Authentic performances and engaging workshops.'
   },
   {
     id: 'testimonial-7',
@@ -101,8 +101,8 @@ export const testimonials: Testimonial[] = [
     image: '/images/testimonials/maria-garcia.jpg',
     date: '2024-11-25',
     featured: false,
-    metaTitle: 'Maria Garcia - Family Tour Review | Elegant Rwanda',
-    metaDescription: 'Read Maria Garcia\'s 5-star review of their family tour with Elegant Rwanda. Perfectly tailored experiences for all ages.'
+    metaTitle: 'Maria Garcia - Family Tour Review | Elegant Travel and Tours',
+    metaDescription: 'Read Maria Garcia\'s 5-star review of their family tour with Elegant Travel and Tours. Perfectly tailored experiences for all ages.'
   },
   {
     id: 'testimonial-8',
@@ -114,8 +114,8 @@ export const testimonials: Testimonial[] = [
     image: '/images/testimonials/robert-kim.jpg',
     date: '2024-11-20',
     featured: false,
-    metaTitle: 'Robert Kim - Business Travel Review | Elegant Rwanda',
-    metaDescription: 'Read Robert Kim\'s 5-star review of Elegant Rwanda\'s cab service for business travel. Professional drivers and clean vehicles.'
+    metaTitle: 'Robert Kim - Business Travel Review | Elegant Travel and Tours',
+    metaDescription: 'Read Robert Kim\'s 5-star review of Elegant Travel and Tours\'s cab service for business travel. Professional drivers and clean vehicles.'
   }
 ];
 

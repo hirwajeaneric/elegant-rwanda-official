@@ -33,8 +33,8 @@ export const tours: Tour[] = [
     {
         id: 'gorilla-trekking-adventure',
         slug: 'gorilla-trekking-adventure',
-        metaTitle: 'Gorilla Trekking Adventure - Luxury Rwanda Tours | Elegant Rwanda',
-        metaDescription: 'Experience the magic of encountering mountain gorillas in their natural habitat. Book your luxury gorilla trekking adventure in Rwanda with Elegant Rwanda.',
+        metaTitle: 'Gorilla Trekking Adventure - Luxury Rwanda Tours | Elegant Travel and Tours',
+        metaDescription: 'Experience the magic of encountering mountain gorillas in their natural habitat. Book your luxury gorilla trekking adventure in Rwanda with Elegant Travel and Tours.',
         title: 'Gorilla Trekking Adventure',
         description: 'Experience the magic of encountering mountain gorillas in their natural habitat. This exclusive tour takes you deep into the misty forests of Volcanoes National Park for an unforgettable wildlife encounter.',
         duration: '3 Days / 2 Nights',
@@ -100,7 +100,7 @@ export const tours: Tour[] = [
     {
         id: 'lake-kivu-retreat',
         slug: 'lake-kivu-retreat',
-        metaTitle: 'Lake Kivu Luxury Retreat - Premium Rwanda Tours | Elegant Rwanda',
+        metaTitle: 'Lake Kivu Luxury Retreat - Premium Rwanda Tours | Elegant Travel and Tours',
         metaDescription: 'Unwind in the serene beauty of Lake Kivu with our exclusive lakeside retreat. Experience luxury accommodation and water activities in Rwanda.',
         title: 'Lake Kivu Luxury Retreat',
         description: 'Unwind in the serene beauty of Lake Kivu with this exclusive lakeside retreat. Enjoy water activities, spa treatments, and breathtaking sunset views.',
@@ -175,7 +175,7 @@ export const tours: Tour[] = [
     {
         id: 'cultural-heritage-tour',
         slug: 'cultural-heritage-tour',
-        metaTitle: 'Cultural Heritage Tour - Rwanda Cultural Experiences | Elegant Rwanda',
+        metaTitle: 'Cultural Heritage Tour - Rwanda Cultural Experiences | Elegant Travel and Tours',
         metaDescription: 'Immerse yourself in Rwanda\'s rich cultural heritage with visits to historical sites, traditional villages, and cultural performances.',
         title: 'Cultural Heritage Tour',
         description: 'Immerse yourself in Rwanda\'s rich cultural heritage with visits to historical sites, traditional villages, and cultural performances.',

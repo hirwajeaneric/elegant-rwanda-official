@@ -4,10 +4,10 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "About Elegant Rwanda: Premier Luxury Travel Experts in Rwanda",
-  description: "Learn about Elegant Rwanda's mission to provide exceptional luxury travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
+  title: "About Elegant Travel and Tours: Premier Luxury Travel Experts in Rwanda",
+  description: "Learn about Elegant Travel and Tours's mission to provide exceptional luxury travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
   keywords: [
-    "About Elegant Rwanda",
+    "About Elegant Travel and Tours",
     "Rwanda travel company",
     "Luxury travel experts",
     "Tourism Rwanda",
@@ -22,7 +22,7 @@ export default function AboutPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">
             About{" "}
-            <span className="text-primary">Elegant Rwanda</span>
+            <span className="text-primary">Elegant Travel and Tours</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Crafting Timeless Journeys in the Heart of Africa
@@ -34,7 +34,7 @@ export default function AboutPage() {
             <h2 className="text-3xl font-display font-semibold mb-6">Our Story</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Founded with a passion for showcasing Rwanda&apos;s natural beauty and rich cultural heritage, 
-              Elegant Rwanda has been at the forefront of luxury tourism in East Africa for over a decade.
+              Elegant Travel and Tours has been at the forefront of luxury tourism in East Africa for over a decade.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               What started as a small family business has grown into Rwanda&apos;s premier luxury travel 

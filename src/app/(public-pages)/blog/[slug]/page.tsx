@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: "Post Not Found | Elegant Rwanda",
+      title: "Post Not Found | Elegant Travel and Tours",
     };
   }
 

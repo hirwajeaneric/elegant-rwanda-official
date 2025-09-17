@@ -5,10 +5,10 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Contact Elegant Rwanda: Inquire About Tours & Services",
-  description: "Get in touch with Elegant Rwanda for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
+  title: "Contact Elegant Travel and Tours: Inquire About Tours & Services",
+  description: "Get in touch with Elegant Travel and Tours for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
   keywords: [
-    "Contact Elegant Rwanda",
+    "Contact Elegant Travel and Tours",
     "Rwanda travel inquiry",
     "Tour booking Rwanda",
     "Travel consultation Rwanda",

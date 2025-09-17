@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
 
   if (!event) {
     return {
-      title: "Event Not Found | Elegant Rwanda",
+      title: "Event Not Found | Elegant Travel and Tours",
     };
   }
 
   return {
-    title: event.metaTitle || `${event.title} - Rwanda Events | Elegant Rwanda`,
+    title: event.metaTitle || `${event.title} - Rwanda Events | Elegant Travel and Tours`,
     description: event.metaDescription || event.description,
     keywords: `Rwanda events, ${event.category}, ${event.title}, group travel Rwanda`,
     openGraph: {

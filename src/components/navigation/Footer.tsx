@@ -194,15 +194,8 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
               <p className="text-white/80 text-sm">
-                © 2025 Elegant Rwanda. All Rights Reserved.
+                © {new Date().getFullYear()} Elegant Travel and Tours. All Rights Reserved.
               </p>
-            </div>
-            <div className="flex items-center space-x-6 text-sm text-white/80">
-              <Link href="/sitemap.xml" className="hover:text-accent transition-colors">
-                Sitemap
-              </Link>
-              <span>•</span>
-              <span>Designed with ♥ in Rwanda</span>
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: TourPageProps): Promise<Metad
   
   if (!tour) {
     return {
-      title: "Tour Not Found | Elegant Rwanda",
+      title: "Tour Not Found | Elegant Travel and Tours",
     };
   }
 

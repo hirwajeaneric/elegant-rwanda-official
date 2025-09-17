@@ -4,19 +4,19 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Elegant Rwanda",
-  description: "Read our terms of service and conditions for using Elegant Rwanda's travel services, tours, and accommodations.",
-  keywords: "terms of service, terms and conditions, Elegant Rwanda, travel terms",
+  title: "Terms of Service | Elegant Travel and Tours",
+  description: "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
+  keywords: "terms of service, terms and conditions, Elegant Travel and Tours, travel terms",
   openGraph: {
-    title: "Terms of Service | Elegant Rwanda",
-    description: "Read our terms of service and conditions for using Elegant Rwanda's travel services, tours, and accommodations.",
+    title: "Terms of Service | Elegant Travel and Tours",
+    description: "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
     type: "website",
     url: "https://elegantrwanda.com/terms",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Terms of Service | Elegant Rwanda",
-    description: "Read our terms of service and conditions for using Elegant Rwanda's travel services, tours, and accommodations.",
+    title: "Terms of Service | Elegant Travel and Tours",
+    description: "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
   },
 };
 
@@ -42,7 +42,7 @@ export default function TermsOfServicePage() {
                 Last Updated: January 2025
               </h2>
               <p className="text-gray-600">
-                These Terms of Service (&quot;Terms&quot;) govern your use of Elegant Rwanda&apos;s website and services. By accessing or using our services, you agree to be bound by these Terms.
+                These Terms of Service (&quot;Terms&quot;) govern your use of Elegant Travel and Tours&apos;s website and services. By accessing or using our services, you agree to be bound by these Terms.
               </p>
             </div>
 
@@ -52,7 +52,7 @@ export default function TermsOfServicePage() {
                   1. Acceptance of Terms
                 </h3>
                 <p className="text-gray-600">
-                  By accessing and using Elegant Rwanda&apos;s website and services, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                  By accessing and using Elegant Travel and Tours&apos;s website and services, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
                 </p>
               </div>
 
@@ -61,7 +61,7 @@ export default function TermsOfServicePage() {
                   2. Description of Service
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Elegant Rwanda provides travel and tourism services including but not limited to:
+                  Elegant Travel and Tours provides travel and tourism services including but not limited to:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
                   <li>Tour packages and guided experiences</li>
@@ -146,7 +146,7 @@ export default function TermsOfServicePage() {
                     <li>Any necessary medical documentation</li>
                   </ul>
                   <p>
-                    Elegant Rwanda is not responsible for denied entry, deportation, or any other immigration issues due to improper documentation.
+                    Elegant Travel and Tours is not responsible for denied entry, deportation, or any other immigration issues due to improper documentation.
                   </p>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function TermsOfServicePage() {
                   8. Limitation of Liability
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Elegant Rwanda&apos;s liability is limited to the amount paid for the specific service. We are not liable for:
+                  Elegant Travel and Tours&apos;s liability is limited to the amount paid for the specific service. We are not liable for:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
                   <li>Personal injury or death</li>
@@ -225,7 +225,7 @@ export default function TermsOfServicePage() {
                   11. Intellectual Property
                 </h3>
                 <p className="text-gray-600">
-                  All content on our website, including text, graphics, logos, images, and software, is the property of Elegant Rwanda and is protected by copyright laws. You may not reproduce, distribute, or create derivative works without our written permission.
+                  All content on our website, including text, graphics, logos, images, and software, is the property of Elegant Travel and Tours and is protected by copyright laws. You may not reproduce, distribute, or create derivative works without our written permission.
                 </p>
               </div>
 
@@ -260,7 +260,7 @@ export default function TermsOfServicePage() {
                   If you have any questions about these Terms of Service, please contact us:
                 </p>
                 <div className="bg-gray-50 rounded-lg p-6">
-                  <p className="text-gray-700"><strong>Elegant Rwanda</strong></p>
+                  <p className="text-gray-700"><strong>Elegant Travel and Tours</strong></p>
                   <p className="text-gray-600">Email: legal@elegantrwanda.com</p>
                   <p className="text-gray-600">Phone: +250 788 123 456</p>
                   <p className="text-gray-600">Address: Kigali, Rwanda</p>

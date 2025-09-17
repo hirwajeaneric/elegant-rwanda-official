@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-Elegant Rwanda is a Next.js 15 application for a luxury travel company specializing in Rwanda tours, car rentals, cab services, and air travel assistance. The project uses the App Router architecture with TypeScript, Tailwind CSS, and shadcn/ui components.
+Elegant Travel and Tours is a Next.js 15 application for a luxury travel company specializing in Rwanda tours, car rentals, cab services, and air travel assistance. The project uses the App Router architecture with TypeScript, Tailwind CSS, and shadcn/ui components.
 
 ## Common Commands
 

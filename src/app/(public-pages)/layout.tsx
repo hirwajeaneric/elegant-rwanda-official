@@ -16,10 +16,10 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "Elegant Rwanda: Luxury Tours, Car Rentals & Travel Services in Rwanda",
-    template: "%s | Elegant Rwanda"
+    default: "Elegant Travel and Tours: Luxury Tours, Car Rentals & Travel Services in Rwanda",
+    template: "%s | Elegant Travel and Tours"
   },
-  description: "Discover Rwanda's elegance with our luxury tours, premium car rentals, cab services, and air travel assistance. Experience the heart of Africa with personalized luxury travel services.",
+  description: "Explore Rwanda's elegance with our luxury tours, premium car rentals, cab services, and air travel assistance. Experience the heart of Africa with personalized luxury travel services.",
   keywords: [
     "Rwanda tours",
     "Gorilla trekking",
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     "Wildlife tours Africa",
     "Luxury safari Rwanda"
   ],
-  authors: [{ name: "Elegant Rwanda" }],
-  creator: "Elegant Rwanda",
-  publisher: "Elegant Rwanda",
+  authors: [{ name: "Elegant Travel and Tours" }],
+  creator: "Elegant Travel and Tours",
+  publisher: "Elegant Travel and Tours",
   formatDetection: {
     email: false,
     address: false,
@@ -50,22 +50,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://elegantrwanda.com",
-    title: "Elegant Rwanda: Luxury Tours & Travel Services",
-    description: "Discover Rwanda's elegance with our luxury tours, premium car rentals, and personalized travel services.",
-    siteName: "Elegant Rwanda",
+    title: "Elegant Travel and Tours: Luxury Tours & Travel Services",
+    description: "Explore Rwanda's elegance with our luxury tours, premium car rentals, and personalized travel services.",
+    siteName: "Elegant Travel and Tours",
     images: [
       {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Elegant Rwanda - Luxury Travel in Rwanda",
+        alt: "Elegant Travel and Tours - Luxury Travel in Rwanda",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elegant Rwanda: Luxury Tours & Travel Services",
-    description: "Discover Rwanda's elegance with our luxury tours, premium car rentals, and personalized travel services.",
+    title: "Elegant Travel and Tours: Luxury Tours & Travel Services",
+    description: "Explore Rwanda's elegance with our luxury tours, premium car rentals, and personalized travel services.",
     images: ["/images/twitter-image.jpg"],
   },
   robots: {
