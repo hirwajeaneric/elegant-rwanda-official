@@ -1,6 +1,6 @@
 
 
-import { FileText, Plane, Building2, Route, Clock, Shield, Users } from "lucide-react";
+import { FileText, Plane, Building2, Route, Clock, Shield, Users, Ticket } from "lucide-react";
 
 const services = [
   {
@@ -50,6 +50,17 @@ const services = [
       "Emergency support"
     ],
     color: "bg-orange-50 border-orange-200 text-orange-900"
+  }, 
+  {
+    icon: Ticket,
+    title: "Ticket Booking",
+    description: "We can help you book your flight tickets to Rwanda. We work with major airlines to get you the best deals.",
+    features: [
+      "Flight ticket booking",
+      "Flight ticket cancellation",
+      "Flight ticket refund"
+    ],
+    color: "bg-red-50 border-red-200 text-red-900"
   }
 ];
 

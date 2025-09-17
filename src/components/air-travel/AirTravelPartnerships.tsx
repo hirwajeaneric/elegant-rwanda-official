@@ -1,6 +1,7 @@
 
 
 import { Building2, Plane, Shield, Users } from "lucide-react";
+import Image from "next/image";
 
 const partners = [
   {
@@ -30,12 +31,64 @@ const partners = [
 ];
 
 const airlines = [
-  "RwandAir",
-  "Kenya Airways",
-  "Ethiopian Airlines",
-  "Turkish Airlines",
-  "Qatar Airways",
-  "Brussels Airlines"
+  {
+    name: "RwandAir",
+    logo: "/logos/RwandAir_Logotype.png"
+  },
+  {
+    name: "Kenya Airways",
+    type: "Airline Partner",
+    description: "Official airline of Kenya",
+    logo: "/logos/Kenya_Airways_Logo.svg"
+  },
+  {
+    name: "Ethiopian Airlines",
+    type: "Airline Partner",
+    description: "Official airline of Ethiopia",
+    logo: "/logos/Ethiopian_Airlines_Logo.svg.png"
+  },
+  {
+    name: "Turkish Airlines",
+    type: "Airline Partner",
+    description: "Official airline of Turkey",
+    logo: "/logos/Turkish_Airlines_logo_(2010-2017).svg.png"
+  },
+  {
+    name: "Qatar Airways",
+    type: "Airline Partner",
+    description: "Official airline of Qatar",
+    logo: "/logos/Qatar_Airways_Logo.png"
+  },
+  {
+    name: "Brussels Airlines",
+    type: "Airline Partner",
+    description: "Official airline of Belgium",
+    logo: "/logos/Brussels_airlines_logo_2021.svg"
+  },
+  {
+    name: "KLM Airlines",
+    type: "Airline Partner",
+    description: "Official airline of Netherlands",
+    logo: "/logos/KLM_logo.svg.png"
+  },
+  {
+    name: "Auric Air",
+    type: "Airline Partner",
+    description: "Official airline of Austria",
+    logo: "/logos/AuricAirLogo.png"
+  },
+  {
+    name: "Astral Aviation",
+    type: "Airline Partner",
+    description: "Official airline of Uganda",
+    logo: "/logos/Astral_Aviation_logo.svg.png"
+  },
+  {
+    name: "Magma Aviation",
+    type: "Airline Partner",
+    description: "Official airline of Uganda",
+    logo: "/logos/Magma_Aviation_Logo.png"
+  }
 ];
 
 const hotels = [
@@ -85,20 +138,15 @@ export function AirTravelPartnerships() {
           <h3 className="text-2xl font-display font-semibold text-gray-900 mb-8 text-center">
             Airline Partners
           </h3>
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {airlines.map((airline, index) => (
-                <div key={index} className="text-center">
-                  <div className="bg-gray-100 rounded-xl p-4 w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                    <Plane className="h-8 w-8 text-gray-600" />
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">{airline}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-gray-600 mt-6">
+          <div className="bg-white rounded-2xl p-8 shadow-sm space-y-12">
+            <p className="text-center text-gray-600">
               We work with major international and regional airlines serving Rwanda
             </p>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {airlines.map((airline, index) => (
+                <Image key={index} src={airline.logo} alt={airline.name} width={100} height={100} />
+              ))}
+            </div>
           </div>
         </div>
 
