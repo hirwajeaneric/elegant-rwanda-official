@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, Mail, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -13,12 +13,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 const services = [
@@ -69,9 +63,28 @@ const resources = [
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<{
+    services: boolean;
+    resources: boolean;
+  }>({
+    services: false,
+    resources: false,
+  });
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname === href;
+
+  const toggleMenu = (menuType: 'services' | 'resources') => {
+    setExpandedMenus(prev => ({
+      ...prev,
+      [menuType]: !prev[menuType]
+    }));
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    setExpandedMenus({ services: false, resources: false });
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
@@ -257,81 +270,123 @@ export function Navbar() {
                 <Link
                   href="/"
                   className={cn(
-                    "block px-4 py-2 rounded-none transition-colors",
+                    "block px-4 py-3 text-base font-medium rounded-none transition-colors",
                     isActive("/")
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"
                   )}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={closeMobileMenu}
                 >
                   Home
                 </Link>
 
-                {/* Services Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-between px-4 text-base py-2 h-auto rounded-none hover:bg-primary/10 focus:bg-primary/10"
-                    >
-                      Services
-                      <span className="ml-2">
+                {/* Services Expandable Menu */}
+                <div className="space-y-1">
+                  <button
+                    onClick={() => toggleMenu('services')}
+                    className={cn(
+                      "w-full flex items-center justify-between px-4 py-3 text-base font-medium rounded-none transition-colors",
+                      expandedMenus.services
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted"
+                    )}
+                  >
+                    <span>Services</span>
+                    <span className="transition-transform duration-200">
+                      {expandedMenus.services ? (
                         <ChevronDown className="h-4 w-4" />
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
-                    {services.map((service) => (
-                      <DropdownMenuItem key={service.title} asChild>
+                      ) : (
+                        <ChevronRight className="h-4 w-4" />
+                      )}
+                    </span>
+                  </button>
+                  
+                  {/* Services Submenu */}
+                  <div
+                    className={cn(
+                      "overflow-hidden transition-all duration-300 ease-in-out",
+                      expandedMenus.services ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    )}
+                  >
+                    <div className="pl-6 space-y-1 border-l-2 border-primary/20 ml-4">
+                      {services.map((service) => (
                         <Link
+                          key={service.title}
                           href={service.href}
-                          className="w-full"
-                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={cn(
+                            "block px-4 py-3 text-sm rounded-none transition-colors hover:bg-primary/10",
+                            isActive(service.href) && "bg-primary/10 text-primary font-medium"
+                          )}
+                          onClick={closeMobileMenu}
                         >
-                          {service.title}
+                          <div className="font-medium">{service.title}</div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {service.description}
+                          </div>
                         </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-                {/* Resources Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-between px-4 text-base py-2 h-auto rounded-none hover:bg-primary/10 focus:bg-primary/10"
-                    >
-                      Resources
-                      <span className="ml-2">
+                {/* Resources Expandable Menu */}
+                <div className="space-y-1">
+                  <button
+                    onClick={() => toggleMenu('resources')}
+                    className={cn(
+                      "w-full flex items-center justify-between px-4 py-3 text-base font-medium rounded-none transition-colors",
+                      expandedMenus.resources
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted"
+                    )}
+                  >
+                    <span>Resources</span>
+                    <span className="transition-transform duration-200">
+                      {expandedMenus.resources ? (
                         <ChevronDown className="h-4 w-4" />
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
-                    {resources.map((resource) => (
-                      <DropdownMenuItem key={resource.title} asChild>
+                      ) : (
+                        <ChevronRight className="h-4 w-4" />
+                      )}
+                    </span>
+                  </button>
+                  
+                  {/* Resources Submenu */}
+                  <div
+                    className={cn(
+                      "overflow-hidden transition-all duration-300 ease-in-out",
+                      expandedMenus.resources ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    )}
+                  >
+                    <div className="pl-6 space-y-1 border-l-2 border-primary/20 ml-4">
+                      {resources.map((resource) => (
                         <Link
+                          key={resource.title}
                           href={resource.href}
-                          className="w-full"
-                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={cn(
+                            "block px-4 py-3 text-sm rounded-none transition-colors hover:bg-primary/10",
+                            isActive(resource.href) && "bg-primary/10 text-primary font-medium"
+                          )}
+                          onClick={closeMobileMenu}
                         >
-                          {resource.title}
+                          <div className="font-medium">{resource.title}</div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {resource.description}
+                          </div>
                         </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
                 <Link
                   href="/about"
                   className={cn(
-                    "block px-4 py-2 rounded-none transition-colors",
+                    "block px-4 py-3 text-base font-medium rounded-none transition-colors",
                     isActive("/about")
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"
                   )}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={closeMobileMenu}
                 >
                   About Us
                 </Link>
@@ -339,12 +394,12 @@ export function Navbar() {
                 <Link
                   href="/contact"
                   className={cn(
-                    "block px-4 py-2 rounded-none transition-colors",
+                    "block px-4 py-3 text-base font-medium rounded-none transition-colors",
                     isActive("/contact")
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"
                   )}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={closeMobileMenu}
                 >
                   Contact
                 </Link>
@@ -354,7 +409,7 @@ export function Navbar() {
               <div className="pt-4 border-t border-border">
                 <div className="space-y-2">
                   <Button className="btn-primary w-full" asChild>
-                    <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link href="/contact" onClick={closeMobileMenu}>
                       Request Quote
                     </Link>
                   </Button>

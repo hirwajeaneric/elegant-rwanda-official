@@ -16,26 +16,8 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/70 to-black/60 z-10" />
         
-        {/* Placeholder for video - replace with actual video */}
         <div className="w-full h-full inset-0 bg-gradient-to-r from-black/50 via-black/70 to-black/60">
-          {/* This would be replaced with an actual video or high-quality image */}
           <div className="absolute inset-0 bg-[url('/pexels-isaac-mitchell-278678383-16884778.jpg')] bg-cover bg-center bg-no-repeat" />
-        </div>
-        
-        {/* Video Controls Overlay */}
-        <div className="absolute bottom-4 right-4 z-20">
-          <Button
-            variant="outline"
-            size="sm"
-            className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30"
-            onClick={() => setIsVideoPlaying(!isVideoPlaying)}
-          >
-            {isVideoPlaying ? (
-              <Pause className="h-4 w-4" />
-            ) : (
-              <Play className="h-4 w-4" />
-            )}
-          </Button>
         </div>
       </div>
 
@@ -44,11 +26,11 @@ export function HeroSection() {
         <div className="animate-fade-in">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-tight">
             Explore Rwanda&apos;s{" "}
-            <span className="text-yellow-500">Elegance</span>
+            <span className="text-yellow-500">Elegance</span> Through Travel.
           </h1>
           
           <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-light leading-relaxed max-w-4xl mx-auto italic">
-            Tailored Tours & Premium Travel Experience
+            Tailored Tours & The Best Travel Experience
           </p>
           
           <p className="text-lg md:text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-tight">
