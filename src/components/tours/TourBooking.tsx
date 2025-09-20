@@ -115,7 +115,7 @@ export function TourBooking({ tour }: TourBookingProps) {
               <div className="flex items-center flex-wrap justify-center space-x-4 mt-2">
                 <div className="flex items-center space-x-1">
                   <Phone className="h-4 w-4 text-primary" />
-                  <span>+250 788 123 456</span>
+                  <span>‭+250 787 095 392‬</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Mail className="h-4 w-4 text-primary" />

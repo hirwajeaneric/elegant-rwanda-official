@@ -194,7 +194,7 @@ export default function PrivacyPolicyPage() {
                 <div className="bg-gray-50 rounded-lg p-6">
                   <p className="text-gray-700"><strong>Elegant Travel and Tours</strong></p>
                   <p className="text-gray-600">Email: privacy@elegantrwanda.com</p>
-                  <p className="text-gray-600">Phone: +250 788 123 456</p>
+                  <p className="text-gray-600">Phone: ‭+250 787 095 392‬</p>
                   <p className="text-gray-600">Address: Kigali, Rwanda</p>
                 </div>
               </div>

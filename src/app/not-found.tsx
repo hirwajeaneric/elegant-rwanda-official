@@ -103,7 +103,7 @@ export default function NotFound() {
               <Phone className="h-5 w-5 text-yellow-400" />
               <div className="text-left">
                 <div className="text-white font-medium">Call Us</div>
-                <div className="text-gray-300 text-sm">+250 788 123 456</div>
+                <div className="text-gray-300 text-sm">‭+250 787 095 392‬</div>
               </div>
             </div>
             

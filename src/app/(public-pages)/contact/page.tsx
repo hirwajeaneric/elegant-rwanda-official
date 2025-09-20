@@ -25,10 +25,10 @@ export default function ContactPage() {
             Get in{" "}
             <span className="text-primary">Touch</span>
           </h1>
-                      <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Ready to start planning your Rwanda adventure? We&apos;re here to help create the perfect 
-              travel experience for you.
-            </p>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Ready to start planning your Rwanda adventure? We&apos;re here to help create the perfect
+            travel experience for you.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -57,8 +57,8 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold mb-1 text-2xl">Phone</h3>
                     <p className="text-muted-foreground">
-                      +250 788 123 456<br />
-                      +250 788 123 457
+                      +250 787 095 392<br />
+                      {/* +250 788 123 457 */}
                     </p>
                   </div>
                 </div>

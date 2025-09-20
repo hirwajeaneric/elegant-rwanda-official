@@ -40,7 +40,7 @@ export function CabBookingHero() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-yellow-500" />
-                <span className="text-white/90">+250 788 123 456</span>
+                <span className="text-white/90">‭+250 787 095 392‬</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-yellow-500" />

@@ -20,7 +20,7 @@ export function ToursSidebar() {
         <div className="space-y-3">
           <div className="flex items-center space-x-2 text-sm">
             <Phone className="h-4 w-4" />
-            <span>+250 788 123 456</span>
+            <span>‭+250 787 095 392‬</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Mail className="h-4 w-4" />

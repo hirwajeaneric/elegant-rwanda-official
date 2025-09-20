@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { Facebook, Instagram, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { newsletterSchema, type NewsletterForm } from "@/lib/schemas";
@@ -10,10 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 const socialLinks = [
-  { icon: Facebook, href: "https://facebook.com/elegantrwanda", label: "Facebook" },
-  { icon: Twitter, href: "https://twitter.com/elegantrwanda", label: "Twitter" },
-  { icon: Instagram, href: "https://instagram.com/elegantrwanda", label: "Instagram" },
-  { icon: Linkedin, href: "https://linkedin.com/company/elegantrwanda", label: "LinkedIn" },
+  { icon: Facebook, href: "https://facebook.com/elegant_travel_tours", label: "Facebook" },
+  // { icon: X, href: "https://twitter.com/elegant_travel_tours", label: "X" },
+  { icon: Instagram, href: "https://instagram.com/elegant_travel_tours", label: "Instagram" },
+  // { icon: Linkedin, href: "https://linkedin.com/company/elegant_travel_tours", label: "LinkedIn" },
 ];
 
 const services = [
@@ -88,7 +88,7 @@ export function Footer() {
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-accent" />
                 <span className="text-sm text-white/90">
-                  +250 788 123 456
+                  +250 787 095 392
                 </span>
               </div>
               <div className="flex items-center space-x-3">

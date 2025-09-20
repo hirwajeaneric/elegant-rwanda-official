@@ -27,7 +27,7 @@ export function ContactCTA() {
               href="tel:+250788123456" 
               className="text-yellow-500 font-medium hover:text-yellow-400 transition-colors"
             >
-              +250 788 123 456
+              ‭+250 787 095 392‬
             </a>
           </div>
           

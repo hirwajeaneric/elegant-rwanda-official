@@ -95,7 +95,7 @@ export function Navbar() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+250 788 123 456</span>
+                <span>‭+250 787 095 392‬</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
