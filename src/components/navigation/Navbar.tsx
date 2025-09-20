@@ -25,7 +25,7 @@ const services = [
   {
     title: "Tours",
     href: "/tours",
-    description: "Luxury tours and safari experiences",
+    description: "Unique tours and safari experiences",
   },
   {
     title: "Cab Booking",
@@ -117,8 +117,8 @@ export function Navbar() {
                   <NavigationMenuItem>
                     <NavigationMenuLink
                       className={cn(
-                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                        isActive("/") && "bg-accent text-accent-foreground"
+                        "group inline-flex h-10 w-max items-center hover:border-b-2 hover:border-primary hover:bg-primary/10 justify-center px-4 py-2 text-sm rounded-none font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
+                        isActive("/") && "border-b-2 border-primary"
                       )}
                       href="/"
                     >
@@ -126,15 +126,15 @@ export function Navbar() {
                     </NavigationMenuLink>
                   </NavigationMenuItem>
 
-                  <NavigationMenuItem>
+                  <NavigationMenuItem className="dropdown-menu-item">
                     <NavigationMenuTrigger
                       className={cn(
-                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        "group inline-flex h-10 w-max items-center hover:border-b-2 hover:border-primary hover:bg-primary/10 focus:bg-primary/10 justify-center px-4 py-2 text-sm rounded-none font-medium disabled:pointer-events-none disabled:opacity-50",
                         pathname.startsWith("/tours") ||
                         pathname.startsWith("/cab-booking") ||
                         pathname.startsWith("/car-rental") ||
                         pathname.startsWith("/air-travel-assistance") ||
-                        pathname.startsWith("/events") && "bg-accent text-accent-foreground"
+                        pathname.startsWith("/events") && "border-b-2 border-primary hover:bg-primary/10 focus:bg-primary/10"
                       )}
                     >
                       Services
@@ -143,10 +143,10 @@ export function Navbar() {
                       <ul className="grid w-[600px] grid-cols-2 gap-3 p-4">
                         {services.map((service) => (
                           <li key={service.title}>
-                            <NavigationMenuLink asChild>
+                            <NavigationMenuLink asChild className="rounded-none">
                               <Link
                                 href={service.href}
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                className="block select-none space-y-1 p-3 rounded-none leading-none no-underline outline-none transition-colors hover:border-b-2 hover:border-primary focus:border-b-2 focus:border-primary hover:bg-primary/10"
                               >
                                 <div className="text-sm font-medium leading-none">
                                   {service.title}
@@ -165,10 +165,10 @@ export function Navbar() {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger
                       className={cn(
-                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        "group inline-flex h-10 w-max items-center hover:border-b-2 hover:bg-primary/10 focus:bg-primary/10 hover:border-primary justify-center px-4 py-2 text-sm rounded-none font-medium disabled:pointer-events-none disabled:opacity-50",
                         pathname.startsWith("/blog") ||
                         pathname.startsWith("/gallery") ||
-                        pathname.startsWith("/faq") && "bg-accent text-accent-foreground"
+                        pathname.startsWith("/faq") && "border-b-2 border-primary hover:bg-primary/10 focus:bg-primary/10 rounded-none"
                       )}
                     >
                       Resources
@@ -177,10 +177,10 @@ export function Navbar() {
                       <ul className="grid w-[400px] grid-cols-1 gap-3 p-4">
                         {resources.map((resource) => (
                           <li key={resource.title}>
-                            <NavigationMenuLink asChild>
+                            <NavigationMenuLink asChild className="rounded-none">
                               <Link
                                 href={resource.href}
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                className="block select-none space-y-1 p-3 rounded-none leading-none no-underline outline-none transition-colors hover:border-b-2 hover:border-primary focus:border-b-2 focus:border-primary hover:bg-primary/10"
                               >
                                 <div className="text-sm font-medium leading-none">
                                   {resource.title}
@@ -199,8 +199,8 @@ export function Navbar() {
                   <NavigationMenuItem>
                     <NavigationMenuLink
                       className={cn(
-                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                        isActive("/about") && "bg-accent text-accent-foreground"
+                        "group inline-flex h-10 w-max items-center hover:border-b-2 hover:bg-primary/10 focus:bg-primary/10 hover:border-primary justify-center px-4 py-2 text-sm rounded-none font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
+                        isActive("/about") && "border-b-2 border-primary hover:bg-primary/10"
                       )}
                       href="/about"
                     >
@@ -211,8 +211,8 @@ export function Navbar() {
                   <NavigationMenuItem>
                     <NavigationMenuLink
                       className={cn(
-                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                        isActive("/contact") && "bg-accent text-accent-foreground"
+                        "group inline-flex h-10 w-max items-center hover:border-b-2 hover:bg-primary/10 focus:bg-primary/10 hover:border-primary justify-center px-4 py-2 text-sm rounded-none font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
+                        isActive("/contact") && "border-b-2 border-primary hover:bg-primary/10"
                       )}
                       href="/contact"
                     >
@@ -234,7 +234,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden"
+              className="lg:hidden border-2 border-primary text-primary rounded-full px-1 py-4 hover:bg-primary hover:text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
@@ -257,7 +257,7 @@ export function Navbar() {
                 <Link
                   href="/"
                   className={cn(
-                    "block px-4 py-2 rounded-lg transition-colors",
+                    "block px-4 py-2 rounded-none transition-colors",
                     isActive("/")
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"
@@ -272,7 +272,7 @@ export function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="w-full justify-between px-4 py-2 h-auto"
+                      className="w-full justify-between px-4 text-base py-2 h-auto rounded-none hover:bg-primary/10 focus:bg-primary/10"
                     >
                       Services
                       <span className="ml-2">
@@ -300,7 +300,7 @@ export function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="w-full justify-between px-4 py-2 h-auto"
+                      className="w-full justify-between px-4 text-base py-2 h-auto rounded-none hover:bg-primary/10 focus:bg-primary/10"
                     >
                       Resources
                       <span className="ml-2">
@@ -326,7 +326,7 @@ export function Navbar() {
                 <Link
                   href="/about"
                   className={cn(
-                    "block px-4 py-2 rounded-lg transition-colors",
+                    "block px-4 py-2 rounded-none transition-colors",
                     isActive("/about")
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"
@@ -339,7 +339,7 @@ export function Navbar() {
                 <Link
                   href="/contact"
                   className={cn(
-                    "block px-4 py-2 rounded-lg transition-colors",
+                    "block px-4 py-2 rounded-none transition-colors",
                     isActive("/contact")
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"

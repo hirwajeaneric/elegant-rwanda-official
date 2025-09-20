@@ -11,7 +11,7 @@ const pastEvents = [
     participants: 12,
     rating: 4.9,
     image: "/past-gorilla-trek.jpg",
-    highlights: ["Mountain Gorillas", "Professional Photos", "Luxury Lodge"]
+    highlights: ["Mountain Gorillas", "Professional Photos", "Unique Lodge"]
   },
   {
     id: 2,

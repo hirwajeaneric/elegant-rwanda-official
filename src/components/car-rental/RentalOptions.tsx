@@ -29,13 +29,13 @@ export function RentalOptions() {
     },
     "chauffeur": {
       title: "Chauffeur-Driven Option",
-      subtitle: "Luxury travel with professional drivers",
+      subtitle: "Unique travel with professional drivers",
       description: "Sit back and relax while our professional chauffeurs take care of your transportation needs. Perfect for business travel, special occasions, or when you want to focus on the experience.",
       features: [
         "Professional, licensed chauffeurs",
         "Local knowledge and expertise",
         "Stress-free travel experience",
-        "Luxury vehicle options",
+        "Unique vehicle options",
         "Concierge services available",
         "Flexible scheduling"
       ],

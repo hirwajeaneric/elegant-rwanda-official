@@ -138,7 +138,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Tours">Luxury Tours</SelectItem>
+                    <SelectItem value="Tours">Unique Tours</SelectItem>
                     <SelectItem value="Cab Booking">Cab Booking</SelectItem>
                     <SelectItem value="Car Rental">Car Rental</SelectItem>
                     <SelectItem value="Air Travel Assistance">Air Travel Assistance</SelectItem>

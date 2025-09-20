@@ -40,7 +40,7 @@ export function GalleryGrid() {
     "Accommodation": [
       { src: "Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg", title: "Bisate Lodge", category: "Accommodation" },
       { src: "kigali-serena-hotel.jpg", title: "Kigali Serena Hotel", category: "Accommodation" },
-      { src: "hotel-exterior.jpg", title: "Luxury Hotel", category: "Accommodation" },
+      { src: "hotel-exterior.jpg", title: "Unique Hotel", category: "Accommodation" },
       { src: "hotel-exterior-daytime.jpg", title: "Hotel Exterior", category: "Accommodation" },
       { src: "m-hotel-kigali-is-located.jpg", title: "M Hotel Kigali", category: "Accommodation" },
       { src: "park-inn-by-radisson.jpg", title: "Park Inn by Radisson", category: "Accommodation" },
@@ -62,11 +62,11 @@ export function GalleryGrid() {
       { src: "events.jpeg", title: "Cultural Events", category: "Events" },
     ],
     "Transportation": [
-      { src: "pexels-mikebirdy-170811.jpg", title: "Luxury Vehicle", category: "Transportation" },
+      { src: "pexels-mikebirdy-170811.jpg", title: "Unique Vehicle", category: "Transportation" },
       { src: "pexels-esmihel-20200900.jpg", title: "Modern Car", category: "Transportation" },
       { src: "pexels-kadiravsarr-20170205.jpg", title: "SUV Vehicle", category: "Transportation" },
       { src: "pexels-joshsorenson-976866.jpg", title: "Premium Car", category: "Transportation" },
-      { src: "pexels-matoga-27982027.jpg", title: "Luxury Transport", category: "Transportation" },
+      { src: "pexels-matoga-27982027.jpg", title: "Unique Transport", category: "Transportation" },
     ]
   };
 

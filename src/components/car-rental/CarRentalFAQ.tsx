@@ -12,7 +12,7 @@ export function CarRentalFAQ() {
     "Booking": [
       {
         question: "How far in advance should I book a car?",
-        answer: "We recommend booking at least 48 hours in advance, especially during peak seasons. For luxury vehicles or special requirements, booking 1-2 weeks ahead is advisable."
+        answer: "We recommend booking at least 48 hours in advance, especially during peak seasons. For Unique vehicles or special requirements, booking 1-2 weeks ahead is advisable."
       },
       {
         question: "Can I modify or cancel my booking?",

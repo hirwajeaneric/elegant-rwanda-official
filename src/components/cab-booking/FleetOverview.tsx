@@ -6,7 +6,7 @@ import { Users, Car, Shield, Wifi, Snowflake, Zap } from "lucide-react";
 export function FleetOverview() {
   const vehicles = [
     {
-      name: "Luxury Sedan",
+      name: "Unique Sedan",
       image: "hotel-exterior-daytime.jpg",
       capacity: "4 passengers",
       features: ["Leather seats", "Climate control", "WiFi", "Charging ports"],
@@ -30,7 +30,7 @@ export function FleetOverview() {
       icon: Shield
     },
     {
-      name: "Luxury Vehicle",
+      name: "Unique Vehicle",
       image: "Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
       capacity: "4 passengers",
       features: ["Premium amenities", "Professional driver", "Concierge service", "Refreshments"],
@@ -48,7 +48,7 @@ export function FleetOverview() {
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Choose from our diverse fleet of well-maintained vehicles, each designed to provide 
-            comfort, safety, and luxury for your journey across Rwanda.
+            comfort, safety, and Unique for your journey across Rwanda.
           </p>
         </div>
 

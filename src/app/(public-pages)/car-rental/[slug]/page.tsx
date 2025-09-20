@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: CarRentalPageProps): Promise<
   return {
     title: `${vehicle.name} - Car Rental in Rwanda | Elegant Travel and Tours`,
     description: vehicle.description,
-    keywords: `car rental Rwanda, ${vehicle.name}, ${vehicle.category} rental, luxury car hire Rwanda`,
+    keywords: `car rental Rwanda, ${vehicle.name}, ${vehicle.category} rental, Unique car hire Rwanda`,
     openGraph: {
       title: `${vehicle.name} - Car Rental in Rwanda`,
       description: vehicle.description,

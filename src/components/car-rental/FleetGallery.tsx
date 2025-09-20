@@ -10,7 +10,7 @@ export function FleetGallery() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const vehicles = getAllVehicles();
-  const categories = ["All", "Economy", "Compact", "SUV", "Luxury", "Minivan", "Adventure", "Executive"];
+  const categories = ["All", "Economy", "Compact", "SUV", "Unique", "Minivan", "Adventure", "Executive"];
 
   const filteredVehicles = activeCategory === "all"
     ? vehicles
@@ -24,7 +24,7 @@ export function FleetGallery() {
             Our <span className="text-primary">Fleet</span> Gallery
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Explore our diverse fleet of well-maintained vehicles, from economy options to luxury models.
+            Explore our diverse fleet of well-maintained vehicles, from economy options to Unique models.
             Each vehicle is carefully selected to ensure your comfort and safety.
           </p>
         </div>

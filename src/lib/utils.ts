@@ -66,7 +66,7 @@ export function getCategoryColor(category: string): string {
       return 'text-purple-600 bg-purple-100';
     case 'Adventure':
       return 'text-blue-600 bg-blue-100';
-    case 'Luxury':
+    case 'Unique':
       return 'text-amber-600 bg-amber-100';
     case 'Nature':
       return 'text-green-600 bg-green-100';

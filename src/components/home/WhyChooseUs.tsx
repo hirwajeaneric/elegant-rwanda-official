@@ -34,15 +34,15 @@ const reasons = [
   },
   {
     value: "sustainable",
-    title: "Sustainable Luxury Travel",
-    description: "We believe luxury and sustainability go hand in hand. We partner with eco-friendly lodges, support local communities, and minimize our environmental impact while maximizing your comfort.",
+    title: "Sustainable Unique Travel",
+    description: "We believe Unique and sustainability go hand in hand. We partner with eco-friendly lodges, support local communities, and minimize our environmental impact while maximizing your comfort.",
     icon: Heart,
     color: "text-green-600"
   },
   {
     value: "quality",
     title: "Uncompromising Quality",
-    description: "From the vehicles we use to the accommodations we select, we maintain the highest standards. We personally inspect every property and service to ensure it meets our luxury criteria.",
+    description: "From the vehicles we use to the accommodations we select, we maintain the highest standards. We personally inspect every property and service to ensure it meets our Unique criteria.",
     icon: Award,
     color: "text-amber-600"
   },
@@ -56,7 +56,7 @@ const reasons = [
   {
     value: "global",
     title: "Global Standards, Local Heart",
-    description: "We combine international luxury travel standards with authentic Rwandan hospitality. You get world-class service while experiencing the genuine warmth and culture of Rwanda.",
+    description: "We combine international Unique travel standards with authentic Rwandan hospitality. You get world-class service while experiencing the genuine warmth and culture of Rwanda.",
     icon: Globe,
     color: "text-purple-600"
   }
@@ -71,7 +71,7 @@ const stats = [
   },
   {
     number: "50+",
-    label: "Luxury Tours",
+    label: "Unique Tours",
     icon: Star,
     color: "text-accent"
   },

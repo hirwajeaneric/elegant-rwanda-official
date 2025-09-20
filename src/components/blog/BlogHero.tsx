@@ -24,7 +24,7 @@ export function BlogHero() {
             Culture
           </span>
           <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm border border-white/30">
-            Luxury Travel
+            Unique Travel
           </span>
         </div>
       </div>

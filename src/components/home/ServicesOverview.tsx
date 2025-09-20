@@ -14,9 +14,9 @@ import {
 const services = [
   {
     icon: Mountain,
-    title: "Luxury Tours",
+    title: "Unique Tours",
     description: "Custom itineraries for unforgettable adventures across Rwanda&apos;s most stunning landscapes.",
-    features: ["Gorilla Trekking", "Cultural Experiences", "Luxury Lodges", "Expert Guides"],
+    features: ["Gorilla Trekking", "Cultural Experiences", "Unique Lodges", "Expert Guides"],
     href: "/tours",
     image: "/pexels-isaac-mitchell-278678383-16884778.jpg"
   },
@@ -24,7 +24,7 @@ const services = [
     icon: Car,
     title: "Cab Booking",
     description: "Premium cab services with professional drivers for seamless transfers across Rwanda.",
-    features: ["Professional Drivers", "24/7 Availability", "Luxury Vehicles", "Fixed Rates"],
+    features: ["Professional Drivers", "24/7 Availability", "Unique Vehicles", "Fixed Rates"],
     href: "/cab-booking",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
@@ -34,7 +34,7 @@ const services = [
   {
     icon: Car,
     title: "Car Rental",
-    description: "Flexible car rental options from economy to luxury vehicles for your self-drive adventures.",
+    description: "Flexible car rental options from economy to Unique vehicles for your self-drive adventures.",
     features: ["Self-Drive Options", "Chauffeur Service", "4x4 Vehicles", "Insurance Included"],
     href: "/car-rental",
     color: "from-emerald-500 to-emerald-600",
@@ -57,7 +57,7 @@ const services = [
     icon: Calendar,
     title: "Upcoming Events",
     description: "Join exclusive group tours and cultural events for a shared adventure experience.",
-    features: ["Group Tours", "Cultural Events", "Adventure Challenges", "Luxury Retreats"],
+    features: ["Group Tours", "Cultural Events", "Adventure Challenges", "Unique Retreats"],
     href: "/events",
     color: "from-emerald-500 to-emerald-600",
     bgColor: "bg-emerald-50",
@@ -88,7 +88,7 @@ export function ServicesOverview() {
             <span className="text-yellow-500">Services</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Discover the full range of luxury travel services we offer to make your Rwanda experience
+            Discover the full range of Unique travel services we offer to make your Rwanda experience
             truly exceptional and unforgettable.
           </p>
         </div>

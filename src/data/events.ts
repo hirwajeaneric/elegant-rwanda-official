@@ -10,7 +10,7 @@ export interface Event {
   location: string;
   maxParticipants: number;
   currentParticipants: number;
-  category: 'Group Tour' | 'Cultural Event' | 'Adventure' | 'Luxury Experience';
+  category: 'Group Tour' | 'Cultural Event' | 'Adventure' | 'Unique Experience';
   highlights: string[];
   activities: string[];
   images: string[];
@@ -37,7 +37,7 @@ export const events: Event[] = [
     highlights: [
       'Exclusive group experience',
       'Professional photography guide',
-      'Luxury lodge accommodation',
+      'Unique lodge accommodation',
       'Cultural village visit',
       'Group bonding activities'
     ],
@@ -92,18 +92,18 @@ export const events: Event[] = [
     status: 'Open'
   },
   {
-    id: 'lake-kivu-luxury-retreat',
-    slug: 'lake-kivu-luxury-retreat',
-    metaTitle: 'Lake Kivu Luxury Group Retreat 2025 - Premium Rwanda Tours | Elegant Travel and Tours',
-    metaDescription: 'Experience the ultimate luxury retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services at Lake Kivu.',
-    title: 'Lake Kivu Luxury Group Retreat',
-    description: 'Experience the ultimate luxury retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services.',
+    id: 'lake-kivu-Unique-retreat',
+    slug: 'lake-kivu-Unique-retreat',
+    metaTitle: 'Lake Kivu Unique Group Retreat 2025 - Premium Rwanda Tours | Elegant Travel and Tours',
+    metaDescription: 'Experience the ultimate Unique retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services at Lake Kivu.',
+    title: 'Lake Kivu Unique Group Retreat',
+    description: 'Experience the ultimate Unique retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services.',
     date: '2025-10-10',
     endDate: '2025-10-14',
     location: 'Lake Kivu',
     maxParticipants: 12,
     currentParticipants: 8,
-    category: 'Luxury Experience',
+    category: 'Unique Experience',
     highlights: [
       'Exclusive resort access',
       'Private beach areas',
@@ -112,7 +112,7 @@ export const events: Event[] = [
       'Water sports activities'
     ],
     activities: [
-      'Luxury spa treatments',
+      'Unique spa treatments',
       'Water sports',
       'Sunset cruises',
       'Gourmet cooking classes',
@@ -253,7 +253,7 @@ export const events: Event[] = [
     highlights: [
       'Exclusive group experience',
       'Professional photography guide',
-      'Luxury lodge accommodation',
+      'Unique lodge accommodation',
       'Cultural village visit',
       'Group bonding activities'
     ],
@@ -310,16 +310,16 @@ export const events: Event[] = [
   {
     id: 'past-lake-kivu-retreat-2024',
     slug: 'past-lake-kivu-retreat-2024',
-    metaTitle: 'Past Lake Kivu Retreat 2024 - Luxury Rwanda Tours | Elegant Travel and Tours',
-    metaDescription: 'A completed luxury retreat experience at Lake Kivu that took place in 2024.',
-    title: 'Lake Kivu Luxury Retreat 2024',
-    description: 'A completed luxury retreat experience at Lake Kivu. Participants enjoyed exclusive access to premium amenities and personalized services.',
+    metaTitle: 'Past Lake Kivu Retreat 2024 - Unique Rwanda Tours | Elegant Travel and Tours',
+    metaDescription: 'A completed Unique retreat experience at Lake Kivu that took place in 2024.',
+    title: 'Lake Kivu Unique Retreat 2024',
+    description: 'A completed Unique retreat experience at Lake Kivu. Participants enjoyed exclusive access to premium amenities and personalized services.',
     date: '2024-09-10',
     endDate: '2024-09-14',
     location: 'Lake Kivu',
     maxParticipants: 12,
     currentParticipants: 12,
-    category: 'Luxury Experience',
+    category: 'Unique Experience',
     highlights: [
       'Exclusive resort access',
       'Private beach areas',
@@ -328,7 +328,7 @@ export const events: Event[] = [
       'Water sports activities'
     ],
     activities: [
-      'Luxury spa treatments',
+      'Unique spa treatments',
       'Water sports',
       'Sunset cruises',
       'Gourmet cooking classes',

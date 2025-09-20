@@ -53,7 +53,7 @@ export function HeroSection() {
           
           <p className="text-lg md:text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-tight">
             From the misty mountains of Volcanoes National Park to the serene shores of Lake Kivu, 
-            experience Rwanda&apos;s natural beauty and rich culture through our luxury travel services.
+            experience Rwanda&apos;s natural beauty and rich culture through our unique travel services.
           </p>
 
           {/* CTA Buttons */}
@@ -81,7 +81,7 @@ export function HeroSection() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-accent">50+</div>
-              <div className="text-sm">Luxury Tours</div>
+              <div className="text-sm">Unique Tours</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-accent">5★</div>

@@ -10,7 +10,7 @@ export function FAQHero() {
           <span className="text-yellow-500">Questions</span>
         </h1>
         <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-          Find answers to common questions about our luxury travel services, 
+          Find answers to common questions about our Unique travel services, 
           tour packages, and everything you need to know about visiting Rwanda.
         </p>
         

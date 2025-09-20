@@ -7,7 +7,7 @@ export interface BlogPost {
   authorImage: string;
   publishDate: string;
   readTime: string;
-  category: 'Tours' | 'Tips' | 'Culture' | 'Wildlife' | 'Luxury' | 'News';
+  category: 'Tours' | 'Tips' | 'Culture' | 'Wildlife' | 'Unique' | 'News';
   tags: string[];
   featuredImage: string;
   featured: boolean;
@@ -185,26 +185,26 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'blog-3',
-    title: 'Luxury Travel in Rwanda: Beyond the Ordinary',
-    excerpt: 'Experience Rwanda\'s finest luxury accommodations, exclusive experiences, and personalized services that redefine luxury travel in Africa.',
+    title: 'Unique Travel in Rwanda: Beyond the Ordinary',
+    excerpt: 'Experience Rwanda\'s finest Unique accommodations, exclusive experiences, and personalized services that redefine Unique travel in Africa.',
     content: `
       <div>
         <p>
-          Rwanda has emerged as a premier destination for luxury travelers seeking authentic African experiences 
+          Rwanda has emerged as a premier destination for Unique travelers seeking authentic African experiences 
           combined with world-class service and accommodations.
         </p>
 
-        <h2>Luxury Accommodations</h2>
+        <h2>Unique Accommodations</h2>
         
         <h3>Bisate Lodge</h3>
         <p>
-          Nestled in the foothills of the Virunga volcanoes, <strong>Bisate Lodge</strong> offers unparalleled luxury 
+          Nestled in the foothills of the Virunga volcanoes, <strong>Bisate Lodge</strong> offers unparalleled Unique 
           in a stunning natural setting. Each private villa features panoramic views, private decks, and personalized butler service.
         </p>
 
         <h3>One&Only Gorilla\'s Nest</h3>
         <p>
-          This exclusive resort combines luxury with conservation, offering guests the opportunity to contribute to gorilla protection 
+          This exclusive resort combines Unique with conservation, offering guests the opportunity to contribute to gorilla protection 
           while enjoying five-star amenities and service.
         </p>
 
@@ -212,7 +212,7 @@ export const blogPosts: BlogPost[] = [
         
         <h3>Private Gorilla Encounters</h3>
         <p>
-          For the ultimate luxury experience, arrange private gorilla trekking sessions with exclusive access to less-visited gorilla families. 
+          For the ultimate Unique experience, arrange private gorilla trekking sessions with exclusive access to less-visited gorilla families. 
           This includes personalized guides and extended viewing times.
         </p>
 
@@ -226,26 +226,26 @@ export const blogPosts: BlogPost[] = [
         
         <h3>Custom Itineraries</h3>
         <p>
-          Luxury travelers can enjoy completely customized itineraries designed around their specific interests, schedule, and preferences. 
+          Unique travelers can enjoy completely customized itineraries designed around their specific interests, schedule, and preferences. 
           From private transportation to exclusive access to restricted areas.
         </p>
 
         <h3>Dedicated Concierge</h3>
         <p>
-          Every luxury guest receives a dedicated concierge who ensures every detail of their stay is perfect, 
+          Every Unique guest receives a dedicated concierge who ensures every detail of their stay is perfect, 
           from restaurant reservations to arranging unique cultural experiences.
         </p>
 
-        <h2>Sustainable Luxury</h2>
+        <h2>Sustainable Unique</h2>
         <p>
-          Rwanda\'s luxury tourism sector is committed to sustainability, with many properties implementing eco-friendly practices 
+          Rwanda\'s Unique tourism sector is committed to sustainability, with many properties implementing eco-friendly practices 
           and supporting local communities.
         </p>
 
         <h2>Conclusion</h2>
         <p>
-          Luxury travel in Rwanda offers a unique combination of natural beauty, cultural richness, and world-class service. 
-          It\'s an experience that goes beyond traditional luxury to create meaningful connections with the country and its people.
+          Unique travel in Rwanda offers a unique combination of natural beauty, cultural richness, and world-class service. 
+          It\'s an experience that goes beyond traditional Unique to create meaningful connections with the country and its people.
         </p>
       </div>
     `,
@@ -253,13 +253,13 @@ export const blogPosts: BlogPost[] = [
     authorImage: '/images/team/grace.jpg',
     publishDate: '2024-12-05',
     readTime: '7 min read',
-    category: 'Luxury',
-    tags: ['Luxury', 'Accommodations', 'Exclusive Experiences', 'Personalized Service'],
+    category: 'Unique',
+    tags: ['Unique', 'Accommodations', 'Exclusive Experiences', 'Personalized Service'],
     featuredImage: '/landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg',
     featured: false,
-    slug: 'luxury-travel-rwanda-beyond-ordinary',
-    metaTitle: 'Luxury Travel in Rwanda: Beyond the Ordinary - Premium Tours | Elegant Travel and Tours',
-    metaDescription: 'Experience Rwanda\'s finest luxury accommodations, exclusive experiences, and personalized services that redefine luxury travel in Africa.'
+    slug: 'Unique-travel-rwanda-beyond-ordinary',
+    metaTitle: 'Unique Travel in Rwanda: Beyond the Ordinary - Premium Tours | Elegant Travel and Tours',
+    metaDescription: 'Experience Rwanda\'s finest Unique accommodations, exclusive experiences, and personalized services that redefine Unique travel in Africa.'
   }
 ];
 

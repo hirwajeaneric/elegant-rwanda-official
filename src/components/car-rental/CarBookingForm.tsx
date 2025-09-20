@@ -86,7 +86,7 @@ export function CarBookingForm() {
                   <option value="economy">Economy</option>
                   <option value="compact">Compact</option>
                   <option value="suv">SUV</option>
-                  <option value="luxury">Luxury</option>
+                  <option value="Unique">Unique</option>
                   <option value="minivan">Minivan</option>
                   <option value="adventure">Adventure</option>
                 </select>

@@ -30,7 +30,7 @@ const services = [
   {
     icon: Building2,
     title: "Hotel Booking Support",
-    description: "Expert hotel recommendations and booking assistance across Rwanda. From luxury resorts to budget-friendly options.",
+    description: "Expert hotel recommendations and booking assistance across Rwanda. From Unique resorts to budget-friendly options.",
     features: [
       "Curated hotel selection",
       "Best rate guarantee",

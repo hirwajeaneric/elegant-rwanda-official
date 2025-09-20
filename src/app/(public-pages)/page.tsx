@@ -11,12 +11,12 @@ import { LatestBlogPosts } from "@/components/home/LatestBlogPosts";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Elegant Travel and Tours: Luxury Tours, Car Rentals & Travel Services in Rwanda",
-  description: "Explore Rwanda's elegance with our luxury tours, premium car rentals, cab services, and air travel assistance. Experience the heart of Africa with personalized luxury travel services.",
+  title: "Elegant Travel and Tours: Unique Tours, Car Rentals & Travel Services in Rwanda",
+  description: "Explore Rwanda's elegance with our Unique tours, premium car rentals, cab services, and air travel assistance. Experience the heart of Africa with personalized Unique travel services.",
   keywords: [
     "Rwanda tours",
     "Gorilla trekking",
-    "Luxury travel Rwanda",
+    "Unique travel Rwanda",
     "Car rental Rwanda",
     "Cab booking Rwanda",
     "Air travel assistance Rwanda",
@@ -25,17 +25,17 @@ export const metadata: Metadata = {
     "Kigali tours",
     "Cultural tours Rwanda",
     "Wildlife tours Africa",
-    "Luxury safari Rwanda"
+    "Unique safari Rwanda"
   ],
   openGraph: {
-    title: "Elegant Travel and Tours: Luxury Tours & Travel Services",
-    description: "Explore Rwanda's elegance with our luxury tours, premium car rentals, and personalized travel services.",
+    title: "Elegant Travel and Tours: Unique Tours & Travel Services",
+    description: "Explore Rwanda's elegance with our Unique tours, premium car rentals, and personalized travel services.",
     images: [
       {
         url: "/images/hero-rwanda-landscape.jpg",
         width: 1200,
         height: 630,
-        alt: "Elegant Travel and Tours - Luxury Travel in Rwanda",
+        alt: "Elegant Travel and Tours - Unique Travel in Rwanda",
       },
     ],
   },

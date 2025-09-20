@@ -75,7 +75,7 @@ export function ToursSidebar() {
             { name: "Wildlife Tours", count: 8, color: "bg-green-500" },
             { name: "Cultural Tours", count: 6, color: "bg-blue-500" },
             { name: "Adventure Tours", count: 4, color: "bg-purple-500" },
-            { name: "Luxury Tours", count: 5, color: "bg-yellow-500" },
+            { name: "Unique Tours", count: 5, color: "bg-yellow-500" },
             { name: "Nature Tours", count: 3, color: "bg-emerald-500" },
           ].map((category) => (
             <Link
@@ -111,7 +111,7 @@ export function ToursSidebar() {
           </div>
           <div className="flex items-start space-x-2">
             <Star className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-            <span>Luxury accommodations and vehicles</span>
+            <span>Unique accommodations and vehicles</span>
           </div>
           <div className="flex items-start space-x-2">
             <Star className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />

@@ -33,7 +33,7 @@ export const cabBookingSchema = z.object({
   date: z.date(),
   time: z.string().min(1, "Please select a time"),
   numberOfPassengers: z.number().min(1, "At least 1 passenger required").max(8, "Maximum 8 passengers"),
-  vehicleType: z.enum(["Sedan", "SUV", "Luxury", "Minibus"]),
+  vehicleType: z.enum(["Sedan", "SUV", "Unique", "Minibus"]),
   additionalNotes: z.string().optional(),
   contactInfo: z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),

@@ -27,7 +27,7 @@ export function BlogGrid() {
     { id: "Tips", name: "Travel Tips", count: getPostsByCategory("Tips").length },
     { id: "Culture", name: "Culture", count: getPostsByCategory("Culture").length },
     { id: "Wildlife", name: "Wildlife", count: getPostsByCategory("Wildlife").length },
-    { id: "Luxury", name: "Luxury", count: getPostsByCategory("Luxury").length },
+    { id: "Unique", name: "Unique", count: getPostsByCategory("Unique").length },
   ];
 
   return (

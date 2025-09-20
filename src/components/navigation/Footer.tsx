@@ -17,7 +17,7 @@ const socialLinks = [
 ];
 
 const services = [
-  { name: "Luxury Tours", href: "/tours" },
+  { name: "Unique Tours", href: "/tours" },
   { name: "Cab Booking", href: "/cab-booking" },
   { name: "Car Rental", href: "/car-rental" },
   { name: "Air Travel Assistance", href: "/air-travel-assistance" },
@@ -74,7 +74,7 @@ export function Footer() {
               </div>
             </div>
             <p className="text-white/90 leading-relaxed">
-              Experience Rwanda&apos;s elegance with our premium tours, luxury accommodations, and personalized travel experiences.
+              Experience Rwanda&apos;s elegance with our premium tours, Unique accommodations, and personalized travel experiences.
             </p>
 
             {/* Contact Info */}

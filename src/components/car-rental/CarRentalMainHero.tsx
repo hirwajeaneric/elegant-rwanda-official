@@ -42,7 +42,7 @@ export function CarRentalMainHero() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Car className="h-5 w-5 text-yellow-500" />
-                <span className="text-white/90">Luxury & Economy Options</span>
+                <span className="text-white/90">Unique & Economy Options</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Shield className="h-5 w-5 text-yellow-500" />

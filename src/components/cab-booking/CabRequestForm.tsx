@@ -90,7 +90,7 @@ export function CabRequestForm() {
                   <option value="sedan">Sedan (4 passengers)</option>
                   <option value="suv">SUV (6 passengers)</option>
                   <option value="minivan">Minivan (8 passengers)</option>
-                  <option value="luxury">Luxury Vehicle</option>
+                  <option value="Unique">Unique Vehicle</option>
                 </select>
               </div>
 

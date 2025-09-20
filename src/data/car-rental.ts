@@ -2,7 +2,7 @@ export interface Vehicle {
   id: string;
   slug: string;
   name: string;
-  category: 'Economy' | 'Compact' | 'SUV' | 'Luxury' | 'Minivan' | 'Adventure' | 'Executive';
+  category: 'Economy' | 'Compact' | 'SUV' | 'Unique' | 'Minivan' | 'Adventure' | 'Executive';
   description: string;
   shortDescription: string;
 
@@ -185,9 +185,9 @@ export const vehicles: Vehicle[] = [
     id: "3",
     slug: "mercedes-c-class",
     name: "Mercedes C-Class",
-    category: "Luxury",
-    description: "Experience luxury and sophistication with the Mercedes C-Class. This premium sedan combines elegant design with cutting-edge technology, offering an exceptional driving experience for discerning travelers.",
-    shortDescription: "Premium luxury sedan with cutting-edge technology",
+    category: "Unique",
+    description: "Experience Unique and sophistication with the Mercedes C-Class. This premium sedan combines elegant design with cutting-edge technology, offering an exceptional driving experience for discerning travelers.",
+    shortDescription: "Premium Unique sedan with cutting-edge technology",
 
     images: [
       "/pexels-mikebirdy-170811.jpg",
@@ -200,7 +200,7 @@ export const vehicles: Vehicle[] = [
       "Advanced navigation",
       "Premium audio system",
       "Driver assistance",
-      "Luxury amenities",
+      "Unique amenities",
       "Executive comfort"
     ],
     specifications: {
@@ -400,8 +400,8 @@ export const vehicles: Vehicle[] = [
     slug: "bmw-5-series",
     name: "BMW 5 Series",
     category: "Executive",
-    description: "The BMW 5 Series represents the perfect balance of luxury and performance. With its sophisticated design, advanced technology, and exceptional driving dynamics, it's the choice for executive travel.",
-    shortDescription: "Executive sedan with luxury and performance",
+    description: "The BMW 5 Series represents the perfect balance of Unique and performance. With its sophisticated design, advanced technology, and exceptional driving dynamics, it's the choice for executive travel.",
+    shortDescription: "Executive sedan with Unique and performance",
 
     images: [
       "/pexels-esmihel-20200900.jpg",
@@ -413,7 +413,7 @@ export const vehicles: Vehicle[] = [
       "Executive comfort",
       "Premium audio system",
       "Driver assistance",
-      "Luxury interior",
+      "Unique interior",
       "Advanced technology",
       "Performance oriented"
     ],

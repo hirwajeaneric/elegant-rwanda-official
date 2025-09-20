@@ -10,19 +10,19 @@ import { CarRentalFAQ } from "@/components/car-rental/CarRentalFAQ";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options | Elegant Travel and Tours",
-  description: "Rent luxury cars in Rwanda with Elegant Travel and Tours. Choose between self-drive and chauffeur-driven options. Premium vehicles for business and leisure travel.",
-  keywords: "car rental Rwanda, luxury car hire Rwanda, self-drive Rwanda, chauffeur service Rwanda, vehicle rental Rwanda",
+  title: "Unique Car Rentals in Rwanda: Self-Drive or Chauffeur Options | Elegant Travel and Tours",
+  description: "Rent Unique cars in Rwanda with Elegant Travel and Tours. Choose between self-drive and chauffeur-driven options. Premium vehicles for business and leisure travel.",
+  keywords: "car rental Rwanda, Unique car hire Rwanda, self-drive Rwanda, chauffeur service Rwanda, vehicle rental Rwanda",
   openGraph: {
-    title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options",
-    description: "Rent luxury cars in Rwanda with self-drive and chauffeur-driven options for business and leisure travel.",
+    title: "Unique Car Rentals in Rwanda: Self-Drive or Chauffeur Options",
+    description: "Rent Unique cars in Rwanda with self-drive and chauffeur-driven options for business and leisure travel.",
     type: "website",
     url: "https://elegantrwanda.com/car-rental",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options",
-    description: "Rent luxury cars in Rwanda with self-drive and chauffeur-driven options for business and leisure travel.",
+    title: "Unique Car Rentals in Rwanda: Self-Drive or Chauffeur Options",
+    description: "Rent Unique cars in Rwanda with self-drive and chauffeur-driven options for business and leisure travel.",
   },
 };
 

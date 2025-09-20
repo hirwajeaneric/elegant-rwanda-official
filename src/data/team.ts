@@ -17,14 +17,14 @@ export const team: TeamMember[] = [
     id: 'team-1',
     name: 'Jean-Pierre Uwimana',
     role: 'Founder & CEO',
-    bio: 'A passionate tourism professional with over 15 years of experience in luxury travel across East Africa. Jean-Pierre founded Elegant Travel and Tours with a vision to showcase Rwanda\'s beauty through exceptional service and sustainable tourism practices.',
+    bio: 'A passionate tourism professional with over 15 years of experience in Unique travel across East Africa. Jean-Pierre founded Elegant Travel and Tours with a vision to showcase Rwanda\'s beauty through exceptional service and sustainable tourism practices.',
     image: '/images/team/jean-pierre.jpg',
-    experience: '15+ years in luxury tourism',
-    specialties: ['Luxury tour planning', 'Sustainable tourism', 'Business development', 'Cultural experiences'],
+    experience: '15+ years in Unique tourism',
+    specialties: ['Unique tour planning', 'Sustainable tourism', 'Business development', 'Cultural experiences'],
     email: 'jean-pierre@elegantrwanda.com',
     linkedin: 'https://linkedin.com/in/jean-pierre-uwimana',
     metaTitle: 'Jean-Pierre Uwimana - Founder & CEO | Elegant Travel and Tours',
-    metaDescription: 'Meet Jean-Pierre Uwimana, Founder & CEO of Elegant Travel and Tours. A passionate tourism professional with over 15 years of experience in luxury travel across East Africa.'
+    metaDescription: 'Meet Jean-Pierre Uwimana, Founder & CEO of Elegant Travel and Tours. A passionate tourism professional with over 15 years of experience in Unique travel across East Africa.'
   },
   {
     id: 'team-2',
@@ -68,19 +68,19 @@ export const team: TeamMember[] = [
     id: 'team-5',
     name: 'David Mutabazi',
     role: 'Transportation Manager',
-    bio: 'David oversees our fleet of luxury vehicles and ensures all transportation services meet our high standards. His expertise in logistics and vehicle maintenance guarantees safe and comfortable travel.',
+    bio: 'David oversees our fleet of Unique vehicles and ensures all transportation services meet our high standards. His expertise in logistics and vehicle maintenance guarantees safe and comfortable travel.',
     image: '/images/team/david.jpg',
     experience: '9+ years in transportation',
     specialties: ['Fleet management', 'Driver training', 'Safety protocols', 'Route optimization'],
     email: 'david@elegantrwanda.com',
     metaTitle: 'David Mutabazi - Transportation Manager | Elegant Travel and Tours',
-    metaDescription: 'Meet David Mutabazi, Transportation Manager at Elegant Travel and Tours. He oversees our fleet of luxury vehicles and ensures all transportation services meet our high standards.'
+    metaDescription: 'Meet David Mutabazi, Transportation Manager at Elegant Travel and Tours. He oversees our fleet of Unique vehicles and ensures all transportation services meet our high standards.'
   },
   {
     id: 'team-6',
     name: 'Marie Claire Ingabire',
     role: 'Marketing & Partnerships',
-    bio: 'Marie Claire develops strategic partnerships and creates compelling marketing campaigns that showcase Rwanda\'s beauty and our luxury services to the world.',
+    bio: 'Marie Claire develops strategic partnerships and creates compelling marketing campaigns that showcase Rwanda\'s beauty and our Unique services to the world.',
     image: '/images/team/marie-claire.jpg',
     experience: '7+ years in marketing',
     specialties: ['Digital marketing', 'Partnership development', 'Brand strategy', 'Content creation'],

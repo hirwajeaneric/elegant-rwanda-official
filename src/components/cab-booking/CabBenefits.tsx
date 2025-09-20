@@ -38,7 +38,7 @@ export function CabBenefits() {
       icon: Star,
       title: "Premium Service",
       description: "From the moment you book to the end of your journey, we provide exceptional service that exceeds expectations.",
-      features: ["Concierge service", "Refreshments", "Entertainment", "Luxury amenities"]
+      features: ["Concierge service", "Refreshments", "Entertainment", "Unique amenities"]
     }
   ];
 

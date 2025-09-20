@@ -16,7 +16,7 @@ export function CabBookingHero() {
               Across Rwanda
             </h1>
             <p className="text-xl text-white/90 mb-8 leading-tight">
-              Experience luxury and reliability with our premium cab services. From airport transfers 
+              Experience Unique and reliability with our premium cab services. From airport transfers 
               to city tours, we ensure your journey is comfortable, safe, and punctual.
             </p>
 

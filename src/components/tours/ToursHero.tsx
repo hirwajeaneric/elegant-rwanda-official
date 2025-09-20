@@ -10,7 +10,7 @@ export function ToursHero() {
           <span className="text-yellow-500">Rwanda</span> Through Our Tours
         </h1>
         <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
-          From thrilling gorilla encounters to serene cultural experiences, our luxury tours 
+          From thrilling gorilla encounters to serene cultural experiences, our Unique tours 
           offer unforgettable adventures across Rwanda&apos;s most beautiful landscapes.
         </p>
         

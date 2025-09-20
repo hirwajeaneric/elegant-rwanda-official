@@ -4,12 +4,12 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "About Elegant Travel and Tours: Premier Luxury Travel Experts in Rwanda",
-  description: "Learn about Elegant Travel and Tours's mission to provide exceptional luxury travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
+  title: "About Elegant Travel and Tours: Premier Unique Travel Experts in Rwanda",
+  description: "Learn about Elegant Travel and Tours's mission to provide exceptional Unique travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
   keywords: [
     "About Elegant Travel and Tours",
     "Rwanda travel company",
-    "Luxury travel experts",
+    "Unique travel experts",
     "Tourism Rwanda",
     "Travel professionals Rwanda"
   ],
@@ -34,15 +34,15 @@ export default function AboutPage() {
             <h2 className="text-3xl font-display font-semibold mb-6">Our Story</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Founded with a passion for showcasing Rwanda&apos;s natural beauty and rich cultural heritage, 
-              Elegant Travel and Tours has been at the forefront of luxury tourism in East Africa for over a decade.
+              Elegant Travel and Tours has been at the forefront of Unique tourism in East Africa for over a decade.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              What started as a small family business has grown into Rwanda&apos;s premier luxury travel 
+              What started as a small family business has grown into Rwanda&apos;s premier Unique travel 
               company, serving discerning travelers from around the world who seek authentic, 
               personalized experiences.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              We believe that luxury travel should not only provide comfort and exclusivity but also 
+              We believe that Unique travel should not only provide comfort and exclusivity but also 
               create meaningful connections with local communities and contribute to sustainable tourism development.
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function AboutPage() {
               <h3 className="text-xl font-semibold mb-2">Jean-Pierre Uwimana</h3>
               <p className="text-primary font-medium mb-2">Founder & CEO</p>
               <p className="text-muted-foreground text-sm">
-                A passionate tourism professional with over 15 years of experience in luxury travel across East Africa.
+                A passionate tourism professional with over 15 years of experience in Unique travel across East Africa.
               </p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg border border-border">

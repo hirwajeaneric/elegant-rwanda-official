@@ -15,7 +15,7 @@ export interface Tour {
     inclusions: string[];
     exclusions: string[];
     images: string[];
-    category: 'Wildlife' | 'Cultural' | 'Adventure' | 'Luxury' | 'Nature';
+    category: 'Wildlife' | 'Cultural' | 'Adventure' | 'Unique' | 'Nature';
     featured: boolean;
     availableDates: string[];
 }
@@ -33,8 +33,8 @@ export const tours: Tour[] = [
     {
         id: 'gorilla-trekking-adventure',
         slug: 'gorilla-trekking-adventure',
-        metaTitle: 'Gorilla Trekking Adventure - Luxury Rwanda Tours | Elegant Travel and Tours',
-        metaDescription: 'Experience the magic of encountering mountain gorillas in their natural habitat. Book your luxury gorilla trekking adventure in Rwanda with Elegant Travel and Tours.',
+        metaTitle: 'Gorilla Trekking Adventure - Unique Rwanda Tours | Elegant Travel and Tours',
+        metaDescription: 'Experience the magic of encountering mountain gorillas in their natural habitat. Book your Unique gorilla trekking adventure in Rwanda with Elegant Travel and Tours.',
         title: 'Gorilla Trekking Adventure',
         description: 'Experience the magic of encountering mountain gorillas in their natural habitat. This exclusive tour takes you deep into the misty forests of Volcanoes National Park for an unforgettable wildlife encounter.',
         duration: '3 Days / 2 Nights',
@@ -45,7 +45,7 @@ export const tours: Tour[] = [
         highlights: [
             'Gorilla trekking permit included',
             'Expert local guides',
-            'Luxury lodge accommodation',
+            'Unique lodge accommodation',
             'Cultural village visit',
             'Scenic mountain views'
         ],
@@ -55,7 +55,7 @@ export const tours: Tour[] = [
                 title: 'Arrival & Welcome',
                 description: 'Arrive in Kigali and transfer to Volcanoes National Park area',
                 activities: ['Airport pickup', 'Scenic drive to Musanze', 'Lodge check-in', 'Welcome dinner'],
-                accommodation: 'Luxury Lodge',
+                accommodation: 'Unique Lodge',
                 meals: ['Dinner']
             },
             {
@@ -63,7 +63,7 @@ export const tours: Tour[] = [
                 title: 'Gorilla Trekking',
                 description: 'Early morning trek to find and observe mountain gorillas',
                 activities: ['Gorilla trekking', 'Photography', 'Lodge relaxation', 'Optional cultural visit'],
-                accommodation: 'Luxury Lodge',
+                accommodation: 'Unique Lodge',
                 meals: ['Breakfast', 'Lunch', 'Dinner']
             },
             {
@@ -100,9 +100,9 @@ export const tours: Tour[] = [
     {
         id: 'lake-kivu-retreat',
         slug: 'lake-kivu-retreat',
-        metaTitle: 'Lake Kivu Luxury Retreat - Premium Rwanda Tours | Elegant Travel and Tours',
-        metaDescription: 'Unwind in the serene beauty of Lake Kivu with our exclusive lakeside retreat. Experience luxury accommodation and water activities in Rwanda.',
-        title: 'Lake Kivu Luxury Retreat',
+        metaTitle: 'Lake Kivu Unique Retreat - Premium Rwanda Tours | Elegant Travel and Tours',
+        metaDescription: 'Unwind in the serene beauty of Lake Kivu with our exclusive lakeside retreat. Experience Unique accommodation and water activities in Rwanda.',
+        title: 'Lake Kivu Unique Retreat',
         description: 'Unwind in the serene beauty of Lake Kivu with this exclusive lakeside retreat. Enjoy water activities, spa treatments, and breathtaking sunset views.',
         duration: '4 Days / 3 Nights',
     
@@ -110,7 +110,7 @@ export const tours: Tour[] = [
         difficulty: 'Easy',
         maxGroupSize: 12,
         highlights: [
-            'Lakeside luxury resort',
+            'Lakeside Unique resort',
             'Water activities',
             'Spa treatments',
             'Sunset boat cruises',
@@ -120,9 +120,9 @@ export const tours: Tour[] = [
             {
                 day: 1,
                 title: 'Arrival & Relaxation',
-                description: 'Arrive at Lake Kivu and settle into your luxury accommodation',
+                description: 'Arrive at Lake Kivu and settle into your Unique accommodation',
                 activities: ['Resort check-in', 'Welcome drink', 'Lakeside dinner', 'Spa session'],
-                accommodation: 'Luxury Lakeside Resort',
+                accommodation: 'Unique Lakeside Resort',
                 meals: ['Dinner']
             },
             {
@@ -130,7 +130,7 @@ export const tours: Tour[] = [
                 title: 'Water Activities',
                 description: 'Full day of water activities and relaxation',
                 activities: ['Swimming', 'Kayaking', 'Fishing', 'Beach relaxation', 'Sunset cruise'],
-                accommodation: 'Luxury Lakeside Resort',
+                accommodation: 'Unique Lakeside Resort',
                 meals: ['Breakfast', 'Lunch', 'Dinner']
             },
             {
@@ -138,7 +138,7 @@ export const tours: Tour[] = [
                 title: 'Cultural Experience',
                 description: 'Explore local culture and enjoy resort amenities',
                 activities: ['Village visit', 'Cooking class', 'Spa treatments', 'Evening entertainment'],
-                accommodation: 'Luxury Lakeside Resort',
+                accommodation: 'Unique Lakeside Resort',
                 meals: ['Breakfast', 'Lunch', 'Dinner']
             },
             {
@@ -150,7 +150,7 @@ export const tours: Tour[] = [
             }
         ],
         inclusions: [
-            'Luxury resort accommodation',
+            'Unique resort accommodation',
             'All meals',
             'Water activities',
             'Spa treatments',
@@ -168,7 +168,7 @@ export const tours: Tour[] = [
             'lake-kivu_Photo-from-Getty-Images.jpg',
             'lake-kivu_Photo-from-Getty-Images.jpg'
         ],
-        category: 'Luxury',
+        category: 'Unique',
         featured: true,
         availableDates: ['2025-01-20', '2025-02-25', '2025-03-30']
     },

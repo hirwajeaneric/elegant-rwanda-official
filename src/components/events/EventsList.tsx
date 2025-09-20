@@ -8,7 +8,7 @@ import Link from "next/link";
 const upcomingEvents = getUpcomingEvents();
 const pastEvents = getPastEvents();
 
-const categories = ["All", "Group Tour", "Cultural Event", "Adventure", "Luxury Experience"];
+const categories = ["All", "Group Tour", "Cultural Event", "Adventure", "Unique Experience"];
 
 export function EventsList() {
   const [selectedCategory, setSelectedCategory] = useState("All");

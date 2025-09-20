@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-Elegant Travel and Tours is a Next.js 15 application for a luxury travel company specializing in Rwanda tours, car rentals, cab services, and air travel assistance. The project uses the App Router architecture with TypeScript, Tailwind CSS, and shadcn/ui components.
+Elegant Travel and Tours is a Next.js 15 application for a Unique travel company specializing in Rwanda tours, car rentals, cab services, and air travel assistance. The project uses the App Router architecture with TypeScript, Tailwind CSS, and shadcn/ui components.
 
 ## Common Commands
 
@@ -83,7 +83,7 @@ The application uses TypeScript interfaces for data modeling:
 - Follow the established Tailwind CSS patterns
 - Use the custom design system defined in the configuration
 - Leverage shadcn/ui components for consistency
-- Maintain the luxury travel aesthetic with appropriate typography and colors
+- Maintain the Unique travel aesthetic with appropriate typography and colors
 
 ### Form Handling
 - All forms use React Hook Form with Zod validation

@@ -58,7 +58,7 @@
   --secondary: oklch(0.2 0.1 240);
   --secondary-foreground: oklch(0.984 0.003 247.858);
   
-  /* Accent Colors - Gold (Luxury) */
+  /* Accent Colors - Gold (Unique) */
   --accent: oklch(0.8 0.15 60);
   --accent-foreground: oklch(0.129 0.042 264.695);
   
@@ -236,7 +236,7 @@
   .btn-outline {
     @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200;
   }
-  
+
     /* Section Styles */
   .section-padding {
     @apply py-16 md:py-24;

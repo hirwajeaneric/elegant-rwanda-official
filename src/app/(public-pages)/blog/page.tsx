@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: "Rwanda Travel Blog: Tips, Stories & Insights | Elegant Travel and Tours",
   description: "Discover Rwanda through our travel blog featuring expert tips, cultural insights, wildlife stories, and insider knowledge about Rwanda's hidden gems.",
-  keywords: "Rwanda travel blog, gorilla trekking tips, Rwanda culture, wildlife photography, luxury travel Rwanda, travel guides",
+  keywords: "Rwanda travel blog, gorilla trekking tips, Rwanda culture, wildlife photography, Unique travel Rwanda, travel guides",
   openGraph: {
     title: "Rwanda Travel Blog: Tips, Stories & Insights | Elegant Travel and Tours",
     description: "Discover Rwanda through our travel blog featuring expert tips, cultural insights, wildlife stories, and insider knowledge about Rwanda's hidden gems.",

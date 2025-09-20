@@ -44,7 +44,7 @@ export function ToursGrid() {
     { id: "Wildlife", name: "Wildlife", count: getToursByCategory("Wildlife").length },
     { id: "Cultural", name: "Cultural", count: getToursByCategory("Cultural").length },
     { id: "Adventure", name: "Adventure", count: getToursByCategory("Adventure").length },
-    { id: "Luxury", name: "Luxury", count: getToursByCategory("Luxury").length },
+    { id: "Unique", name: "Unique", count: getToursByCategory("Unique").length },
     { id: "Nature", name: "Nature", count: getToursByCategory("Nature").length },
   ];
  

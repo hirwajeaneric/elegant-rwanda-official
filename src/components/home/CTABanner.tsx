@@ -146,7 +146,7 @@ export function CTABanner() {
                       className="form-input border-gray-500"
                     >
                       <option value="">Select a service</option>
-                      <option value="Tours">Luxury Tours</option>
+                      <option value="Tours">Unique Tours</option>
                       <option value="Air Ticket Booking">Air Ticket Booking</option>
                       <option value="Cab Booking">Cab Booking</option>
                       <option value="Car Rental">Car Rental</option>

@@ -44,13 +44,13 @@ export const testimonials: Testimonial[] = [
     name: 'Emma Rodriguez',
     location: 'Toronto, Canada',
     rating: 5,
-    review: 'The Lake Kivu retreat exceeded all expectations. The team at Elegant Travel and Tours created a perfect blend of luxury and adventure. The spa treatments and water activities were world-class.',
+    review: 'The Lake Kivu retreat exceeded all expectations. The team at Elegant Travel and Tours created a perfect blend of Unique and adventure. The spa treatments and water activities were world-class.',
     service: 'Tour',
     image: '/images/testimonials/emma-rodriguez.jpg',
     date: '2024-12-08',
     featured: true,
     metaTitle: 'Emma Rodriguez - Lake Kivu Retreat Review | Elegant Travel and Tours',
-    metaDescription: 'Read Emma Rodriguez\'s 5-star review of the Lake Kivu retreat. Perfect blend of luxury and adventure with world-class spa treatments.'
+    metaDescription: 'Read Emma Rodriguez\'s 5-star review of the Lake Kivu retreat. Perfect blend of Unique and adventure with world-class spa treatments.'
   },
   {
     id: 'testimonial-4',
@@ -96,7 +96,7 @@ export const testimonials: Testimonial[] = [
     name: 'Maria Garcia',
     location: 'Madrid, Spain',
     rating: 5,
-    review: 'Our family tour was perfectly tailored to our needs. The kids loved the cultural activities and we appreciated the luxury accommodations. Professional service from start to finish.',
+    review: 'Our family tour was perfectly tailored to our needs. The kids loved the cultural activities and we appreciated the Unique accommodations. Professional service from start to finish.',
     service: 'Tour',
     image: '/images/testimonials/maria-garcia.jpg',
     date: '2024-11-25',

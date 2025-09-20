@@ -34,7 +34,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
               <div>
                 <h3 className="text-lg font-display font-semibold">{post.author}</h3>
                 <p className="text-muted-foreground">
-                  Travel expert and writer with deep knowledge of Rwanda&apos;s culture, wildlife, and luxury tourism.
+                  Travel expert and writer with deep knowledge of Rwanda&apos;s culture, wildlife, and Unique tourism.
                 </p>
               </div>
             </div>

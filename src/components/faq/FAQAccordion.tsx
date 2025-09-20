@@ -66,7 +66,7 @@ export function FAQAccordion() {
     "Transportation": [
       {
         question: "What types of vehicles do you use for tours?",
-        answer: "We use modern, well-maintained vehicles including 4x4 Land Cruisers for safari tours, comfortable minibuses for group tours, and luxury sedans for private transfers. All vehicles are equipped with air conditioning and safety features."
+        answer: "We use modern, well-maintained vehicles including 4x4 Land Cruisers for safari tours, comfortable minibuses for group tours, and Unique sedans for private transfers. All vehicles are equipped with air conditioning and safety features."
       },
       {
         question: "Do you provide airport transfers?",
@@ -84,11 +84,11 @@ export function FAQAccordion() {
     "Accommodation": [
       {
         question: "What types of accommodation do you offer?",
-        answer: "We offer a range of accommodation options from luxury lodges and boutique hotels to comfortable mid-range hotels. All accommodations are carefully selected for quality, location, and service standards. We can arrange accommodation to match your preferences and budget."
+        answer: "We offer a range of accommodation options from Unique lodges and boutique hotels to comfortable mid-range hotels. All accommodations are carefully selected for quality, location, and service standards. We can arrange accommodation to match your preferences and budget."
       },
       {
         question: "Are meals included in accommodation?",
-        answer: "Meal inclusion varies by tour package and accommodation type. Most luxury lodges include full board (breakfast, lunch, dinner), while city hotels typically include breakfast. We clearly specify meal inclusions in all tour packages."
+        answer: "Meal inclusion varies by tour package and accommodation type. Most Unique lodges include full board (breakfast, lunch, dinner), while city hotels typically include breakfast. We clearly specify meal inclusions in all tour packages."
       },
       {
         question: "Can you accommodate dietary restrictions?",
@@ -96,7 +96,7 @@ export function FAQAccordion() {
       },
       {
         question: "What is the accommodation quality like?",
-        answer: "We partner with the finest accommodations in Rwanda, ensuring high standards of comfort, cleanliness, and service. Our luxury options include 5-star lodges with world-class amenities, while mid-range options offer excellent value and comfort."
+        answer: "We partner with the finest accommodations in Rwanda, ensuring high standards of comfort, cleanliness, and service. Our Unique options include 5-star lodges with world-class amenities, while mid-range options offer excellent value and comfort."
       }
     ]
   };
