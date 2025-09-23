@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import ContactForm from "@/components/forms/ContactForm";
 
 export const dynamic = 'force-dynamic';
 
@@ -97,83 +98,14 @@ export default function ContactPage() {
               <p className="text-muted-foreground text-sm mb-3">
                 For urgent matters outside business hours, please call our 24/7 emergency line:
               </p>
-              <p className="text-primary font-semibold">+250 788 123 999</p>
+              <p className="text-primary font-semibold">+250 787 095 392</p>
             </div>
           </div>
 
           {/* Contact Form */}
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-border">
             <h2 className="text-2xl font-display font-semibold mb-6">Send us a Message</h2>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="form-label">First Name *</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Enter your first name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="form-label">Last Name *</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Enter your last name"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="form-label">Email Address *</label>
-                <input
-                  type="email"
-                  className="form-input"
-                  placeholder="Enter your email address"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="form-label">Phone Number</label>
-                <input
-                  type="tel"
-                  className="form-input"
-                  placeholder="Enter your phone number"
-                />
-              </div>
-
-              <div>
-                <label className="form-label">Subject *</label>
-                <select className="form-input" required aria-label="Select a subject for your message">
-                  <option value="">Select a subject</option>
-                  <option value="tour-inquiry">Tour Inquiry</option>
-                  <option value="booking">Booking Request</option>
-                  <option value="custom-package">Custom Package</option>
-                  <option value="general">General Question</option>
-                  <option value="feedback">Feedback</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="form-label">Message *</label>
-                <textarea
-                  className="form-input resize-none"
-                  rows={5}
-                  placeholder="Tell us about your travel plans, questions, or requirements..."
-                  required
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full btn-primary rounded-full text-lg py-3"
-              >
-                Send Message
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
 

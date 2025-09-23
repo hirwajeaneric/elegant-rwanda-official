@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { team } from "@/data/team";
 
 export const dynamic = 'force-dynamic';
 
@@ -54,10 +55,6 @@ export default function AboutPage() {
                 <span className="font-semibold">2014</span>
               </div>
               <div className="flex justify-between items-center">
-                <span>Team Members</span>
-                <span className="font-semibold">25+</span>
-              </div>
-              <div className="flex justify-between items-center">
                 <span>Locations Covered</span>
                 <span className="font-semibold">Rwanda</span>
               </div>
@@ -100,37 +97,18 @@ export default function AboutPage() {
             local expertise with international standards to deliver exceptional travel experiences.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Team member cards would go here */}
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-border">
-              <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-2xl">
-                JP
+            {team.map((member) => (
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-border" key={member.id}>
+              <div className="w-20 h-20 bg-accent rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-2xl">
+                {member.name.charAt(0)}
               </div>
-              <h3 className="text-xl font-semibold mb-2">Jean-Pierre Uwimana</h3>
-              <p className="text-primary font-medium mb-2">Founder & CEO</p>
+              <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
+              <p className="text-primary font-medium mb-2">{member.role}</p>
               <p className="text-muted-foreground text-sm">
-                A passionate tourism professional with over 15 years of experience in Unique travel across East Africa.
+                {member.bio}
               </p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-border">
-              <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-2xl">
-                G
               </div>
-              <h3 className="text-xl font-semibold mb-2">Grace Mukamurenzi</h3>
-              <p className="text-primary font-medium mb-2">Head of Operations</p>
-              <p className="text-muted-foreground text-sm">
-                Ensures every detail of our tours and services meets the highest standards.
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-border">
-              <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-2xl">
-                E
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Emmanuel Niyonsenga</h3>
-              <p className="text-primary font-medium mb-2">Lead Tour Guide</p>
-              <p className="text-muted-foreground text-sm">
-                Specializes in wildlife tours and cultural experiences with deep knowledge of Rwanda.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </div>
