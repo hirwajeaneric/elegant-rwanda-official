@@ -12,10 +12,7 @@ import {
   Trash2, 
   Calendar,
   MapPin,
-  Fuel,
   Settings,
-  Users,
-  DollarSign,
   Wrench,
   AlertTriangle
 } from 'lucide-react';
@@ -47,7 +44,7 @@ export default function CarDetailsPage() {
             <div className="text-center">
               <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">Car Not Found</h3>
-              <p className="text-gray-600">The car you're looking for doesn't exist.</p>
+              <p className="text-gray-600">The car you&apos;re looking for doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>

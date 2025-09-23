@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Play, Pause } from "lucide-react";
 import { GeneralInquiryModal } from "../modals/GeneralInquiryModal";
 import Link from "next/link";
 
 export function HeroSection() {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   return (

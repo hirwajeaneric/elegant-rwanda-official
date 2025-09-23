@@ -57,7 +57,7 @@ export default function EditTestimonialPage() {
           <CardContent className="py-8">
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Testimonial Not Found</h3>
-              <p className="text-gray-600">The testimonial you're trying to edit doesn't exist.</p>
+              <p className="text-gray-600">The testimonial you&apos;re trying to edit doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>
@@ -168,7 +168,7 @@ export default function EditTestimonialPage() {
           <Card>
             <CardHeader>
               <CardTitle>Review Content</CardTitle>
-              <CardDescription>The customer's feedback and rating</CardDescription>
+              <CardDescription>The customer&apos;s feedback and rating</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -193,7 +193,7 @@ export default function EditTestimonialPage() {
                   id="review"
                   value={formData.review}
                   onChange={(e) => handleInputChange('review', e.target.value)}
-                  placeholder="Customer's review text..."
+                  placeholder="Customer&apos;s review text..."
                   rows={4}
                 />
               </div>

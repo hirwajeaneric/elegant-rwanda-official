@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -10,15 +10,11 @@ import {
   ArrowLeft, 
   Edit, 
   Trash2, 
-  Calendar,
   MapPin,
   Users,
   Clock,
-  DollarSign,
-  Star,
   Eye,
-  Share2,
-  User
+  Share2
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -47,7 +43,7 @@ export default function TourDetailsPage() {
           <CardContent className="py-8">
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Tour Not Found</h3>
-              <p className="text-gray-600">The tour you're looking for doesn't exist.</p>
+              <p className="text-gray-600">The tour you&apos;re looking for doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>

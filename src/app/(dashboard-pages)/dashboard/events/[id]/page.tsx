@@ -14,7 +14,6 @@ import {
   MapPin,
   Users,
   Clock,
-  DollarSign,
   UserCheck,
   Share2
 } from 'lucide-react';
@@ -45,7 +44,7 @@ export default function EventDetailsPage() {
           <CardContent className="py-8">
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Event Not Found</h3>
-              <p className="text-gray-600">The event you're looking for doesn't exist.</p>
+              <p className="text-gray-600">The event you&apos;re looking for doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>
@@ -76,7 +75,7 @@ export default function EventDetailsPage() {
               Back to Events
             </Link>
           </Button>
-          <div>
+      <div>
             <h1 className="text-3xl font-bold">{event.title}</h1>
             <p className="text-gray-600">Event ID: {event.id}</p>
           </div>
@@ -173,32 +172,6 @@ export default function EventDetailsPage() {
             </Card>
           )}
 
-          {/* Event Schedule */}
-          {event.schedule && event.schedule.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Event Schedule</CardTitle>
-                <CardDescription>Detailed timeline of activities</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {event.schedule.map((item, index) => (
-                    <div key={index} className="flex items-center space-x-4 p-3 border rounded-lg">
-                      <div className="flex-shrink-0">
-                        <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
-                          {index + 1}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-medium">{item.time}</p>
-                        <p className="text-sm text-gray-600">{item.activity}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
 
         {/* Sidebar */}

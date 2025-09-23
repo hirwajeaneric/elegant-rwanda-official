@@ -7,16 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, Save, X, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { events } from '@/data/events';
 
-interface ScheduleItem {
-  time: string;
-  activity: string;
-}
 
 export default function EditEventPage() {
   const params = useParams();
@@ -38,11 +33,9 @@ export default function EditEventPage() {
     active: event?.active || true,
     image: event?.images[0] || '',
     highlights: event?.highlights || [],
-    schedule: event?.schedule || [],
   });
 
   const [newHighlight, setNewHighlight] = useState('');
-  const [newScheduleItem, setNewScheduleItem] = useState({ time: '', activity: '' });
 
   if (!event) {
     return (
@@ -59,7 +52,7 @@ export default function EditEventPage() {
           <CardContent className="py-8">
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Event Not Found</h3>
-              <p className="text-gray-600">The event you're trying to edit doesn't exist.</p>
+              <p className="text-gray-600">The event you&apos;re trying to edit doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>
@@ -91,22 +84,6 @@ export default function EditEventPage() {
     }));
   };
 
-  const addScheduleItem = () => {
-    if (newScheduleItem.time && newScheduleItem.activity) {
-      setFormData(prev => ({
-        ...prev,
-        schedule: [...prev.schedule, { ...newScheduleItem }]
-      }));
-      setNewScheduleItem({ time: '', activity: '' });
-    }
-  };
-
-  const removeScheduleItem = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      schedule: prev.schedule.filter((_, i) => i !== index)
-    }));
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -319,52 +296,6 @@ export default function EditEventPage() {
             </CardContent>
           </Card>
 
-          {/* Event Schedule */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Event Schedule</CardTitle>
-              <CardDescription>Detailed timeline of activities</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                {formData.schedule.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 border rounded">
-                    <div className="flex-1">
-                      <span className="text-sm font-medium">{item.time}</span>
-                      <span className="text-sm text-gray-600 ml-2">{item.activity}</span>
-                    </div>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeScheduleItem(index)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="space-y-2">
-                <div className="grid grid-cols-2 gap-2">
-                  <Input
-                    value={newScheduleItem.time}
-                    onChange={(e) => setNewScheduleItem(prev => ({ ...prev, time: e.target.value }))}
-                    placeholder="Time (e.g., 9:00 AM)"
-                  />
-                  <Input
-                    value={newScheduleItem.activity}
-                    onChange={(e) => setNewScheduleItem(prev => ({ ...prev, activity: e.target.value }))}
-                    placeholder="Activity description"
-                  />
-                </div>
-                <Button type="button" onClick={addScheduleItem} className="w-full">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Schedule Item
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </form>
     </div>

@@ -16,7 +16,6 @@ import {
   ThumbsUp,
   CheckCircle,
   XCircle,
-  Clock,
   User
 } from 'lucide-react';
 import Link from 'next/link';
@@ -46,7 +45,7 @@ export default function TestimonialDetailsPage() {
           <CardContent className="py-8">
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Testimonial Not Found</h3>
-              <p className="text-gray-600">The testimonial you're looking for doesn't exist.</p>
+              <p className="text-gray-600">The testimonial you&apos;re looking for doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>
@@ -151,11 +150,11 @@ export default function TestimonialDetailsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Review Content</CardTitle>
-              <CardDescription>The customer's feedback and experience</CardDescription>
+              <CardDescription>The customer&apos;s feedback and experience</CardDescription>
             </CardHeader>
             <CardContent>
               <blockquote className="text-lg text-gray-700 leading-relaxed italic">
-                "{testimonial.review}"
+                &ldquo;{testimonial.review}&rdquo;
               </blockquote>
             </CardContent>
           </Card>

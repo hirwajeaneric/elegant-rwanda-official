@@ -11,7 +11,6 @@ import {
   MessageSquare, 
   TrendingUp,
   Eye,
-  Plus,
   MoreHorizontal
 } from 'lucide-react';
 import Link from 'next/link';

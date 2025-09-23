@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -46,8 +46,6 @@ export default function EditTourPage() {
   const [newHighlight, setNewHighlight] = useState('');
   const [newInclusion, setNewInclusion] = useState('');
   const [newExclusion, setNewExclusion] = useState('');
-  const [newImage, setNewImage] = useState('');
-  const [newDate, setNewDate] = useState('');
 
   if (!tour) {
     return (
@@ -64,7 +62,7 @@ export default function EditTourPage() {
           <CardContent className="py-8">
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Tour Not Found</h3>
-              <p className="text-gray-600">The tour you're trying to edit doesn't exist.</p>
+              <p className="text-gray-600">The tour you&apos;re trying to edit doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>
@@ -130,39 +128,6 @@ export default function EditTourPage() {
     }));
   };
 
-  const addImage = () => {
-    if (newImage.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        images: [...prev.images, newImage.trim()]
-      }));
-      setNewImage('');
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index)
-    }));
-  };
-
-  const addDate = () => {
-    if (newDate.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        availableDates: [...prev.availableDates, newDate.trim()]
-      }));
-      setNewDate('');
-    }
-  };
-
-  const removeDate = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      availableDates: prev.availableDates.filter((_, i) => i !== index)
-    }));
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -188,7 +188,16 @@ export const tours: Tour[] = [
         ],
         category: 'Unique',
         featured: true,
-        availableDates: ['2025-01-20', '2025-02-25', '2025-03-30']
+        availableDates: ['2025-01-20', '2025-02-25', '2025-03-30'],
+        
+        // Dashboard-specific fields
+        price: 1200,
+        status: 'active',
+        bookings: 8,
+        capacity: 12,
+        guide: 'Jane Smith',
+        rating: 4.8,
+        reviews: 32
     },
     {
         id: 'cultural-heritage-tour',
@@ -271,7 +280,16 @@ export const tours: Tour[] = [
         ],
         category: 'Cultural',
         featured: false,
-        availableDates: ['2025-01-25', '2025-02-28', '2025-04-05']
+        availableDates: ['2025-01-25', '2025-02-28', '2025-04-05'],
+        
+        // Dashboard-specific fields
+        price: 800,
+        status: 'active',
+        bookings: 5,
+        capacity: 15,
+        guide: 'Mike Johnson',
+        rating: 4.6,
+        reviews: 28
     }
 ];
 

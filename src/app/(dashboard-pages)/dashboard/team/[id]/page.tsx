@@ -47,7 +47,7 @@ export default function TeamMemberDetailsPage() {
           <CardContent className="py-8">
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Team Member Not Found</h3>
-              <p className="text-gray-600">The team member you're looking for doesn't exist.</p>
+              <p className="text-gray-600">The team member you&apos;re looking for doesn&apos;t exist.</p>
             </div>
           </CardContent>
         </Card>
