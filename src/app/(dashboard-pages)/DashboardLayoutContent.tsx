@@ -1,22 +1,21 @@
 "use client";
 
-import { useState } from 'react';
-export const dynamic = 'force-dynamic';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { 
-  Menu, 
-  X, 
-  Home, 
-  Calendar, 
-  Car, 
-  FileText, 
-  Users, 
-  MessageSquare, 
+import {
+  Menu,
+  X,
+  Home,
+  Calendar,
+  Car,
+  FileText,
+  Users,
+  MessageSquare,
   LogOut,
   ChevronLeft,
   ChevronRight
@@ -32,7 +31,7 @@ const navigation = [
   { name: 'Testimonials', href: '/dashboard/testimonials', icon: MessageSquare },
 ];
 
-export default function DashboardLayout({
+export default function DashboardLayoutContent({
   children,
 }: {
   children: React.ReactNode;
@@ -43,6 +42,26 @@ export default function DashboardLayout({
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname === href;
+
+  // Restore persisted collapse state on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const saved = localStorage.getItem('dashboard:sidebarCollapsed');
+    if (saved !== null) {
+      setSidebarCollapsed(saved === '1');
+    }
+  }, []);
+
+  // Persist collapse state
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('dashboard:sidebarCollapsed', sidebarCollapsed ? '1' : '0');
+  }, [sidebarCollapsed]);
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
 
   return (
     <ProtectedRoute>
@@ -57,6 +76,7 @@ export default function DashboardLayout({
                   variant="ghost"
                   size="sm"
                   onClick={() => setSidebarOpen(false)}
+                  aria-label="Close sidebar"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -110,10 +130,10 @@ export default function DashboardLayout({
         </Sheet>
 
         {/* Desktop sidebar */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-          <div className="flex flex-col flex-grow bg-white border-r border-gray-200">
+        <div className={cn("hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col", sidebarCollapsed && 'w-16')}>
+          <div className={cn("flex flex-col flex-grow bg-white border-r border-gray-200", sidebarCollapsed && 'w-16')}>
             <div className="flex h-16 items-center justify-between px-4 border-b">
-              <h2 className="text-lg font-semibold">Dashboard</h2>
+              {!sidebarCollapsed && <h2 className="text-lg font-semibold">Dashboard</h2>}
               <Button
                 variant="ghost"
                 size="sm"
@@ -132,11 +152,11 @@ export default function DashboardLayout({
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    'flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors w-full',
                     isActive(item.href)
                       ? 'bg-primary text-primary-foreground'
                       : 'text-gray-700 hover:bg-gray-100',
-                    sidebarCollapsed && 'justify-center'
+                    sidebarCollapsed && 'w-fit'
                   )}
                   title={sidebarCollapsed ? item.name : undefined}
                 >
@@ -167,7 +187,7 @@ export default function DashboardLayout({
                 variant="outline"
                 size="sm"
                 onClick={logout}
-                className={cn('w-full', sidebarCollapsed && 'px-2')}
+                className={cn('w-full', sidebarCollapsed && 'w-fit')}
                 title={sidebarCollapsed ? 'Sign out' : undefined}
               >
                 <LogOut className={cn('h-4 w-4', !sidebarCollapsed && 'mr-2')} />

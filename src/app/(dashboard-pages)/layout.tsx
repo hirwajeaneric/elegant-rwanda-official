@@ -1,6 +1,9 @@
 import { AuthProvider } from "@/contexts/AuthContext";
+import DashboardLayoutContent from "./DashboardLayoutContent";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./../globals.css";
+
+export const dynamic = 'force-dynamic';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -14,8 +17,6 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-export const dynamic = 'force-dynamic';
-
 export default function DashboardLayout({
   children,
 }: {
@@ -26,10 +27,12 @@ export default function DashboardLayout({
       <body
         className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900`}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
-      </body>
+    <AuthProvider>
+      <DashboardLayoutContent>
+        {children}
+      </DashboardLayoutContent>
+    </AuthProvider>
+    </body>
     </html>
   );
 }
