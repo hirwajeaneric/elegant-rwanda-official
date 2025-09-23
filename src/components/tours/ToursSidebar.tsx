@@ -20,7 +20,7 @@ export function ToursSidebar() {
         <div className="space-y-3">
           <div className="flex items-center space-x-2 text-sm">
             <Phone className="h-4 w-4" />
-            <span>‭+250 787 095 392‬</span>
+            <span>+250 787 095 392</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Mail className="h-4 w-4" />
@@ -70,7 +70,7 @@ export function ToursSidebar() {
       {/* Tour Categories */}
       <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Tour Categories</h3>
-        <div className="space-y-3">
+        <div className="space-y-1">
           {[
             { name: "Wildlife Tours", count: 8, color: "bg-green-500" },
             { name: "Cultural Tours", count: 6, color: "bg-blue-500" },
@@ -81,7 +81,7 @@ export function ToursSidebar() {
             <Link
               key={category.name}
               href={`/tours?category=${category.name.toLowerCase().replace(" ", "-")}`}
-              className="flex items-center justify-between p-3 rounded-lg hover:bg-background transition-colors duration-200"
+              className="flex items-center justify-between p-2 rounded-lg hover:bg-background transition-colors duration-200"
             >
               <div className="flex items-center space-x-3">
                 <div className={`w-3 h-3 rounded-full ${category.color}`} />

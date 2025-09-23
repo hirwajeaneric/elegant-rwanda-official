@@ -143,7 +143,7 @@ export function ToursGrid() {
               <div className="absolute top-4 left-4">
                 <Badge 
                   variant="secondary" 
-                  className={`${getCategoryColor(tour.category)} text-white`}
+                  className={`${getCategoryColor(tour.category)} text-black`}
                 >
                   {tour.category}
                 </Badge>

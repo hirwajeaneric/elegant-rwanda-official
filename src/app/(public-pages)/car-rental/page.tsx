@@ -30,8 +30,8 @@ export default function CarRentalPage() {
   return (
     <PageWrapper>
       <CarRentalMainHero />
-      <RentalOptions />
       <FleetGallery />
+      <RentalOptions />
       <CarBookingForm />
       <TermsConditions />
       <CarRentalFAQ />
