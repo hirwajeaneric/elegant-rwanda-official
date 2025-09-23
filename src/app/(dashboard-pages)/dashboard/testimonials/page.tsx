@@ -36,49 +36,22 @@ import {
   ThumbsUp
 } from 'lucide-react';
 import Link from 'next/link';
+import { testimonials } from '@/data/testimonials';
 
-// Mock data
-const testimonials = [
-  {
-    id: 1,
-    customerName: 'Sarah Johnson',
-    customerLocation: 'New York, USA',
-    rating: 5,
-    title: 'Amazing Gorilla Trekking Experience',
-    content: 'The gorilla trekking was absolutely incredible! Our guide was knowledgeable and made sure we had the best experience possible.',
-    tour: 'Gorilla Trekking Adventure',
-    date: '2024-02-10',
-    status: 'approved',
-    verified: true,
-    helpful: 12
-  },
-  {
-    id: 2,
-    customerName: 'Michael Chen',
-    customerLocation: 'Toronto, Canada',
-    rating: 5,
-    title: 'Professional Service',
-    content: 'Elegant Travel & Tours provided excellent service from start to finish. The team was professional and our driver was very skilled.',
-    tour: 'Kigali City Tour',
-    date: '2024-02-08',
-    status: 'approved',
-    verified: true,
-    helpful: 8
-  },
-  {
-    id: 3,
-    customerName: 'Emma Wilson',
-    customerLocation: 'London, UK',
-    rating: 4,
-    title: 'Great Cultural Experience',
-    content: 'The cultural village visit was very educational. We learned so much about Rwandan traditions and history.',
-    tour: 'Cultural Village Experience',
-    date: '2024-02-05',
-    status: 'pending',
-    verified: false,
-    helpful: 5
-  }
-];
+// Use centralized data
+const dashboardTestimonials = testimonials.slice(0, 5).map(testimonial => ({
+  id: parseInt(testimonial.id.replace('testimonial-', '')),
+  customerName: testimonial.customerName,
+  customerLocation: testimonial.customerLocation,
+  rating: testimonial.rating,
+  title: testimonial.title,
+  content: testimonial.content,
+  tour: testimonial.tour || '',
+  date: testimonial.date,
+  status: testimonial.status,
+  verified: testimonial.verified,
+  helpful: testimonial.helpful
+}));
 
 const statusColors = {
   approved: 'bg-green-100 text-green-800',
@@ -90,7 +63,7 @@ export default function TestimonialsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  const filteredTestimonials = testimonials.filter(testimonial => {
+  const filteredTestimonials = dashboardTestimonials.filter(testimonial => {
     const matchesSearch = testimonial.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          testimonial.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || testimonial.status === statusFilter;

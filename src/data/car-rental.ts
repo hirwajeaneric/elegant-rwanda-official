@@ -38,6 +38,24 @@ export interface Vehicle {
     coverage: string;
     excess: string;
   };
+  
+  // Dashboard-specific fields
+  make: string;
+  model: string;
+  year: number;
+  plateNumber: string;
+  dailyRate: number;
+  status: 'available' | 'rented' | 'maintenance';
+  location: string;
+  mileage: number;
+  lastService: string;
+  nextService?: string;
+  maintenanceHistory?: {
+    date: string;
+    type: string;
+    cost: number;
+    description: string;
+  }[];
 }
 
 export const vehicles: Vehicle[] = [
@@ -109,7 +127,33 @@ export const vehicles: Vehicle[] = [
       included: true,
       coverage: "Comprehensive with zero excess",
       excess: "$0"
-    }
+    },
+    
+    // Dashboard-specific fields
+    make: "Toyota",
+    model: "Corolla",
+    year: 2022,
+    plateNumber: "RAA-123A",
+    dailyRate: 80,
+    status: "available",
+    location: "Kigali",
+    mileage: 45000,
+    lastService: "2024-01-15",
+    nextService: "2024-07-15",
+    maintenanceHistory: [
+      {
+        date: "2024-01-15",
+        type: "Regular Service",
+        cost: 150,
+        description: "Oil change, filter replacement, brake inspection"
+      },
+      {
+        date: "2023-10-15",
+        type: "Regular Service",
+        cost: 120,
+        description: "Oil change, tire rotation, general inspection"
+      }
+    ]
   },
   {
     id: "2",
@@ -179,7 +223,27 @@ export const vehicles: Vehicle[] = [
       included: true,
       coverage: "Comprehensive with zero excess",
       excess: "$0"
-    }
+    },
+    
+    // Dashboard-specific fields
+    make: "Honda",
+    model: "CR-V",
+    year: 2021,
+    plateNumber: "RAA-456B",
+    dailyRate: 120,
+    status: "available",
+    location: "Kigali",
+    mileage: 52000,
+    lastService: "2024-02-10",
+    nextService: "2024-08-10",
+    maintenanceHistory: [
+      {
+        date: "2024-02-10",
+        type: "Regular Service",
+        cost: 180,
+        description: "Oil change, brake pad replacement, tire alignment"
+      }
+    ]
   },
   {
     id: "3",

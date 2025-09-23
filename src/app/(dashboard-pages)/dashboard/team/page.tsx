@@ -35,85 +35,24 @@ import {
   Star
 } from 'lucide-react';
 import Link from 'next/link';
+import { team } from '@/data/team';
 
-// Mock data
-const teamMembers = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john@elegantrwanda.com',
-    phone: '+250 788 123 456',
-    position: 'Tour Guide',
-    department: 'Operations',
-    location: 'Kigali',
-    hireDate: '2022-01-15',
-    status: 'active',
-    avatar: '/team-member-1.jpg',
-    rating: 4.8,
-    toursCompleted: 156,
-    languages: ['English', 'French', 'Kinyarwanda']
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'jane@elegantrwanda.com',
-    phone: '+250 788 234 567',
-    position: 'Operations Manager',
-    department: 'Management',
-    location: 'Kigali',
-    hireDate: '2021-06-10',
-    status: 'active',
-    avatar: '/team-member-2.jpg',
-    rating: 4.9,
-    toursCompleted: 89,
-    languages: ['English', 'Swahili', 'Kinyarwanda']
-  },
-  {
-    id: 3,
-    name: 'Mike Johnson',
-    email: 'mike@elegantrwanda.com',
-    phone: '+250 788 345 678',
-    position: 'Driver',
-    department: 'Transport',
-    location: 'Kigali',
-    hireDate: '2022-03-20',
-    status: 'active',
-    avatar: '/team-member-3.jpg',
-    rating: 4.7,
-    toursCompleted: 203,
-    languages: ['English', 'Kinyarwanda']
-  },
-  {
-    id: 4,
-    name: 'Sarah Wilson',
-    email: 'sarah@elegantrwanda.com',
-    phone: '+250 788 456 789',
-    position: 'Marketing Specialist',
-    department: 'Marketing',
-    location: 'Kigali',
-    hireDate: '2023-02-01',
-    status: 'active',
-    avatar: '/team-member-4.jpg',
-    rating: 4.6,
-    toursCompleted: 0,
-    languages: ['English', 'French']
-  },
-  {
-    id: 5,
-    name: 'David Brown',
-    email: 'david@elegantrwanda.com',
-    phone: '+250 788 567 890',
-    position: 'Tour Guide',
-    department: 'Operations',
-    location: 'Musanze',
-    hireDate: '2021-11-15',
-    status: 'inactive',
-    avatar: '/team-member-5.jpg',
-    rating: 4.5,
-    toursCompleted: 134,
-    languages: ['English', 'French', 'Kinyarwanda', 'Swahili']
-  }
-];
+// Use centralized data
+const dashboardTeamMembers = team.map(member => ({
+  id: parseInt(member.id.replace('team-', '')),
+  name: member.name,
+  email: member.email || '',
+  phone: member.phone || '',
+  position: member.role,
+  department: member.department,
+  location: member.location,
+  hireDate: member.hireDate,
+  status: member.status,
+  avatar: member.avatar || member.image,
+  rating: member.rating || 0,
+  toursCompleted: member.toursCompleted || 0,
+  languages: member.languages || []
+}));
 
 const statusColors = {
   active: 'bg-green-100 text-green-800',
@@ -126,7 +65,7 @@ export default function TeamPage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [departmentFilter, setDepartmentFilter] = useState('all');
 
-  const filteredMembers = teamMembers.filter(member => {
+  const filteredMembers = dashboardTeamMembers.filter(member => {
     const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          member.position.toLowerCase().includes(searchTerm.toLowerCase());

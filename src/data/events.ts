@@ -17,6 +17,11 @@ export interface Event {
   featured: boolean;
   registrationDeadline: string;
   status: 'Open' | 'Filling Fast' | 'Waitlist' | 'Closed';
+  
+  // Dashboard-specific fields
+  time: string;
+  price: number;
+  active: boolean;
 }
 
 export const events: Event[] = [
@@ -54,7 +59,12 @@ export const events: Event[] = [
     ],
     featured: true,
     registrationDeadline: '2025-01-15',
-    status: 'Filling Fast'
+    status: 'Filling Fast',
+    
+    // Dashboard-specific fields
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'rwanda-culture-festival',

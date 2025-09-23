@@ -35,75 +35,22 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { blogPosts } from '@/data/blog';
 
-// Mock data
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Best Time to Visit Rwanda: A Complete Guide',
-    excerpt: 'Discover the perfect time to explore Rwanda\'s stunning landscapes and wildlife...',
-    author: 'John Doe',
-    publishDate: '2024-02-10',
-    status: 'published',
-    views: 1250,
-    comments: 23,
-    category: 'Travel Tips',
-    image: '/green-hills-of-rwanda.jpg',
-    readTime: '5 min read'
-  },
-  {
-    id: 2,
-    title: 'Gorilla Trekking: What to Expect',
-    excerpt: 'Everything you need to know before embarking on this once-in-a-lifetime adventure...',
-    author: 'Jane Smith',
-    publishDate: '2024-02-08',
-    status: 'published',
-    views: 2100,
-    comments: 45,
-    category: 'Wildlife',
-    image: '/volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg',
-    readTime: '7 min read'
-  },
-  {
-    id: 3,
-    title: 'Rwandan Culture and Traditions',
-    excerpt: 'Immerse yourself in the rich cultural heritage of Rwanda...',
-    author: 'Mike Johnson',
-    publishDate: '2024-02-05',
-    status: 'draft',
-    views: 0,
-    comments: 0,
-    category: 'Culture',
-    image: '/Nyanza-Traditional-Intore-Dancers-1650x1100.jpg',
-    readTime: '6 min read'
-  },
-  {
-    id: 4,
-    title: 'Top 10 Things to Do in Kigali',
-    excerpt: 'Explore the vibrant capital city with our comprehensive guide...',
-    author: 'Sarah Wilson',
-    publishDate: '2024-02-03',
-    status: 'published',
-    views: 890,
-    comments: 12,
-    category: 'City Guide',
-    image: '/kigali.jpeg',
-    readTime: '4 min read'
-  },
-  {
-    id: 5,
-    title: 'Lake Kivu: A Hidden Gem',
-    excerpt: 'Discover the beauty and activities around Rwanda\'s largest lake...',
-    author: 'David Brown',
-    publishDate: '2024-02-01',
-    status: 'scheduled',
-    views: 0,
-    comments: 0,
-    category: 'Nature',
-    image: '/lake-kivu_Photo-from-Getty-Images.jpg',
-    readTime: '8 min read'
-  }
-];
+// Use centralized data
+const dashboardBlogPosts = blogPosts.slice(0, 5).map(post => ({
+  id: parseInt(post.id.replace('blog-', '')),
+  title: post.title,
+  excerpt: post.excerpt,
+  author: post.author,
+  publishDate: post.publishDate,
+  status: post.status,
+  views: post.views,
+  comments: post.comments,
+  category: post.category,
+  image: post.featuredImage,
+  readTime: post.readTime
+}));
 
 const statusColors = {
   published: 'bg-green-100 text-green-800',
@@ -116,7 +63,7 @@ export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  const filteredPosts = blogPosts.filter(post => {
+  const filteredPosts = dashboardBlogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.author.toLowerCase().includes(searchTerm.toLowerCase());

@@ -34,90 +34,25 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { vehicles } from '@/data/car-rental';
 
-// Mock data
-const cars = [
-  {
-    id: 1,
-    make: 'Toyota',
-    model: 'Land Cruiser Prado',
-    year: 2022,
-    plateNumber: 'RAA-123A',
-    capacity: 7,
-    fuelType: 'Diesel',
-    transmission: 'Automatic',
-    dailyRate: 120,
-    status: 'available',
-    location: 'Kigali',
-    mileage: 45000,
-    image: '/pexels-mikebirdy-170811.jpg',
-    lastService: '2024-01-15'
-  },
-  {
-    id: 2,
-    make: 'Nissan',
-    model: 'X-Trail',
-    year: 2021,
-    plateNumber: 'RAA-456B',
-    capacity: 5,
-    fuelType: 'Petrol',
-    transmission: 'Manual',
-    dailyRate: 80,
-    status: 'rented',
-    location: 'Kigali',
-    mileage: 52000,
-    image: '/pexels-mikebirdy-170811.jpg',
-    lastService: '2024-01-10'
-  },
-  {
-    id: 3,
-    make: 'Mitsubishi',
-    model: 'Pajero Sport',
-    year: 2023,
-    plateNumber: 'RAA-789C',
-    capacity: 7,
-    fuelType: 'Diesel',
-    transmission: 'Automatic',
-    dailyRate: 100,
-    status: 'maintenance',
-    location: 'Kigali',
-    mileage: 12000,
-    image: '/pexels-mikebirdy-170811.jpg',
-    lastService: '2024-02-01'
-  },
-  {
-    id: 4,
-    make: 'Toyota',
-    model: 'Hiace',
-    year: 2020,
-    plateNumber: 'RAA-321D',
-    capacity: 14,
-    fuelType: 'Diesel',
-    transmission: 'Manual',
-    dailyRate: 150,
-    status: 'available',
-    location: 'Kigali',
-    mileage: 78000,
-    image: '/pexels-mikebirdy-170811.jpg',
-    lastService: '2024-01-20'
-  },
-  {
-    id: 5,
-    make: 'Honda',
-    model: 'CR-V',
-    year: 2022,
-    plateNumber: 'RAA-654E',
-    capacity: 5,
-    fuelType: 'Petrol',
-    transmission: 'Automatic',
-    dailyRate: 90,
-    status: 'available',
-    location: 'Kigali',
-    mileage: 35000,
-    image: '/pexels-mikebirdy-170811.jpg',
-    lastService: '2024-01-25'
-  }
-];
+// Use centralized data
+const cars = vehicles.slice(0, 5).map(vehicle => ({
+  id: parseInt(vehicle.id),
+  make: vehicle.make,
+  model: vehicle.model,
+  year: vehicle.year,
+  plateNumber: vehicle.plateNumber,
+  capacity: vehicle.specifications.passengers,
+  fuelType: vehicle.specifications.fuelType,
+  transmission: vehicle.specifications.transmission,
+  dailyRate: vehicle.dailyRate,
+  status: vehicle.status,
+  location: vehicle.location,
+  mileage: vehicle.mileage,
+  image: vehicle.images[0],
+  lastService: vehicle.lastService
+}));
 
 const statusColors = {
   available: 'bg-green-100 text-green-800',

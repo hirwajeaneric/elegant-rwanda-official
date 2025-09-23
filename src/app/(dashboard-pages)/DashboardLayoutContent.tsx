@@ -38,14 +38,16 @@ export default function DashboardLayoutContent({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const { user, logout } = useAuth();
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname === href;
 
-  // Restore persisted collapse state on mount
+  // Handle hydration
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    setIsHydrated(true);
+    // Restore persisted collapse state on mount
     const saved = localStorage.getItem('dashboard:sidebarCollapsed');
     if (saved !== null) {
       setSidebarCollapsed(saved === '1');
@@ -54,14 +56,28 @@ export default function DashboardLayoutContent({
 
   // Persist collapse state
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!isHydrated) return;
     localStorage.setItem('dashboard:sidebarCollapsed', sidebarCollapsed ? '1' : '0');
-  }, [sidebarCollapsed]);
+  }, [sidebarCollapsed, isHydrated]);
 
   // Close mobile sidebar on route change
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
+
+  // Show loading state until hydrated to prevent hydration mismatches
+  if (!isHydrated) {
+    return (
+      <ProtectedRoute>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
 
   return (
     <ProtectedRoute>
@@ -103,15 +119,15 @@ export default function DashboardLayoutContent({
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
                     <span className="text-sm font-medium text-primary-foreground">
-                      {user?.name?.charAt(0)}
+                      {isHydrated && user?.name?.charAt(0)}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">
-                      {user?.name}
+                      {isHydrated && user?.name}
                     </p>
                     <p className="text-xs text-gray-500 truncate">
-                      {user?.email}
+                      {isHydrated && user?.email}
                     </p>
                   </div>
                 </div>
@@ -169,16 +185,16 @@ export default function DashboardLayoutContent({
               <div className={cn('flex items-center space-x-3 mb-4', sidebarCollapsed && 'justify-center')}>
                 <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
                   <span className="text-sm font-medium text-primary-foreground">
-                    {user?.name?.charAt(0)}
+                    {isHydrated && user?.name?.charAt(0)}
                   </span>
                 </div>
                 {!sidebarCollapsed && (
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">
-                      {user?.name}
+                      {isHydrated && user?.name}
                     </p>
                     <p className="text-xs text-gray-500 truncate">
-                      {user?.email}
+                      {isHydrated && user?.email}
                     </p>
                   </div>
                 )}
@@ -215,15 +231,15 @@ export default function DashboardLayoutContent({
                   <div className="flex items-center space-x-2">
                     <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
                       <span className="text-sm font-medium text-primary-foreground">
-                        {user?.name?.charAt(0)}
+                        {isHydrated && user?.name?.charAt(0)}
                       </span>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900">
-                        {user?.name}
+                        {isHydrated && user?.name}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {user?.email}
+                        {isHydrated && user?.email}
                       </p>
                     </div>
                   </div>

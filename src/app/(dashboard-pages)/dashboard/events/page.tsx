@@ -34,70 +34,21 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { events } from '@/data/events';
 
-// Mock data
-const events = [
-  {
-    id: 1,
-    title: 'Gorilla Trekking Adventure',
-    date: '2024-02-15',
-    time: '08:00 AM',
-    location: 'Volcanoes National Park',
-    capacity: 24,
-    booked: 18,
-    price: 1500,
-    status: 'active',
-    image: '/volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg'
-  },
-  {
-    id: 2,
-    title: 'Kigali City Tour',
-    date: '2024-02-20',
-    time: '09:00 AM',
-    location: 'Kigali City Center',
-    capacity: 30,
-    booked: 25,
-    price: 80,
-    status: 'active',
-    image: '/kigali.jpeg'
-  },
-  {
-    id: 3,
-    title: 'Lake Kivu Sunset Cruise',
-    date: '2024-02-25',
-    time: '04:00 PM',
-    location: 'Lake Kivu',
-    capacity: 20,
-    booked: 12,
-    price: 120,
-    status: 'active',
-    image: '/lake-kivu_Photo-from-Getty-Images.jpg'
-  },
-  {
-    id: 4,
-    title: 'Cultural Village Experience',
-    date: '2024-03-01',
-    time: '10:00 AM',
-    location: 'Iby\'Iwacu Cultural Village',
-    capacity: 25,
-    booked: 8,
-    price: 60,
-    status: 'draft',
-    image: '/IbyIwacu-Cultural-Village.jpg'
-  },
-  {
-    id: 5,
-    title: 'Nyungwe Forest Canopy Walk',
-    date: '2024-03-05',
-    time: '07:00 AM',
-    location: 'Nyungwe National Park',
-    capacity: 15,
-    booked: 15,
-    price: 200,
-    status: 'full',
-    image: '/nyungwe_national_park.jpg'
-  }
-];
+// Use centralized data
+const dashboardEvents = events.slice(0, 5).map(event => ({
+  id: parseInt(event.id.replace(/\D/g, '') || '1'),
+  title: event.title,
+  date: event.date,
+  time: event.time,
+  location: event.location,
+  capacity: event.maxParticipants,
+  booked: event.currentParticipants,
+  price: event.price,
+  status: event.active ? 'Open' : 'Closed',
+  image: event.images[0]
+}));
 
 const statusColors = {
   active: 'bg-green-100 text-green-800',
@@ -110,7 +61,7 @@ export default function EventsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  const filteredEvents = events.filter(event => {
+  const filteredEvents = dashboardEvents.filter(event => {
     const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.location.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || event.status === statusFilter;
@@ -134,7 +85,7 @@ export default function EventsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardContent>
             <div className="flex items-center">
@@ -152,7 +103,7 @@ export default function EventsPage() {
               <Users className="h-8 w-8 text-green-500" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Active Events</p>
-                <p className="text-2xl font-bold">{events.filter(e => e.status === 'active').length}</p>
+                <p className="text-2xl font-bold">{events.filter(e => e.status === 'Open').length}</p>
               </div>
             </div>
           </CardContent>
@@ -160,23 +111,10 @@ export default function EventsPage() {
         <Card>
           <CardContent>
             <div className="flex items-center">
-              <Clock className="h-8 w-8 text-orange-500" />
+              <Clock className="h-8 w-8 text-red-500" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Bookings</p>
-                <p className="text-2xl font-bold">{events.reduce((sum, event) => sum + event.booked, 0)}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent>
-            <div className="flex items-center">
-              <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center">
-                <span className="text-purple-600 font-bold">$</span>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Revenue</p>
-                <p className="text-2xl font-bold">${events.reduce((sum, event) => sum + (event.booked * event.price), 0).toLocaleString()}</p>
+                <p className="text-sm font-medium text-gray-600">Closed Events</p>
+                <p className="text-2xl font-bold">{events.filter(e => e.status === 'Closed').length}</p>
               </div>
             </div>
           </CardContent>
@@ -209,14 +147,17 @@ export default function EventsPage() {
                 <DropdownMenuItem onClick={() => setStatusFilter('all')}>
                   All Events
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('active')}>
+                <DropdownMenuItem onClick={() => setStatusFilter('Open')}>
                   Active
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('draft')}>
+                <DropdownMenuItem onClick={() => setStatusFilter('Closed')}>
                   Draft
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('full')}>
+                <DropdownMenuItem onClick={() => setStatusFilter('Waitlist')}>
                   Full
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setStatusFilter('Filling Fast')}>
+                  Filling Fast
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

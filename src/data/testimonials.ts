@@ -10,6 +10,16 @@ export interface Testimonial {
   featured: boolean;
   metaTitle?: string;
   metaDescription?: string;
+  
+  // Dashboard-specific fields
+  customerName: string;
+  customerLocation: string;
+  title: string;
+  content: string;
+  tour?: string;
+  status: 'approved' | 'pending' | 'rejected';
+  verified: boolean;
+  helpful: number;
 }
 
 export const testimonials: Testimonial[] = [
@@ -24,7 +34,17 @@ export const testimonials: Testimonial[] = [
     date: '2024-12-15',
     featured: true,
     metaTitle: 'Sarah Johnson - Gorilla Trekking Review | Elegant Travel and Tours',
-    metaDescription: 'Read Sarah Johnson\'s 5-star review of her gorilla trekking experience with Elegant Travel and Tours. Perfect service from airport pickup to final goodbye.'
+    metaDescription: 'Read Sarah Johnson\'s 5-star review of her gorilla trekking experience with Elegant Travel and Tours. Perfect service from airport pickup to final goodbye.',
+    
+    // Dashboard-specific fields
+    customerName: 'Sarah Johnson',
+    customerLocation: 'New York, USA',
+    title: 'Amazing Gorilla Trekking Experience',
+    content: 'The gorilla trekking experience was absolutely incredible! Our guide was knowledgeable and made sure we had the best experience possible.',
+    tour: 'Gorilla Trekking Adventure',
+    status: 'approved',
+    verified: true,
+    helpful: 12
   },
   {
     id: 'testimonial-2',
@@ -37,7 +57,17 @@ export const testimonials: Testimonial[] = [
     date: '2024-12-10',
     featured: true,
     metaTitle: 'Michael Chen - Cab Booking Review | Elegant Travel and Tours',
-    metaDescription: 'Read Michael Chen\'s 5-star review of Elegant Travel and Tours\'s cab booking service. Professional drivers and punctual pickups throughout Rwanda.'
+    metaDescription: 'Read Michael Chen\'s 5-star review of Elegant Travel and Tours\'s cab booking service. Professional drivers and punctual pickups throughout Rwanda.',
+    
+    // Dashboard-specific fields
+    customerName: 'Michael Chen',
+    customerLocation: 'London, UK',
+    title: 'Professional Service',
+    content: 'Elegant Travel & Tours provided excellent service from start to finish. The team was professional and our driver was very skilled.',
+    tour: 'Kigali City Tour',
+    status: 'approved',
+    verified: true,
+    helpful: 8
   },
   {
     id: 'testimonial-3',

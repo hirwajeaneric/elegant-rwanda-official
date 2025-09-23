@@ -14,6 +14,11 @@ export interface BlogPost {
   slug: string;
   metaTitle?: string;
   metaDescription?: string;
+  
+  // Dashboard-specific fields
+  status: 'published' | 'draft' | 'scheduled';
+  views: number;
+  comments: number;
 }
 
 export const blogPosts: BlogPost[] = [
@@ -99,7 +104,12 @@ export const blogPosts: BlogPost[] = [
     featured: true,
     slug: 'ultimate-guide-gorilla-trekking-rwanda',
     metaTitle: 'Ultimate Guide to Gorilla Trekking in Rwanda - Wildlife Tours | Elegant Travel and Tours',
-    metaDescription: 'Everything you need to know about planning your once-in-a-lifetime gorilla trekking adventure in Rwanda\'s Volcanoes National Park. Expert tips and guidance.'
+    metaDescription: 'Everything you need to know about planning your once-in-a-lifetime gorilla trekking adventure in Rwanda\'s Volcanoes National Park. Expert tips and guidance.',
+    
+    // Dashboard-specific fields
+    status: 'published',
+    views: 1250,
+    comments: 23
   },
   {
     id: 'blog-2',
@@ -181,7 +191,12 @@ export const blogPosts: BlogPost[] = [
     featured: true,
     slug: 'discovering-rwandas-hidden-cultural-gems',
     metaTitle: 'Discovering Rwanda\'s Hidden Cultural Gems - Cultural Tours | Elegant Travel and Tours',
-    metaDescription: 'Explore the rich cultural heritage of Rwanda beyond the typical tourist destinations, from traditional villages to contemporary art scenes.'
+    metaDescription: 'Explore the rich cultural heritage of Rwanda beyond the typical tourist destinations, from traditional villages to contemporary art scenes.',
+    
+    // Dashboard-specific fields
+    status: 'published',
+    views: 2100,
+    comments: 45
   },
   {
     id: 'blog-3',

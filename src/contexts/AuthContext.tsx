@@ -23,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
   const router = useRouter();
 
   // Simulated user data
@@ -34,12 +35,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    // Handle hydration
+    setIsHydrated(true);
     // Check if user is logged in on mount
-    if (typeof window !== 'undefined') {
-      const savedUser = localStorage.getItem('user');
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
-      }
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     }
     setIsLoading(false);
   }, []);
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Check credentials
     if (email === 'admin@gmail.com' && password === 'password123') {
       setUser(mockUser);
-      if (typeof window !== 'undefined') {
+      if (isHydrated) {
         localStorage.setItem('user', JSON.stringify(mockUser));
       }
       setIsLoading(false);
@@ -66,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     setUser(null);
-    if (typeof window !== 'undefined') {
+    if (isHydrated) {
       localStorage.removeItem('user');
     }
     router.push('/auth');

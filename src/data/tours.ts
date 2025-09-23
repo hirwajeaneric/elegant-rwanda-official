@@ -18,6 +18,15 @@ export interface Tour {
     category: 'Wildlife' | 'Cultural' | 'Adventure' | 'Unique' | 'Nature';
     featured: boolean;
     availableDates: string[];
+    
+    // Dashboard-specific fields
+    price: number;
+    status: 'active' | 'draft' | 'scheduled';
+    bookings: number;
+    capacity: number;
+    guide?: string;
+    rating?: number;
+    reviews?: number;
 }
 
 export interface Day {
@@ -95,7 +104,16 @@ export const tours: Tour[] = [
         ],
         category: 'Wildlife',
         featured: true,
-        availableDates: ['2025-01-15', '2025-02-20', '2025-03-25']
+        availableDates: ['2025-01-15', '2025-02-20', '2025-03-25'],
+        
+        // Dashboard-specific fields
+        price: 1500,
+        status: 'active',
+        bookings: 12,
+        capacity: 8,
+        guide: 'John Doe',
+        rating: 4.9,
+        reviews: 45
     },
     {
         id: 'lake-kivu-retreat',
