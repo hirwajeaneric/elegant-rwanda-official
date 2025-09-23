@@ -315,7 +315,26 @@ export const vehicles: Vehicle[] = [
       included: true,
       coverage: "Comprehensive with zero excess",
       excess: "$0"
-    }
+    },
+    // Dashboard-specific fields
+    make: "Mercedes",
+    model: "C-Class",
+    year: 2022,
+    plateNumber: "RAA-789C",
+    dailyRate: 150,
+    status: "available",
+    location: "Kigali",
+    mileage: 55000,
+    lastService: "2024-03-15",
+    nextService: "2024-09-15",
+    maintenanceHistory: [
+      {
+        date: "2024-03-15",
+        type: "Regular Service",
+        cost: 200,
+        description: "Oil change, brake pad replacement, tire alignment"
+      }
+    ]
   },
   {
     id: "4",
@@ -385,7 +404,26 @@ export const vehicles: Vehicle[] = [
       included: true,
       coverage: "Comprehensive with zero excess",
       excess: "$0"
-    }
+    },
+    // Dashboard-specific fields
+    make: "Toyota",
+    model: "Hiace",
+    year: 2021,
+    plateNumber: "RAA-101D",
+    dailyRate: 100,
+    status: "available",
+    location: "Kigali",
+    mileage: 60000,
+    lastService: "2024-04-10",
+    nextService: "2024-10-10",
+    maintenanceHistory: [
+      {
+        date: "2024-04-10",
+        type: "Regular Service",
+        cost: 160,
+        description: "Oil change, brake pad replacement, tire alignment"
+      }
+    ]
   },
   {
     id: "5",
@@ -457,7 +495,26 @@ export const vehicles: Vehicle[] = [
       included: true,
       coverage: "Comprehensive with zero excess",
       excess: "$0"
-    }
+    },
+    // Dashboard-specific fields
+    make: "Land Rover",
+    model: "Defender",
+    year: 2022,
+    plateNumber: "RAA-202E",
+    dailyRate: 180,
+    status: "rented",
+    location: "Kigali",
+    mileage: 70000,
+    lastService: "2024-05-15",
+    nextService: "2024-11-15",
+    maintenanceHistory: [
+      {
+        date: "2024-05-15",
+        type: "Regular Service",
+        cost: 220,
+        description: "Oil change, brake pad replacement, tire alignment"
+      }
+    ]
   },
   {
     id: "6",
@@ -529,7 +586,26 @@ export const vehicles: Vehicle[] = [
       included: true,
       coverage: "Comprehensive with zero excess",
       excess: "$0"
-    }
+    },
+    // Dashboard-specific fields
+    make: "BMW",
+    model: "5 Series",
+    year: 2022,
+    plateNumber: "RAA-303F",
+    dailyRate: 200,
+    status: "available",
+    location: "Kigali",
+    mileage: 75000,
+    lastService: "2024-06-15",
+    nextService: "2024-12-15",
+    maintenanceHistory: [
+      {
+        date: "2024-06-15",
+        type: "Regular Service",
+        cost: 240,
+        description: "Oil change, brake pad replacement, tire alignment"
+      }
+    ]
   }
 ];
 

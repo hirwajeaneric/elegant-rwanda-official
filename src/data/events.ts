@@ -99,7 +99,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2025-02-20',
-    status: 'Open'
+    status: 'Open',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'lake-kivu-Unique-retreat',
@@ -138,7 +141,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2025-03-10',
-    status: 'Open'
+    status: 'Open',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'adventure-challenge-2025',
@@ -173,7 +179,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2025-04-05',
-    status: 'Filling Fast'
+    status: 'Filling Fast',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'coffee-tea-experience-2025',
@@ -208,7 +217,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2025-05-15',
-    status: 'Closed'
+    status: 'Closed',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'bird-watching-expedition-2025',
@@ -243,7 +255,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2025-06-10',
-    status: 'Closed'
+    status: 'Closed',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
 
   // PAST EVENTS
@@ -280,7 +295,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2024-07-15',
-    status: 'Closed'
+    status: 'Closed',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'past-culture-festival-2024',
@@ -315,7 +333,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2024-05-20',
-    status: 'Closed'
+    status: 'Closed',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'past-lake-kivu-retreat-2024',
@@ -350,7 +371,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2024-08-10',
-    status: 'Closed'
+    status: 'Closed',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   },
   {
     id: 'past-adventure-challenge-2024',
@@ -385,7 +409,10 @@ export const events: Event[] = [
     ],
     featured: false,
     registrationDeadline: '2024-09-05',
-    status: 'Closed'
+    status: 'Closed',
+    time: '08:00 AM',
+    price: 1500,
+    active: true
   }
 ];
 

@@ -100,7 +100,7 @@ export const blogPosts: BlogPost[] = [
     readTime: '8 min read',
     category: 'Tours',
     tags: ['Gorilla Trekking', 'Wildlife', 'Volcanoes National Park', 'Adventure'],
-    featuredImage: 'volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg',
+    featuredImage: '/volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg',
     featured: true,
     slug: 'ultimate-guide-gorilla-trekking-rwanda',
     metaTitle: 'Ultimate Guide to Gorilla Trekking in Rwanda - Wildlife Tours | Elegant Travel and Tours',
@@ -187,7 +187,7 @@ export const blogPosts: BlogPost[] = [
     readTime: '6 min read',
     category: 'Culture',
     tags: ['Culture', 'Traditional Villages', 'Art', 'Music', 'Crafts'],
-    featuredImage: 'Umuganura-Muhondo-Gakenke-Paying-tribute-to-the-king.jpg',
+    featuredImage: '/Umuganura-Muhondo-Gakenke-Paying-tribute-to-the-king.jpg',
     featured: true,
     slug: 'discovering-rwandas-hidden-cultural-gems',
     metaTitle: 'Discovering Rwanda\'s Hidden Cultural Gems - Cultural Tours | Elegant Travel and Tours',
@@ -274,7 +274,10 @@ export const blogPosts: BlogPost[] = [
     featured: false,
     slug: 'Unique-travel-rwanda-beyond-ordinary',
     metaTitle: 'Unique Travel in Rwanda: Beyond the Ordinary - Premium Tours | Elegant Travel and Tours',
-    metaDescription: 'Experience Rwanda\'s finest Unique accommodations, exclusive experiences, and personalized services that redefine Unique travel in Africa.'
+    metaDescription: 'Experience Rwanda\'s finest Unique accommodations, exclusive experiences, and personalized services that redefine Unique travel in Africa.',
+    status: 'published',
+    views: 2100,
+    comments: 45
   }
 ];
 
@@ -413,11 +416,14 @@ export const blogPostsExtended: BlogPost[] = [
     readTime: '10 min read',
     category: 'Wildlife',
     tags: ['Photography', 'Wildlife', 'Gorillas', 'Techniques', 'Equipment'],
-    featuredImage: 'gorilla-trekking-rwanda.jpg',
+    featuredImage: '/gorilla-trekking-rwanda.jpg',
     featured: false,
     slug: 'rwanda-wildlife-photography-tips-locations',
     metaTitle: 'Rwanda Wildlife Photography: Tips & Best Locations | Elegant Travel and Tours',
-    metaDescription: 'Master the art of wildlife photography in Rwanda with expert tips, best locations, and techniques for capturing stunning images.'
+    metaDescription: 'Master the art of wildlife photography in Rwanda with expert tips, best locations, and techniques for capturing stunning images.',
+    status: 'published',
+    views: 2100,
+    comments: 45
   },
   {
     id: 'blog-5',
@@ -549,10 +555,13 @@ export const blogPostsExtended: BlogPost[] = [
     readTime: '12 min read',
     category: 'Tips',
     tags: ['Sustainability', 'Conservation', 'Community', 'Eco-Tourism', 'Environment'],
-    featuredImage: 'rwanda-green-city.jpg',
+    featuredImage: '/rwanda-green-city.jpg',
     featured: true,
     slug: 'sustainable-tourism-rwanda-complete-guide',
     metaTitle: 'Sustainable Tourism in Rwanda: A Complete Guide | Elegant Travel and Tours',
-    metaDescription: 'Discover how Rwanda leads the way in sustainable tourism practices and how you can travel responsibly while supporting local communities.'
+    metaDescription: 'Discover how Rwanda leads the way in sustainable tourism practices and how you can travel responsibly while supporting local communities.',
+    status: 'published',
+    views: 2100,
+    comments: 45
   }
 ];

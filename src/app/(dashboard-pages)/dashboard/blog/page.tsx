@@ -39,7 +39,7 @@ import { blogPosts } from '@/data/blog';
 
 // Use centralized data
 const dashboardBlogPosts = blogPosts.slice(0, 5).map(post => ({
-  id: parseInt(post.id.replace('blog-', '')),
+  id: post.id,
   title: post.title,
   excerpt: post.excerpt,
   author: post.author,

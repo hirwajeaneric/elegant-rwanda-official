@@ -38,7 +38,7 @@ import { events } from '@/data/events';
 
 // Use centralized data
 const dashboardEvents = events.slice(0, 5).map(event => ({
-  id: parseInt(event.id.replace(/\D/g, '') || '1'),
+  id: event.id,
   title: event.title,
   date: event.date,
   time: event.time,

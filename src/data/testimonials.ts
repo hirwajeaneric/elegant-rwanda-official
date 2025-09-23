@@ -80,7 +80,15 @@ export const testimonials: Testimonial[] = [
     date: '2024-12-08',
     featured: true,
     metaTitle: 'Emma Rodriguez - Lake Kivu Retreat Review | Elegant Travel and Tours',
-    metaDescription: 'Read Emma Rodriguez\'s 5-star review of the Lake Kivu retreat. Perfect blend of Unique and adventure with world-class spa treatments.'
+    metaDescription: 'Read Emma Rodriguez\'s 5-star review of the Lake Kivu retreat. Perfect blend of Unique and adventure with world-class spa treatments.',
+    customerName: 'Emma Rodriguez',
+    customerLocation: 'Toronto, Canada',
+    title: 'Lake Kivu Retreat',
+    content: 'The Lake Kivu retreat exceeded all expectations. The team at Elegant Travel and Tours created a perfect blend of Unique and adventure. The spa treatments and water activities were world-class.',
+    tour: 'Lake Kivu Retreat',
+    status: 'approved',
+    verified: true,
+    helpful: 10
   },
   {
     id: 'testimonial-4',
@@ -93,7 +101,15 @@ export const testimonials: Testimonial[] = [
     date: '2024-12-05',
     featured: true,
     metaTitle: 'David Thompson - Car Rental Review | Elegant Travel and Tours',
-    metaDescription: 'Read David Thompson\'s 5-star review of Elegant Travel and Tours\'s car rental service. Perfect 4x4 for safari adventures with excellent support.'
+    metaDescription: 'Read David Thompson\'s 5-star review of Elegant Travel and Tours\'s car rental service. Perfect 4x4 for safari adventures with excellent support.',
+    customerName: 'David Thompson',
+    customerLocation: 'Sydney, Australia',
+    title: 'Car Rental Service',
+    content: 'Car rental service was seamless. They provided a perfect 4x4 for our safari adventure. The vehicle was in excellent condition and the support team was always available when needed.',
+    tour: 'Safari Adventure',
+    status: 'approved',
+    verified: true,
+    helpful: 10
   },
   {
     id: 'testimonial-5',
@@ -106,7 +122,15 @@ export const testimonials: Testimonial[] = [
     date: '2024-12-01',
     featured: false,
     metaTitle: 'Lisa Wang - Air Travel Assistance Review | Elegant Travel and Tours',
-    metaDescription: 'Read Lisa Wang\'s 5-star review of Elegant Travel and Tours\'s air travel assistance. Perfect visa handling and stress-free airport transfers.'
+    metaDescription: 'Read Lisa Wang\'s 5-star review of Elegant Travel and Tours\'s air travel assistance. Perfect visa handling and stress-free airport transfers.',
+    customerName: 'Lisa Wang',
+    customerLocation: 'Singapore',
+    title: 'Air Travel Assistance',
+    content: 'Air travel assistance was invaluable. They handled our visa applications and airport transfers perfectly. Made our arrival in Rwanda stress-free and enjoyable.',
+    tour: 'Air Travel Assistance',
+    status: 'approved',
+    verified: true,
+    helpful: 10
   },
   {
     id: 'testimonial-6',
@@ -119,7 +143,15 @@ export const testimonials: Testimonial[] = [
     date: '2024-11-28',
     featured: false,
     metaTitle: 'James Wilson - Cultural Festival Review | Elegant Travel and Tours',
-    metaDescription: 'Read James Wilson\'s 5-star review of the cultural festival organized by Elegant Travel and Tours. Authentic performances and engaging workshops.'
+    metaDescription: 'Read James Wilson\'s 5-star review of the cultural festival organized by Elegant Travel and Tours. Authentic performances and engaging workshops.',
+    customerName: 'James Wilson',
+    customerLocation: 'Dublin, Ireland',
+    title: 'Cultural Festival',
+    content: 'Attended the cultural festival and it was an amazing experience. Elegant Travel and Tours organized everything flawlessly. The traditional performances and workshops were authentic and engaging.',
+    tour: 'Cultural Festival',
+    status: 'approved',
+    verified: true,
+    helpful: 10
   },
   {
     id: 'testimonial-7',
@@ -132,7 +164,15 @@ export const testimonials: Testimonial[] = [
     date: '2024-11-25',
     featured: false,
     metaTitle: 'Maria Garcia - Family Tour Review | Elegant Travel and Tours',
-    metaDescription: 'Read Maria Garcia\'s 5-star review of their family tour with Elegant Travel and Tours. Perfectly tailored experiences for all ages.'
+    metaDescription: 'Read Maria Garcia\'s 5-star review of their family tour with Elegant Travel and Tours. Perfectly tailored experiences for all ages.',
+    customerName: 'Maria Garcia',
+    customerLocation: 'Madrid, Spain',
+    title: 'Family Tour',
+    content: 'Our family tour was perfectly tailored to our needs. The kids loved the cultural activities and we appreciated the Unique accommodations. Professional service from start to finish.',
+    tour: 'Family Tour',
+    status: 'approved',
+    verified: true,
+    helpful: 10
   },
   {
     id: 'testimonial-8',
@@ -145,7 +185,15 @@ export const testimonials: Testimonial[] = [
     date: '2024-11-20',
     featured: false,
     metaTitle: 'Robert Kim - Business Travel Review | Elegant Travel and Tours',
-    metaDescription: 'Read Robert Kim\'s 5-star review of Elegant Travel and Tours\'s cab service for business travel. Professional drivers and clean vehicles.'
+    metaDescription: 'Read Robert Kim\'s 5-star review of Elegant Travel and Tours\'s cab service for business travel. Professional drivers and clean vehicles.',
+    customerName: 'Robert Kim',
+    customerLocation: 'Seoul, South Korea',
+    title: 'Business Travel',
+    content: 'Exceptional cab service during our business trip. The drivers were professional and the vehicles were always clean and comfortable. Perfect for corporate travel needs.',
+    tour: 'Business Travel',
+    status: 'approved',
+    verified: true,
+    helpful: 10
   }
 ];
 

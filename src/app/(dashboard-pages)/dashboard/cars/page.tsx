@@ -38,7 +38,7 @@ import { vehicles } from '@/data/car-rental';
 
 // Use centralized data
 const cars = vehicles.slice(0, 5).map(vehicle => ({
-  id: parseInt(vehicle.id),
+  id: vehicle.id,
   make: vehicle.make,
   model: vehicle.model,
   year: vehicle.year,

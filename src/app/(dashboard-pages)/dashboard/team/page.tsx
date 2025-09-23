@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { 
+import {
   Table,
   TableBody,
   TableCell,
@@ -19,18 +19,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  MoreHorizontal, 
-  Edit, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Edit,
+  Trash2,
   Eye,
   Users,
   Mail,
   Phone,
-  MapPin,
   UserCheck,
   Star
 } from 'lucide-react';
@@ -39,7 +38,7 @@ import { team } from '@/data/team';
 
 // Use centralized data
 const dashboardTeamMembers = team.map(member => ({
-  id: parseInt(member.id.replace('team-', '')),
+  id: member.id,
   name: member.name,
   email: member.email || '',
   phone: member.phone || '',
@@ -57,7 +56,6 @@ const dashboardTeamMembers = team.map(member => ({
 const statusColors = {
   active: 'bg-green-100 text-green-800',
   inactive: 'bg-gray-100 text-gray-800',
-  on_leave: 'bg-yellow-100 text-yellow-800'
 };
 
 export default function TeamPage() {
@@ -67,14 +65,14 @@ export default function TeamPage() {
 
   const filteredMembers = dashboardTeamMembers.filter(member => {
     const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.position.toLowerCase().includes(searchTerm.toLowerCase());
+      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.position.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || member.status === statusFilter;
     const matchesDepartment = departmentFilter === 'all' || member.department === departmentFilter;
     return matchesSearch && matchesStatus && matchesDepartment;
   });
 
-  const departments = [...new Set(teamMembers.map(member => member.department))];
+  const departments = [...new Set(dashboardTeamMembers.map(member => member.department))];
 
   return (
     <div className="space-y-6">
@@ -100,7 +98,7 @@ export default function TeamPage() {
               <Users className="h-8 w-8 text-blue-500" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Members</p>
-                <p className="text-2xl font-bold">{teamMembers.length}</p>
+                <p className="text-2xl font-bold">{dashboardTeamMembers.length}</p>
               </div>
             </div>
           </CardContent>
@@ -111,7 +109,7 @@ export default function TeamPage() {
               <UserCheck className="h-8 w-8 text-green-500" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Active</p>
-                <p className="text-2xl font-bold">{teamMembers.filter(m => m.status === 'active').length}</p>
+                <p className="text-2xl font-bold">{dashboardTeamMembers.filter(m => m.status === 'active').length}</p>
               </div>
             </div>
           </CardContent>
@@ -123,7 +121,7 @@ export default function TeamPage() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Avg. Rating</p>
                 <p className="text-2xl font-bold">
-                  {(teamMembers.reduce((sum, member) => sum + member.rating, 0) / teamMembers.length).toFixed(1)}
+                  {(dashboardTeamMembers.reduce((sum, member) => sum + member.rating, 0) / dashboardTeamMembers.length).toFixed(1)}
                 </p>
               </div>
             </div>
@@ -137,7 +135,7 @@ export default function TeamPage() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Tours</p>
-                <p className="text-2xl font-bold">{teamMembers.reduce((sum, member) => sum + member.toursCompleted, 0)}</p>
+                <p className="text-2xl font-bold">{dashboardTeamMembers.reduce((sum, member) => sum + member.toursCompleted, 0)}</p>
               </div>
             </div>
           </CardContent>
@@ -179,7 +177,7 @@ export default function TeamPage() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline">
