@@ -127,7 +127,7 @@ export default function TestimonialsPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <MessageSquare className="h-8 w-8 text-blue-500" />
               <div className="ml-4">
@@ -138,7 +138,7 @@ export default function TestimonialsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <CheckCircle className="h-8 w-8 text-green-500" />
               <div className="ml-4">
@@ -149,7 +149,7 @@ export default function TestimonialsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Clock className="h-8 w-8 text-yellow-500" />
               <div className="ml-4">
@@ -160,7 +160,7 @@ export default function TestimonialsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Star className="h-8 w-8 text-purple-500" />
               <div className="ml-4">
@@ -176,7 +176,7 @@ export default function TestimonialsPage() {
 
       {/* Filters and Search */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -229,7 +229,6 @@ export default function TestimonialsPage() {
                   <TableHead>Customer</TableHead>
                   <TableHead>Review</TableHead>
                   <TableHead>Rating</TableHead>
-                  <TableHead>Tour</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -273,9 +272,6 @@ export default function TestimonialsPage() {
                         {renderStars(testimonial.rating)}
                         <span className="text-sm font-medium ml-1">{testimonial.rating}</span>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{testimonial.tour}</Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-1">

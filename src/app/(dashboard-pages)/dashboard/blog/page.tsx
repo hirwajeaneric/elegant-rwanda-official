@@ -143,7 +143,7 @@ export default function BlogPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <FileText className="h-8 w-8 text-blue-500" />
               <div className="ml-4">
@@ -154,7 +154,7 @@ export default function BlogPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
                 <FileText className="h-4 w-4 text-green-600" />
@@ -167,7 +167,7 @@ export default function BlogPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <EyeIcon className="h-8 w-8 text-purple-500" />
               <div className="ml-4">
@@ -178,7 +178,7 @@ export default function BlogPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <MessageSquare className="h-8 w-8 text-orange-500" />
               <div className="ml-4">
@@ -192,7 +192,7 @@ export default function BlogPage() {
 
       {/* Filters and Search */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -243,11 +243,8 @@ export default function BlogPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Post</TableHead>
-                  <TableHead>Author</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Publish Date</TableHead>
-                  <TableHead>Views</TableHead>
-                  <TableHead>Comments</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -268,7 +265,6 @@ export default function BlogPage() {
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="font-medium text-gray-900 truncate">{post.title}</p>
-                          <p className="text-sm text-gray-500 truncate">{post.excerpt}</p>
                           <div className="flex items-center space-x-2 mt-1">
                             <span className="text-xs text-gray-400">{post.readTime}</span>
                             <span className="text-xs text-gray-400">•</span>
@@ -278,34 +274,12 @@ export default function BlogPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
-                          <span className="text-xs font-medium text-primary-foreground">
-                            {post.author.charAt(0)}
-                          </span>
-                        </div>
-                        <span className="text-sm">{post.author}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
                       <Badge variant="outline">{post.category}</Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4 text-gray-400" />
                         <span className="text-sm">{new Date(post.publishDate).toLocaleDateString()}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-1">
-                        <EyeIcon className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm">{post.views.toLocaleString()}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-1">
-                        <MessageSquare className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm">{post.comments}</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -348,43 +322,6 @@ export default function BlogPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Top Performing Posts */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Performing Posts</CardTitle>
-          <CardDescription>Your most popular content this month</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {blogPosts
-              .filter(post => post.status === 'published')
-              .sort((a, b) => b.views - a.views)
-              .slice(0, 3)
-              .map((post, index) => (
-                <div key={post.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
-                  <div className="flex-shrink-0">
-                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                      <span className="text-sm font-bold text-primary-foreground">#{index + 1}</span>
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 truncate">{post.title}</p>
-                    <p className="text-sm text-gray-500">{post.views.toLocaleString()} views</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge variant="outline">{post.category}</Badge>
-                    <Button size="sm" variant="ghost" asChild>
-                      <Link href={`/blog/${post.id}`}>
-                        <Eye className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              ))}
           </div>
         </CardContent>
       </Card>

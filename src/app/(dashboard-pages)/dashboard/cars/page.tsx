@@ -157,7 +157,7 @@ export default function CarsPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Car className="h-8 w-8 text-blue-500" />
               <div className="ml-4">
@@ -168,7 +168,7 @@ export default function CarsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
                 <Car className="h-4 w-4 text-green-600" />
@@ -181,7 +181,7 @@ export default function CarsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
                 <Users className="h-4 w-4 text-blue-600" />
@@ -194,7 +194,7 @@ export default function CarsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Wrench className="h-8 w-8 text-orange-500" />
               <div className="ml-4">
@@ -208,7 +208,7 @@ export default function CarsPage() {
 
       {/* Filters and Search */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -356,7 +356,7 @@ export default function CarsPage() {
       </Card>
 
       {/* Service Reminders */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Service Reminders</CardTitle>
           <CardDescription>Vehicles due for maintenance</CardDescription>
@@ -383,7 +383,7 @@ export default function CarsPage() {
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 }

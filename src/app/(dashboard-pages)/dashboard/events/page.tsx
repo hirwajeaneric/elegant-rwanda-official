@@ -136,7 +136,7 @@ export default function EventsPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-blue-500" />
               <div className="ml-4">
@@ -147,7 +147,7 @@ export default function EventsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Users className="h-8 w-8 text-green-500" />
               <div className="ml-4">
@@ -158,7 +158,7 @@ export default function EventsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Clock className="h-8 w-8 text-orange-500" />
               <div className="ml-4">
@@ -169,7 +169,7 @@ export default function EventsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center">
                 <span className="text-purple-600 font-bold">$</span>
@@ -185,7 +185,7 @@ export default function EventsPage() {
 
       {/* Filters and Search */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">

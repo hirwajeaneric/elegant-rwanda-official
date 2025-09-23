@@ -156,7 +156,7 @@ export default function TeamPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Users className="h-8 w-8 text-blue-500" />
               <div className="ml-4">
@@ -167,7 +167,7 @@ export default function TeamPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <UserCheck className="h-8 w-8 text-green-500" />
               <div className="ml-4">
@@ -178,7 +178,7 @@ export default function TeamPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <Star className="h-8 w-8 text-yellow-500" />
               <div className="ml-4">
@@ -191,7 +191,7 @@ export default function TeamPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex items-center">
               <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center">
                 <span className="text-purple-600 font-bold">T</span>
@@ -207,7 +207,7 @@ export default function TeamPage() {
 
       {/* Filters and Search */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -277,10 +277,6 @@ export default function TeamPage() {
                 <TableRow>
                   <TableHead>Member</TableHead>
                   <TableHead>Position</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Rating</TableHead>
-                  <TableHead>Tours</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -306,24 +302,6 @@ export default function TeamPage() {
                         <p className="font-medium">{member.position}</p>
                         <p className="text-sm text-gray-500">Hired: {new Date(member.hireDate).toLocaleDateString()}</p>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{member.department}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm">{member.location}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-medium">{member.rating}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm font-medium">{member.toursCompleted}</span>
                     </TableCell>
                     <TableCell>
                       <Badge className={statusColors[member.status as keyof typeof statusColors]}>
@@ -369,46 +347,6 @@ export default function TeamPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Top Performers */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Performers</CardTitle>
-          <CardDescription>Your best performing team members this month</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {teamMembers
-              .filter(member => member.status === 'active')
-              .sort((a, b) => b.toursCompleted - a.toursCompleted)
-              .slice(0, 3)
-              .map((member, index) => (
-                <div key={member.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
-                  <div className="flex-shrink-0">
-                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                      <span className="text-sm font-bold text-primary-foreground">#{index + 1}</span>
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900">{member.name}</p>
-                    <p className="text-sm text-gray-500">{member.position} • {member.toursCompleted} tours completed</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                      <span className="text-sm font-medium">{member.rating}</span>
-                    </div>
-                    <Button size="sm" variant="ghost" asChild>
-                      <Link href={`/dashboard/team/${member.id}`}>
-                        <Eye className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              ))}
           </div>
         </CardContent>
       </Card>
