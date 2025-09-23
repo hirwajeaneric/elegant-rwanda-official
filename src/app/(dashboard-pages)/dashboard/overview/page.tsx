@@ -52,37 +52,6 @@ const stats = [
   }
 ];
 
-const recentActivities = [
-  {
-    id: 1,
-    type: 'event',
-    title: 'New event created: Gorilla Trekking Tour',
-    time: '2 hours ago',
-    status: 'published'
-  },
-  {
-    id: 2,
-    type: 'car',
-    title: 'Car rental: Toyota Land Cruiser',
-    time: '4 hours ago',
-    status: 'active'
-  },
-  {
-    id: 3,
-    type: 'blog',
-    title: 'Blog post published: "Best Time to Visit Rwanda"',
-    time: '6 hours ago',
-    status: 'published'
-  },
-  {
-    id: 4,
-    type: 'testimonial',
-    title: 'New testimonial received from Sarah Johnson',
-    time: '1 day ago',
-    status: 'pending'
-  }
-];
-
 const quickActions = [
   {
     title: 'Create Event',
@@ -124,13 +93,11 @@ export default function DashboardOverview() {
           <p className="text-gray-600">Welcome back! Here&apos;s what&apos;s happening with your business.</p>
         </div>
         <div className="flex space-x-3">
-          <Button variant="outline" size="sm">
-            <Eye className="mr-2 h-4 w-4" />
-            View Site
-          </Button>
-          <Button size="sm">
-            <Plus className="mr-2 h-4 w-4" />
-            Quick Add
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/">
+              <Eye className="mr-2 h-4 w-4" />
+              View Site
+            </Link>
           </Button>
         </div>
       </div>
@@ -164,99 +131,7 @@ export default function DashboardOverview() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Activities */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Recent Activities</CardTitle>
-            <CardDescription>Latest updates from your dashboard</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
-                      {activity.type === 'event' && <Calendar className="h-4 w-4 text-blue-500" />}
-                      {activity.type === 'car' && <Car className="h-4 w-4 text-green-500" />}
-                      {activity.type === 'blog' && <FileText className="h-4 w-4 text-purple-500" />}
-                      {activity.type === 'testimonial' && <MessageSquare className="h-4 w-4 text-orange-500" />}
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {activity.title}
-                    </p>
-                    <p className="text-sm text-gray-500">{activity.time}</p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <Badge 
-                      variant={activity.status === 'published' || activity.status === 'active' ? 'default' : 'secondary'}
-                    >
-                      {activity.status}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common tasks and shortcuts</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {quickActions.map((action) => (
-                <Link key={action.title} href={action.href}>
-                  <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className={`h-10 w-10 rounded-lg ${action.color} flex items-center justify-center`}>
-                      <action.icon className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">{action.title}</p>
-                      <p className="text-xs text-gray-500">{action.description}</p>
-                    </div>
-                    <MoreHorizontal className="h-4 w-4 text-gray-400" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Additional Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Website Performance</CardTitle>
-            <CardDescription>Key metrics for your website</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Page Views</span>
-                <span className="text-sm font-medium">12,345</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Unique Visitors</span>
-                <span className="text-sm font-medium">8,234</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Bounce Rate</span>
-                <span className="text-sm font-medium">42%</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Avg. Session</span>
-                <span className="text-sm font-medium">3m 24s</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
+        <Card className="lg:col-span-2 col-span-1">
           <CardHeader>
             <CardTitle>Recent Testimonials</CardTitle>
             <CardDescription>Latest customer feedback</CardDescription>
@@ -281,6 +156,32 @@ export default function DashboardOverview() {
                 </p>
                 <p className="text-xs text-gray-500 mt-1">- Emma Wilson</p>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quick Actions */}
+        <Card className="lg:col-span-1 col-span-1">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Common tasks and shortcuts</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {quickActions.map((action) => (
+                <Link key={action.title} href={action.href}>
+                  <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className={`h-10 w-10 rounded-lg ${action.color} flex items-center justify-center`}>
+                      <action.icon className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900">{action.title}</p>
+                      <p className="text-xs text-gray-500">{action.description}</p>
+                    </div>
+                    <MoreHorizontal className="h-4 w-4 text-gray-400" />
+                  </div>
+                </Link>
+              ))}
             </div>
           </CardContent>
         </Card>

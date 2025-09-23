@@ -50,7 +50,7 @@ const cars = [
     status: 'available',
     location: 'Kigali',
     mileage: 45000,
-    image: '/car-rental.jpg',
+    image: '/pexels-mikebirdy-170811.jpg',
     lastService: '2024-01-15'
   },
   {
@@ -66,7 +66,7 @@ const cars = [
     status: 'rented',
     location: 'Kigali',
     mileage: 52000,
-    image: '/car-rental.jpg',
+    image: '/pexels-mikebirdy-170811.jpg',
     lastService: '2024-01-10'
   },
   {
@@ -82,7 +82,7 @@ const cars = [
     status: 'maintenance',
     location: 'Kigali',
     mileage: 12000,
-    image: '/car-rental.jpg',
+    image: '/pexels-mikebirdy-170811.jpg',
     lastService: '2024-02-01'
   },
   {
@@ -98,7 +98,7 @@ const cars = [
     status: 'available',
     location: 'Kigali',
     mileage: 78000,
-    image: '/car-rental.jpg',
+    image: '/pexels-mikebirdy-170811.jpg',
     lastService: '2024-01-20'
   },
   {
@@ -114,7 +114,7 @@ const cars = [
     status: 'available',
     location: 'Kigali',
     mileage: 35000,
-    image: '/car-rental.jpg',
+    image: '/pexels-mikebirdy-170811.jpg',
     lastService: '2024-01-25'
   }
 ];
@@ -354,36 +354,6 @@ export default function CarsPage() {
           </div>
         </CardContent>
       </Card>
-
-      {/* Service Reminders */}
-      {/* <Card>
-        <CardHeader>
-          <CardTitle>Service Reminders</CardTitle>
-          <CardDescription>Vehicles due for maintenance</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {cars.filter(car => {
-              const lastService = new Date(car.lastService);
-              const daysSinceService = Math.floor((Date.now() - lastService.getTime()) / (1000 * 60 * 60 * 24));
-              return daysSinceService > 30;
-            }).map((car) => (
-              <div key={car.id} className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <Wrench className="h-5 w-5 text-yellow-600" />
-                  <div>
-                    <p className="font-medium">{car.make} {car.model}</p>
-                    <p className="text-sm text-gray-600">Last service: {car.lastService}</p>
-                  </div>
-                </div>
-                <Button size="sm" variant="outline">
-                  Schedule Service
-                </Button>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card> */}
     </div>
   );
 }
