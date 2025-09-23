@@ -64,7 +64,7 @@ export default function SignInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
@@ -122,7 +122,7 @@ export default function SignInPage() {
               </Link>
             </div>
             
-            <Button onClick={handleSubmit} className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -132,7 +132,7 @@ export default function SignInPage() {
                 'Sign In'
               )}
             </Button>
-          </div>
+          </form>
           
           <div className="mt-6 text-center text-sm">
             <span className="text-muted-foreground">Don&apos;t have an account? </span>

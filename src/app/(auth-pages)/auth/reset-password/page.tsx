@@ -116,7 +116,7 @@ export default function ResetPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
@@ -183,7 +183,7 @@ export default function ResetPasswordPage() {
               </div>
             </div>
             
-            <Button onClick={handleSubmit} className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -193,7 +193,7 @@ export default function ResetPasswordPage() {
                 'Update Password'
               )}
             </Button>
-          </div>
+          </form>
           
           <div className="mt-6 text-center">
             <Button asChild variant="ghost">
