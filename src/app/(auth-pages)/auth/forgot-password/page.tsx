@@ -7,21 +7,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, ArrowLeft } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     
     if (!email) {
-      setError('Please enter your email address');
+      toast.error('Please enter your email address');
       return;
     }
 
@@ -32,12 +30,19 @@ export default function ForgotPasswordPage() {
     
     setIsLoading(false);
     setIsSubmitted(true);
+    toast.success('Password reset link sent to your email!');
   };
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/20 p-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center p-4 relative">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat" />
+        <div className="absolute inset-0 bg-black/50" />
+        
+        {/* Content */}
+        <div className="relative z-10">
+        <Card className="w-md max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
               <svg
@@ -60,11 +65,9 @@ export default function ForgotPasswordPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Alert>
-              <AlertDescription>
-                If you don&apos;t see the email, check your spam folder or try again.
-              </AlertDescription>
-            </Alert>
+            <p className="text-sm text-muted-foreground text-center">
+              If you don&apos;t see the email, check your spam folder or try again.
+            </p>
             
             <div className="space-y-2">
               <Button
@@ -87,13 +90,20 @@ export default function ForgotPasswordPage() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/20 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat" />
+      <div className="absolute inset-0 bg-black/50" />
+      
+      {/* Content */}
+      <div className="relative z-10">
+      <Card className="w-md max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Forgot Password?</CardTitle>
           <CardDescription>
@@ -102,12 +112,6 @@ export default function ForgotPasswordPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -143,6 +147,7 @@ export default function ForgotPasswordPage() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

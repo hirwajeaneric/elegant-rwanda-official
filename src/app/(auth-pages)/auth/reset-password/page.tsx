@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function ResetPasswordPage() {
   const [formData, setFormData] = useState({
@@ -18,7 +18,6 @@ export default function ResetPasswordPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
@@ -33,17 +32,17 @@ export default function ResetPasswordPage() {
 
   const validateForm = () => {
     if (!formData.password || !formData.confirmPassword) {
-      setError('Please fill in all fields');
+      toast.error('Please fill in all fields');
       return false;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
       return false;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      toast.error('Password must be at least 6 characters long');
       return false;
     }
 
@@ -52,7 +51,6 @@ export default function ResetPasswordPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     
     if (!validateForm()) return;
 
@@ -63,17 +61,24 @@ export default function ResetPasswordPage() {
     
     setIsLoading(false);
     setIsSuccess(true);
+    toast.success('Password reset successfully! Redirecting to sign in...');
     
     // Redirect to sign in after 3 seconds
     setTimeout(() => {
-      router.push('/auth/sign-in?message=Password reset successfully. Please sign in with your new password.');
+      router.push('/auth/sign-in');
     }, 3000);
   };
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/20 p-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center p-4 relative">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat" />
+        <div className="absolute inset-0 bg-black/50" />
+        
+        {/* Content */}
+        <div className="relative z-10">
+        <Card className="w-md max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
               <svg
@@ -102,13 +107,20 @@ export default function ResetPasswordPage() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/20 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat" />
+      <div className="absolute inset-0 bg-black/50" />
+      
+      {/* Content */}
+      <div className="relative z-10">
+      <Card className="w-md max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
           <CardDescription>
@@ -117,12 +129,6 @@ export default function ResetPasswordPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            
             <div className="space-y-2">
               <Label htmlFor="password">New Password</Label>
               <div className="relative">
@@ -205,6 +211,7 @@ export default function ResetPasswordPage() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }
