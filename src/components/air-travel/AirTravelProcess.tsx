@@ -1,4 +1,4 @@
-
+"use client"
 
 import { FileText, Clock, CheckCircle, Phone } from "lucide-react";
 
@@ -8,28 +8,28 @@ const processSteps = [
     title: "Submit Request",
     description: "Fill out our comprehensive form with your travel requirements and service needs.",
     duration: "5-10 minutes",
-    color: "bg-blue-500"
+    color: "bg-primary"
   },
   {
     icon: Clock,
     title: "Review & Quotation",
     description: "Our experts review your request and provide a detailed quotation within 2 hours.",
     duration: "2 hours",
-    color: "bg-green-500"
+    color: "bg-primary"
   },
   {
     icon: CheckCircle,
     title: "Confirmation & Payment",
     description: "Confirm your services and complete payment to secure your booking.",
     duration: "30 minutes",
-    color: "bg-purple-500"
+    color: "bg-primary"
   },
   {
     icon: Phone,
     title: "Service Execution",
     description: "We execute your requested services with regular updates and support.",
     duration: "Varies by service",
-    color: "bg-orange-500"
+    color: "bg-primary"
   }
 ];
 
@@ -42,44 +42,38 @@ export function AirTravelProcess() {
             How It Works
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our streamlined process ensures you get the assistance you need quickly and efficiently. 
+            Our streamlined process ensures you get the assistance you need quickly and efficiently.
             From initial request to service completion, we&apos;re with you every step of the way.
           </p>
         </div>
 
+        {/* Horizontal Timeline */}
         <div className="relative">
-          {/* Timeline Line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-200 transform -translate-x-1/2 hidden lg:block" />
+          {/* Timeline Line - Horizontal */}
+          <div className="absolute top-16 left-0 right-0 h-0.5 bg-gray-200 hidden lg:block" />
 
-          <div className="space-y-12">
+          {/* Steps Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
             {processSteps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className={`lg:flex ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12`}>
-                  {/* Content */}
-                  <div className={`lg:w-1/2 ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'}`}>
-                    <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${step.color} text-white mb-4 lg:mb-0`}>
-                      <step.icon className="h-8 w-8" />
-                    </div>
-                    <h3 className="text-2xl font-display font-semibold text-gray-900 mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 mb-3 leading-relaxed">
-                      {step.description}
-                    </p>
-                    <div className="inline-flex items-center space-x-2 text-sm text-gray-500">
-                      <Clock className="h-4 w-4" />
-                      <span>{step.duration}</span>
-                    </div>
+              <div key={index} className="relative text-center">
+                {/* Timeline Dot */}
+                <div className="relative z-10 mb-6 flex flex-col justify-center items-center">
+                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${step.color} text-white mx-auto shadow-lg font-display text-3xl font-bold`}>
+                    {index + 1}
                   </div>
+                </div>
 
-                  {/* Timeline Dot */}
-                  <div className="hidden lg:block lg:w-1/2 flex justify-center">
-                    <div className={`w-6 h-6 rounded-full ${step.color} border-4 border-white shadow-lg relative z-10`} />
-                  </div>
-
-                  {/* Mobile Timeline */}
-                  <div className="lg:hidden flex justify-center mb-6">
-                    <div className={`w-6 h-6 rounded-full ${step.color} border-4 border-white shadow-lg`} />
+                {/* Content */}
+                <div className="space-y-3">
+                  <h3 className="text-xl font-display font-semibold text-gray-900">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {step.description}
+                  </p>
+                  <div className="inline-flex items-center space-x-2 text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+                    <Clock className="h-3 w-3" />
+                    <span>{step.duration}</span>
                   </div>
                 </div>
               </div>
@@ -88,7 +82,7 @@ export function AirTravelProcess() {
         </div>
 
         {/* Process Benefits */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mt-20 grid grid-cols-2 md:grid-cols-3 gap-8">
           <div className="text-center">
             <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
               <FileText className="h-8 w-8 text-primary" />
@@ -118,10 +112,18 @@ export function AirTravelProcess() {
             Ready to Get Started?
           </h3>
           <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-            Don&apos;t let travel logistics stress you out. Let our experts handle everything 
+            Don&apos;t let travel logistics stress you out. Let our experts handle everything
             so you can focus on enjoying your journey to Rwanda.
           </p>
-          <button className="bg-white text-primary font-semibold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+          <button
+            onClick={() => {
+              const form = document.getElementById('air-travel-form');
+              if (form) {
+                form.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="bg-white text-primary font-semibold py-3 px-8 hover:bg-gray-100 transition-colors duration-200 rounded-full"
+          >
             Request Assistance Now
           </button>
         </div>

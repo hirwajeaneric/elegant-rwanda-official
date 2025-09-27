@@ -66,7 +66,7 @@ export const carRentalSchema = z.object({
 
 // Air Travel Assistance Form Schema
 export const airTravelSchema = z.object({
-  services: z.array(z.enum(["Visa Assistance", "Airport Pickup", "Hotel Booking", "Transportation", "Other"])).min(1, "Please select at least one service"),
+  services: z.array(z.enum(["Visa Assistance", "Airport Pickup", "Hotel Booking", "Transportation", "Other", "Ticket Booking"])).min(1, "Please select at least one service"),
   arrivalDetails: z.object({
     date: z.date(),
     time: z.string().min(1, "Please select arrival time"),

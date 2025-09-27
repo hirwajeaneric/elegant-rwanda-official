@@ -92,12 +92,30 @@ const airlines = [
 ];
 
 const hotels = [
-  "Kigali Serena Hotel",
-  "Radisson Blu Hotel",
-  "Marriott Hotel",
-  "Hôtel des Mille Collines",
-  "Kigali Convention Centre",
-  "Lemigo Hotel"
+  {
+    name: "Kigali Serena Hotel",
+    logo: "/serenakigali.svg"
+  },
+  {
+    name: "Radisson Blu Hotel",
+    logo: "/Radisson_Blu_logo.png"
+  },
+  {
+    name: "Marriott Hotel",
+    logo: "/Marriott-logo2.jpg"
+  },
+  {
+    name: "Hôtel des Mille Collines",
+    logo: "/Hotel-de-mille-collines.jpeg"
+  },
+  {
+    name: "Kigali Convention Centre",
+    logo: "/Kigali-convention-center-logo.png"
+  },
+  {
+    name: "Lemigo Hotel",
+    logo: "/Lemigo Hotel.png"
+  }
 ];
 
 export function AirTravelPartnerships() {
@@ -114,25 +132,6 @@ export function AirTravelPartnerships() {
           </p>
         </div>
 
-        {/* Government & Authority Partners */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-display font-semibold text-gray-900 mb-8 text-center">
-            Government & Authority Partners
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {partners.map((partner, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
-                <div className="bg-gray-100 rounded-xl p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <Building2 className="h-8 w-8 text-gray-600" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">{partner.name}</h4>
-                <p className="text-sm text-primary mb-2">{partner.type}</p>
-                <p className="text-sm text-gray-600">{partner.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Airline Partners */}
         <div className="mb-16">
           <h3 className="text-2xl font-display font-semibold text-gray-900 mb-8 text-center">
@@ -142,9 +141,9 @@ export function AirTravelPartnerships() {
             <p className="text-center text-gray-600">
               We work with major international and regional airlines serving Rwanda
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-center items-center">
               {airlines.map((airline, index) => (
-                <Image key={index} src={airline.logo} alt={airline.name} width={100} height={100} />
+                <Image key={index} src={airline.logo} alt={airline.name} width={100} height={100} className="mx-auto" />
               ))}
             </div>
           </div>
@@ -156,55 +155,15 @@ export function AirTravelPartnerships() {
             Hotel Partners
           </h3>
           <div className="bg-white rounded-2xl p-8 shadow-sm">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {hotels.map((hotel, index) => (
-                <div key={index} className="text-center">
-                  <div className="bg-gray-100 rounded-xl p-4 w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                    <Building2 className="h-8 w-8 text-gray-600" />
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">{hotel}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-gray-600 mt-6">
+            <p className="text-center text-gray-600 mb-6">
               Partner hotels across Rwanda offering competitive rates and excellent service
             </p>
-          </div>
-        </div>
-
-        {/* Partnership Benefits */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm">
-          <h3 className="text-2xl font-display font-semibold text-gray-900 mb-8 text-center">
-            Benefits of Our Partnerships
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Shield className="h-8 w-8 text-primary" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Official Support</h4>
-              <p className="text-sm text-gray-600">Direct access to government agencies and official channels</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Plane className="h-8 w-8 text-primary" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Priority Access</h4>
-              <p className="text-sm text-gray-600">Faster processing and priority handling for our clients</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Users className="h-8 w-8 text-primary" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Expert Knowledge</h4>
-              <p className="text-sm text-gray-600">Insider knowledge and expertise from our partners</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Building2 className="h-8 w-8 text-primary" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Quality Assurance</h4>
-              <p className="text-sm text-gray-600">Vetted partners ensuring high-quality services</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-center items-center">
+              {hotels.map((hotel, index) => (
+                <div key={index} className="text-center">
+                  <Image src={hotel.logo} alt={hotel.name} width={100} height={100} className="mx-auto" />
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -218,7 +177,7 @@ export function AirTravelPartnerships() {
             Our strong relationships with government agencies, airlines, and hotels enable us to 
             provide you with exceptional service and exclusive benefits.
           </p>
-          <button className="bg-white text-primary font-semibold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+          <button className="bg-white text-primary font-semibold py-3 px-8 hover:bg-gray-100 transition-colors duration-200 rounded-full">
             Start Your Journey
           </button>
         </div>
