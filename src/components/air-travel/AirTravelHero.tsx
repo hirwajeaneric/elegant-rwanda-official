@@ -4,7 +4,7 @@ import { Plane, Shield, Clock, MapPin } from "lucide-react";
 
 export function AirTravelHero() {
   return (
-    <section className="relative py-24 bg-[url('/pexels-matoga-27982027.jpg')] bg-cover bg-center bg-no-repeat">
+    <section className="relative py-24 bg-[url('/airplane-rwandair.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
       <div className="container-elegant relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
