@@ -1,5 +1,3 @@
-
-
 import { FileText, Plane, Building2, Route, Clock, Shield, Users, Ticket } from "lucide-react";
 
 const services = [
@@ -13,7 +11,7 @@ const services = [
       "Processing status updates",
       "Emergency visa services"
     ],
-    color: "bg-blue-50 border-blue-200 text-blue-900"
+    color: "bg-primary/10 border-primary/20 text-primary"
   },
   {
     icon: Plane,
@@ -25,7 +23,7 @@ const services = [
       "Flexible timing",
       "Luggage assistance"
     ],
-    color: "bg-green-50 border-green-200 text-green-900"
+    color: "bg-primary/10 border-primary/20 text-primary"
   },
   {
     icon: Building2,
@@ -37,7 +35,7 @@ const services = [
       "Special requests handling",
       "Booking modifications"
     ],
-    color: "bg-purple-50 border-purple-200 text-purple-900"
+    color: "bg-primary/10 border-primary/20 text-primary"
   },
   {
     icon: Route,
@@ -49,8 +47,8 @@ const services = [
       "Activity bookings",
       "Emergency support"
     ],
-    color: "bg-orange-50 border-orange-200 text-orange-900"
-  }, 
+    color: "bg-primary/10 border-primary/20 text-primary"
+  },
   {
     icon: Ticket,
     title: "Ticket Booking",
@@ -60,7 +58,7 @@ const services = [
       "Flight ticket cancellation",
       "Flight ticket refund"
     ],
-    color: "bg-red-50 border-red-200 text-red-900"
+    color: "bg-primary/10 border-primary/20 text-primary"
   }
 ];
 
@@ -73,22 +71,22 @@ export function AirTravelServices() {
             Our Air Travel Services
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From the moment you plan your trip to your safe return, we provide comprehensive 
+            From the moment you plan your trip to your safe return, we provide comprehensive
             air travel assistance to make your journey to Rwanda seamless and enjoyable.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <div key={index} className={`rounded-2xl p-8 border ${service.color} hover:shadow-lg transition-shadow duration-300`}>
-              <div className="flex items-start space-x-4">
-                <div className="bg-white p-3 rounded-xl shadow-sm">
-                  <service.icon className="h-8 w-8 text-gray-700" />
-                </div>
-                <div className="flex-1">
+              <div className="flex flex-col items-start space-x-4">
+                <div className="flex items-center space-x-4 w-full">
+                  <service.icon className="h-8 w-8 text-primary" />
                   <h3 className="text-2xl font-display font-semibold mb-3">
                     {service.title}
                   </h3>
+                </div>
+                <div className="flex-1 w-full">
                   <p className="text-gray-700 mb-4 leading-relaxed">
                     {service.description}
                   </p>

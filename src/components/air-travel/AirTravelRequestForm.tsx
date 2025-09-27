@@ -94,7 +94,7 @@ export function AirTravelRequestForm() {
   }
 
   return (
-    <div className="mx-auto py-8 bg-[url('/pexels-matoga-27982027.jpg')] bg-cover bg-center bg-no-repeat rounded-0">
+    <div className="mx-auto py-8 bg-[url('/airplane-rwandair.jpg')] bg-cover bg-center bg-no-repeat rounded-0">
       <div className="text-center">
         <h2 className="text-3xl font-display font-bold text-white">
           Request Air Travel Assistance
