@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import "./../globals.css";
 import { Inter, Playfair_Display } from "next/font/google";
@@ -25,14 +24,12 @@ export default function AuthLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900`}>
-        <AuthProvider>
         {children}
         <Toaster 
           position="top-right" 
           richColors 
           closeButton
-        /> 
-        </AuthProvider>
+        />
       </body>
     </html>
   );

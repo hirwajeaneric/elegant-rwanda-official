@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/contexts/AuthContext";
 import DashboardLayoutContent from "./DashboardLayoutContent";
 import { Toaster } from "@/components/ui/sonner";
 import { Inter, Playfair_Display } from "next/font/google";
@@ -26,16 +25,14 @@ export default function DashboardLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900`}>
-        <AuthProvider>
-          <DashboardLayoutContent>
-            {children}
-          </DashboardLayoutContent>
-          <Toaster 
-            position="top-right" 
-            richColors
-            closeButton
-          />
-        </AuthProvider>
+        <DashboardLayoutContent>
+          {children}
+        </DashboardLayoutContent>
+        <Toaster
+          position="top-right"
+          richColors
+          closeButton
+        />
       </body>
     </html>
   );
