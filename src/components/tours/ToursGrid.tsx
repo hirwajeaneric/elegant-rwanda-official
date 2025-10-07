@@ -57,7 +57,7 @@ export function ToursGrid() {
 
   return (
     <div>
-      {/* Search and Filters */}
+      {/* Search and Filters */}iu
       <div className="mb-8 space-y-6">
         {/* Search Bar */}
         <div className="relative">

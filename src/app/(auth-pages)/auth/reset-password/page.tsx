@@ -73,7 +73,7 @@ export default function ResetPasswordPage() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 relative">
         {/* Background Image with Overlay */}
-        <div className="absolute inset-0 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat" />
+        <div className="absolute inset-0 bg-[url('/pexels-isaac-mitchell-278678383-16884778.jpg')] bg-cover bg-center bg-no-repeat" />
         <div className="absolute inset-0 bg-black/50" />
         
         {/* Content */}

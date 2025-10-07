@@ -27,7 +27,11 @@ export default function AuthLayout({
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-slate-900`}>
         <AuthProvider>
         {children}
-        <Toaster />
+        <Toaster 
+          position="top-right" 
+          richColors 
+          closeButton
+        /> 
         </AuthProvider>
       </body>
     </html>

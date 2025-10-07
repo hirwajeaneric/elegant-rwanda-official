@@ -30,7 +30,11 @@ export default function DashboardLayout({
           <DashboardLayoutContent>
             {children}
           </DashboardLayoutContent>
-          <Toaster />
+          <Toaster 
+            position="top-right" 
+            richColors
+            closeButton
+          />
         </AuthProvider>
       </body>
     </html>

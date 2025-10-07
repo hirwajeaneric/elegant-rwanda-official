@@ -27,7 +27,7 @@ export async function signInEmailAction(formData: FormData) {
         return { error: null };
     } catch (error) {
         if (error instanceof Error) {
-            return { error: "Oops! Something went wrong while logging in" };
+            return { error: error.message };
         }
         return { error: "Internal server error" };
     }

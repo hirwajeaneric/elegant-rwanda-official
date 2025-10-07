@@ -8,17 +8,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
+import { signUpEmailAction } from '@/actions/sign-up-email.action';
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    agreeToTerms: false
+    confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -49,34 +48,40 @@ export default function SignupPage() {
       return false;
     }
 
-    if (!formData.agreeToTerms) {
-      toast.error('Please agree to the terms and conditions');
-      return false;
-    }
-
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    const isValid = validateForm();
 
+    if (!isValid) {
+      setIsLoading(false);
+      return;
+    }
+    
     setIsLoading(true);
+    const formData = new FormData(e.target as HTMLFormElement);
+    const { error } = await signUpEmailAction(formData);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // For demo purposes, redirect to sign-in
+    if (error) {
+        setIsLoading(false);
+        toast.error("Failed to create account", {
+            description: error,
+        });
+        return;
+    }
+
     setIsLoading(false);
-    toast.success('Account created successfully! Please sign in.');
+    toast.success("Account created successfully");
     router.push('/auth/sign-in');
-  };
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat" />
+      <div className="absolute inset-0 bg-[url('/pexels-isaac-mitchell-278678383-16884778.jpg')] bg-cover bg-center bg-no-repeat" />
       <div className="absolute inset-0 bg-black/50" />
       
       {/* Content */}
@@ -176,28 +181,6 @@ export default function SignupPage() {
                   )}
                 </Button>
               </div>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="agreeToTerms"
-                name="agreeToTerms"
-                checked={formData.agreeToTerms}
-                onCheckedChange={(checked) => 
-                  setFormData(prev => ({ ...prev, agreeToTerms: checked as boolean }))
-                }
-                disabled={isLoading}
-              />
-              <Label htmlFor="agreeToTerms" className="text-sm">
-                I agree to the{' '}
-                <Link href="/terms" className="text-primary hover:underline">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link href="/privacy" className="text-primary hover:underline">
-                  Privacy Policy
-                </Link>
-              </Label>
             </div>
             
             <Button type="submit" className="w-full" disabled={isLoading}>
