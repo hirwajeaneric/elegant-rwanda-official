@@ -67,7 +67,7 @@ export function ToursGrid() {
             placeholder="Search tours by name, description, or location..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+            className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-full focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
           />
         </div>
 

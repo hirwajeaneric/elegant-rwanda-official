@@ -1,34 +1,4 @@
-
-
-import { Building2, Plane, Shield, Users } from "lucide-react";
 import Image from "next/image";
-
-const partners = [
-  {
-    name: "Rwanda Civil Aviation Authority",
-    type: "Government Agency",
-    description: "Official aviation authority ensuring safety and compliance standards",
-    logo: "/rcaa-logo.png"
-  },
-  {
-    name: "Kigali International Airport",
-    type: "Airport Partner",
-    description: "Primary international gateway with modern facilities and services",
-    logo: "/kia-logo.png"
-  },
-  {
-    name: "Rwanda Immigration",
-    type: "Government Partner",
-    description: "Streamlined visa processing and immigration support services",
-    logo: "/immigration-logo.png"
-  },
-  {
-    name: "Rwanda Tourism Board",
-    type: "Tourism Partner",
-    description: "Official tourism authority promoting Rwanda as a destination",
-    logo: "/rtb-logo.png"
-  }
-];
 
 const airlines = [
   {
