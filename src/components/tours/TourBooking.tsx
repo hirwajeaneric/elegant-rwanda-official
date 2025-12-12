@@ -71,13 +71,13 @@ export function TourBooking({ tour }: TourBookingProps) {
             </div>
 
             {/* Form Fields */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <Label htmlFor="travelers">Number of Travelers</Label>
               <Select value={travelers} onValueChange={setTravelers} required>
-                <SelectTrigger id="travelers" aria-label="Select number of travelers">
+                <SelectTrigger id="travelers" aria-label="Select number of travelers" className="w-full">
                   <SelectValue placeholder="Select number of travelers" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="w-full">
                   {Array.from({ length: tour.maxGroupSize }, (_, i) => i + 1).map((num) => (
                     <SelectItem key={num} value={String(num)}>
                       {num} {num === 1 ? 'person' : 'people'}
@@ -88,13 +88,13 @@ export function TourBooking({ tour }: TourBookingProps) {
               <input type="hidden" name="travelers" value={travelers} />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <Label htmlFor="startDate">Preferred Start Date</Label>
               <Select value={startDate} onValueChange={setStartDate} required>
-                <SelectTrigger id="startDate" aria-label="Select preferred start date">
+                <SelectTrigger id="startDate" aria-label="Select preferred start date" className="w-full">
                   <SelectValue placeholder="Select a date" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="w-full">
                   {tour.availableDates.map((date) => (
                     <SelectItem key={date} value={date}>
                       {new Date(date).toLocaleDateString('en-US', {
@@ -110,7 +110,7 @@ export function TourBooking({ tour }: TourBookingProps) {
               <input type="hidden" name="startDate" value={startDate} />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <Label htmlFor="specialRequests">Special Requests</Label>
               <Textarea
                 id="specialRequests"
@@ -121,7 +121,7 @@ export function TourBooking({ tour }: TourBookingProps) {
             </div>
 
             <div className="flex flex-col gap-3">
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 <Label htmlFor="name">Your Name</Label>
                 <Input
                   id="name"
@@ -130,7 +130,7 @@ export function TourBooking({ tour }: TourBookingProps) {
                   placeholder="Full name"
                 />
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 w-full">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -141,7 +141,7 @@ export function TourBooking({ tour }: TourBookingProps) {
                     placeholder="you@example.com"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
