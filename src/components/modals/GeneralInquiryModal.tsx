@@ -137,7 +137,7 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
               <div>
                 <label className="form-label">Service Interested In *</label>
                 <input type="hidden" {...register("service")} />
-                <Select onValueChange={(value) => setValue("service", value, { shouldValidate: true })}>
+                <Select onValueChange={(value) => setValue("service", value as GeneralInquiryForm["service"], { shouldValidate: true })}>
                   <SelectTrigger className="form-input w-full border-gray-500">
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
