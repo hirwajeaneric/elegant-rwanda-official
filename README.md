@@ -10,16 +10,16 @@ Elegant Travel and Tours is a Next.js 15 application for a Unique travel company
 
 ### Development
 ```bash
-npm run dev           # Start development server with Turbopack
-npm run build         # Build for production with Turbopack
-npm start            # Start production server
-npm run lint         # Run ESLint
+pnpm dev              # Start development server with Turbopack
+pnpm build            # Build for production with Turbopack
+pnpm start            # Start production server
+pnpm lint             # Run ESLint
 ```
 
 ### Testing and Quality
 ```bash
-npm run lint          # Lint TypeScript and React code
-npx tsc --noEmit     # Type check without emitting files
+pnpm lint             # Lint TypeScript and React code
+pnpm exec tsc --noEmit # Type check without emitting files
 ```
 
 ## Architecture Overview

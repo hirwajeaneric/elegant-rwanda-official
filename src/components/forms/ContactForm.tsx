@@ -49,7 +49,7 @@ export default function ContactForm() {
         try {
             await submitFormToEmail({
                 formType: "contact",
-                data,
+                data: data as Record<string, unknown>,
                 userEmail: data.email,
                 userName: `${data.firstName} ${data.lastName}`.trim(),
             });
