@@ -59,10 +59,10 @@ export function CabRequestForm() {
       <section className="section-padding bg-primary/5">
         <div className="container-elegant">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="h-10 w-10 text-white" />
+            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="h-10 w-10 text-primary-foreground" />
             </div>
-            <h2 className="text-3xl font-display font-bold mb-4 text-green-700">
+            <h2 className="text-3xl font-display font-bold mb-4 text-primary">
               Request Submitted Successfully!
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
@@ -82,7 +82,7 @@ export function CabRequestForm() {
   }
 
   return (
-    <section className="section-padding bg-white">
+    <section className="section-padding bg-background">
       <div className="container-elegant">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">

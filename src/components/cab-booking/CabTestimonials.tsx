@@ -127,7 +127,7 @@ export function CabTestimonials() {
               Join our satisfied customers and discover why Elegant Travel and Tours is the preferred choice 
               for premium transportation services.
             </p>
-            <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">
+            <button className="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-colors">
               Book Your Ride Now
             </button>
           </div>

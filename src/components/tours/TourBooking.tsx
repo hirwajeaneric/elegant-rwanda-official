@@ -188,7 +188,7 @@ export function TourBooking({ tour }: TourBookingProps) {
         ) : (
           /* Success State */
           <div className="text-center py-8">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <CheckCircle className="h-16 w-16 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-foreground mb-2">
               Booking Request Sent!
             </h3>
@@ -210,15 +210,15 @@ export function TourBooking({ tour }: TourBookingProps) {
         <h4 className="text-lg font-semibold mb-4">What Happens Next?</h4>
         <div className="space-y-3 text-sm text-muted-foreground">
           <div className="flex items-start space-x-2">
-            <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
             <span>We&apos;ll review your request and send a personalized quote within 24 hours</span>
           </div>
           <div className="flex items-start space-x-2">
-            <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
             <span>Once confirmed, we&apos;ll handle all logistics and provide detailed travel documents</span>
           </div>
           <div className="flex items-start space-x-2">
-            <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
             <span>Our team will be available 24/7 throughout your journey for support</span>
           </div>
         </div>

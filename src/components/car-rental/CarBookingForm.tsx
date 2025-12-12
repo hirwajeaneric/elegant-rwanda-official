@@ -85,10 +85,10 @@ export function CarBookingForm() {
       <section className="section-padding bg-primary/5">
         <div className="container-elegant">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="h-10 w-10 text-white" />
+            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="h-10 w-10 text-primary-foreground" />
             </div>
-            <h2 className="text-3xl font-display font-bold mb-4 text-green-700">
+            <h2 className="text-3xl font-display font-bold mb-4 text-primary">
               Booking Request Submitted!
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
@@ -120,7 +120,7 @@ export function CarBookingForm() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-lg border border-border/50">
+          <form onSubmit={handleSubmit} className="bg-card rounded-2xl p-8 shadow-lg border border-border">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Rental Type */}
               <div className="space-y-2">

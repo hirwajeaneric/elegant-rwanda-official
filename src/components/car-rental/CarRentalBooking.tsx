@@ -99,19 +99,19 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
 
   if (isSubmitted) {
     return (
-      <section className="py-20 bg-green-50">
+      <section className="py-20 bg-primary/10">
         <div className="container-elegant">
           <div className="max-w-2xl mx-auto text-center">
-            <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
-            <h2 className="text-4xl font-display font-bold text-green-900 mb-4">
+            <CheckCircle className="h-20 w-20 text-primary mx-auto mb-6" />
+            <h2 className="text-4xl font-display font-bold text-primary mb-4">
               Booking Request Submitted!
             </h2>
-            <p className="text-xl text-green-700 mb-8">
+            <p className="text-xl text-muted-foreground mb-8">
               Thank you for your interest in renting the {vehicle.name}. We&apos;ll review your request and get back to you within 1 hour with a detailed quote and confirmation.
             </p>
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Request Summary</h3>
-              <div className="text-left space-y-2 text-sm text-gray-600">
+            <div className="bg-card rounded-2xl p-6 shadow-sm border border-border">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Request Summary</h3>
+              <div className="text-left space-y-2 text-sm text-muted-foreground">
                 <div><strong>Vehicle:</strong> {vehicle.name}</div>
                 <div><strong>Rental Type:</strong> {formData.rentalType === "self-drive" ? "Self Drive" : "Chauffeur Driven"}</div>
                 <div><strong>Duration:</strong> {calculateDays()} days</div>
@@ -125,15 +125,15 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
   }
 
   return (
-    <section className="py-30 bg-gray-100" id="booking">
+    <section className="py-30 bg-muted/30" id="booking">
       <div className="container-elegant">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left Column - Booking Form */}
           <div>
-            <h2 className="text-4xl font-display font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl font-display font-bold text-foreground mb-6">
               Book Your Car Rental
             </h2>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-lg text-muted-foreground mb-8">
               Complete the form below to request a quote for the {vehicle.name}. We&apos;ll provide you with a detailed quotation within 1 hour.
             </p>
 
@@ -348,32 +348,32 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
           {/* Right Column - Summary & Features */}
           <div className="space-y-8">
             {/* Rental Summary */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm">
-              <h3 className="text-2xl font-display font-semibold text-gray-900 mb-6">
+            <div className="bg-card rounded-2xl p-8 shadow-sm border border-border">
+              <h3 className="text-2xl font-display font-semibold text-foreground mb-6">
                 Rental Summary
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Vehicle</span>
-                  <span className="font-semibold text-gray-900">{vehicle.name}</span>
+                  <span className="text-muted-foreground">Vehicle</span>
+                  <span className="font-semibold text-foreground">{vehicle.name}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Category</span>
-                  <span className="font-semibold text-gray-900">{vehicle.category}</span>
+                  <span className="text-muted-foreground">Category</span>
+                  <span className="font-semibold text-foreground">{vehicle.category}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Daily Rate</span>
-                  <span className="font-semibold text-yellow-600">Contact for Quote</span>
+                  <span className="text-muted-foreground">Daily Rate</span>
+                  <span className="font-semibold text-accent">Contact for Quote</span>
                 </div>
                 {formData.startDate && formData.endDate && (
                   <>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Duration</span>
-                      <span className="font-semibold text-gray-900">{calculateDays()} days</span>
+                      <span className="text-muted-foreground">Duration</span>
+                      <span className="font-semibold text-foreground">{calculateDays()} days</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Estimated Total</span>
-                      <span className="font-semibold text-yellow-600">Quote Required</span>
+                      <span className="text-muted-foreground">Estimated Total</span>
+                      <span className="font-semibold text-accent">Quote Required</span>
                     </div>
                   </>
                 )}
@@ -381,41 +381,41 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
             </div>
 
             {/* What&apos;s Included */}
-            <div className="bg-green-50 rounded-2xl p-8 border border-green-200">
-              <h3 className="text-2xl font-display font-semibold text-green-900 mb-4">
+            <div className="bg-primary/10 rounded-2xl p-8 border border-primary/20">
+              <h3 className="text-2xl font-display font-semibold text-primary mb-4">
                 What&apos;s Included
               </h3>
               <ul className="space-y-3">
                 {vehicle.includedServices.slice(0, 6).map((service, index) => (
                   <li key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
-                    <span className="text-green-800">{service}</span>
+                    <CheckCircle className="h-5 w-5 text-primary shrink-0" />
+                    <span className="text-foreground">{service}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Why Choose This Vehicle */}
-            <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
-              <h3 className="text-2xl font-display font-semibold text-blue-900 mb-4">
+            <div className="bg-secondary/10 rounded-2xl p-8 border border-secondary/20">
+              <h3 className="text-2xl font-display font-semibold text-secondary mb-4">
                 Why Choose This Vehicle
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
-                  <Shield className="h-5 w-5 text-blue-600" />
-                  <span className="text-blue-800">Full Insurance Coverage</span>
+                  <Shield className="h-5 w-5 text-secondary" />
+                  <span className="text-foreground">Full Insurance Coverage</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Clock className="h-5 w-5 text-blue-600" />
-                  <span className="text-blue-800">24/7 Roadside Assistance</span>
+                  <Clock className="h-5 w-5 text-secondary" />
+                  <span className="text-foreground">24/7 Roadside Assistance</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5 text-blue-600" />
-                  <span className="text-blue-800">Flexible Pickup/Drop-off</span>
+                  <MapPin className="h-5 w-5 text-secondary" />
+                  <span className="text-foreground">Flexible Pickup/Drop-off</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <CreditCard className="h-5 w-5 text-blue-600" />
-                  <span className="text-blue-800">No Hidden Fees</span>
+                  <CreditCard className="h-5 w-5 text-secondary" />
+                  <span className="text-foreground">No Hidden Fees</span>
                 </div>
               </div>
             </div>
