@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { generalInquirySchema, type GeneralInquiryForm } from "@/lib/schemas";
 import { toast } from "sonner";
+import { submitFormToEmail } from "@/lib/client-submit";
 
 interface GeneralInquiryModalProps {
   open: boolean;
@@ -30,22 +31,26 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<GeneralInquiryForm>({
     resolver: zodResolver(generalInquirySchema),
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: GeneralInquiryForm) => {
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await submitFormToEmail({
+        formType: "inquiry",
+        data: values,
+        userEmail: values.email,
+        userName: values.name,
+      });
+
       toast.success("Thank you for your inquiry! We'll get back to you within 24 hours.");
       setIsSubmitted(true);
       reset();
-      
-      // Close modal after 3 seconds
+
       setTimeout(() => {
         onOpenChange(false);
         setIsSubmitted(false);
@@ -131,9 +136,8 @@ export function GeneralInquiryModal({ open, onOpenChange }: GeneralInquiryModalP
               {/* Service */}
               <div>
                 <label className="form-label">Service Interested In *</label>
-                <Select onValueChange={() => {
-                  // Handle select change
-                }}>
+                <input type="hidden" {...register("service")} />
+                <Select onValueChange={(value) => setValue("service", value, { shouldValidate: true })}>
                   <SelectTrigger className="form-input w-full border-gray-500">
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>

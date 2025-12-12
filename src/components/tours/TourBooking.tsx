@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Phone, Mail, CheckCircle } from "lucide-react";
+import { submitFormToEmail } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 import type { Tour } from "@/data/tours";
 
@@ -13,20 +15,38 @@ export function TourBooking({ tour }: TourBookingProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    const formData = new FormData(e.currentTarget);
+    const payload = {
+      tour: tour.title,
+      travelers: formData.get("travelers"),
+      preferredStartDate: formData.get("startDate"),
+      specialRequests: formData.get("specialRequests"),
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+    };
 
-    setIsSubmitted(true);
-    setIsSubmitting(false);
-
-    // Reset form after 5 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-    }, 5000);
+    try {
+      await submitFormToEmail({
+        formType: "tour-booking",
+        data: payload,
+        userEmail: String(payload.email || ""),
+        userName: String(payload.name || ""),
+      });
+      toast.success("Booking request sent. We’ll send a quote shortly.");
+      setIsSubmitted(true);
+      e.currentTarget.reset();
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (error) {
+      console.error(error);
+      toast.error("We could not send your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -48,7 +68,8 @@ export function TourBooking({ tour }: TourBookingProps) {
               </label>
               <select
                 id="travelers"
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                name="travelers"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                 aria-label="Select number of travelers"
               >
                 {Array.from({ length: tour.maxGroupSize }, (_, i) => i + 1).map((num) => (
@@ -65,7 +86,8 @@ export function TourBooking({ tour }: TourBookingProps) {
               </label>
               <select
                 id="startDate"
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                name="startDate"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                 aria-label="Select preferred start date"
               >
                 <option value="">Select a date</option>
@@ -87,10 +109,50 @@ export function TourBooking({ tour }: TourBookingProps) {
                 Special Requests
               </label>
               <textarea
+                name="specialRequests"
                 rows={3}
                 placeholder="Any special requirements or preferences..."
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none"
               />
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Your Name
+                </label>
+                <input
+                  name="name"
+                  required
+                  placeholder="Full name"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                />
+              </div>
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Email
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="you@example.com"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Phone
+                  </label>
+                  <input
+                    name="phone"
+                    required
+                    placeholder="+250..."
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Submit Button */}

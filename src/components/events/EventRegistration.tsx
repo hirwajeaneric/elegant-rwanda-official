@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { Event } from "@/data/events";
+import { submitFormToEmail } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 interface EventRegistrationProps {
   event: Event;
@@ -143,7 +145,6 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
     setIsRegistering(true);
 
     try {
-      // Here you would typically send the data to your backend
       const registrationData = {
         ...formData,
         eventId: event.id,
@@ -154,12 +155,14 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
         registrationDate: new Date().toISOString()
       };
 
-      console.log('Registration data:', registrationData);
+      await submitFormToEmail({
+        formType: "event-registration",
+        data: registrationData,
+        userEmail: formData.email,
+        userName: `${formData.firstName} ${formData.lastName}`.trim(),
+      });
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      alert('Registration submitted successfully! We will contact you soon.');
+      toast.success('Registration submitted successfully! We will contact you soon.');
       setIsFormOpen(false);
       setFormData({
         firstName: '',
@@ -172,8 +175,9 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
         participants: 1,
         additionalInfo: ''
       });
-    } catch {
-      alert('Registration failed. Please try again.');
+    } catch (error) {
+      console.error(error);
+      toast.error('Registration failed. Please try again.');
     } finally {
       setIsRegistering(false);
     }

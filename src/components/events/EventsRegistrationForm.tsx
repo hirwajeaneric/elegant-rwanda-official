@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Users, MapPin, Clock, CheckCircle, Ticket } from "lucide-react";
 import { toast } from "sonner";
 import { getUpcomingEvents } from "@/data/events";
+import { submitFormToEmail } from "@/lib/client-submit";
 
 export function EventsRegistrationForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -38,20 +39,34 @@ export function EventsRegistrationForm() {
   const watchedEventId = watch("eventId");
   const selectedEvent = upcomingEvents.find(event => event.id === watchedEventId);
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: EventRegistrationForm) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const selectedEventData = selectedEvent ? {
+        eventTitle: selectedEvent.title,
+        eventDate: selectedEvent.date,
+        eventLocation: selectedEvent.location,
+        eventCategory: selectedEvent.category,
+      } : {};
+      
+      await submitFormToEmail({
+        formType: "event-registration",
+        data: {
+          ...values,
+          ...selectedEventData,
+        },
+        userEmail: values.contactInfo.email,
+        userName: values.contactInfo.name,
+      });
       
       toast.success("Event registration submitted successfully! We'll confirm your booking within 24 hours.");
       setIsSubmitted(true);
       reset();
       
-      // Reset form after 5 seconds
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    } catch {
+    } catch (error) {
+      console.error(error);
       toast.error("Failed to submit registration. Please try again.");
     }
   };

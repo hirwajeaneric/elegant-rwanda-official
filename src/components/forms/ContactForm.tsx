@@ -9,6 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Link from "next/link";
+import { toast } from "sonner";
+import { submitFormToEmail } from "@/lib/client-submit";
 
 interface ContactFormData {
     firstName: string;
@@ -43,9 +45,20 @@ export default function ContactForm() {
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = (data: ContactFormData) => {
-        console.log(data);
-        reset();
+    const onSubmit = async (data: ContactFormData) => {
+        try {
+            await submitFormToEmail({
+                formType: "contact",
+                data,
+                userEmail: data.email,
+                userName: `${data.firstName} ${data.lastName}`.trim(),
+            });
+            toast.success("Thank you for contacting us. We’ve received your request.");
+            reset();
+        } catch (error) {
+            console.error(error);
+            toast.error("We could not send your request. Please try again.");
+        }
     };
 
     return (

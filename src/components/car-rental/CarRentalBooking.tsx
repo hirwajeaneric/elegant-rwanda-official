@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Clock, MapPin, CreditCard, Shield, CheckCircle } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
+import { submitFormToEmail } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 interface CarRentalBookingProps {
   vehicle: Vehicle;
@@ -10,6 +12,7 @@ interface CarRentalBookingProps {
 
 export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     rentalType: "self-drive",
     startDate: "",
@@ -35,28 +38,49 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your API
-    console.log("Booking request:", { vehicle: vehicle.name, ...formData });
-    setIsSubmitted(true);
+    setIsSubmitting(true);
     
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        rentalType: "self-drive",
-        startDate: "",
-        endDate: "",
-        pickupLocation: "",
-        dropoffLocation: "",
-        passengers: 1,
-        driverName: "",
-        driverLicense: "",
-        driverLicenseExpiry: "",
-        email: "",
-        phone: "",
-        specialRequests: "",
+    try {
+      const bookingData = {
+        vehicle: vehicle.name,
+        vehicleCategory: vehicle.category,
+        ...formData,
+        rentalDays: calculateDays(),
+      };
+      
+      await submitFormToEmail({
+        formType: "car-rental",
+        data: bookingData,
+        userEmail: formData.email,
+        userName: formData.driverName || "Guest",
       });
-    }, 3000);
+      
+      toast.success("Car rental request received. We'll respond with a quote soon.");
+      setIsSubmitted(true);
+      
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({
+          rentalType: "self-drive",
+          startDate: "",
+          endDate: "",
+          pickupLocation: "",
+          dropoffLocation: "",
+          passengers: 1,
+          driverName: "",
+          driverLicense: "",
+          driverLicenseExpiry: "",
+          email: "",
+          phone: "",
+          specialRequests: "",
+        });
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+      toast.error("We could not send your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const calculateDays = () => {
@@ -312,9 +336,10 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-primary text-white font-semibold py-4 px-6 rounded-full hover:bg-primary/90 transition-colors duration-200 text-lg"
+                disabled={isSubmitting}
+                className="w-full bg-primary text-white font-semibold py-4 px-6 rounded-full hover:bg-primary/90 transition-colors duration-200 text-lg disabled:opacity-60"
               >
-                Request Quote
+                {isSubmitting ? "Submitting..." : "Request Quote"}
               </button>
             </form>
           </div>

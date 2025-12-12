@@ -2,14 +2,49 @@
 
 import { useState } from "react";
 import { Calendar, MapPin, Users, Car, Clock, CheckCircle, User } from "lucide-react";
+import { submitFormToEmail } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 export function CarBookingForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    // Here you would typically send the form data to your API
+    setIsSubmitting(true);
+
+    const formData: Record<string, string | boolean> = {};
+    Array.from(e.currentTarget.elements).forEach((el) => {
+      const input = el as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+      if ("value" in input) {
+        const key = (input.getAttribute("name") || input.id)?.trim();
+        if (key) {
+          if ((input as HTMLInputElement).type === "checkbox") {
+            formData[key] = (input as HTMLInputElement).checked;
+          } else {
+            formData[key] = input.value;
+          }
+        }
+      }
+    });
+
+    try {
+      await submitFormToEmail({
+        formType: "car-rental",
+        data: formData,
+        userEmail: String(formData["email"] || ""),
+        userName: String(formData["name"] || formData["driverName"] || ""),
+      });
+      toast.success("Car rental request received. We’ll respond with a quote soon.");
+      setIsSubmitted(true);
+      e.currentTarget.reset();
+      setTimeout(() => setIsSubmitted(false), 4000);
+    } catch (error) {
+      console.error(error);
+      toast.error("We could not send your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
@@ -365,9 +400,10 @@ export function CarBookingForm() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-primary text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 transition-colors duration-200 shadow-lg hover:shadow-xl"
+                disabled={isSubmitting}
+                className="bg-primary text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 transition-colors duration-200 shadow-lg hover:shadow-xl disabled:opacity-60"
               >
-                Submit Rental Request
+                {isSubmitting ? "Submitting..." : "Submit Rental Request"}
               </button>
               <p className="text-sm text-muted-foreground mt-4">
                 We&apos;ll respond within 1 hour with a detailed quote and booking options.

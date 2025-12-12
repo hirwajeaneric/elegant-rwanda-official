@@ -2,14 +2,36 @@
 
 import { useState } from "react";
 import { Calendar, MapPin, Users, Car, Clock, CheckCircle } from "lucide-react";
+import { submitFormToEmail } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 export function CabRequestForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    // Here you would typically send the form data to your API
+    setIsSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    try {
+      await submitFormToEmail({
+        formType: "cab-booking",
+        data: payload,
+        userEmail: String(formData.get("email") || ""),
+        userName: String(formData.get("name") || ""),
+      });
+      toast.success("Cab request received. We’ll confirm with a quotation soon.");
+      setIsSubmitted(true);
+      e.currentTarget.reset();
+      setTimeout(() => setIsSubmitted(false), 4000);
+    } catch (error) {
+      console.error(error);
+      toast.error("We could not send your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
@@ -61,6 +83,7 @@ export function CabRequestForm() {
                 </label>
                 <select
                   id="serviceType"
+                  name="serviceType"
                   required
                   className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
                   aria-label="Select service type"
@@ -82,6 +105,7 @@ export function CabRequestForm() {
                 </label>
                 <select
                   id="vehicleType"
+                  name="vehicleType"
                   required
                   className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
                   aria-label="Select vehicle type"
@@ -104,6 +128,7 @@ export function CabRequestForm() {
                   <input
                     type="text"
                     id="pickupLocation"
+                    name="pickupLocation"
                     required
                     placeholder="Enter pickup address or landmark"
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
@@ -121,6 +146,7 @@ export function CabRequestForm() {
                   <input
                     type="text"
                     id="dropoffLocation"
+                    name="dropoffLocation"
                     required
                     placeholder="Enter destination address or landmark"
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
@@ -138,6 +164,7 @@ export function CabRequestForm() {
                   <input
                     type="date"
                     id="pickupDate"
+                    name="pickupDate"
                     required
                     min={new Date().toISOString().split('T')[0]}
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
@@ -155,6 +182,7 @@ export function CabRequestForm() {
                   <input
                     type="time"
                     id="pickupTime"
+                    name="pickupTime"
                     required
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
                   />
@@ -170,6 +198,7 @@ export function CabRequestForm() {
                   <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <select
                     id="passengers"
+                    name="passengers"
                     required
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
                     aria-label="Select number of passengers"
@@ -195,6 +224,7 @@ export function CabRequestForm() {
                   <input
                     type="text"
                     id="luggage"
+                    name="luggage"
                     placeholder="e.g., 2 large suitcases, 1 carry-on"
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
                   />
@@ -209,6 +239,7 @@ export function CabRequestForm() {
               </label>
               <textarea
                 id="specialRequests"
+                name="specialRequests"
                 rows={4}
                 placeholder="Any special requirements, accessibility needs, or additional services..."
                 className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary resize-none"
@@ -224,6 +255,7 @@ export function CabRequestForm() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   required
                   placeholder="Enter your full name"
                   className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
@@ -237,6 +269,7 @@ export function CabRequestForm() {
                 <input
                   type="tel"
                   id="phone"
+                  name="phone"
                   required
                   placeholder="Enter your phone number"
                   className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
@@ -250,6 +283,7 @@ export function CabRequestForm() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   required
                   placeholder="Enter your email address"
                   className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
@@ -262,6 +296,7 @@ export function CabRequestForm() {
                 </label>
                 <select
                   id="preferredContact"
+                  name="preferredContact"
                   className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
                   aria-label="Select preferred contact method"
                 >
@@ -277,9 +312,10 @@ export function CabRequestForm() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-primary text-white px-12 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors duration-200 shadow-lg hover:shadow-xl"
+                disabled={isSubmitting}
+                className="bg-primary text-white px-12 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors duration-200 shadow-lg hover:shadow-xl disabled:opacity-60"
               >
-                Submit Request for Quotation
+                {isSubmitting ? "Submitting..." : "Submit Request for Quotation"}
               </button>
               <p className="text-sm text-muted-foreground mt-4">
                 We&apos;ll respond within 30 minutes with a detailed quote and booking options.
