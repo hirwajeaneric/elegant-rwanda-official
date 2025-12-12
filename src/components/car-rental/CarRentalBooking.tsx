@@ -5,6 +5,11 @@ import { Clock, MapPin, CreditCard, Shield, CheckCircle } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 import { submitFormToEmail } from "@/lib/client-submit";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CarRentalBookingProps {
   vehicle: Vehicle;
@@ -28,8 +33,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
     specialRequests: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (name: string, value: string | number) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -135,212 +139,209 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Rental Type */}
-              <div>
-                <label htmlFor="rentalType" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="rentalType" className="text-sm font-medium">
                   Rental Type
-                </label>
-                <select
-                  id="rentalType"
-                  name="rentalType"
-                  value={formData.rentalType}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                </Label>
+                <Select 
+                  value={formData.rentalType} 
+                  onValueChange={(value) => handleInputChange("rentalType", value)}
                   required
-                  aria-label="Select rental type"
                 >
-                  <option value="self-drive">Self Drive</option>
-                  <option value="chauffeur">Chauffeur Driven</option>
-                </select>
+                  <SelectTrigger id="rentalType" className="w-full border-gray-300">
+                    <SelectValue placeholder="Select rental type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="self-drive">Self Drive</SelectItem>
+                    <SelectItem value="chauffeur">Chauffeur Driven</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Date Range */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="startDate" className="text-sm font-medium">
                     Pickup Date
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="startDate"
                     type="date"
-                    name="startDate"
                     value={formData.startDate}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange("startDate", e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full border-gray-300"
                     required
-                    aria-label="Select pickup date"
                   />
                 </div>
-                <div>
-                  <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="endDate" className="text-sm font-medium">
                     Return Date
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="endDate"
                     type="date"
-                    name="endDate"
                     value={formData.endDate}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange("endDate", e.target.value)}
                     min={formData.startDate || new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full border-gray-300"
                     required
-                    aria-label="Select return date"
                   />
                 </div>
               </div>
 
               {/* Location */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="pickupLocation" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="pickupLocation" className="text-sm font-medium">
                     Pickup Location
-                  </label>
-                  <select
-                    id="pickupLocation"
-                    name="pickupLocation"
+                  </Label>
+                  <Select
                     value={formData.pickupLocation}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onValueChange={(value) => handleInputChange("pickupLocation", value)}
                     required
-                    aria-label="Select pickup location"
                   >
-                    <option value="">Select Location</option>
-                    {vehicle.pickupLocations.map((location, index) => (
-                      <option key={index} value={location}>{location}</option>
-                    ))}
-                  </select>
+                    <SelectTrigger id="pickupLocation" className="w-full border-gray-300">
+                      <SelectValue placeholder="Select Location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {vehicle.pickupLocations.map((location, index) => (
+                        <SelectItem key={index} value={location}>{location}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div>
-                  <label htmlFor="dropoffLocation" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="dropoffLocation" className="text-sm font-medium">
                     Drop-off Location
-                  </label>
-                  <select
-                    id="dropoffLocation"
-                    name="dropoffLocation"
+                  </Label>
+                  <Select
                     value={formData.dropoffLocation}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onValueChange={(value) => handleInputChange("dropoffLocation", value)}
                     required
-                    aria-label="Select drop-off location"
                   >
-                    <option value="">Select Location</option>
-                    {vehicle.pickupLocations.map((location, index) => (
-                      <option key={index} value={location}>{location}</option>
-                    ))}
-                  </select>
+                    <SelectTrigger id="dropoffLocation" className="w-full border-gray-300">
+                      <SelectValue placeholder="Select Location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {vehicle.pickupLocations.map((location, index) => (
+                        <SelectItem key={index} value={location}>{location}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
               {/* Driver Details */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="driverName" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="driverName" className="text-sm font-medium">
                     Driver Name
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="driverName"
                     type="text"
-                    name="driverName"
                     value={formData.driverName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onChange={(e) => handleInputChange("driverName", e.target.value)}
+                    placeholder="Enter driver's full name"
+                    className="w-full border-gray-300"
                     required
-                    aria-label="Enter driver name"
                   />
                 </div>
-                <div>
-                  <label htmlFor="driverLicense" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="driverLicense" className="text-sm font-medium">
                     Driver License Number
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="driverLicense"
                     type="text"
-                    name="driverLicense"
                     value={formData.driverLicense}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onChange={(e) => handleInputChange("driverLicense", e.target.value)}
+                    placeholder="Enter driver's license number"
+                    className="w-full border-gray-300"
                     required
-                    aria-label="Enter driver license number"
                   />
                 </div>
               </div>
 
               {/* License Expiry */}
-              <div>
-                <label htmlFor="driverLicenseExpiry" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="driverLicenseExpiry" className="text-sm font-medium">
                   License Expiry Date
-                </label>
-                <input
+                </Label>
+                <Input
                   id="driverLicenseExpiry"
                   type="date"
-                  name="driverLicenseExpiry"
                   value={formData.driverLicenseExpiry}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  onChange={(e) => handleInputChange("driverLicenseExpiry", e.target.value)}
+                  className="w-full border-gray-300"
                   required
-                  aria-label="Select driver license expiry date"
                 />
               </div>
 
               {/* Contact Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium">
                     Email Address
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="email"
                     type="email"
-                    name="email"
                     value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    placeholder="Enter your email address"
+                    className="w-full border-gray-300"
                     required
-                    aria-label="Enter email address"
                   />
                 </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-medium">
                     Phone Number
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="phone"
                     type="tel"
-                    name="phone"
                     value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    placeholder="Enter your phone number"
+                    className="w-full border-gray-300"
                     required
-                    aria-label="Enter phone number"
                   />
                 </div>
               </div>
 
               {/* Special Requests */}
-              <div>
-                <label htmlFor="specialRequests" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="specialRequests" className="text-sm font-medium">
                   Special Requests
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   id="specialRequests"
-                  name="specialRequests"
                   value={formData.specialRequests}
-                  onChange={handleInputChange}
+                  onChange={(e) => handleInputChange("specialRequests", e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full border-gray-300 resize-none"
                   placeholder="Any special requirements or requests..."
-                  aria-label="Enter any special requests or requirements"
                 />
               </div>
 
               {/* Submit Button */}
-              <button
+              <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-primary text-white font-semibold py-4 px-6 rounded-full hover:bg-primary/90 transition-colors duration-200 text-lg disabled:opacity-60"
+                className="w-full bg-primary text-white font-semibold py-4 px-6 rounded-full hover:bg-primary/90 text-lg"
+                size="lg"
               >
-                {isSubmitting ? "Submitting..." : "Request Quote"}
-              </button>
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 inline-block" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Request Quote"
+                )}
+              </Button>
             </form>
           </div>
 
@@ -387,7 +388,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
               <ul className="space-y-3">
                 {vehicle.includedServices.slice(0, 6).map((service, index) => (
                   <li key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
                     <span className="text-green-800">{service}</span>
                   </li>
                 ))}

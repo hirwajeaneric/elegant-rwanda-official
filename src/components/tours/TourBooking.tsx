@@ -158,7 +158,7 @@ export function TourBooking({ tour }: TourBookingProps) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full"
+              className="bg-primary text-white px-12 py-6 text-lg font-semibold hover:bg-primary/90 shadow-lg hover:shadow-xl w-full rounded-full"
             >
               {isSubmitting ? (
                 <>

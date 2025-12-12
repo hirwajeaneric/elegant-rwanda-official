@@ -4,10 +4,30 @@ import { useState } from "react";
 import { Calendar, MapPin, Users, Car, Clock, CheckCircle } from "lucide-react";
 import { submitFormToEmail } from "@/lib/client-submit";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function CabRequestForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Form state
+  const [serviceType, setServiceType] = useState("");
+  const [vehicleType, setVehicleType] = useState("");
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [dropoffLocation, setDropoffLocation] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
+  const [pickupTime, setPickupTime] = useState("");
+  const [passengers, setPassengers] = useState("");
+  const [luggage, setLuggage] = useState("");
+  const [specialRequests, setSpecialRequests] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [preferredContact, setPreferredContact] = useState("phone");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,12 +69,12 @@ export function CabRequestForm() {
               Thank you for your cab booking request. We&apos;ll get back to you within 30 minutes 
               with a detailed quotation and booking confirmation.
             </p>
-            <button
+            <Button
               onClick={() => setIsSubmitted(false)}
-              className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+              className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90"
             >
               Submit Another Request
-            </button>
+            </Button>
           </div>
         </div>
       </section>
@@ -77,246 +97,257 @@ export function CabRequestForm() {
           <form onSubmit={handleSubmit} className="bg-muted/30 rounded-2xl p-8 border border-border/50">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Service Type */}
-              <div>
-                <label htmlFor="serviceType" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="serviceType" className="text-sm font-medium">
                   Service Type *
-                </label>
-                <select
-                  id="serviceType"
-                  name="serviceType"
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-                  aria-label="Select service type"
-                >
-                  <option value="">Select Service</option>
-                  <option value="airport-transfer">Airport Transfer</option>
-                  <option value="city-tour">City Tour</option>
-                  <option value="intercity">Intercity Travel</option>
-                  <option value="event-transport">Event Transport</option>
-                  <option value="business-travel">Business Travel</option>
-                  <option value="sightseeing">Sightseeing Tour</option>
-                </select>
+                </Label>
+                <Select value={serviceType} onValueChange={setServiceType} required>
+                  <SelectTrigger id="serviceType" className="w-full border-gray-300">
+                    <SelectValue placeholder="Select Service" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="airport-transfer">Airport Transfer</SelectItem>
+                    <SelectItem value="city-tour">City Tour</SelectItem>
+                    <SelectItem value="intercity">Intercity Travel</SelectItem>
+                    <SelectItem value="event-transport">Event Transport</SelectItem>
+                    <SelectItem value="business-travel">Business Travel</SelectItem>
+                    <SelectItem value="sightseeing">Sightseeing Tour</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Vehicle Type */}
-              <div>
-                <label htmlFor="vehicleType" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="vehicleType" className="text-sm font-medium">
                   Vehicle Type *
-                </label>
-                <select
-                  id="vehicleType"
-                  name="vehicleType"
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-                  aria-label="Select vehicle type"
-                >
-                  <option value="">Select Vehicle</option>
-                  <option value="sedan">Sedan (4 passengers)</option>
-                  <option value="suv">SUV (6 passengers)</option>
-                  <option value="minivan">Minivan (8 passengers)</option>
-                  <option value="Unique">Unique Vehicle</option>
-                </select>
+                </Label>
+                <Select value={vehicleType} onValueChange={setVehicleType} required>
+                  <SelectTrigger id="vehicleType" className="w-full border-gray-300">
+                    <SelectValue placeholder="Select Vehicle" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sedan">Sedan (4 passengers)</SelectItem>
+                    <SelectItem value="suv">SUV (6 passengers)</SelectItem>
+                    <SelectItem value="minivan">Minivan (8 passengers)</SelectItem>
+                    <SelectItem value="Unique">Unique Vehicle</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Pickup Location */}
-              <div>
-                <label htmlFor="pickupLocation" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="pickupLocation" className="text-sm font-medium">
                   Pickup Location *
-                </label>
+                </Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
+                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                  <Input
                     type="text"
                     id="pickupLocation"
-                    name="pickupLocation"
+                    value={pickupLocation}
+                    onChange={(e) => setPickupLocation(e.target.value)}
                     required
                     placeholder="Enter pickup address or landmark"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 border-gray-300"
                   />
                 </div>
               </div>
 
               {/* Drop-off Location */}
-              <div>
-                <label htmlFor="dropoffLocation" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="dropoffLocation" className="text-sm font-medium">
                   Drop-off Location *
-                </label>
+                </Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
+                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                  <Input
                     type="text"
                     id="dropoffLocation"
-                    name="dropoffLocation"
+                    value={dropoffLocation}
+                    onChange={(e) => setDropoffLocation(e.target.value)}
                     required
                     placeholder="Enter destination address or landmark"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 border-gray-300"
                   />
                 </div>
               </div>
 
               {/* Pickup Date */}
-              <div>
-                <label htmlFor="pickupDate" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="pickupDate" className="text-sm font-medium">
                   Pickup Date *
-                </label>
+                </Label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                  <Input
                     type="date"
                     id="pickupDate"
-                    name="pickupDate"
+                    value={pickupDate}
+                    onChange={(e) => setPickupDate(e.target.value)}
                     required
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 border-gray-300"
                   />
                 </div>
               </div>
 
               {/* Pickup Time */}
-              <div>
-                <label htmlFor="pickupTime" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="pickupTime" className="text-sm font-medium">
                   Pickup Time *
-                </label>
+                </Label>
                 <div className="relative">
-                  <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
+                  <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                  <Input
                     type="time"
                     id="pickupTime"
-                    name="pickupTime"
+                    value={pickupTime}
+                    onChange={(e) => setPickupTime(e.target.value)}
                     required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 border-gray-300"
                   />
                 </div>
               </div>
 
               {/* Number of Passengers */}
-              <div>
-                <label htmlFor="passengers" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="passengers" className="text-sm font-medium">
                   Number of Passengers *
-                </label>
+                </Label>
                 <div className="relative">
-                  <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <select
-                    id="passengers"
-                    name="passengers"
-                    required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-                    aria-label="Select number of passengers"
-                  >
-                    <option value="">Select</option>
-                    <option value="1">1 Passenger</option>
-                    <option value="2">2 Passengers</option>
-                    <option value="3">3 Passengers</option>
-                    <option value="4">4 Passengers</option>
-                    <option value="5">5 Passengers</option>
-                    <option value="6">6+ Passengers</option>
-                  </select>
+                  <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                  <Select value={passengers} onValueChange={setPassengers} required>
+                    <SelectTrigger id="passengers" className="w-full pl-10 border-gray-300">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 Passenger</SelectItem>
+                      <SelectItem value="2">2 Passengers</SelectItem>
+                      <SelectItem value="3">3 Passengers</SelectItem>
+                      <SelectItem value="4">4 Passengers</SelectItem>
+                      <SelectItem value="5">5 Passengers</SelectItem>
+                      <SelectItem value="6">6+ Passengers</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
               {/* Luggage */}
-              <div>
-                <label htmlFor="luggage" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="luggage" className="text-sm font-medium">
                   Luggage (Optional)
-                </label>
+                </Label>
                 <div className="relative">
-                  <Car className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
+                  <Car className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                  <Input
                     type="text"
                     id="luggage"
-                    name="luggage"
+                    value={luggage}
+                    onChange={(e) => setLuggage(e.target.value)}
                     placeholder="e.g., 2 large suitcases, 1 carry-on"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 border-gray-300"
                   />
                 </div>
               </div>
             </div>
 
             {/* Special Requests */}
-            <div className="mb-6">
-              <label htmlFor="specialRequests" className="block text-sm font-medium mb-2">
+            <div className="mb-6 space-y-2">
+              <Label htmlFor="specialRequests" className="text-sm font-medium">
                 Special Requests (Optional)
-              </label>
-              <textarea
+              </Label>
+              <Textarea
                 id="specialRequests"
-                name="specialRequests"
+                value={specialRequests}
+                onChange={(e) => setSpecialRequests(e.target.value)}
                 rows={4}
                 placeholder="Any special requirements, accessibility needs, or additional services..."
-                className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                className="w-full border-gray-300 resize-none"
               />
             </div>
 
             {/* Contact Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-sm font-medium">
                   Full Name *
-                </label>
-                <input
+                </Label>
+                <Input
                   type="text"
                   id="name"
-                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
                   placeholder="Enter your full name"
-                  className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full border-gray-300"
                 />
               </div>
 
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-sm font-medium">
                   Phone Number *
-                </label>
-                <input
+                </Label>
+                <Input
                   type="tel"
                   id="phone"
-                  name="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   required
                   placeholder="Enter your phone number"
-                  className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full border-gray-300"
                 />
               </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-medium">
                   Email Address *
-                </label>
-                <input
+                </Label>
+                <Input
                   type="email"
                   id="email"
-                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="Enter your email address"
-                  className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full border-gray-300"
                 />
               </div>
 
-              <div>
-                <label htmlFor="preferredContact" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <Label htmlFor="preferredContact" className="text-sm font-medium">
                   Preferred Contact Method
-                </label>
-                <select
-                  id="preferredContact"
-                  name="preferredContact"
-                  className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-                  aria-label="Select preferred contact method"
-                >
-                  <option value="phone">Phone Call</option>
-                  <option value="whatsapp">WhatsApp</option>
-                  <option value="email">Email</option>
-                  <option value="sms">SMS</option>
-                </select>
+                </Label>
+                <Select value={preferredContact} onValueChange={setPreferredContact}>
+                  <SelectTrigger id="preferredContact" className="w-full border-gray-300">
+                    <SelectValue placeholder="Select method" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="phone">Phone Call</SelectItem>
+                    <SelectItem value="whatsapp">WhatsApp</SelectItem>
+                    <SelectItem value="email">Email</SelectItem>
+                    <SelectItem value="sms">SMS</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
             {/* Submit Button */}
             <div className="text-center">
-              <button
+              <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-primary text-white px-12 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors duration-200 shadow-lg hover:shadow-xl disabled:opacity-60"
+                className="bg-primary text-white px-12 py-6 text-lg font-semibold hover:bg-primary/90 shadow-lg hover:shadow-xl w-full rounded-full"
+                size="lg"
               >
-                {isSubmitting ? "Submitting..." : "Submit Request for Quotation"}
-              </button>
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 inline-block" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Request for Quotation"
+                )}
+              </Button>
               <p className="text-sm text-muted-foreground mt-4">
                 We&apos;ll respond within 30 minutes with a detailed quote and booking options.
               </p>
