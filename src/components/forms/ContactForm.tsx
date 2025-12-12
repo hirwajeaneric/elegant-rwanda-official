@@ -40,7 +40,7 @@ const schema = z.object({
 });
 
 export default function ContactForm() {
-    const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<ContactFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue } = useForm<ContactFormData>({
         defaultValues,
         resolver: zodResolver(schema),
     });
@@ -109,7 +109,20 @@ export default function ContactForm() {
                 <Textarea id="message" {...register("message")} placeholder="Tell us about your travel plans, questions, or requirements..." rows={5} className="border-gray-300" />
                 {errors.message && <p className="text-red-500">{errors.message.message}</p>}
             </div>
-            <Button type="submit" className="w-full btn-primary rounded-full text-lg py-4">Send Message</Button>
+            <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full btn-primary rounded-full text-lg py-4"
+            >
+                {isSubmitting ? (
+                    <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 inline-block" />
+                        Sending...
+                    </>
+                ) : (
+                    "Send Message"
+                )}
+            </Button>
             <p className="text-sm text-muted-foreground">By submitting this form, you agree to our <Link href="/privacy-policy" className="text-primary">Privacy Policy</Link> and <Link href="/terms-of-service" className="text-primary">Terms of Service</Link>.</p>
         </form>
     )

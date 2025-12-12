@@ -4,6 +4,11 @@ import { useState } from "react";
 import { Phone, Mail, CheckCircle } from "lucide-react";
 import { submitFormToEmail } from "@/lib/client-submit";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import type { Tour } from "@/data/tours";
 
@@ -14,6 +19,8 @@ interface TourBookingProps {
 export function TourBooking({ tour }: TourBookingProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [travelers, setTravelers] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,8 +29,8 @@ export function TourBooking({ tour }: TourBookingProps) {
     const formData = new FormData(e.currentTarget);
     const payload = {
       tour: tour.title,
-      travelers: formData.get("travelers"),
-      preferredStartDate: formData.get("startDate"),
+      travelers: travelers || formData.get("travelers"),
+      preferredStartDate: startDate || formData.get("startDate"),
       specialRequests: formData.get("specialRequests"),
       name: formData.get("name"),
       email: formData.get("email"),
@@ -40,6 +47,8 @@ export function TourBooking({ tour }: TourBookingProps) {
       toast.success("Booking request sent. We’ll send a quote shortly.");
       setIsSubmitted(true);
       e.currentTarget.reset();
+      setTravelers("");
+      setStartDate("");
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error(error);
@@ -62,114 +71,104 @@ export function TourBooking({ tour }: TourBookingProps) {
             </div>
 
             {/* Form Fields */}
-            <div>
-              <label htmlFor="travelers" className="block text-sm font-medium text-foreground mb-2">
-                Number of Travelers
-              </label>
-              <select
-                id="travelers"
-                name="travelers"
-                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                aria-label="Select number of travelers"
-              >
-                {Array.from({ length: tour.maxGroupSize }, (_, i) => i + 1).map((num) => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? 'person' : 'people'}
-                  </option>
-                ))}
-              </select>
+            <div className="space-y-2">
+              <Label htmlFor="travelers">Number of Travelers</Label>
+              <Select value={travelers} onValueChange={setTravelers} required>
+                <SelectTrigger id="travelers" aria-label="Select number of travelers">
+                  <SelectValue placeholder="Select number of travelers" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: tour.maxGroupSize }, (_, i) => i + 1).map((num) => (
+                    <SelectItem key={num} value={String(num)}>
+                      {num} {num === 1 ? 'person' : 'people'}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <input type="hidden" name="travelers" value={travelers} />
             </div>
 
-            <div>
-              <label htmlFor="startDate" className="block text-sm font-medium text-foreground mb-2">
-                Preferred Start Date
-              </label>
-              <select
-                id="startDate"
-                name="startDate"
-                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                aria-label="Select preferred start date"
-              >
-                <option value="">Select a date</option>
-                {tour.availableDates.map((date) => (
-                  <option key={date} value={date}>
-                    {new Date(date).toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </option>
-                ))}
-              </select>
+            <div className="space-y-2">
+              <Label htmlFor="startDate">Preferred Start Date</Label>
+              <Select value={startDate} onValueChange={setStartDate} required>
+                <SelectTrigger id="startDate" aria-label="Select preferred start date">
+                  <SelectValue placeholder="Select a date" />
+                </SelectTrigger>
+                <SelectContent>
+                  {tour.availableDates.map((date) => (
+                    <SelectItem key={date} value={date}>
+                      {new Date(date).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <input type="hidden" name="startDate" value={startDate} />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Special Requests
-              </label>
-              <textarea
+            <div className="space-y-2">
+              <Label htmlFor="specialRequests">Special Requests</Label>
+              <Textarea
+                id="specialRequests"
                 name="specialRequests"
                 rows={3}
                 placeholder="Any special requirements or preferences..."
-                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none"
               />
             </div>
 
             <div className="flex flex-col gap-3">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Your Name
-                </label>
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="name">Your Name</Label>
+                <Input
+                  id="name"
                   name="name"
                   required
                   placeholder="Full name"
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Email
-                  </label>
-                  <input
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
                     name="email"
                     type="email"
                     required
                     placeholder="you@example.com"
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Phone
-                  </label>
-                  <input
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
                     name="phone"
+                    type="tel"
                     required
                     placeholder="+250..."
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                   />
                 </div>
               </div>
             </div>
 
             {/* Submit Button */}
-            <button
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-primary text-white font-semibold py-3 rounded-full hover:bg-primary/90 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full"
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mx-auto" />
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 inline-block" />
                   Processing...
                 </>
               ) : (
                 "Request Booking"
               )}
-            </button>
+            </Button>
 
             {/* Contact Info */}
             <div className="text-center text-sm text-muted-foreground">
@@ -196,12 +195,12 @@ export function TourBooking({ tour }: TourBookingProps) {
             <p className="text-muted-foreground mb-4">
               Thank you for your interest in this tour. Our travel experts will get back to you within 24 hours with a detailed quote and booking confirmation.
             </p>
-            <button
+            <Button
               onClick={() => setIsSubmitted(false)}
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              variant="default"
             >
               Send Another Request
-            </button>
+            </Button>
           </div>
         )}
       </div>
