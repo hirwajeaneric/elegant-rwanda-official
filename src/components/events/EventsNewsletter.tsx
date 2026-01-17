@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Mail, Bell, Calendar, Users, CheckCircle } from "lucide-react";
-import { submitFormToEmail } from "@/lib/client-submit";
+import { subscribeToNewsletter } from "@/lib/client-submit";
 import { toast } from "sonner";
 
 export function EventsNewsletter() {
@@ -29,13 +29,10 @@ export function EventsNewsletter() {
     e.preventDefault();
     
     try {
-      await submitFormToEmail({
-        formType: "events-newsletter",
-        data: {
-          email,
-          preferences,
-        },
-        userEmail: email,
+      await subscribeToNewsletter({
+        email,
+        source: "events-newsletter",
+        preferences,
       });
       
       toast.success("Successfully subscribed to our events newsletter!");
@@ -56,7 +53,8 @@ export function EventsNewsletter() {
       }, 3000);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to subscribe. Please try again.");
+      const message = error instanceof Error ? error.message : "Failed to subscribe. Please try again.";
+      toast.error(message);
     }
   };
 

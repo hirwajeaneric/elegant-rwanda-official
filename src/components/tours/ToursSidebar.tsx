@@ -1,14 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import { MapPin, Phone, Mail, Star } from "lucide-react";
 import { getFeaturedTours } from "@/data/tours";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
+import { subscribeToNewsletter } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 export function ToursSidebar() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const featuredTours = getFeaturedTours();
   const router = useRouter();
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await subscribeToNewsletter({
+        email,
+        source: "tours-sidebar",
+      });
+      toast.success("Successfully subscribed to our newsletter!");
+      setEmail("");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to subscribe. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="space-y-8">
       {/* Quick Contact */}
@@ -130,16 +158,23 @@ export function ToursSidebar() {
         <p className="text-white/90 text-sm mb-4">
           Get the latest tour updates and exclusive offers delivered to your inbox.
         </p>
-        <div className="space-y-3">
+        <form onSubmit={handleNewsletterSubmit} className="space-y-3">
           <Input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+            required
             className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-full text-white placeholder:text-white/60 focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all duration-200"
           />
-          <button className="w-full bg-white text-primary font-medium py-1 hover:bg-white/90 transition-colors duration-200 rounded-full cursor-pointer">
-            Subscribe
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-white text-primary font-medium py-1 hover:bg-white/90 transition-colors duration-200 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Subscribing..." : "Subscribe"}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

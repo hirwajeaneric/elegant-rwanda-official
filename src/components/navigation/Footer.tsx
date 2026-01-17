@@ -8,7 +8,7 @@ import { newsletterSchema, type NewsletterForm } from "@/lib/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { submitFormToEmail } from "@/lib/client-submit";
+import { subscribeToNewsletter } from "@/lib/client-submit";
 
 const socialLinks = [
   { icon: Facebook, href: "https://facebook.com/elegant_travel_tours", label: "Facebook" },
@@ -50,15 +50,17 @@ export function Footer() {
   const onSubmit = async (values: NewsletterForm) => {
     setIsSubmitting(true);
     try {
-      await submitFormToEmail({
-        formType: "newsletter",
-        data: values,
-        userEmail: values.email,
+      await subscribeToNewsletter({
+        email: values.email,
+        firstName: values.firstName,
+        source: "footer",
+        interests: values.interests,
       });
       toast.success("Thank you for subscribing to our newsletter!");
       reset();
-    } catch {
-      toast.error("Failed to subscribe. Please try again.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to subscribe. Please try again.";
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }

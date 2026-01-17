@@ -1,18 +1,46 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Calendar, Clock, User, Tag } from "lucide-react";
 import { getRecentPosts, getPostsByCategory } from "@/data/blog";
 import { formatDate } from "@/lib/utils";
 import type { BlogPost } from "@/data/blog";
+import { subscribeToNewsletter } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 interface BlogPostSidebarProps {
   post: BlogPost;
 }
 
 export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const recentPosts = getRecentPosts(5).filter(p => p.id !== post.id);
   const categoryPosts = getPostsByCategory(post.category).filter(p => p.id !== post.id).slice(0, 3);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await subscribeToNewsletter({
+        email,
+        source: "blog-post-sidebar",
+      });
+      toast.success("Successfully subscribed to our newsletter!");
+      setEmail("");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to subscribe. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -130,16 +158,23 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
         <p className="text-white/90 text-sm mb-4">
           Get the latest travel tips and stories delivered to your inbox.
         </p>
-        <div className="space-y-3">
+        <form onSubmit={handleNewsletterSubmit} className="space-y-3">
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+            required
             className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-full text-white placeholder:text-white/60 focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all duration-200"
           />
-          <button className="w-full bg-white text-primary font-medium py-3 hover:bg-white/90 transition-colors duration-200 rounded-full">
-            Subscribe
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-white text-primary font-medium py-3 hover:bg-white/90 transition-colors duration-200 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Subscribing..." : "Subscribe"}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

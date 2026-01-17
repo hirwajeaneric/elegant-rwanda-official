@@ -1,15 +1,43 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { getRecentPosts } from "@/data/blog";
 import { formatDate } from "@/lib/utils";
+import { subscribeToNewsletter } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 export function LatestBlogPosts() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const recentPosts = getRecentPosts(3);
 
   if (recentPosts.length === 0) return null;
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await subscribeToNewsletter({
+        email,
+        source: "home-newsletter",
+      });
+      toast.success("Successfully subscribed to our newsletter!");
+      setEmail("");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to subscribe. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="section-padding bg-gradient-to-br from-muted/30 to-muted/50">
@@ -122,16 +150,23 @@ export function LatestBlogPosts() {
                 Subscribe to our newsletter for the latest travel tips, exclusive offers, and
                 insider knowledge about Rwanda&apos;s hidden gems.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
+                  required
                   className="flex-1 px-4 py-3 border border-primary rounded-full focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-background text-black"
                 />
-                <button className="btn-primary whitespace-nowrap rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-primary hover:scale-105 transition-all duration-300 flex items-center justify-center">
-                  Subscribe
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-primary whitespace-nowrap rounded-full px-6 py-3 hover:bg-white hover:text-primary hover:border hover:border-primary hover:scale-105 transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Subscribing..." : "Subscribe"}
                 </button>
-              </div>
+              </form>
               <p className="text-xs text-white mt-3">
                 We respect your privacy. Unsubscribe at any time.
               </p>
