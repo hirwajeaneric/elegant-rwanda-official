@@ -21,7 +21,7 @@ const reasons = [
   {
     value: "personalized",
     title: "Personalized Quotations",
-    description: "Every tour and service is customized to your specific preferences, budget, and travel style. We don&apos;t offer one-size-fits-all packages - we create experiences that are uniquely yours.",
+    description: "Every tour and service is customized to your specific preferences, budget, and travel style. We don't offer one-size-fits-all packages - we create experiences that are uniquely yours.",
     icon: CheckCircle,
     color: "text-emerald-600"
   },

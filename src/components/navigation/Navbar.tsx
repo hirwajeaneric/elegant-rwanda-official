@@ -119,7 +119,7 @@ export function Navbar() {
                 <span className="text-2xl font-display block font-semibold text-primary">
                   Elegant Travel & Tours
                 </span>
-                <span className="text-xl font-display block font-semibold text-black">ET&E</span>
+                <span className="text-xl font-display block font-semibold text-black">ET&T</span>
               </div>
             </Link>
 
