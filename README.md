@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WARP.md
 
-## Getting Started
+This file provides guidance to WARP (warp.dev) when working with code in this repository.
 
-First, run the development server:
+## Project Overview
 
+Elegant Travel and Tours is a Next.js 15 application for a Unique travel company specializing in Rwanda tours, car rentals, cab services, and air travel assistance. The project uses the App Router architecture with TypeScript, Tailwind CSS, and shadcn/ui components.
+
+## Common Commands
+
+### Development
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm dev              # Start development server with Turbopack
+pnpm build            # Build for production with Turbopack
+pnpm start            # Start production server
+pnpm lint             # Run ESLint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Testing and Quality
+```bash
+pnpm lint             # Lint TypeScript and React code
+pnpm exec tsc --noEmit # Type check without emitting files
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Project Structure
+- **App Router**: Uses Next.js 15 App Router in `src/app/`
+- **Route Groups**: `(public-pages)` contains all public-facing pages
+- **Component Organization**: Modular component structure in `src/components/`
+- **Data Layer**: Static data in `src/data/` with TypeScript interfaces
+- **Schema Validation**: Zod schemas in `src/lib/schemas.ts`
 
-## Learn More
+### Key Directories
+- `src/app/(public-pages)/`: All public routes (tours, contact, gallery, etc.)
+- `src/components/`: Reusable UI components organized by feature
+  - `ui/`: shadcn/ui base components
+  - `home/`: Homepage-specific components
+  - `tours/`, `events/`, `gallery/`: Feature-specific components
+  - `layout/`: Navigation and layout components
+- `src/data/`: Static data exports (tours, events, testimonials, etc.)
+- `src/lib/`: Utility functions and shared schemas
 
-To learn more about Next.js, take a look at the following resources:
+### Technology Stack
+- **Framework**: Next.js 15 with App Router and Turbopack
+- **Styling**: Tailwind CSS 4 with custom design system
+- **UI Components**: shadcn/ui with Radix UI primitives
+- **Form Handling**: React Hook Form with Zod validation
+- **State Management**: Zustand (based on dependencies)
+- **Analytics**: Vercel Analytics and Speed Insights
+- **Additional**: Firebase, PDF generation (jsPDF), rich text editing (Jodit)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Data Models
+The application uses TypeScript interfaces for data modeling:
+- **Tour**: Complete tour information with itinerary, pricing, and metadata
+- **Event**: Event details with registration and scheduling
+- **Form Schemas**: Comprehensive Zod schemas for all forms (contact, booking, etc.)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Component Patterns
+- **Page Wrapper**: Consistent layout wrapper for all pages
+- **Form Components**: Reusable form components with validation
+- **Feature Sections**: Self-contained sections (hero, services, testimonials)
+- **UI Components**: shadcn/ui pattern with variants and proper TypeScript
 
-## Deploy on Vercel
+## Development Guidelines
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### File Organization
+- Use the established component directory structure
+- Place feature-specific components in their respective directories
+- Keep data interfaces co-located with their data files
+- Use the `@/` alias for imports from `src/`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Styling Approach
+- Follow the established Tailwind CSS patterns
+- Use the custom design system defined in the configuration
+- Leverage shadcn/ui components for consistency
+- Maintain the Unique travel aesthetic with appropriate typography and colors
+
+### Form Handling
+- All forms use React Hook Form with Zod validation
+- Form schemas are centralized in `src/lib/schemas.ts`
+- Follow the established pattern for form components with proper error handling
+
+### Data Management
+- Static data is managed through TypeScript exports in `src/data/`
+- Use the provided utility functions for data access
+- Maintain type safety with proper interfaces
+
+## SEO and Metadata
+- Each page has comprehensive metadata for SEO
+- Uses Next.js metadata API with proper OpenGraph and Twitter cards
+- Structured data and sitemap generation are configured
+
+## Deployment
+- Optimized for Vercel deployment
+- Uses Turbopack for faster builds
+- Analytics and speed insights are integrated

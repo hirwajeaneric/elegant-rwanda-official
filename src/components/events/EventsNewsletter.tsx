@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Mail, Bell, Calendar, Users, CheckCircle } from "lucide-react";
+import { submitFormToEmail } from "@/lib/client-submit";
+import { toast } from "sonner";
 
 export function EventsNewsletter() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -25,22 +27,37 @@ export function EventsNewsletter() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Newsletter signup:", { email, preferences });
-    setIsSubmitted(true);
     
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setEmail("");
-      setPreferences({
-        newEvents: true,
-        specialOffers: true,
-        eventReminders: true,
-        photography: false,
-        wildlife: false,
-        cultural: false,
-        adventure: false
+    try {
+      await submitFormToEmail({
+        formType: "events-newsletter",
+        data: {
+          email,
+          preferences,
+        },
+        userEmail: email,
       });
-    }, 3000);
+      
+      toast.success("Successfully subscribed to our events newsletter!");
+      setIsSubmitted(true);
+      
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setEmail("");
+        setPreferences({
+          newEvents: true,
+          specialOffers: true,
+          eventReminders: true,
+          photography: false,
+          wildlife: false,
+          cultural: false,
+          adventure: false
+        });
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to subscribe. Please try again.");
+    }
   };
 
   if (isSubmitted) {

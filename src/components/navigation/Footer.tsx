@@ -8,6 +8,7 @@ import { newsletterSchema, type NewsletterForm } from "@/lib/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { submitFormToEmail } from "@/lib/client-submit";
 
 const socialLinks = [
   { icon: Facebook, href: "https://facebook.com/elegant_travel_tours", label: "Facebook" },
@@ -46,12 +47,14 @@ export function Footer() {
     resolver: zodResolver(newsletterSchema),
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: NewsletterForm) => {
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
+      await submitFormToEmail({
+        formType: "newsletter",
+        data: values,
+        userEmail: values.email,
+      });
       toast.success("Thank you for subscribing to our newsletter!");
       reset();
     } catch {

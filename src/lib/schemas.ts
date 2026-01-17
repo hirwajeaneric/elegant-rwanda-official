@@ -64,22 +64,36 @@ export const carRentalSchema = z.object({
   }),
 })
 
-// Air Travel Assistance Form Schema
+// Air Travel Assistance Form Schema (detailed)
 export const airTravelSchema = z.object({
+  tripType: z.enum(["One-way", "Round-trip", "Multi-city"]),
   services: z.array(z.enum(["Visa Assistance", "Airport Pickup", "Hotel Booking", "Transportation", "Other", "Ticket Booking"])).min(1, "Please select at least one service"),
-  arrivalDetails: z.object({
-    date: z.date(),
-    time: z.string().min(1, "Please select arrival time"),
-    flightNumber: z.string().min(3, "Please enter flight number"),
-    airline: z.string().min(2, "Please enter airline name"),
+  origin: z.string().min(2, "Please enter your departure city/airport"),
+  destination: z.string().min(2, "Please enter your arrival city/airport"),
+  departureDate: z.date(),
+  departureTime: z.string().min(1, "Please select a departure time"),
+  returnDate: z.date().optional(),
+  returnTime: z.string().optional(),
+  travelClass: z.enum(["Economy", "Premium Economy", "Business", "First"]),
+  passengers: z.object({
+    adults: z.number().min(1, "At least one adult is required"),
+    children: z.number().min(0),
+    infants: z.number().min(0),
   }),
-  departureDetails: z.object({
-    date: z.date(),
-    time: z.string().min(1, "Please select departure time"),
-    flightNumber: z.string().min(3, "Please enter flight number"),
-    airline: z.string().min(2, "Please enter airline name"),
+  travelerDetails: z.object({
+    primaryTravelerName: z.string().min(2, "Please enter primary traveler name"),
+    nationality: z.string().min(2, "Please enter nationality"),
+    passportNumber: z.string().optional(),
+    passportExpiry: z.string().optional(),
   }),
-  numberOfTravelers: z.number().min(1, "At least 1 traveler required").max(10, "Maximum 10 travelers"),
+  luggage: z.object({
+    checkedBags: z.number().min(0),
+    cabinBags: z.number().min(0),
+    specialItems: z.string().optional(),
+  }),
+  seatPreference: z.string().optional(),
+  loyaltyProgram: z.string().optional(),
+  budgetRange: z.string().optional(),
   preferences: z.string().optional(),
   contactInfo: z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),

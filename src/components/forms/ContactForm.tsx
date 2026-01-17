@@ -9,6 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Link from "next/link";
+import { toast } from "sonner";
+import { submitFormToEmail } from "@/lib/client-submit";
 
 interface ContactFormData {
     firstName: string;
@@ -38,14 +40,25 @@ const schema = z.object({
 });
 
 export default function ContactForm() {
-    const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<ContactFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue } = useForm<ContactFormData>({
         defaultValues,
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = (data: ContactFormData) => {
-        console.log(data);
-        reset();
+    const onSubmit = async (data: ContactFormData) => {
+        try {
+            await submitFormToEmail({
+                formType: "contact",
+                data: data as unknown as Record<string, unknown>,
+                userEmail: data.email,
+                userName: `${data.firstName} ${data.lastName}`.trim(),
+            });
+            toast.success("Thank you for contacting us. We’ve received your request.");
+            reset();
+        } catch (error) {
+            console.error(error);
+            toast.error("We could not send your request. Please try again.");
+        }
     };
 
     return (
@@ -96,7 +109,20 @@ export default function ContactForm() {
                 <Textarea id="message" {...register("message")} placeholder="Tell us about your travel plans, questions, or requirements..." rows={5} className="border-gray-300" />
                 {errors.message && <p className="text-red-500">{errors.message.message}</p>}
             </div>
-            <Button type="submit" className="w-full btn-primary rounded-full text-lg py-4">Send Message</Button>
+            <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full btn-primary rounded-full text-lg py-4"
+            >
+                {isSubmitting ? (
+                    <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 inline-block" />
+                        Sending...
+                    </>
+                ) : (
+                    "Send Message"
+                )}
+            </Button>
             <p className="text-sm text-muted-foreground">By submitting this form, you agree to our <Link href="/privacy-policy" className="text-primary">Privacy Policy</Link> and <Link href="/terms-of-service" className="text-primary">Terms of Service</Link>.</p>
         </form>
     )
