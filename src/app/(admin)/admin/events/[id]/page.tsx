@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { events, Event } from "@/data/events";
+import { getCategoriesForEntity } from "@/data/categories";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
@@ -24,6 +25,7 @@ export default function EventDetailPage() {
   const router = useRouter();
   const id = params.id as string;
   const event = getEventById(id);
+  const availableCategories = useMemo(() => getCategoriesForEntity(['event']), []);
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<Event>>({
@@ -317,19 +319,20 @@ export default function EventDetailPage() {
               <Label htmlFor="category">Category</Label>
               {isEditing ? (
                 <Select
-                  value={formData.category || "Group Tour"}
-                  onValueChange={(value: Event["category"]) =>
-                    setFormData({ ...formData, category: value })
+                  value={formData.category || availableCategories[0]?.name || ""}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, category: value as Event["category"] })
                   }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Group Tour">Group Tour</SelectItem>
-                    <SelectItem value="Cultural Event">Cultural Event</SelectItem>
-                    <SelectItem value="Adventure">Adventure</SelectItem>
-                    <SelectItem value="Unique Experience">Unique Experience</SelectItem>
+                    {availableCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               ) : (
@@ -440,6 +443,77 @@ export default function EventDetailPage() {
                   </li>
                 ))}
               </ul>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Images */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Images</CardTitle>
+            <CardDescription>Event images (can have multiple images)</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {isEditing ? (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Add Images</Label>
+                  <AssetSelector
+                    value={formData.images || []}
+                    onSelect={(images) => {
+                      const imageArray = Array.isArray(images) ? images : [images];
+                      setFormData({ ...formData, images: imageArray });
+                    }}
+                    multiple={true}
+                  />
+                </div>
+                {(formData.images || []).length > 0 && (
+                  <div className="space-y-2">
+                    <Label>Selected Images ({formData.images.length})</Label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {(formData.images || []).map((image, index) => (
+                        <div key={index} className="relative group">
+                          <div className="relative aspect-video rounded-lg overflow-hidden border">
+                            <img
+                              src={image}
+                              alt={`Event image ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="icon"
+                              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={() => {
+                                const updatedImages = (formData.images || []).filter((_, i) => i !== index);
+                                setFormData({ ...formData, images: updatedImages });
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {event.images.length > 0 ? (
+                  event.images.map((image, index) => (
+                    <div key={index} className="relative aspect-video rounded-lg overflow-hidden border">
+                      <img
+                        src={image}
+                        alt={`Event image ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground col-span-full">No images added</p>
+                )}
+              </div>
             )}
           </CardContent>
         </Card>

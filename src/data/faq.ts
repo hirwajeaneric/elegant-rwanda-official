@@ -5,11 +5,6 @@ export interface FAQ {
   category: 'General Travel' | 'Gorilla Trekking' | 'Tours & Packages' | 'Transportation' | 'Accommodation';
   order: number;
   active: boolean;
-  
-  // Dashboard-specific fields
-  views: number;
-  helpful: number;
-  notHelpful: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -22,9 +17,6 @@ export const faqs: FAQ[] = [
     category: 'General Travel',
     order: 1,
     active: true,
-    views: 1250,
-    helpful: 980,
-    notHelpful: 45,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-15'
   },
@@ -35,9 +27,6 @@ export const faqs: FAQ[] = [
     category: 'General Travel',
     order: 2,
     active: true,
-    views: 1100,
-    helpful: 850,
-    notHelpful: 30,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-10'
   },
@@ -48,9 +37,6 @@ export const faqs: FAQ[] = [
     category: 'General Travel',
     order: 3,
     active: true,
-    views: 980,
-    helpful: 720,
-    notHelpful: 25,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-08'
   },
@@ -61,9 +47,6 @@ export const faqs: FAQ[] = [
     category: 'General Travel',
     order: 4,
     active: true,
-    views: 1200,
-    helpful: 950,
-    notHelpful: 40,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-05'
   },
@@ -74,9 +57,6 @@ export const faqs: FAQ[] = [
     category: 'Gorilla Trekking',
     order: 1,
     active: true,
-    views: 1500,
-    helpful: 1200,
-    notHelpful: 50,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-15'
   },
@@ -87,9 +67,6 @@ export const faqs: FAQ[] = [
     category: 'Gorilla Trekking',
     order: 2,
     active: true,
-    views: 1350,
-    helpful: 1100,
-    notHelpful: 45,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-10'
   },
@@ -100,9 +77,6 @@ export const faqs: FAQ[] = [
     category: 'Gorilla Trekking',
     order: 3,
     active: true,
-    views: 1280,
-    helpful: 980,
-    notHelpful: 42,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-08'
   },
@@ -113,9 +87,6 @@ export const faqs: FAQ[] = [
     category: 'Gorilla Trekking',
     order: 4,
     active: true,
-    views: 1100,
-    helpful: 850,
-    notHelpful: 35,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-05'
   },
@@ -126,9 +97,6 @@ export const faqs: FAQ[] = [
     category: 'Tours & Packages',
     order: 1,
     active: true,
-    views: 1050,
-    helpful: 800,
-    notHelpful: 30,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-15'
   },
@@ -139,9 +107,6 @@ export const faqs: FAQ[] = [
     category: 'Tours & Packages',
     order: 2,
     active: true,
-    views: 980,
-    helpful: 750,
-    notHelpful: 28,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-10'
   },
@@ -152,9 +117,6 @@ export const faqs: FAQ[] = [
     category: 'Tours & Packages',
     order: 3,
     active: true,
-    views: 920,
-    helpful: 680,
-    notHelpful: 25,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-08'
   },
@@ -165,9 +127,6 @@ export const faqs: FAQ[] = [
     category: 'Tours & Packages',
     order: 4,
     active: true,
-    views: 850,
-    helpful: 620,
-    notHelpful: 22,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-05'
   },
@@ -178,9 +137,6 @@ export const faqs: FAQ[] = [
     category: 'Transportation',
     order: 1,
     active: true,
-    views: 780,
-    helpful: 580,
-    notHelpful: 20,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-15'
   },
@@ -191,9 +147,6 @@ export const faqs: FAQ[] = [
     category: 'Transportation',
     order: 2,
     active: true,
-    views: 720,
-    helpful: 520,
-    notHelpful: 18,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-10'
   },
@@ -204,9 +157,6 @@ export const faqs: FAQ[] = [
     category: 'Transportation',
     order: 3,
     active: true,
-    views: 680,
-    helpful: 480,
-    notHelpful: 15,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-08'
   },
@@ -217,9 +167,6 @@ export const faqs: FAQ[] = [
     category: 'Transportation',
     order: 4,
     active: true,
-    views: 650,
-    helpful: 450,
-    notHelpful: 12,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-05'
   },
@@ -230,9 +177,6 @@ export const faqs: FAQ[] = [
     category: 'Accommodation',
     order: 1,
     active: true,
-    views: 950,
-    helpful: 720,
-    notHelpful: 32,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-15'
   },
@@ -243,9 +187,6 @@ export const faqs: FAQ[] = [
     category: 'Accommodation',
     order: 2,
     active: true,
-    views: 880,
-    helpful: 650,
-    notHelpful: 28,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-10'
   },
@@ -256,9 +197,6 @@ export const faqs: FAQ[] = [
     category: 'Accommodation',
     order: 3,
     active: true,
-    views: 820,
-    helpful: 600,
-    notHelpful: 25,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-08'
   },
@@ -269,9 +207,6 @@ export const faqs: FAQ[] = [
     category: 'Accommodation',
     order: 4,
     active: true,
-    views: 780,
-    helpful: 580,
-    notHelpful: 22,
     createdAt: '2024-01-15',
     updatedAt: '2024-12-05'
   }

@@ -43,7 +43,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       const bookingData = {
         vehicle: vehicle.name,
@@ -51,17 +51,17 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
         ...formData,
         rentalDays: calculateDays(),
       };
-      
+
       await submitFormToEmail({
         formType: "car-rental",
         data: bookingData,
         userEmail: formData.email,
         userName: formData.driverName || "Guest",
       });
-      
+
       toast.success("Car rental request received. We'll respond with a quote soon.");
       setIsSubmitted(true);
-      
+
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({
@@ -125,303 +125,260 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
   }
 
   return (
-    <section className="py-30 bg-muted/30" id="booking">
-      <div className="container-elegant">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left Column - Booking Form */}
-          <div>
-            <h2 className="text-4xl font-display font-bold text-foreground mb-6">
-              Book Your Car Rental
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Complete the form below to request a quote for the {vehicle.name}. We&apos;ll provide you with a detailed quotation within 1 hour.
-            </p>
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6" id="booking">
+      <div>
+        <h2 className="text-2xl font-display font-bold text-foreground mb-3">
+          Book Your Car Rental
+        </h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Request a quote for the {vehicle.name}. We&apos;ll respond within 1 hour.
+        </p>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Rental Type */}
-              <div className="space-y-2">
-                <Label htmlFor="rentalType" className="text-sm font-medium">
-                  Rental Type
-                </Label>
-                <Select 
-                  value={formData.rentalType} 
-                  onValueChange={(value) => handleInputChange("rentalType", value)}
-                  required
-                >
-                  <SelectTrigger id="rentalType" className="w-full border-gray-300">
-                    <SelectValue placeholder="Select rental type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="self-drive">Self Drive</SelectItem>
-                    <SelectItem value="chauffeur">Chauffeur Driven</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Date Range */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="startDate" className="text-sm font-medium">
-                    Pickup Date
-                  </Label>
-                  <Input
-                    id="startDate"
-                    type="date"
-                    value={formData.startDate}
-                    onChange={(e) => handleInputChange("startDate", e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
-                    className="w-full border-gray-300"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="endDate" className="text-sm font-medium">
-                    Return Date
-                  </Label>
-                  <Input
-                    id="endDate"
-                    type="date"
-                    value={formData.endDate}
-                    onChange={(e) => handleInputChange("endDate", e.target.value)}
-                    min={formData.startDate || new Date().toISOString().split('T')[0]}
-                    className="w-full border-gray-300"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Location */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="pickupLocation" className="text-sm font-medium">
-                    Pickup Location
-                  </Label>
-                  <Select
-                    value={formData.pickupLocation}
-                    onValueChange={(value) => handleInputChange("pickupLocation", value)}
-                    required
-                  >
-                    <SelectTrigger id="pickupLocation" className="w-full border-gray-300">
-                      <SelectValue placeholder="Select Location" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {vehicle.pickupLocations.map((location, index) => (
-                        <SelectItem key={index} value={location}>{location}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="dropoffLocation" className="text-sm font-medium">
-                    Drop-off Location
-                  </Label>
-                  <Select
-                    value={formData.dropoffLocation}
-                    onValueChange={(value) => handleInputChange("dropoffLocation", value)}
-                    required
-                  >
-                    <SelectTrigger id="dropoffLocation" className="w-full border-gray-300">
-                      <SelectValue placeholder="Select Location" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {vehicle.pickupLocations.map((location, index) => (
-                        <SelectItem key={index} value={location}>{location}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Driver Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="driverName" className="text-sm font-medium">
-                    Driver Name
-                  </Label>
-                  <Input
-                    id="driverName"
-                    type="text"
-                    value={formData.driverName}
-                    onChange={(e) => handleInputChange("driverName", e.target.value)}
-                    placeholder="Enter driver's full name"
-                    className="w-full border-gray-300"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="driverLicense" className="text-sm font-medium">
-                    Driver License Number
-                  </Label>
-                  <Input
-                    id="driverLicense"
-                    type="text"
-                    value={formData.driverLicense}
-                    onChange={(e) => handleInputChange("driverLicense", e.target.value)}
-                    placeholder="Enter driver's license number"
-                    className="w-full border-gray-300"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* License Expiry */}
-              <div className="space-y-2">
-                <Label htmlFor="driverLicenseExpiry" className="text-sm font-medium">
-                  License Expiry Date
-                </Label>
-                <Input
-                  id="driverLicenseExpiry"
-                  type="date"
-                  value={formData.driverLicenseExpiry}
-                  onChange={(e) => handleInputChange("driverLicenseExpiry", e.target.value)}
-                  className="w-full border-gray-300"
-                  required
-                />
-              </div>
-
-              {/* Contact Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
-                    Email Address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
-                    placeholder="Enter your email address"
-                    className="w-full border-gray-300"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm font-medium">
-                    Phone Number
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
-                    placeholder="Enter your phone number"
-                    className="w-full border-gray-300"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Special Requests */}
-              <div className="space-y-2">
-                <Label htmlFor="specialRequests" className="text-sm font-medium">
-                  Special Requests
-                </Label>
-                <Textarea
-                  id="specialRequests"
-                  value={formData.specialRequests}
-                  onChange={(e) => handleInputChange("specialRequests", e.target.value)}
-                  rows={4}
-                  className="w-full border-gray-300 resize-none"
-                  placeholder="Any special requirements or requests..."
-                />
-              </div>
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary text-white font-semibold py-4 px-6 rounded-full hover:bg-primary/90 text-lg"
-                size="lg"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 inline-block" />
-                    Submitting...
-                  </>
-                ) : (
-                  "Request Quote"
-                )}
-              </Button>
-            </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Rental Type */}
+          <div className="space-y-2">
+            <Label htmlFor="rentalType" className="text-sm font-medium">
+              Rental Type
+            </Label>
+            <Select
+              value={formData.rentalType}
+              onValueChange={(value) => handleInputChange("rentalType", value)}
+              required
+            >
+              <SelectTrigger id="rentalType" className="w-full border-gray-300">
+                <SelectValue placeholder="Select rental type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="self-drive">Self Drive</SelectItem>
+                <SelectItem value="chauffeur">Chauffeur Driven</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
-          {/* Right Column - Summary & Features */}
-          <div className="space-y-8">
-            {/* Rental Summary */}
-            <div className="bg-card rounded-2xl p-8 shadow-sm border border-border">
-              <h3 className="text-2xl font-display font-semibold text-foreground mb-6">
-                Rental Summary
-              </h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Vehicle</span>
-                  <span className="font-semibold text-foreground">{vehicle.name}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Category</span>
-                  <span className="font-semibold text-foreground">{vehicle.category}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Daily Rate</span>
-                  <span className="font-semibold text-accent">Contact for Quote</span>
-                </div>
-                {formData.startDate && formData.endDate && (
-                  <>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Duration</span>
-                      <span className="font-semibold text-foreground">{calculateDays()} days</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Estimated Total</span>
-                      <span className="font-semibold text-accent">Quote Required</span>
-                    </div>
-                  </>
-                )}
-              </div>
+          {/* Date Range */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="startDate" className="text-sm font-medium">
+                Pickup Date
+              </Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => handleInputChange("startDate", e.target.value)}
+                min={new Date().toISOString().split('T')[0]}
+                className="w-full border-gray-300"
+                required
+              />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="endDate" className="text-sm font-medium">
+                Return Date
+              </Label>
+              <Input
+                id="endDate"
+                type="date"
+                value={formData.endDate}
+                onChange={(e) => handleInputChange("endDate", e.target.value)}
+                min={formData.startDate || new Date().toISOString().split('T')[0]}
+                className="w-full border-gray-300"
+                required
+              />
+            </div>
+          </div>
 
-            {/* What&apos;s Included */}
-            <div className="bg-primary/10 rounded-2xl p-8 border border-primary/20">
-              <h3 className="text-2xl font-display font-semibold text-primary mb-4">
-                What&apos;s Included
-              </h3>
-              <ul className="space-y-3">
-                {vehicle.includedServices.slice(0, 6).map((service, index) => (
-                  <li key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-primary shrink-0" />
-                    <span className="text-foreground">{service}</span>
-                  </li>
-                ))}
-              </ul>
+          {/* Location */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="pickupLocation" className="text-sm font-medium">
+                Pickup Location
+              </Label>
+              <Select
+                value={formData.pickupLocation}
+                onValueChange={(value) => handleInputChange("pickupLocation", value)}
+                required
+              >
+                <SelectTrigger id="pickupLocation" className="w-full border-gray-300">
+                  <SelectValue placeholder="Select Location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {vehicle.pickupLocations.map((location, index) => (
+                    <SelectItem key={index} value={location}>{location}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="dropoffLocation" className="text-sm font-medium">
+                Drop-off Location
+              </Label>
+              <Select
+                value={formData.dropoffLocation}
+                onValueChange={(value) => handleInputChange("dropoffLocation", value)}
+                required
+              >
+                <SelectTrigger id="dropoffLocation" className="w-full border-gray-300">
+                  <SelectValue placeholder="Select Location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {vehicle.pickupLocations.map((location, index) => (
+                    <SelectItem key={index} value={location}>{location}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
-            {/* Why Choose This Vehicle */}
-            <div className="bg-secondary/10 rounded-2xl p-8 border border-secondary/20">
-              <h3 className="text-2xl font-display font-semibold text-secondary mb-4">
-                Why Choose This Vehicle
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <Shield className="h-5 w-5 text-secondary" />
-                  <span className="text-foreground">Full Insurance Coverage</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Clock className="h-5 w-5 text-secondary" />
-                  <span className="text-foreground">24/7 Roadside Assistance</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5 text-secondary" />
-                  <span className="text-foreground">Flexible Pickup/Drop-off</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CreditCard className="h-5 w-5 text-secondary" />
-                  <span className="text-foreground">No Hidden Fees</span>
-                </div>
-              </div>
+          {/* Driver Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="driverName" className="text-sm font-medium">
+                Driver Name
+              </Label>
+              <Input
+                id="driverName"
+                type="text"
+                value={formData.driverName}
+                onChange={(e) => handleInputChange("driverName", e.target.value)}
+                placeholder="Enter driver's full name"
+                className="w-full border-gray-300"
+                required
+              />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="driverLicense" className="text-sm font-medium">
+                Driver License Number
+              </Label>
+              <Input
+                id="driverLicense"
+                type="text"
+                value={formData.driverLicense}
+                onChange={(e) => handleInputChange("driverLicense", e.target.value)}
+                placeholder="Enter driver's license number"
+                className="w-full border-gray-300"
+                required
+              />
+            </div>
+          </div>
+
+          {/* License Expiry */}
+          <div className="space-y-2">
+            <Label htmlFor="driverLicenseExpiry" className="text-sm font-medium">
+              License Expiry Date
+            </Label>
+            <Input
+              id="driverLicenseExpiry"
+              type="date"
+              value={formData.driverLicenseExpiry}
+              onChange={(e) => handleInputChange("driverLicenseExpiry", e.target.value)}
+              className="w-full border-gray-300"
+              required
+            />
+          </div>
+
+          {/* Contact Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-medium">
+                Email Address
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                placeholder="Enter your email address"
+                className="w-full border-gray-300"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone" className="text-sm font-medium">
+                Phone Number
+              </Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
+                placeholder="Enter your phone number"
+                className="w-full border-gray-300"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Special Requests */}
+          <div className="space-y-2">
+            <Label htmlFor="specialRequests" className="text-sm font-medium">
+              Special Requests
+            </Label>
+            <Textarea
+              id="specialRequests"
+              value={formData.specialRequests}
+              onChange={(e) => handleInputChange("specialRequests", e.target.value)}
+              rows={4}
+              className="w-full border-gray-300 resize-none"
+              placeholder="Any special requirements or requests..."
+            />
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/90"
+            size="lg"
+          >
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 inline-block" />
+                Submitting...
+              </>
+            ) : (
+              "Request Quote"
+            )}
+          </Button>
+        </form>
+
+        {/* Rental Summary */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <h3 className="text-lg font-semibold text-foreground mb-4">
+            Rental Summary
+          </h3>
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Vehicle</span>
+              <span className="font-semibold text-foreground">{vehicle.name}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Category</span>
+              <span className="font-semibold text-foreground">{vehicle.category}</span>
+            </div>
+            {formData.startDate && formData.endDate && (
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Duration</span>
+                <span className="font-semibold text-foreground">{calculateDays()} days</span>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* What's Included - Compact */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <h3 className="text-lg font-semibold text-primary mb-3">
+            What&apos;s Included
+          </h3>
+          <ul className="space-y-2">
+            {vehicle.includedServices.slice(0, 4).map((service, index) => (
+              <li key={index} className="flex items-center space-x-2 text-sm">
+                <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                <span className="text-foreground">{service}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

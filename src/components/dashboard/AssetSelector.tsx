@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,8 +25,8 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface AssetSelectorProps {
-  value?: string;
-  onSelect: (imageSrc: string) => void;
+  value?: string | string[];
+  onSelect: (imageSrc: string | string[]) => void;
   trigger?: React.ReactNode;
   multiple?: boolean;
   category?: string;
@@ -43,8 +43,19 @@ export function AssetSelector({
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(category || "all");
   const [selectedImages, setSelectedImages] = useState<string[]>(
-    value ? [value] : []
+    Array.isArray(value) ? value : value ? [value] : []
   );
+
+  // Sync selectedImages when value prop changes
+  useEffect(() => {
+    if (Array.isArray(value)) {
+      setSelectedImages(value);
+    } else if (value) {
+      setSelectedImages([value]);
+    } else {
+      setSelectedImages([]);
+    }
+  }, [value]);
 
   const categories = useMemo(() => {
     const cats = new Set(galleryImages.map((img) => img.category));
@@ -85,15 +96,19 @@ export function AssetSelector({
 
   const handleConfirm = () => {
     if (multiple && selectedImages.length > 0) {
-      onSelect(selectedImages[0]); // For now, return first selected
+      onSelect(selectedImages);
       setOpen(false);
     }
   };
 
   const handleRemove = (imageSrc: string) => {
     setSelectedImages((prev) => prev.filter((src) => src !== imageSrc));
-    if (!multiple && imageSrc === value) {
+    if (!multiple) {
       onSelect("");
+    } else {
+      // Update the selection when removing in multiple mode
+      const updated = selectedImages.filter((src) => src !== imageSrc);
+      onSelect(updated);
     }
   };
 
@@ -108,9 +123,11 @@ export function AssetSelector({
       </DialogTrigger>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Select Image</DialogTitle>
+          <DialogTitle>{multiple ? "Select Images" : "Select Image"}</DialogTitle>
           <DialogDescription>
-            Choose an image from the gallery
+            {multiple 
+              ? "Choose one or more images from the gallery" 
+              : "Choose an image from the gallery"}
           </DialogDescription>
         </DialogHeader>
 

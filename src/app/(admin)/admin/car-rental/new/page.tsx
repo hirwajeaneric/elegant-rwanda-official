@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { AssetSelector } from "@/components/dashboard/AssetSelector";
 
 export default function NewVehiclePage() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function NewVehiclePage() {
     category: "Economy" as "Economy" | "Compact" | "SUV" | "Unique" | "Minivan" | "Adventure" | "Executive",
     description: "",
     shortDescription: "",
+    images: [] as string[],
     features: [] as string[],
     dailyRate: 0,
     status: "available" as "available" | "rented" | "maintenance",
@@ -28,6 +30,19 @@ export default function NewVehiclePage() {
     model: "",
     year: 2024,
     plateNumber: "",
+    available: true,
+    mileage: 0,
+    lastService: "",
+    nextService: "",
+    pickupLocations: [] as string[],
+    includedServices: [] as string[],
+    additionalServices: [] as string[],
+    requirements: [] as string[],
+    insurance: {
+      included: true,
+      coverage: "",
+      excess: "",
+    },
     specifications: {
       passengers: 4,
       doors: 4,
@@ -48,6 +63,10 @@ export default function NewVehiclePage() {
     },
   });
   const [newFeature, setNewFeature] = useState("");
+  const [newPickupLocation, setNewPickupLocation] = useState("");
+  const [newIncludedService, setNewIncludedService] = useState("");
+  const [newAdditionalService, setNewAdditionalService] = useState("");
+  const [newRequirement, setNewRequirement] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,6 +89,26 @@ export default function NewVehiclePage() {
     setFormData({
       ...formData,
       features: formData.features.filter((_, i) => i !== index),
+    });
+  };
+
+  const handleAddArrayItem = (field: "pickupLocations" | "includedServices" | "additionalServices" | "requirements", value: string) => {
+    if (value.trim()) {
+      setFormData({
+        ...formData,
+        [field]: [...formData[field], value.trim()],
+      });
+      if (field === "pickupLocations") setNewPickupLocation("");
+      if (field === "includedServices") setNewIncludedService("");
+      if (field === "additionalServices") setNewAdditionalService("");
+      if (field === "requirements") setNewRequirement("");
+    }
+  };
+
+  const handleRemoveArrayItem = (field: "pickupLocations" | "includedServices" | "additionalServices" | "requirements", index: number) => {
+    setFormData({
+      ...formData,
+      [field]: formData[field].filter((_, i) => i !== index),
     });
   };
 
@@ -159,6 +198,17 @@ export default function NewVehiclePage() {
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="shortDescription">Short Description *</Label>
+                <Input
+                  id="shortDescription"
+                  value={formData.shortDescription}
+                  onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
+                  placeholder="Brief description for listings"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="description">Description *</Label>
                 <Textarea
                   id="description"
@@ -168,6 +218,58 @@ export default function NewVehiclePage() {
                   required
                 />
               </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="year">Year *</Label>
+                  <Input
+                    id="year"
+                    type="number"
+                    value={formData.year}
+                    onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) || 2024 })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="plateNumber">Plate Number *</Label>
+                  <Input
+                    id="plateNumber"
+                    value={formData.plateNumber}
+                    onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="mileage">Mileage</Label>
+                  <Input
+                    id="mileage"
+                    type="number"
+                    value={formData.mileage}
+                    onChange={(e) => setFormData({ ...formData, mileage: parseInt(e.target.value) || 0 })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="available">Available</Label>
+                  <Select
+                    value={formData.available.toString()}
+                    onValueChange={(value) => setFormData({ ...formData, available: value === "true" })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">Available</SelectItem>
+                      <SelectItem value="false">Not Available</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -213,7 +315,58 @@ export default function NewVehiclePage() {
             </CardContent>
           </Card>
 
-          {/* Features & Specifications */}
+          {/* Images */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Images</CardTitle>
+              <CardDescription>Vehicle images (can have multiple images)</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Add Images</Label>
+                <AssetSelector
+                  value={formData.images || []}
+                  onSelect={(images) => {
+                    const imageArray = Array.isArray(images) ? images : [images];
+                    setFormData({ ...formData, images: imageArray });
+                  }}
+                  multiple={true}
+                />
+              </div>
+              {formData.images.length > 0 && (
+                <div className="space-y-2">
+                  <Label>Selected Images ({formData.images.length})</Label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {formData.images.map((image, index) => (
+                      <div key={index} className="relative group">
+                        <div className="relative aspect-video rounded-lg overflow-hidden border">
+                          <img
+                            src={image}
+                            alt={`Vehicle image ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={() => {
+                              const updatedImages = formData.images.filter((_, i) => i !== index);
+                              setFormData({ ...formData, images: updatedImages });
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Features */}
           <Card>
             <CardHeader>
               <CardTitle>Features</CardTitle>
@@ -246,6 +399,178 @@ export default function NewVehiclePage() {
                         variant="ghost"
                         size="icon"
                         onClick={() => handleRemoveFeature(index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Pickup Locations */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Pickup Locations</CardTitle>
+              <CardDescription>Available pickup locations</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    value={newPickupLocation}
+                    onChange={(e) => setNewPickupLocation(e.target.value)}
+                    placeholder="Add pickup location"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddArrayItem("pickupLocations", newPickupLocation);
+                      }
+                    }}
+                  />
+                  <Button type="button" onClick={() => handleAddArrayItem("pickupLocations", newPickupLocation)} size="icon">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="space-y-1">
+                  {formData.pickupLocations.map((location, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                      <span className="text-sm">{location}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemoveArrayItem("pickupLocations", index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Included Services */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Included Services</CardTitle>
+              <CardDescription>Services included with rental</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    value={newIncludedService}
+                    onChange={(e) => setNewIncludedService(e.target.value)}
+                    placeholder="Add included service"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddArrayItem("includedServices", newIncludedService);
+                      }
+                    }}
+                  />
+                  <Button type="button" onClick={() => handleAddArrayItem("includedServices", newIncludedService)} size="icon">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="space-y-1">
+                  {formData.includedServices.map((service, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                      <span className="text-sm">{service}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemoveArrayItem("includedServices", index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Additional Services */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Additional Services</CardTitle>
+              <CardDescription>Optional additional services</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    value={newAdditionalService}
+                    onChange={(e) => setNewAdditionalService(e.target.value)}
+                    placeholder="Add additional service"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddArrayItem("additionalServices", newAdditionalService);
+                      }
+                    }}
+                  />
+                  <Button type="button" onClick={() => handleAddArrayItem("additionalServices", newAdditionalService)} size="icon">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="space-y-1">
+                  {formData.additionalServices.map((service, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                      <span className="text-sm">{service}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemoveArrayItem("additionalServices", index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Requirements */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Requirements</CardTitle>
+              <CardDescription>Rental requirements</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    value={newRequirement}
+                    onChange={(e) => setNewRequirement(e.target.value)}
+                    placeholder="Add requirement"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddArrayItem("requirements", newRequirement);
+                      }
+                    }}
+                  />
+                  <Button type="button" onClick={() => handleAddArrayItem("requirements", newRequirement)} size="icon">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="space-y-1">
+                  {formData.requirements.map((requirement, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                      <span className="text-sm">{requirement}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemoveArrayItem("requirements", index)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -342,6 +667,91 @@ export default function NewVehiclePage() {
                       <SelectItem value="Electric">Electric</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Insurance & Service Info */}
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Insurance & Service Information</CardTitle>
+              <CardDescription>Insurance details and service history</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Insurance Included</Label>
+                    <Select
+                      value={formData.insurance.included.toString()}
+                      onValueChange={(value) =>
+                        setFormData({
+                          ...formData,
+                          insurance: {
+                            ...formData.insurance,
+                            included: value === "true",
+                          },
+                        })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="true">Yes</SelectItem>
+                        <SelectItem value="false">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Coverage</Label>
+                    <Input
+                      value={formData.insurance.coverage}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          insurance: {
+                            ...formData.insurance,
+                            coverage: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Excess</Label>
+                    <Input
+                      value={formData.insurance.excess}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          insurance: {
+                            ...formData.insurance,
+                            excess: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Last Service Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.lastService}
+                      onChange={(e) => setFormData({ ...formData, lastService: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Next Service Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.nextService}
+                      onChange={(e) => setFormData({ ...formData, nextService: e.target.value })}
+                    />
+                  </div>
                 </div>
               </div>
             </CardContent>

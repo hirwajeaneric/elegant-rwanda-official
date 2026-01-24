@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { blogPosts, BlogPost } from "@/data/blog";
+import { getCategoriesForEntity } from "@/data/categories";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
@@ -24,6 +25,7 @@ export default function BlogDetailPage() {
   const router = useRouter();
   const id = params.id as string;
   const blog = getBlogById(id);
+  const availableCategories = useMemo(() => getCategoriesForEntity(['blog']), []);
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<BlogPost>>({
@@ -226,21 +228,20 @@ export default function BlogDetailPage() {
                 <Label htmlFor="category">Category</Label>
                 {isEditing ? (
                   <Select
-                    value={formData.category || "Tours"}
-                    onValueChange={(value: BlogPost["category"]) =>
-                      setFormData({ ...formData, category: value })
+                    value={formData.category || availableCategories[0]?.name || ""}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, category: value as BlogPost["category"] })
                     }
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Tours">Tours</SelectItem>
-                      <SelectItem value="Tips">Tips</SelectItem>
-                      <SelectItem value="Culture">Culture</SelectItem>
-                      <SelectItem value="Wildlife">Wildlife</SelectItem>
-                      <SelectItem value="Unique">Unique</SelectItem>
-                      <SelectItem value="News">News</SelectItem>
+                      {availableCategories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.name}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 ) : (

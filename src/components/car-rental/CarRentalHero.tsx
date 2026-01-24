@@ -1,6 +1,6 @@
 "use client";
 
-import { Car, Shield, Clock, MapPin, Star } from "lucide-react";
+import { Car, Shield, Clock, MapPin } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 
 interface CarRentalHeroProps {
@@ -47,24 +47,6 @@ export function CarRentalHero({ vehicle }: CarRentalHeroProps) {
               </div>
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="flex items-center space-x-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star 
-                    key={i} 
-                    className={`h-5 w-5 ${
-                      i < Math.floor(vehicle.rating) 
-                        ? "fill-yellow-400 text-yellow-400" 
-                        : "text-gray-300"
-                    }`} 
-                  />
-                ))}
-              </div>
-              <span className="text-white/90">
-                {vehicle.rating} ({vehicle.reviews} reviews)
-              </span>
-            </div>
 
             {/* Key Features */}
             <div className="space-y-3">

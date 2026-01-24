@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -9,15 +9,19 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getCategoriesForEntity } from "@/data/categories";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 
 export default function NewFAQPage() {
   const router = useRouter();
+  const availableCategories = useMemo(() => getCategoriesForEntity(['faq']), []);
+  const defaultCategory = availableCategories[0]?.name || "";
+  
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
-    category: "General Travel" as "General Travel" | "Gorilla Trekking" | "Tours & Packages" | "Transportation" | "Accommodation",
+    category: defaultCategory,
     order: 0,
     active: true,
   });
@@ -87,7 +91,7 @@ export default function NewFAQPage() {
                 <Label htmlFor="category">Category *</Label>
                 <Select
                   value={formData.category}
-                  onValueChange={(value: "General Travel" | "Gorilla Trekking" | "Tours & Packages" | "Transportation" | "Accommodation") =>
+                  onValueChange={(value) =>
                     setFormData({ ...formData, category: value })
                   }
                 >
@@ -95,11 +99,11 @@ export default function NewFAQPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="General Travel">General Travel</SelectItem>
-                    <SelectItem value="Gorilla Trekking">Gorilla Trekking</SelectItem>
-                    <SelectItem value="Tours & Packages">Tours & Packages</SelectItem>
-                    <SelectItem value="Transportation">Transportation</SelectItem>
-                    <SelectItem value="Accommodation">Accommodation</SelectItem>
+                    {availableCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { getCategoriesForEntity } from "@/data/categories";
+import { AssetSelector } from "@/components/dashboard/AssetSelector";
 
 export default function NewEventPage() {
   const router = useRouter();
+  const availableCategories = useMemo(() => getCategoriesForEntity(['event']), []);
+  const defaultCategory = availableCategories[0]?.name || "";
+  
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -23,9 +28,10 @@ export default function NewEventPage() {
     location: "",
     maxParticipants: 0,
     currentParticipants: 0,
-    category: "Group Tour" as "Group Tour" | "Cultural Event" | "Adventure" | "Unique Experience",
+    category: defaultCategory,
     highlights: [] as string[],
     activities: [] as string[],
+    images: [] as string[],
     featured: false,
     registrationDeadline: "",
     status: "Open" as "Open" | "Filling Fast" | "Waitlist" | "Closed",
@@ -206,7 +212,7 @@ export default function NewEventPage() {
                   <Label htmlFor="category">Category</Label>
                   <Select
                     value={formData.category}
-                    onValueChange={(value: "Group Tour" | "Cultural Event" | "Adventure" | "Unique Experience") =>
+                    onValueChange={(value) =>
                       setFormData({ ...formData, category: value })
                     }
                   >
@@ -214,10 +220,11 @@ export default function NewEventPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Group Tour">Group Tour</SelectItem>
-                      <SelectItem value="Cultural Event">Cultural Event</SelectItem>
-                      <SelectItem value="Adventure">Adventure</SelectItem>
-                      <SelectItem value="Unique Experience">Unique Experience</SelectItem>
+                      {availableCategories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.name}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -310,6 +317,57 @@ export default function NewEventPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Images */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Images</CardTitle>
+            <CardDescription>Event images (can have multiple images)</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Add Images</Label>
+              <AssetSelector
+                value={formData.images || []}
+                onSelect={(images) => {
+                  const imageArray = Array.isArray(images) ? images : [images];
+                  setFormData({ ...formData, images: imageArray });
+                }}
+                multiple={true}
+              />
+            </div>
+            {formData.images.length > 0 && (
+              <div className="space-y-2">
+                <Label>Selected Images ({formData.images.length})</Label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {formData.images.map((image, index) => (
+                    <div key={index} className="relative group">
+                      <div className="relative aspect-video rounded-lg overflow-hidden border">
+                        <img
+                          src={image}
+                          alt={`Event image ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => {
+                            const updatedImages = formData.images.filter((_, i) => i !== index);
+                            setFormData({ ...formData, images: updatedImages });
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         <div className="flex justify-end gap-2 mt-6">
           <Button variant="outline" type="button" asChild>

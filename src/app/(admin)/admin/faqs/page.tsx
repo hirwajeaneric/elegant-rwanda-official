@@ -1,15 +1,22 @@
 "use client";
 
-
+import { useMemo } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { faqs } from "@/data/faq";
+import { getCategoriesForEntity } from "@/data/categories";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
 export default function FAQsPage() {
+  const availableCategories = useMemo(() => getCategoriesForEntity(['faq']), []);
+  const categoryFilterOptions = useMemo(() => 
+    availableCategories.map(cat => ({ value: cat.name, label: cat.name })),
+    [availableCategories]
+  );
+
   const columns = [
     {
       key: "question",
@@ -23,16 +30,6 @@ export default function FAQsPage() {
       render: (item: typeof faqs[0]) => (
         <Badge variant="outline">{item.category}</Badge>
       ),
-    },
-    {
-      key: "views",
-      label: "Views",
-      sortable: true,
-    },
-    {
-      key: "helpful",
-      label: "Helpful",
-      sortable: true,
     },
     {
       key: "active",
@@ -83,13 +80,7 @@ export default function FAQsPage() {
           {
             key: "category",
             label: "Category",
-            options: [
-              { value: "General Travel", label: "General Travel" },
-              { value: "Gorilla Trekking", label: "Gorilla Trekking" },
-              { value: "Tours & Packages", label: "Tours & Packages" },
-              { value: "Transportation", label: "Transportation" },
-              { value: "Accommodation", label: "Accommodation" },
-            ],
+            options: categoryFilterOptions,
           },
         ]}
       />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -13,9 +13,13 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import { getCategoriesForEntity } from "@/data/categories";
 
 export default function NewBlogPage() {
   const router = useRouter();
+  const availableCategories = useMemo(() => getCategoriesForEntity(['blog']), []);
+  const defaultCategory = availableCategories[0]?.name || "";
+  
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -25,7 +29,7 @@ export default function NewBlogPage() {
     authorImage: "",
     publishDate: new Date().toISOString().split("T")[0],
     readTime: "5 min",
-    category: "Tours" as "Tours" | "Tips" | "Culture" | "Wildlife" | "Unique" | "News",
+    category: defaultCategory,
     tags: [] as string[],
     featuredImage: "",
     featured: false,
@@ -171,7 +175,7 @@ export default function NewBlogPage() {
                   <Label htmlFor="category">Category</Label>
                   <Select
                     value={formData.category}
-                    onValueChange={(value: "Tours" | "Tips" | "Culture" | "Wildlife" | "Unique" | "News") =>
+                    onValueChange={(value) =>
                       setFormData({ ...formData, category: value })
                     }
                   >
@@ -179,12 +183,11 @@ export default function NewBlogPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Tours">Tours</SelectItem>
-                      <SelectItem value="Tips">Tips</SelectItem>
-                      <SelectItem value="Culture">Culture</SelectItem>
-                      <SelectItem value="Wildlife">Wildlife</SelectItem>
-                      <SelectItem value="Unique">Unique</SelectItem>
-                      <SelectItem value="News">News</SelectItem>
+                      {availableCategories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.name}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

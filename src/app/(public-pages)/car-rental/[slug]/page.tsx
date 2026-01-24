@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageWrapper } from "@/components/layout/PageWrapper";
-import { CarRentalHero } from "@/components/car-rental/CarRentalHero";
+import { CarRentalGalleryHero } from "@/components/car-rental/CarRentalGalleryHero";
 import { CarRentalDetails } from "@/components/car-rental/CarRentalDetails";
 import { CarRentalSpecs } from "@/components/car-rental/CarRentalSpecs";
-import { CarRentalGallery } from "@/components/car-rental/CarRentalGallery";
 import { CarRentalBooking } from "@/components/car-rental/CarRentalBooking";
 import { RelatedVehicles } from "@/components/car-rental/RelatedVehicles";
 import { getVehicleBySlug, getVehiclesByCategory } from "@/data/car-rental";
@@ -53,11 +52,30 @@ export default async function CarRentalPage({ params }: CarRentalPageProps) {
 
   return (
     <PageWrapper>
-      <CarRentalHero vehicle={vehicle} />
-      <CarRentalDetails vehicle={vehicle} />
-      <CarRentalSpecs vehicle={vehicle} />
-      <CarRentalGallery vehicle={vehicle} />
-      <CarRentalBooking vehicle={vehicle} />
+      {/* Gallery Hero Section */}
+      <CarRentalGalleryHero vehicle={vehicle} />
+      
+      {/* Main Content Section with Sticky Booking */}
+      <section className="py-12 bg-white">
+        <div className="container-elegant">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Left Column - Vehicle Information (8 columns) */}
+            <div className="lg:col-span-8 space-y-8">
+              <CarRentalDetails vehicle={vehicle} />
+              <CarRentalSpecs vehicle={vehicle} />
+            </div>
+
+            {/* Right Column - Sticky Booking Form (4 columns) */}
+            <div className="lg:col-span-4">
+              <div className="sticky top-24">
+                <CarRentalBooking vehicle={vehicle} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Vehicles */}
       <RelatedVehicles vehicles={relatedVehicles} />
     </PageWrapper>
   );

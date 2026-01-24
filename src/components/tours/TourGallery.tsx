@@ -22,13 +22,31 @@ export function TourGallery({ tour }: TourGalleryProps) {
 
   const nextImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % tour.images.length);
+      if (selectedImage < tour.images.length - 1) {
+        setSelectedImage(selectedImage + 1);
+      } else {
+        setSelectedImage(0);
+      }
     }
   };
 
   const prevImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage(selectedImage === 0 ? tour.images.length - 1 : selectedImage - 1);
+      if (selectedImage === 0) {
+        setSelectedImage(tour.images.length - 1);
+      } else {
+        setSelectedImage(selectedImage - 1);
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      closeLightbox();
+    } else if (e.key === "ArrowRight") {
+      nextImage();
+    } else if (e.key === "ArrowLeft") {
+      prevImage();
     }
   };
 
@@ -62,50 +80,65 @@ export function TourGallery({ tour }: TourGalleryProps) {
 
       {/* Lightbox */}
       {selectedImage !== null && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-          <div className="relative max-w-7xl max-h-full p-4">
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+        >
+          <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
             {/* Close Button */}
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-10 p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
+              className="absolute top-4 right-4 z-10 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors duration-200"
               aria-label="Close gallery"
             >
               <X className="h-6 w-6" />
             </button>
 
             {/* Navigation Buttons */}
-            <button
-              onClick={prevImage}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
+            {tour.images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevImage();
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors duration-200"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
 
-            <button
-              onClick={nextImage}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
-              aria-label="Next image"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextImage();
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors duration-200"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
 
             {/* Main Image */}
-            <div className="relative max-w-full max-h-[80vh]">
-              <Image
-                src={`/${tour.images[selectedImage]}`}
-                alt={`${tour.title} - Image ${selectedImage + 1}`}
-                width={1200}
-                height={800}
-                className="max-w-full max-h-full object-contain rounded-lg"
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
+            <Image
+              src={`/${tour.images[selectedImage]}`}
+              alt={`${tour.title} - Image ${selectedImage + 1}`}
+              width={1200}
+              height={800}
+              className="max-w-full max-h-full object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
 
             {/* Image Counter */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm">
-              {selectedImage + 1} of {tour.images.length}
-            </div>
+            {tour.images.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm">
+                {selectedImage + 1} of {tour.images.length}
+              </div>
+            )}
           </div>
         </div>
       )}

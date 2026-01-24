@@ -1,12 +1,12 @@
 "use client";
 
-
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
 import { Upload, Trash2, Edit, Eye } from "lucide-react";
 import { galleryImages } from "@/data/gallery";
+import { getCategoriesForEntity } from "@/data/categories";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import {
@@ -30,6 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export default function GalleryPage() {
+  const availableCategories = useMemo(() => getCategoriesForEntity(['image']), []);
   const [images, setImages] = useState(galleryImages);
   const [selectedImage, setSelectedImage] = useState<typeof galleryImages[0] | null>(null);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
@@ -178,14 +179,11 @@ export default function GalleryPage() {
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Wildlife">Wildlife</SelectItem>
-                    <SelectItem value="Landscapes">Landscapes</SelectItem>
-                    <SelectItem value="Culture">Culture</SelectItem>
-                    <SelectItem value="Accommodation">Accommodation</SelectItem>
-                    <SelectItem value="Food & Cuisine">Food & Cuisine</SelectItem>
-                    <SelectItem value="City & Architecture">City & Architecture</SelectItem>
-                    <SelectItem value="Events">Events</SelectItem>
-                    <SelectItem value="Transportation">Transportation</SelectItem>
+                    {availableCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -215,16 +213,7 @@ export default function GalleryPage() {
           {
             key: "category",
             label: "Category",
-            options: [
-              { value: "Wildlife", label: "Wildlife" },
-              { value: "Landscapes", label: "Landscapes" },
-              { value: "Culture", label: "Culture" },
-              { value: "Accommodation", label: "Accommodation" },
-              { value: "Food & Cuisine", label: "Food & Cuisine" },
-              { value: "City & Architecture", label: "City & Architecture" },
-              { value: "Events", label: "Events" },
-              { value: "Transportation", label: "Transportation" },
-            ],
+            options: availableCategories.map(cat => ({ value: cat.name, label: cat.name })),
           },
         ]}
       />
@@ -287,14 +276,11 @@ export default function GalleryPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Wildlife">Wildlife</SelectItem>
-                    <SelectItem value="Landscapes">Landscapes</SelectItem>
-                    <SelectItem value="Culture">Culture</SelectItem>
-                    <SelectItem value="Accommodation">Accommodation</SelectItem>
-                    <SelectItem value="Food & Cuisine">Food & Cuisine</SelectItem>
-                    <SelectItem value="City & Architecture">City & Architecture</SelectItem>
-                    <SelectItem value="Events">Events</SelectItem>
-                    <SelectItem value="Transportation">Transportation</SelectItem>
+                    {availableCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

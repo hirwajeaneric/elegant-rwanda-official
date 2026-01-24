@@ -18,6 +18,7 @@ import {
   Settings,
   LogOut,
   Menu,
+  Tag,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useRouter } from "next/navigation";
@@ -34,6 +35,7 @@ const navigation = [
   { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
   { name: "Team", href: "/admin/team", icon: Users },
   { name: "FAQs", href: "/admin/faqs", icon: HelpCircle },
+  { name: "Categories", href: "/admin/categories", icon: Tag },
   { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ];

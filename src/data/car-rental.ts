@@ -27,8 +27,6 @@ export interface Vehicle {
     wifi: boolean;
   };
   available: boolean;
-  rating: number;
-  reviews: number;
   pickupLocations: string[];
   includedServices: string[];
   additionalServices: string[];
@@ -50,12 +48,6 @@ export interface Vehicle {
   mileage: number;
   lastService: string;
   nextService?: string;
-  maintenanceHistory?: {
-    date: string;
-    type: string;
-    cost: number;
-    description: string;
-  }[];
 }
 
 export const vehicles: Vehicle[] = [
@@ -100,8 +92,6 @@ export const vehicles: Vehicle[] = [
       wifi: false
     },
     available: true,
-    rating: 4.5,
-    reviews: 128,
     pickupLocations: ["Kigali Airport", "Kigali City Center", "Kigali Hotels"],
     includedServices: [
       "Comprehensive insurance",
@@ -139,21 +129,7 @@ export const vehicles: Vehicle[] = [
     location: "Kigali",
     mileage: 45000,
     lastService: "2024-01-15",
-    nextService: "2024-07-15",
-    maintenanceHistory: [
-      {
-        date: "2024-01-15",
-        type: "Regular Service",
-        cost: 150,
-        description: "Oil change, filter replacement, brake inspection"
-      },
-      {
-        date: "2023-10-15",
-        type: "Regular Service",
-        cost: 120,
-        description: "Oil change, tire rotation, general inspection"
-      }
-    ]
+    nextService: "2024-07-15"
   },
   {
     id: "2",
@@ -196,8 +172,6 @@ export const vehicles: Vehicle[] = [
       wifi: false
     },
     available: true,
-    rating: 4.8,
-    reviews: 95,
     pickupLocations: ["Kigali Airport", "Kigali City Center", "Kigali Hotels"],
     includedServices: [
       "Comprehensive insurance",
@@ -235,15 +209,7 @@ export const vehicles: Vehicle[] = [
     location: "Kigali",
     mileage: 52000,
     lastService: "2024-02-10",
-    nextService: "2024-08-10",
-    maintenanceHistory: [
-      {
-        date: "2024-02-10",
-        type: "Regular Service",
-        cost: 180,
-        description: "Oil change, brake pad replacement, tire alignment"
-      }
-    ]
+    nextService: "2024-08-10"
   },
   {
     id: "3",
@@ -286,8 +252,6 @@ export const vehicles: Vehicle[] = [
       wifi: true
     },
     available: true,
-    rating: 4.9,
-    reviews: 67,
     pickupLocations: ["Kigali Airport", "Kigali City Center", "Kigali Hotels"],
     includedServices: [
       "Comprehensive insurance",
@@ -326,15 +290,7 @@ export const vehicles: Vehicle[] = [
     location: "Kigali",
     mileage: 55000,
     lastService: "2024-03-15",
-    nextService: "2024-09-15",
-    maintenanceHistory: [
-      {
-        date: "2024-03-15",
-        type: "Regular Service",
-        cost: 200,
-        description: "Oil change, brake pad replacement, tire alignment"
-      }
-    ]
+    nextService: "2024-09-15"
   },
   {
     id: "4",
@@ -377,8 +333,6 @@ export const vehicles: Vehicle[] = [
       wifi: false
     },
     available: true,
-    rating: 4.6,
-    reviews: 89,
     pickupLocations: ["Kigali Airport", "Kigali City Center", "Kigali Hotels"],
     includedServices: [
       "Comprehensive insurance",
@@ -415,15 +369,7 @@ export const vehicles: Vehicle[] = [
     location: "Kigali",
     mileage: 60000,
     lastService: "2024-04-10",
-    nextService: "2024-10-10",
-    maintenanceHistory: [
-      {
-        date: "2024-04-10",
-        type: "Regular Service",
-        cost: 160,
-        description: "Oil change, brake pad replacement, tire alignment"
-      }
-    ]
+    nextService: "2024-10-10"
   },
   {
     id: "5",
@@ -465,8 +411,6 @@ export const vehicles: Vehicle[] = [
       wifi: false
     },
     available: false,
-    rating: 4.7,
-    reviews: 45,
     pickupLocations: ["Kigali Airport", "Kigali City Center", "Kigali Hotels"],
     includedServices: [
       "Comprehensive insurance",
@@ -506,15 +450,7 @@ export const vehicles: Vehicle[] = [
     location: "Kigali",
     mileage: 70000,
     lastService: "2024-05-15",
-    nextService: "2024-11-15",
-    maintenanceHistory: [
-      {
-        date: "2024-05-15",
-        type: "Regular Service",
-        cost: 220,
-        description: "Oil change, brake pad replacement, tire alignment"
-      }
-    ]
+    nextService: "2024-11-15"
   },
   {
     id: "6",
@@ -557,8 +493,6 @@ export const vehicles: Vehicle[] = [
       wifi: true
     },
     available: true,
-    rating: 4.9,
-    reviews: 78,
     pickupLocations: ["Kigali Airport", "Kigali City Center", "Kigali Hotels"],
     includedServices: [
       "Comprehensive insurance",
@@ -597,15 +531,7 @@ export const vehicles: Vehicle[] = [
     location: "Kigali",
     mileage: 75000,
     lastService: "2024-06-15",
-    nextService: "2024-12-15",
-    maintenanceHistory: [
-      {
-        date: "2024-06-15",
-        type: "Regular Service",
-        cost: 240,
-        description: "Oil change, brake pad replacement, tire alignment"
-      }
-    ]
+    nextService: "2024-12-15"
   }
 ];
 
@@ -622,7 +548,7 @@ export const getAllVehicles = (): Vehicle[] => {
 };
 
 export const getFeaturedVehicles = (): Vehicle[] => {
-  return vehicles.filter(vehicle => vehicle.rating >= 4.5).slice(0, 6);
+  return vehicles.filter(vehicle => vehicle.available).slice(0, 6);
 };
 
 export const getAvailableVehicles = (): Vehicle[] => {

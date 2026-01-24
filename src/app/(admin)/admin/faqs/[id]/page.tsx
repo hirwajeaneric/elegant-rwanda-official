@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { faqs, FAQ } from "@/data/faq";
+import { getCategoriesForEntity } from "@/data/categories";
 import { ArrowLeft, Edit, Save, X } from "lucide-react";
 import Link from "next/link";
 
@@ -23,12 +24,13 @@ export default function FAQDetailPage() {
   const router = useRouter();
   const id = params.id as string;
   const faq = getFAQById(id);
+  const availableCategories = useMemo(() => getCategoriesForEntity(['faq']), []);
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<FAQ>>({
     question: "",
     answer: "",
-    category: "General Travel",
+    category: availableCategories[0]?.name || "General Travel",
     order: 0,
     active: true,
   });
@@ -160,20 +162,20 @@ export default function FAQDetailPage() {
               <Label htmlFor="category">Category</Label>
               {isEditing ? (
                 <Select
-                  value={formData.category || "General Travel"}
-                  onValueChange={(value: FAQ["category"]) =>
-                    setFormData({ ...formData, category: value })
+                  value={formData.category || availableCategories[0]?.name || ""}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, category: value as FAQ["category"] })
                   }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="General Travel">General Travel</SelectItem>
-                    <SelectItem value="Gorilla Trekking">Gorilla Trekking</SelectItem>
-                    <SelectItem value="Tours & Packages">Tours & Packages</SelectItem>
-                    <SelectItem value="Transportation">Transportation</SelectItem>
-                    <SelectItem value="Accommodation">Accommodation</SelectItem>
+                    {availableCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               ) : (
@@ -219,29 +221,21 @@ export default function FAQDetailPage() {
           </CardContent>
         </Card>
 
-        {/* Statistics */}
+        {/* Metadata */}
         <Card>
           <CardHeader>
-            <CardTitle>Statistics</CardTitle>
-            <CardDescription>Performance metrics</CardDescription>
+            <CardTitle>Metadata</CardTitle>
+            <CardDescription>FAQ information</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-muted-foreground">Views</p>
-                <p className="text-2xl font-bold">{faq.views.toLocaleString()}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Helpful</p>
-                <p className="text-2xl font-bold">{faq.helpful}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Not Helpful</p>
-                <p className="text-2xl font-bold">{faq.notHelpful}</p>
-              </div>
-              <div>
                 <p className="text-sm text-muted-foreground">Created</p>
                 <p className="text-sm font-medium">{new Date(faq.createdAt).toLocaleDateString()}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Last Updated</p>
+                <p className="text-sm font-medium">{new Date(faq.updatedAt).toLocaleDateString()}</p>
               </div>
             </div>
           </CardContent>
