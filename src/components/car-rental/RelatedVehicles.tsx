@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Star, MapPin, Users, Car } from "lucide-react";
+import { MapPin, Users, Car } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 
 interface RelatedVehiclesProps {
@@ -81,27 +81,6 @@ export function RelatedVehicles({ vehicles }: RelatedVehiclesProps) {
                     <div className="text-xs text-gray-500">Locations</div>
                   </div>
                 </div>
-
-                {/* Rating */}
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="flex items-center space-x-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`h-4 w-4 ${
-                          i < Math.floor(vehicle.rating) 
-                            ? "fill-yellow-400 text-yellow-400" 
-                            : "text-gray-300"
-                        }`} 
-                      />
-                    ))}
-                  </div>
-                  <span className="text-sm text-gray-600">
-                    {vehicle.rating} ({vehicle.reviews} reviews)
-                  </span>
-                </div>
-
-
 
                 {/* Action Button */}
                 <Link

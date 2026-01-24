@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +22,6 @@ function getVehicleById(id: string) {
 
 export default function VehicleDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const vehicle = getVehicleById(id);
 
@@ -515,10 +515,12 @@ export default function VehicleDetailPage() {
                       {(formData.images || []).map((image, index) => (
                         <div key={index} className="relative group">
                           <div className="relative aspect-video rounded-lg overflow-hidden border">
-                            <img
+                            <Image
                               src={image}
                               alt={`Vehicle image ${index + 1}`}
                               className="w-full h-full object-cover"
+                              width={100}
+                              height={100}
                             />
                             <Button
                               type="button"
@@ -544,10 +546,12 @@ export default function VehicleDetailPage() {
                 {vehicle.images.length > 0 ? (
                   vehicle.images.map((image, index) => (
                     <div key={index} className="relative aspect-video rounded-lg overflow-hidden border">
-                      <img
+                      <Image
                         src={image}
                         alt={`Vehicle image ${index + 1}`}
                         className="w-full h-full object-cover"
+                        width={100}
+                        height={100}
                       />
                     </div>
                   ))

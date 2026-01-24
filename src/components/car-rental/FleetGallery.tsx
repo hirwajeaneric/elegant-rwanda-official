@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Car, Users, Zap, Shield, Star } from "lucide-react";
+import { Car, Users, Zap, Shield } from "lucide-react";
 import { getAllVehicles } from "@/data/car-rental";
 
 export function FleetGallery() {
@@ -58,7 +58,7 @@ export function FleetGallery() {
                   height={192}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
 
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4">
@@ -85,29 +85,11 @@ export function FleetGallery() {
 
               {/* Vehicle Details */}
               <div className="p-6 flex flex-col justify-between">
-                {/* Rating */}
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="flex items-center space-x-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${i < Math.floor(vehicle.rating)
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                          }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-sm text-muted-foreground">
-                    {vehicle.rating} ({vehicle.reviews} reviews)
-                  </span>
-                </div>
-
                 {/* Features */}
                 <div className="grid grid-cols-2 gap-2 mb-6">
                   {vehicle.features.slice(0, 4).map((feature, featureIndex) => (
                     <div key={featureIndex} className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
+                      <div className="w-2 h-2 bg-primary rounded-full shrink-0" />
                       <span>{feature}</span>
                     </div>
                   ))}

@@ -13,6 +13,7 @@ import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { getCategoriesForEntity } from "@/data/categories";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import Image from "next/image";
 
 export default function NewEventPage() {
   const router = useRouter();
@@ -343,10 +344,12 @@ export default function NewEventPage() {
                   {formData.images.map((image, index) => (
                     <div key={index} className="relative group">
                       <div className="relative aspect-video rounded-lg overflow-hidden border">
-                        <img
+                        <Image
                           src={image}
                           alt={`Event image ${index + 1}`}
                           className="w-full h-full object-cover"
+                          width={100}
+                          height={100}
                         />
                         <Button
                           type="button"

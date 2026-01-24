@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,6 @@ function getFAQById(id: string) {
 
 export default function FAQDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const faq = getFAQById(id);
   const availableCategories = useMemo(() => getCategoriesForEntity(['faq']), []);
@@ -30,7 +29,7 @@ export default function FAQDetailPage() {
   const [formData, setFormData] = useState<Partial<FAQ>>({
     question: "",
     answer: "",
-    category: availableCategories[0]?.name || "General Travel",
+    category: availableCategories[0]?.name as FAQ["category"] || "General Travel",
     order: 0,
     active: true,
   });

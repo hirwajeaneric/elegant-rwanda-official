@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,11 +10,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { tours, Tour, Day } from "@/data/tours";
+import { tours, Tour } from "@/data/tours";
 import { getCategoriesForEntity } from "@/data/categories";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { AssetSelector } from "@/components/dashboard/AssetSelector";
 
 function getTourById(id: string) {
   return tours.find((tour) => tour.id === id);
@@ -22,7 +21,6 @@ function getTourById(id: string) {
 
 export default function TourDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const tour = getTourById(id);
   const availableCategories = useMemo(() => getCategoriesForEntity(['tour']), []);

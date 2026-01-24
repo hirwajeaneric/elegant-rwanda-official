@@ -14,6 +14,7 @@ import { ArrowLeft, Save, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
 import { getCategoriesForEntity } from "@/data/categories";
+import Image from "next/image";
 
 export default function NewBlogPage() {
   const router = useRouter();
@@ -225,14 +226,19 @@ export default function NewBlogPage() {
                 <Label>Featured Image *</Label>
                 <AssetSelector
                   value={formData.featuredImage}
-                  onSelect={(image) => setFormData({ ...formData, featuredImage: image })}
+                  onSelect={(image) => {
+                    const imageValue = Array.isArray(image) ? image[0] || "" : image;
+                    setFormData({ ...formData, featuredImage: imageValue });
+                  }}
                 />
                 {formData.featuredImage && (
                   <div className="mt-2">
-                    <img
+                    <Image
                       src={formData.featuredImage}
                       alt={formData.title || "Preview"}
                       className="w-full h-48 object-cover rounded-md"
+                      width={100}
+                      height={100}
                     />
                   </div>
                 )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,14 +10,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getServiceById, services } from "@/data/services";
+import { getServiceById } from "@/data/services";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import Image from "next/image";
 
 export default function ServiceDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const service = getServiceById(id);
 
@@ -260,24 +260,31 @@ export default function ServiceDetailPage() {
                 <div className="space-y-2">
                   <AssetSelector
                     value={formData.image}
-                    onSelect={(image) => setFormData({ ...formData, image })}
+                    onSelect={(image) => {
+                      const imageValue = Array.isArray(image) ? image[0] || "" : image;
+                      setFormData({ ...formData, image: imageValue });
+                    }}
                   />
                   {formData.image && (
                     <div className="mt-2">
-                      <img
+                      <Image
                         src={formData.image}
                         alt={formData.title}
                         className="w-full h-48 object-cover rounded-md"
+                        width={100}
+                        height={100}
                       />
                     </div>
                   )}
                 </div>
               ) : (
                 <div>
-                  <img
+                  <Image
                     src={service.image}
                     alt={service.title}
                     className="w-full h-48 object-cover rounded-md"
+                    width={100}
+                    height={100}
                   />
                 </div>
               )}

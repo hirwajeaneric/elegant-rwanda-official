@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { testimonials, Testimonial } from "@/data/testimonials";
 import { ArrowLeft, Edit, Save, X, Star } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import Image from "next/image";
 
 function getTestimonialById(id: string) {
   return testimonials.find((testimonial) => testimonial.id === id);
@@ -21,7 +22,6 @@ function getTestimonialById(id: string) {
 
 export default function TestimonialDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const testimonial = getTestimonialById(id);
 
@@ -163,24 +163,31 @@ export default function TestimonialDetailPage() {
                 <div className="space-y-2">
                   <AssetSelector
                     value={formData.image || ""}
-                    onSelect={(image) => setFormData({ ...formData, image })}
+                    onSelect={(image) => {
+                      const imageValue = Array.isArray(image) ? image[0] || "" : image;
+                      setFormData({ ...formData, image: imageValue });
+                    }}
                   />
                   {formData.image && (
                     <div className="mt-2">
-                      <img
+                      <Image
                         src={formData.image}
                         alt={formData.name || "Preview"}
                         className="w-24 h-24 object-cover rounded-full"
+                        width={100}
+                        height={100}
                       />
                     </div>
                   )}
                 </div>
               ) : (
                 <div>
-                  <img
+                  <Image
                     src={testimonial.image}
                     alt={testimonial.name}
                     className="w-24 h-24 object-cover rounded-full"
+                    width={100}
+                    height={100}
                   />
                 </div>
               )}

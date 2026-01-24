@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, MapPin, CreditCard, Shield, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 import { submitFormToEmail } from "@/lib/client-submit";
 import { toast } from "sonner";

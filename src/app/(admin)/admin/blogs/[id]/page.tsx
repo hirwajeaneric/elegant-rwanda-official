@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,9 +12,10 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { blogPosts, BlogPost } from "@/data/blog";
 import { getCategoriesForEntity } from "@/data/categories";
-import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Edit, Save, X, Plus } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import Image from "next/image";
 
 function getBlogById(id: string) {
   return blogPosts.find((blog) => blog.id === id);
@@ -22,7 +23,6 @@ function getBlogById(id: string) {
 
 export default function BlogDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const blog = getBlogById(id);
   const availableCategories = useMemo(() => getCategoriesForEntity(['blog']), []);
@@ -290,24 +290,31 @@ export default function BlogDetailPage() {
                 <div className="space-y-2">
                   <AssetSelector
                     value={formData.featuredImage || ""}
-                    onSelect={(image) => setFormData({ ...formData, featuredImage: image })}
+                    onSelect={(image) => {
+                      const imageValue = Array.isArray(image) ? image[0] || "" : image;
+                      setFormData({ ...formData, featuredImage: imageValue });
+                    }}
                   />
                   {formData.featuredImage && (
                     <div className="mt-2">
-                      <img
+                      <Image
                         src={formData.featuredImage}
                         alt={formData.title || "Preview"}
                         className="w-full h-48 object-cover rounded-md"
+                        width={100}
+                        height={100}
                       />
                     </div>
                   )}
                 </div>
               ) : (
                 <div>
-                  <img
+                  <Image
                     src={blog.featuredImage}
                     alt={blog.title}
                     className="w-full h-48 object-cover rounded-md"
+                    width={100}
+                    height={100}
                   />
                 </div>
               )}

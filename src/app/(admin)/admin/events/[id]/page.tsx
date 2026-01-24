@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,7 @@ import { getCategoriesForEntity } from "@/data/categories";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import Image from "next/image";
 
 function getEventById(id: string) {
   return events.find((event) => event.id === id);
@@ -22,7 +23,6 @@ function getEventById(id: string) {
 
 export default function EventDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const event = getEventById(id);
   const availableCategories = useMemo(() => getCategoriesForEntity(['event']), []);
@@ -469,15 +469,17 @@ export default function EventDetailPage() {
                 </div>
                 {(formData.images || []).length > 0 && (
                   <div className="space-y-2">
-                    <Label>Selected Images ({formData.images.length})</Label>
+                    <Label>Selected Images ({(formData.images || []).length})</Label>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       {(formData.images || []).map((image, index) => (
                         <div key={index} className="relative group">
                           <div className="relative aspect-video rounded-lg overflow-hidden border">
-                            <img
+                            <Image
                               src={image}
                               alt={`Event image ${index + 1}`}
                               className="w-full h-full object-cover"
+                              width={100}
+                              height={100}
                             />
                             <Button
                               type="button"
@@ -503,10 +505,12 @@ export default function EventDetailPage() {
                 {event.images.length > 0 ? (
                   event.images.map((image, index) => (
                     <div key={index} className="relative aspect-video rounded-lg overflow-hidden border">
-                      <img
+                      <Image
                         src={image}
                         alt={`Event image ${index + 1}`}
                         className="w-full h-full object-cover"
+                        width={100}
+                        height={100}
                       />
                     </div>
                   ))

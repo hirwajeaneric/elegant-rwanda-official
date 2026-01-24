@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,6 @@ const categoryTypes: { value: CategoryType; label: string }[] = [
 
 export default function CategoryDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const category = getCategoryById(id);
 

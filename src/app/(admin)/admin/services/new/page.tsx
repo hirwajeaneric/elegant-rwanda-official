@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import Image from "next/image";
 
 export default function NewServicePage() {
   const router = useRouter();
@@ -166,14 +167,19 @@ export default function NewServicePage() {
                 <Label>Image *</Label>
                 <AssetSelector
                   value={formData.image}
-                  onSelect={(image) => setFormData({ ...formData, image })}
+                  onSelect={(image) => {
+                    const imageValue = Array.isArray(image) ? image[0] || "" : image;
+                    setFormData({ ...formData, image: imageValue });
+                  }}
                 />
                 {formData.image && (
                   <div className="mt-2">
-                    <img
+                    <Image
                       src={formData.image}
                       alt={formData.title || "Preview"}
                       className="w-full h-48 object-cover rounded-md"
+                      width={100}
+                      height={100}
                     />
                   </div>
                 )}

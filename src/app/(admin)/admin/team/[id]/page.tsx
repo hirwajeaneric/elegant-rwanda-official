@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { team, TeamMember } from "@/data/team";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import Image from "next/image";
 
 function getTeamMemberById(id: string) {
   return team.find((member) => member.id === id);
@@ -21,7 +22,6 @@ function getTeamMemberById(id: string) {
 
 export default function TeamMemberDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const member = getTeamMemberById(id);
 
@@ -205,24 +205,31 @@ export default function TeamMemberDetailPage() {
                 <div className="space-y-2">
                   <AssetSelector
                     value={formData.image || ""}
-                    onSelect={(image) => setFormData({ ...formData, image, avatar: image })}
+                    onSelect={(image) => {
+                      const imageValue = Array.isArray(image) ? image[0] || "" : image;
+                      setFormData({ ...formData, image: imageValue, avatar: imageValue });
+                    }}
                   />
                   {formData.image && (
                     <div className="mt-2">
-                      <img
+                      <Image
                         src={formData.image}
                         alt={formData.name || "Preview"}
                         className="w-32 h-32 object-cover rounded-full"
+                        width={100}
+                        height={100}
                       />
                     </div>
                   )}
                 </div>
               ) : (
                 <div>
-                  <img
+                  <Image
                     src={member.image}
                     alt={member.name}
                     className="w-32 h-32 object-cover rounded-full"
+                    width={100}
+                    height={100}
                   />
                 </div>
               )}
