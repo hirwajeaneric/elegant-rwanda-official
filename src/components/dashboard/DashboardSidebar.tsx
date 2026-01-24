@@ -19,30 +19,34 @@ import {
   LogOut,
   Menu,
   Tag,
+  UserCog,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { canAccessRoute } from "@/lib/rbac";
 
-const navigation = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { name: "Services", href: "/admin/services", icon: Mountain },
-  { name: "Tours", href: "/admin/tours", icon: Map },
-  { name: "Car Rental", href: "/admin/car-rental", icon: Car },
-  { name: "Events", href: "/admin/events", icon: Calendar },
-  { name: "Blogs", href: "/admin/blogs", icon: FileText },
-  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
-  { name: "Team", href: "/admin/team", icon: Users },
-  { name: "FAQs", href: "/admin/faqs", icon: HelpCircle },
-  { name: "Categories", href: "/admin/categories", icon: Tag },
-  { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
+const allNavigationItems = [
+  { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Users", href: "/admin/users", icon: UserCog, roles: ["ADMIN"] },
+  { name: "Services", href: "/admin/services", icon: Mountain, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Tours", href: "/admin/tours", icon: Map, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Car Rental", href: "/admin/car-rental", icon: Car, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Events", href: "/admin/events", icon: Calendar, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Blogs", href: "/admin/blogs", icon: FileText, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Team", href: "/admin/team", icon: Users, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "FAQs", href: "/admin/faqs", icon: HelpCircle, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Categories", href: "/admin/categories", icon: Tag, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Gallery", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Settings", href: "/admin/settings", icon: Settings, roles: ["ADMIN", "CONTENT_MANAGER"] },
 ];
 
 const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   const pathname = usePathname();
   const logout = useAuthStore((state) => state.logout);
+  const user = useAuthStore((state) => state.user);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -50,6 +54,12 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
     router.push("/auth/login");
     onLinkClick?.();
   };
+
+  // Filter navigation items based on user role
+  const navigation = allNavigationItems.filter((item) => {
+    if (!user) return false;
+    return canAccessRoute(user.role, item.href);
+  });
 
   return (
     <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">

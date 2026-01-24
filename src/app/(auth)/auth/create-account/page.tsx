@@ -43,11 +43,20 @@ export default function CreateAccountPage() {
     setLoading(true);
 
     try {
-      const success = await register(formData.name, formData.email, formData.password);
-      if (success) {
+      const result = await register(formData.name, formData.email, formData.password);
+      if (result.success) {
+        // Store registration data temporarily for OTP verification
+        sessionStorage.setItem(
+          `registration_${formData.email}`,
+          JSON.stringify({
+            name: formData.name,
+            password: formData.password,
+            email: formData.email,
+          })
+        );
         router.push("/auth/confirm-otp?email=" + encodeURIComponent(formData.email));
       } else {
-        setError("Registration failed. Email may already be in use.");
+        setError(result.error || "Registration failed. Email may already be in use.");
       }
     } catch {
       setError("An error occurred. Please try again.");

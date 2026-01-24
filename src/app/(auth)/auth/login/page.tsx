@@ -25,11 +25,11 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const success = await login(email, password);
-      if (success) {
+      const result = await login(email, password);
+      if (result.success) {
         router.push("/admin/dashboard");
       } else {
-        setError("Invalid email or password");
+        setError(result.error || "Invalid email or password");
       }
     } catch {
       setError("An error occurred. Please try again.");
@@ -99,11 +99,12 @@ export default function LoginPage() {
             </Link>
           </p>
           <div className="pt-2 border-t">
-            <p>Default credentials:</p>
-            <p className="font-mono text-xs mt-1">
-              Email: admin@elegantrwanda.com<br />
-              Password: admin123
-            </p>
+            <p className="font-semibold mb-2">Test Accounts:</p>
+            <div className="font-mono text-xs space-y-1 text-left">
+              <p><strong>Admin:</strong> admin@elegantrwanda.com / admin123</p>
+              <p><strong>Content Manager:</strong> content@elegantrwanda.com / content123</p>
+              <p><strong>Editor:</strong> editor@elegantrwanda.com / editor123</p>
+            </div>
           </div>
         </div>
       </CardContent>

@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { canAccessRoute } from "@/lib/rbac";
 
 export default function AdminLayout({
   children,
@@ -12,16 +13,35 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const checkSession = useAuthStore((state) => state.checkSession);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
+    // Check session on mount
+    checkSession();
+  }, [checkSession]);
+
+  useEffect(() => {
     if (!isAuthenticated && pathname !== "/auth/login") {
       router.push("/auth/login");
+      return;
     }
-  }, [isAuthenticated, router, pathname]);
+
+    // Check role-based access
+    if (isAuthenticated && user && !canAccessRoute(user.role, pathname)) {
+      // Redirect to dashboard if user doesn't have access
+      router.push("/admin/dashboard");
+    }
+  }, [isAuthenticated, user, router, pathname]);
 
   if (!isAuthenticated) {
+    return null;
+  }
+
+  // Double-check access before rendering
+  if (user && !canAccessRoute(user.role, pathname)) {
     return null;
   }
 

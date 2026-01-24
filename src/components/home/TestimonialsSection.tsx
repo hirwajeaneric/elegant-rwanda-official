@@ -19,7 +19,7 @@ export function TestimonialsSection() {
   if (testimonials.length === 0) return null;
 
   return (
-    <section className="section-padding bg-gradient-to-br from-secondary/10 to-primary/10">
+    <section className="section-padding bg-linear-to-br from-secondary/10 to-primary/10">
       <div className="container-elegant">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -66,7 +66,7 @@ export function TestimonialsSection() {
 
               {/* Client Info */}
               <div className="flex items-center justify-center space-x-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xl">
+                <div className="w-16 h-16 rounded-full bg-linear-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xl">
                   {testimonials[currentIndex].name.charAt(0)}
                 </div>
                 <div className="text-left">

@@ -55,13 +55,28 @@ export default function ConfirmOTPPage() {
     setLoading(true);
 
     try {
-      const result = await verifyOTP(email, otp);
-      if (result) {
+      // Retrieve registration data from sessionStorage
+      const registrationKey = `registration_${email}`;
+      const registrationData = sessionStorage.getItem(registrationKey);
+      
+      if (!registrationData) {
+        setError("Registration session expired. Please register again.");
+        router.push("/auth/create-account");
+        return;
+      }
+
+      const { name, password } = JSON.parse(registrationData);
+      
+      const result = await verifyOTP(email, otp, name, password);
+      if (result.success) {
+        // Clear registration data after successful verification
+        sessionStorage.removeItem(registrationKey);
         router.push("/admin/dashboard");
       } else {
-        setError("Invalid or expired verification code. Please try again.");
+        setError(result.error || "Invalid or expired verification code. Please try again.");
       }
-    } catch {
+    } catch (error) {
+      console.error("OTP verification error:", error);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);

@@ -61,3 +61,104 @@ enum RequestStatus {
   COMPLETED
   ARCHIVED
 }
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String    // Hashed password
+  role          UserRole  @default(EDITOR)
+  active        Boolean   @default(true)
+  emailVerified Boolean   @default(false)
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  createdBy     String?   // ID of user who created this account
+  updatedBy     String?   // ID of user who last updated this account
+  sessions      Session[] // User sessions
+  passwordResetTokens PasswordResetToken[] // Password reset tokens
+  otpVerifications    OTPVerification[]    // OTP verifications
+
+  @@index([email])
+  @@index([role])
+  @@index([active])
+  @@index([createdAt])
+}
+
+model Session {
+  id            String   @id @default(cuid())
+  userId        String
+  token         String   @unique
+  refreshToken  String?  @unique
+  ipAddress     String?
+  userAgent     String?
+  device        String?  // Device type (mobile, desktop, tablet)
+  browser       String?  // Browser name
+  browserVersion String?
+  os            String?  // Operating system
+  osVersion     String?
+  platform      String?  // Platform (web, ios, android)
+  country       String?  // Country code
+  city          String?  // City name
+  region        String?  // Region/state
+  timezone      String?  // Timezone
+  isActive      Boolean  @default(true)
+  expiresAt     DateTime
+  lastActivity  DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([refreshToken])
+  @@index([isActive])
+  @@index([expiresAt])
+  @@index([createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@index([used])
+}
+
+model OTPVerification {
+  id        String   @id @default(cuid())
+  userId    String?  // null for registration, set after user creation
+  email     String
+  otp       String
+  purpose   OTPPurpose
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([email])
+  @@index([otp])
+  @@index([expiresAt])
+  @@index([verified])
+  @@index([purpose])
+}
+
+enum UserRole {
+  ADMIN
+  CONTENT_MANAGER
+  EDITOR
+}
+
+enum OTPPurpose {
+  REGISTRATION
+  PASSWORD_RESET
+  EMAIL_VERIFICATION
+}

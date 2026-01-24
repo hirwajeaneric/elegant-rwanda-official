@@ -86,7 +86,7 @@ export function EventsNewsletter() {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-r from-primary to-primary/80">
+    <section className="py-20 bg-linear-to-r from-black to-primary">
       <div className="container-elegant">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
@@ -153,7 +153,7 @@ export function EventsNewsletter() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full px-4 py-3 rounded-full bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   placeholder="Enter your email address"
                   required
                   aria-label="Enter email address for newsletter"
@@ -172,7 +172,7 @@ export function EventsNewsletter() {
                         type="checkbox"
                         checked={value}
                         onChange={() => handlePreferenceChange(key)}
-                        className="rounded border-white/30 text-yellow-500 focus:ring-yellow-500 bg-white/20"
+                        className="rounded-full border-white/30 text-yellow-500 focus:ring-yellow-500 bg-white/20"
                       />
                       <span className="text-sm text-white/90 capitalize">
                         {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
@@ -185,7 +185,7 @@ export function EventsNewsletter() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-yellow-500 text-black font-semibold py-3 px-6 rounded-lg hover:bg-yellow-400 transition-colors duration-200"
+                className="w-full bg-yellow-500 rounded-full text-black font-semibold py-3 px-6 hover:bg-yellow-400 transition-colors duration-200"
               >
                 Subscribe to Newsletter
               </button>

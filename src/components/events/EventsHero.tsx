@@ -5,7 +5,7 @@ import { Calendar, Users, MapPin, Clock } from "lucide-react";
 export function EventsHero() {
   return (
     <section className="relative py-24 bg-[url('/pexels-joshsorenson-976866.jpg')] bg-cover bg-center bg-no-repeat">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
+      <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/70 to-black/60" />
       <div className="container-elegant relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -27,10 +27,6 @@ export function EventsHero() {
               <div className="text-center">
                 <div className="text-2xl font-bold text-yellow-500 mb-2">500+</div>
                 <div className="text-sm text-white/80">Happy Participants</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">4.9</div>
-                <div className="text-sm text-white/80">Average Rating</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-yellow-500 mb-2">24/7</div>
