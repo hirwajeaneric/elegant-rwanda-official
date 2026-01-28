@@ -10,41 +10,124 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { faqs, FAQ } from "@/data/faq";
-import { getCategoriesForEntity } from "@/data/categories";
-import { ArrowLeft, Edit, Save, X } from "lucide-react";
+import { useCategories } from "@/lib/hooks/use-categories";
+import { ArrowLeft, Edit, Save, X, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
-function getFAQById(id: string) {
-  return faqs.find((faq) => faq.id === id);
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  categoryId: string | null;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  order: number;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function FAQDetailPage() {
   const params = useParams();
   const id = params.id as string;
-  const faq = getFAQById(id);
-  const availableCategories = useMemo(() => getCategoriesForEntity(['faq']), []);
+  const [faq, setFaq] = useState<FAQ | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const { categories: categoryList } = useCategories({ type: ['FAQ'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
 
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<Partial<FAQ>>({
+  const [formData, setFormData] = useState({
     question: "",
     answer: "",
-    category: availableCategories[0]?.name as FAQ["category"] || "General Travel",
+    categoryId: "",
     order: 0,
     active: true,
   });
 
   useEffect(() => {
-    if (faq) {
-      setFormData({
-        question: faq.question,
-        answer: faq.answer,
-        category: faq.category,
-        order: faq.order,
-        active: faq.active,
-      });
+    loadFAQ();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const loadFAQ = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/faqs/${id}`);
+      const data = await response.json();
+      if (data.success) {
+        const faqData = data.faq;
+        setFaq(faqData);
+        setFormData({
+          question: faqData.question,
+          answer: faqData.answer,
+          categoryId: faqData.categoryId || "",
+          order: faqData.order || 0,
+          active: faqData.active ?? true,
+        });
+      } else {
+        toast.error("Failed to load FAQ", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to load FAQ");
+      console.error("Error loading FAQ:", error);
+    } finally {
+      setLoading(false);
     }
-  }, [faq]);
+  };
+
+  const handleSave = async () => {
+    if (!formData.question || !formData.answer) {
+      toast.error("Question and answer are required");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/faqs/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("FAQ updated successfully");
+        setIsEditing(false);
+        loadFAQ();
+      } else {
+        toast.error("Failed to update FAQ", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to update FAQ");
+      console.error("Update FAQ error:", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   if (!faq) {
     return (
@@ -65,12 +148,6 @@ export default function FAQDetailPage() {
     );
   }
 
-  const handleSave = () => {
-    console.log("Saving FAQ:", formData);
-    setIsEditing(false);
-    alert("FAQ saved successfully!");
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -81,7 +158,7 @@ export default function FAQDetailPage() {
             <Badge variant={faq.active ? "default" : "secondary"}>
               {faq.active ? "Active" : "Inactive"}
             </Badge>
-            <Badge variant="outline">{faq.category}</Badge>
+            <Badge variant="outline">{faq.category?.name || "Uncategorized"}</Badge>
           </div>
         </div>
         <div className="flex gap-2">
@@ -104,9 +181,18 @@ export default function FAQDetailPage() {
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button onClick={handleSave}>
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </>
+                )}
               </Button>
             </>
           )}
@@ -122,30 +208,26 @@ export default function FAQDetailPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="question">Question</Label>
-              {isEditing ? (
-                <Input
-                  id="question"
-                  value={formData.question || ""}
-                  onChange={(e) => setFormData({ ...formData, question: e.target.value })}
-                />
-              ) : (
-                <p className="text-lg font-semibold">{faq.question}</p>
-              )}
+              <Label htmlFor="question">Question *</Label>
+              <Input
+                id="question"
+                value={formData.question}
+                onChange={(e) => setFormData({ ...formData, question: e.target.value })}
+                disabled={!isEditing}
+                required
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="answer">Answer</Label>
-              {isEditing ? (
-                <Textarea
-                  id="answer"
-                  value={formData.answer || ""}
-                  onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
-                  rows={6}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground whitespace-pre-wrap">{faq.answer}</p>
-              )}
+              <Label htmlFor="answer">Answer *</Label>
+              <Textarea
+                id="answer"
+                value={formData.answer}
+                onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
+                disabled={!isEditing}
+                rows={6}
+                required
+              />
             </div>
           </CardContent>
         </Card>
@@ -159,83 +241,50 @@ export default function FAQDetailPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
-              {isEditing ? (
-                <Select
-                  value={formData.category || availableCategories[0]?.name || ""}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, category: value as FAQ["category"] })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableCategories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.name}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Badge variant="outline">{faq.category}</Badge>
-              )}
+              <Select
+                value={formData.categoryId}
+                onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
+                disabled={!isEditing}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableCategories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="order">Display Order</Label>
-              {isEditing ? (
-                <Input
-                  id="order"
-                  type="number"
-                  value={formData.order || 0}
-                  onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{faq.order}</p>
-              )}
+              <Input
+                id="order"
+                type="number"
+                value={formData.order}
+                onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+                disabled={!isEditing}
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="active">Status</Label>
-              {isEditing ? (
-                <Select
-                  value={formData.active ? "active" : "inactive"}
-                  onValueChange={(value) => setFormData({ ...formData, active: value === "active" })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Badge variant={faq.active ? "default" : "secondary"}>
-                  {faq.active ? "Active" : "Inactive"}
-                </Badge>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Metadata */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Metadata</CardTitle>
-            <CardDescription>FAQ information</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Created</p>
-                <p className="text-sm font-medium">{new Date(faq.createdAt).toLocaleDateString()}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Last Updated</p>
-                <p className="text-sm font-medium">{new Date(faq.updatedAt).toLocaleDateString()}</p>
-              </div>
+              <Select
+                value={formData.active ? "active" : "inactive"}
+                onValueChange={(value) => setFormData({ ...formData, active: value === "active" })}
+                disabled={!isEditing}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>

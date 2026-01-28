@@ -1,14 +1,55 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { categories } from "@/data/categories";
+import { Plus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  type: string[];
+  color?: string | null;
+  icon?: string | null;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export default function CategoriesPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadCategories = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/categories");
+      const data = await response.json();
+      if (data.success) {
+        setCategories(data.categories || []);
+      } else {
+        toast.error("Failed to load categories", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to load categories");
+      console.error("Error loading categories:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadCategories();
+  }, [loadCategories]);
+
   const columns = [
     {
       key: "name",
@@ -24,7 +65,7 @@ export default function CategoriesPage() {
       key: "type",
       label: "Types",
       sortable: false,
-      render: (item: typeof categories[0]) => (
+      render: (item: Category) => (
         <div className="flex flex-wrap gap-1">
           {item.type.map((type) => (
             <Badge key={type} variant="outline" className="text-xs">
@@ -35,15 +76,10 @@ export default function CategoriesPage() {
       ),
     },
     {
-      key: "order",
-      label: "Order",
-      sortable: true,
-    },
-    {
       key: "active",
       label: "Active",
       sortable: true,
-      render: (item: typeof categories[0]) => (
+      render: (item: Category) => (
         <Badge variant={item.active ? "default" : "secondary"}>
           {item.active ? "Yes" : "No"}
         </Badge>
@@ -52,7 +88,7 @@ export default function CategoriesPage() {
     {
       key: "actions",
       label: "Actions",
-      render: (item: typeof categories[0]) => (
+      render: (item: Category) => (
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/categories/${item.id}`}>Edit</Link>
@@ -61,6 +97,17 @@ export default function CategoriesPage() {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -89,12 +136,12 @@ export default function CategoriesPage() {
             key: "type",
             label: "Type",
             options: [
-              { value: "faq", label: "FAQ" },
-              { value: "blog", label: "Blog" },
-              { value: "event", label: "Event" },
-              { value: "tour", label: "Tour" },
-              { value: "image", label: "Image" },
-              { value: "general", label: "General" },
+              { value: "FAQ", label: "FAQ" },
+              { value: "BLOG", label: "Blog" },
+              { value: "EVENT", label: "Event" },
+              { value: "TOUR", label: "Tour" },
+              { value: "IMAGE", label: "Image" },
+              { value: "GENERAL", label: "General" },
             ],
           },
           {

@@ -185,10 +185,25 @@ export const categories: Category[] = [
   }
 ];
 
+// Legacy functions - kept for backward compatibility
+// Note: These now return empty arrays. Use API endpoints instead:
+// - For React components: useCategories hook from @/lib/hooks/use-categories
+// - For server components: fetchCategoriesForEntity from @/lib/utils/categories
+// - Direct API calls: /api/categories or /api/public/categories
+
 export const getCategoryById = (id: string) => categories.find(cat => cat.id === id);
 export const getCategoryBySlug = (slug: string) => categories.find(cat => cat.slug === slug);
 export const getCategoriesByType = (type: CategoryType) => categories.filter(cat => cat.type.includes(type) && cat.active);
 export const getAllCategories = () => categories;
 export const getActiveCategories = () => categories.filter(cat => cat.active);
-export const getCategoriesForEntity = (types: CategoryType[]) => 
-  categories.filter(cat => cat.active && types.some(type => cat.type.includes(type)));
+
+/**
+ * @deprecated Use useCategories hook or fetchCategoriesForEntity instead
+ * This function now returns empty array. Migrate to API-based fetching.
+ */
+export const getCategoriesForEntity = (_types: CategoryType[]): Category[] => {
+  console.warn(
+    "getCategoriesForEntity is deprecated. Use useCategories hook or fetchCategoriesForEntity instead."
+  );
+  return [];
+};

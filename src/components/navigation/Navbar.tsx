@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, Mail, ChevronDown, ChevronRight } from "lucide-react";
+import { Menu, X, Phone, Mail, ChevronDown, ChevronRight, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/lib/stores/auth-store";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -71,6 +72,7 @@ export function Navbar() {
     resources: false,
   });
   const pathname = usePathname();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const isActive = (href: string) => pathname === href;
 
@@ -238,6 +240,18 @@ export function Navbar() {
 
             {/* Right Side Actions */}
             <div className="hidden lg:flex items-center space-x-4">
+              {isAuthenticated && (
+                <Button
+                  variant="outline"
+                  className="border-2 border-primary text-primary rounded-full px-4 py-2 hover:bg-primary hover:text-white"
+                  asChild
+                >
+                  <Link href="/admin/dashboard">
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </Button>
+              )}
               <button className="border-2 border-primary text-primary rounded-full px-4 py-2 hover:bg-primary hover:text-white">
                 <Link href="/contact" className="rounded-full px-4 py-2">Request Quote</Link>
               </button>
@@ -408,6 +422,18 @@ export function Navbar() {
               {/* Mobile Actions */}
               <div className="pt-4 border-t border-border">
                 <div className="space-y-2">
+                  {isAuthenticated && (
+                    <Button
+                      variant="outline"
+                      className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white"
+                      asChild
+                    >
+                      <Link href="/admin/dashboard" onClick={closeMobileMenu}>
+                        <LayoutDashboard className="h-4 w-4 mr-2" />
+                        Dashboard
+                      </Link>
+                    </Button>
+                  )}
                   <Button className="btn-primary w-full" asChild>
                     <Link href="/contact" onClick={closeMobileMenu}>
                       Request Quote

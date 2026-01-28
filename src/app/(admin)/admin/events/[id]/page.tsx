@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { events, Event } from "@/data/events";
-import { getCategoriesForEntity } from "@/data/categories";
+import { useCategories } from "@/lib/hooks/use-categories";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
@@ -25,7 +25,11 @@ export default function EventDetailPage() {
   const params = useParams();
   const id = params.id as string;
   const event = getEventById(id);
-  const availableCategories = useMemo(() => getCategoriesForEntity(['event']), []);
+  const { categories: categoryList } = useCategories({ type: ['EVENT'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<Event>>({

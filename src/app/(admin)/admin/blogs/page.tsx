@@ -1,15 +1,59 @@
 "use client";
 
-
+import { useState, useEffect, useCallback } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { blogPosts } from "@/data/blog";
+import { Plus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+
+interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  categoryId: string | null;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  status: "PUBLISHED" | "DRAFT" | "SCHEDULED";
+  views: number;
+  publishDate: string | null;
+  createdAt: string;
+}
 
 export default function BlogsPage() {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadBlogs = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/blogs");
+      const data = await response.json();
+      if (data.success) {
+        setBlogs(data.blogs || []);
+      } else {
+        toast.error("Failed to load blog posts", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to load blog posts");
+      console.error("Error loading blogs:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadBlogs();
+  }, [loadBlogs]);
+
   const columns = [
     {
       key: "title",
@@ -20,16 +64,16 @@ export default function BlogsPage() {
       key: "category",
       label: "Category",
       sortable: true,
-      render: (item: typeof blogPosts[0]) => (
-        <Badge variant="outline">{item.category}</Badge>
+      render: (item: Blog) => (
+        <Badge variant="outline">{item.category?.name || "Uncategorized"}</Badge>
       ),
     },
     {
       key: "status",
       label: "Status",
       sortable: true,
-      render: (item: typeof blogPosts[0]) => (
-        <Badge variant={item.status === "published" ? "default" : "secondary"}>
+      render: (item: Blog) => (
+        <Badge variant={item.status === "PUBLISHED" ? "default" : "secondary"}>
           {item.status}
         </Badge>
       ),
@@ -43,13 +87,13 @@ export default function BlogsPage() {
       key: "publishDate",
       label: "Published",
       sortable: true,
-      render: (item: typeof blogPosts[0]) =>
-        new Date(item.publishDate).toLocaleDateString(),
+      render: (item: Blog) =>
+        item.publishDate ? new Date(item.publishDate).toLocaleDateString() : "Not published",
     },
     {
       key: "actions",
       label: "Actions",
-      render: (item: typeof blogPosts[0]) => (
+      render: (item: Blog) => (
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/blogs/${item.id}`}>Edit</Link>
@@ -58,6 +102,17 @@ export default function BlogsPage() {
       ),
     },
   ];
+
+  if (loading && blogs.length === 0) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -78,7 +133,7 @@ export default function BlogsPage() {
       </div>
 
       <DataTable
-        data={blogPosts}
+        data={blogs}
         columns={columns}
         searchPlaceholder="Search blog posts..."
         filterOptions={[
@@ -86,21 +141,9 @@ export default function BlogsPage() {
             key: "status",
             label: "Status",
             options: [
-              { value: "published", label: "Published" },
-              { value: "draft", label: "Draft" },
-              { value: "scheduled", label: "Scheduled" },
-            ],
-          },
-          {
-            key: "category",
-            label: "Category",
-            options: [
-              { value: "Tours", label: "Tours" },
-              { value: "Tips", label: "Tips" },
-              { value: "Culture", label: "Culture" },
-              { value: "Wildlife", label: "Wildlife" },
-              { value: "Unique", label: "Unique" },
-              { value: "News", label: "News" },
+              { value: "PUBLISHED", label: "Published" },
+              { value: "DRAFT", label: "Draft" },
+              { value: "SCHEDULED", label: "Scheduled" },
             ],
           },
         ]}

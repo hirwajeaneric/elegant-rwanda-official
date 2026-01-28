@@ -9,28 +9,61 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getCategoriesForEntity } from "@/data/categories";
-import { ArrowLeft, Save } from "lucide-react";
+import { useCategories } from "@/lib/hooks/use-categories";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function NewFAQPage() {
   const router = useRouter();
-  const availableCategories = useMemo(() => getCategoriesForEntity(['faq']), []);
-  const defaultCategory = availableCategories[0]?.name || "";
+  const { categories: categoryList } = useCategories({ type: ['FAQ'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
+  const defaultCategoryId = availableCategories[0]?.id || "";
   
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
-    category: defaultCategory,
+    categoryId: defaultCategoryId,
     order: 0,
     active: true,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Creating FAQ:", formData);
-    alert("FAQ created successfully!");
-    router.push("/admin/faqs");
+    
+    if (!formData.question || !formData.answer) {
+      toast.error("Question and answer are required");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/faqs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("FAQ created successfully");
+        router.push("/admin/faqs");
+      } else {
+        toast.error("Failed to create FAQ", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to create FAQ");
+      console.error("Create FAQ error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,9 +123,9 @@ export default function NewFAQPage() {
               <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
                 <Select
-                  value={formData.category}
+                  value={formData.categoryId}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, category: value })
+                    setFormData({ ...formData, categoryId: value })
                   }
                 >
                   <SelectTrigger>
@@ -100,7 +133,7 @@ export default function NewFAQPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {availableCategories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.name}>
+                      <SelectItem key={cat.id} value={cat.id}>
                         {cat.name}
                       </SelectItem>
                     ))}
@@ -141,9 +174,18 @@ export default function NewFAQPage() {
           <Button variant="outline" type="button" asChild>
             <Link href="/admin/faqs">Cancel</Link>
           </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
-            Create FAQ
+          <Button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2" />
+                Create FAQ
+              </>
+            )}
           </Button>
         </div>
       </form>

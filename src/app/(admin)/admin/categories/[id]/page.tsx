@@ -9,79 +9,121 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getCategoryById, Category, CategoryType } from "@/data/categories";
-import { ArrowLeft, Edit, Save, X } from "lucide-react";
+import { ArrowLeft, Edit, Save, X, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
-const categoryTypes: { value: CategoryType; label: string }[] = [
-  { value: "faq", label: "FAQ" },
-  { value: "blog", label: "Blog" },
-  { value: "event", label: "Event" },
-  { value: "tour", label: "Tour" },
-  { value: "image", label: "Image" },
-  { value: "general", label: "General" },
+const categoryTypes: { value: string; label: string }[] = [
+  { value: "FAQ", label: "FAQ" },
+  { value: "BLOG", label: "Blog" },
+  { value: "EVENT", label: "Event" },
+  { value: "TOUR", label: "Tour" },
+  { value: "IMAGE", label: "Image" },
+  { value: "GENERAL", label: "General" },
 ];
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  type: string[];
+  color?: string | null;
+  icon?: string | null;
+  active: boolean;
+}
 
 export default function CategoryDetailPage() {
   const params = useParams();
   const id = params.id as string;
-  const category = getCategoryById(id);
-
+  const [category, setCategory] = useState<Category | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<Category>>({
     name: "",
     slug: "",
     description: "",
     type: [],
-    color: "",
+    color: "#3B82F6",
     icon: "",
-    order: 0,
     active: true,
   });
 
   useEffect(() => {
-    if (category) {
-      setFormData({
-        name: category.name,
-        slug: category.slug,
-        description: category.description || "",
-        type: [...category.type],
-        color: category.color || "",
-        icon: category.icon || "",
-        order: category.order,
-        active: category.active,
-      });
+    loadCategory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const loadCategory = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/categories/${id}`);
+      const data = await response.json();
+      if (data.success) {
+        setCategory(data.category);
+        setFormData({
+          name: data.category.name,
+          slug: data.category.slug,
+          description: data.category.description || "",
+          type: data.category.type || [],
+          color: data.category.color || "#3B82F6",
+          icon: data.category.icon || "",
+          active: data.category.active ?? true,
+        });
+      } else {
+        toast.error("Failed to load category", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to load category");
+      console.error("Error loading category:", error);
+    } finally {
+      setLoading(false);
     }
-  }, [category]);
-
-  if (!category) {
-    return (
-      <div className="space-y-6">
-        <DashboardBreadcrumbs />
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-muted-foreground">Category not found</p>
-            <Button asChild className="mt-4">
-              <Link href="/admin/categories">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Categories
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  const handleSave = () => {
-    console.log("Saving category:", formData);
-    setIsEditing(false);
-    alert("Category saved successfully!");
   };
 
-  const handleTypeToggle = (type: CategoryType) => {
+  const handleSave = async () => {
+    if (!formData.name || !formData.slug) {
+      toast.error("Name and slug are required");
+      return;
+    }
+
+    if (!formData.type || formData.type.length === 0) {
+      toast.error("Please select at least one category type");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/categories/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Category updated successfully");
+        setIsEditing(false);
+        loadCategory();
+      } else {
+        toast.error("Failed to update category", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to update category");
+      console.error("Update category error:", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleTypeToggle = (type: string) => {
     const currentTypes = formData.type || [];
     if (currentTypes.includes(type)) {
       setFormData({
@@ -102,6 +144,36 @@ export default function CategoryDetailPage() {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!category) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground">Category not found</p>
+            <Button asChild className="mt-4">
+              <Link href="/admin/categories">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Categories
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -141,9 +213,18 @@ export default function CategoryDetailPage() {
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button onClick={handleSave}>
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </>
+                )}
               </Button>
             </>
           )}
@@ -159,226 +240,111 @@ export default function CategoryDetailPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              {isEditing ? (
-                <Input
-                  id="name"
-                  value={formData.name || ""}
-                  onChange={(e) => {
-                    const name = e.target.value;
-                    setFormData({
-                      ...formData,
-                      name,
-                      slug: generateSlug(name),
-                    });
-                  }}
-                />
-              ) : (
-                <p className="text-lg font-semibold">{category.name}</p>
-              )}
+              <Label htmlFor="name">Name *</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => {
+                  const name = e.target.value;
+                  setFormData({
+                    ...formData,
+                    name,
+                    slug: isEditing ? generateSlug(name) : formData.slug,
+                  });
+                }}
+                disabled={!isEditing}
+                required
+              />
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="slug">Slug</Label>
-              {isEditing ? (
-                <Input
-                  id="slug"
-                  value={formData.slug || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, slug: e.target.value })
-                  }
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{category.slug}</p>
-              )}
+              <Label htmlFor="slug">Slug *</Label>
+              <Input
+                id="slug"
+                value={formData.slug}
+                onChange={(e) =>
+                  setFormData({ ...formData, slug: e.target.value })
+                }
+                disabled={!isEditing}
+                required
+              />
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
-              {isEditing ? (
-                <Textarea
-                  id="description"
-                  value={formData.description || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  rows={3}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  {category.description || "No description"}
-                </p>
-              )}
+              <Textarea
+                id="description"
+                value={formData.description || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+                disabled={!isEditing}
+                rows={3}
+              />
             </div>
           </CardContent>
         </Card>
 
-        {/* Settings */}
+        {/* Category Types */}
         <Card>
           <CardHeader>
-            <CardTitle>Settings</CardTitle>
-            <CardDescription>Category configuration</CardDescription>
+            <CardTitle>Category Types</CardTitle>
+            <CardDescription>Select applicable types</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label>Applicable Types</Label>
-              {isEditing ? (
-                <div className="space-y-2">
-                  {categoryTypes.map((type) => (
-                    <div key={type.value} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`type-${type.value}`}
-                        checked={(formData.type || []).includes(type.value)}
-                        onCheckedChange={() => handleTypeToggle(type.value)}
-                      />
-                      <Label
-                        htmlFor={`type-${type.value}`}
-                        className="text-sm font-normal cursor-pointer"
-                      >
-                        {type.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-wrap gap-2">
-                  {category.type.map((type) => (
-                    <Badge key={type} variant="outline">
-                      {type}
-                    </Badge>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="order">Display Order</Label>
-              {isEditing ? (
-                <Input
-                  id="order"
-                  type="number"
-                  value={formData.order || 0}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      order: parseInt(e.target.value) || 0,
-                    })
-                  }
+          <CardContent className="space-y-2">
+            {categoryTypes.map((type) => (
+              <div key={type.value} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`type-${type.value}`}
+                  checked={(formData.type || []).includes(type.value)}
+                  onCheckedChange={() => handleTypeToggle(type.value)}
+                  disabled={!isEditing}
                 />
-              ) : (
-                <p className="text-sm text-muted-foreground">{category.order}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="active">Status</Label>
-              {isEditing ? (
-                <Select
-                  value={formData.active ? "active" : "inactive"}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, active: value === "active" })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Badge variant={category.active ? "default" : "secondary"}>
-                  {category.active ? "Active" : "Inactive"}
-                </Badge>
-              )}
-            </div>
+                <Label htmlFor={`type-${type.value}`}>{type.label}</Label>
+              </div>
+            ))}
           </CardContent>
         </Card>
 
-        {/* Appearance */}
+        {/* Appearance & Settings */}
         <Card>
           <CardHeader>
-            <CardTitle>Appearance</CardTitle>
-            <CardDescription>Visual customization</CardDescription>
+            <CardTitle>Appearance & Settings</CardTitle>
+            <CardDescription>Visual and display settings</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="color">Color</Label>
-              {isEditing ? (
-                <div className="flex gap-2">
-                  <Input
-                    id="color"
-                    type="color"
-                    value={formData.color || "#3B82F6"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, color: e.target.value })
-                    }
-                    className="w-20 h-10"
-                  />
-                  <Input
-                    value={formData.color || "#3B82F6"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, color: e.target.value })
-                    }
-                    placeholder="#3B82F6"
-                  />
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  {category.color && (
-                    <div
-                      className="w-8 h-8 rounded border-2 border-border"
-                      style={{ backgroundColor: category.color }}
-                    />
-                  )}
-                  <p className="text-sm text-muted-foreground">
-                    {category.color || "No color set"}
-                  </p>
-                </div>
-              )}
+              <Input
+                id="color"
+                type="color"
+                value={formData.color || "#3B82F6"}
+                onChange={(e) =>
+                  setFormData({ ...formData, color: e.target.value })
+                }
+                disabled={!isEditing}
+              />
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="icon">Icon</Label>
-              {isEditing ? (
-                <Input
-                  id="icon"
-                  value={formData.icon || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, icon: e.target.value })
-                  }
-                  placeholder="Icon name or URL"
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  {category.icon || "No icon set"}
-                </p>
-              )}
+              <Input
+                id="icon"
+                value={formData.icon || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, icon: e.target.value })
+                }
+                disabled={!isEditing}
+                placeholder="Icon name or class"
+              />
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Metadata */}
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Metadata</CardTitle>
-            <CardDescription>Category information</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Created</p>
-                <p className="text-sm font-medium">
-                  {new Date(category.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Last Updated</p>
-                <p className="text-sm font-medium">
-                  {new Date(category.updatedAt).toLocaleDateString()}
-                </p>
-              </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="active"
+                checked={formData.active}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, active: checked === true })
+                }
+                disabled={!isEditing}
+              />
+              <Label htmlFor="active">Active</Label>
             </div>
           </CardContent>
         </Card>

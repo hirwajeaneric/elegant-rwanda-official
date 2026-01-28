@@ -11,13 +11,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { getCategoriesForEntity } from "@/data/categories";
+import { useCategories } from "@/lib/hooks/use-categories";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
 import Image from "next/image";
 
 export default function NewEventPage() {
   const router = useRouter();
-  const availableCategories = useMemo(() => getCategoriesForEntity(['event']), []);
+  const { categories: categoryList } = useCategories({ type: ['EVENT'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
   const defaultCategory = availableCategories[0]?.name || "";
   
   const [formData, setFormData] = useState({

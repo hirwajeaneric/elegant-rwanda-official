@@ -11,11 +11,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { getCategoriesForEntity } from "@/data/categories";
+import { useCategories } from "@/lib/hooks/use-categories";
 
 export default function NewTourPage() {
   const router = useRouter();
-  const availableCategories = useMemo(() => getCategoriesForEntity(['tour']), []);
+  const { categories: categoryList } = useCategories({ type: ['TOUR'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
   const defaultCategory = availableCategories[0]?.name || "";
   
   const [formData, setFormData] = useState({

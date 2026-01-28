@@ -10,17 +10,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Save, Plus, X } from "lucide-react";
+import { ArrowLeft, Save, Plus, X, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
-import { getCategoriesForEntity } from "@/data/categories";
+import { useCategories } from "@/lib/hooks/use-categories";
 import Image from "next/image";
 
 export default function NewBlogPage() {
   const router = useRouter();
-  const availableCategories = useMemo(() => getCategoriesForEntity(['blog']), []);
-  const defaultCategory = availableCategories[0]?.name || "";
-  
+  const { categories: categoryList } = useCategories({ type: ['BLOG'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -30,21 +34,51 @@ export default function NewBlogPage() {
     authorImage: "",
     publishDate: new Date().toISOString().split("T")[0],
     readTime: "5 min",
-    category: defaultCategory,
+    categoryId: availableCategories[0]?.id || "",
     tags: [] as string[],
     featuredImage: "",
     featured: false,
     metaTitle: "",
     metaDescription: "",
-    status: "draft" as "published" | "draft" | "scheduled",
+    status: "DRAFT" as "PUBLISHED" | "DRAFT" | "SCHEDULED",
   });
   const [newTag, setNewTag] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Creating blog post:", formData);
-    alert("Blog post created successfully!");
-    router.push("/admin/blogs");
+    
+    if (!formData.title || !formData.slug || !formData.excerpt || !formData.content) {
+      toast.error("Title, slug, excerpt, and content are required");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/blogs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          publishDate: formData.publishDate || null,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Blog post created successfully");
+        router.push("/admin/blogs");
+      } else {
+        toast.error("Failed to create blog post", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to create blog post");
+      console.error("Create blog error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddTag = () => {
@@ -175,9 +209,9 @@ export default function NewBlogPage() {
                 <div className="space-y-2">
                   <Label htmlFor="category">Category</Label>
                   <Select
-                    value={formData.category}
+                    value={formData.categoryId}
                     onValueChange={(value) =>
-                      setFormData({ ...formData, category: value })
+                      setFormData({ ...formData, categoryId: value })
                     }
                   >
                     <SelectTrigger>
@@ -185,7 +219,7 @@ export default function NewBlogPage() {
                     </SelectTrigger>
                     <SelectContent>
                       {availableCategories.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.name}>
+                        <SelectItem key={cat.id} value={cat.id}>
                           {cat.name}
                         </SelectItem>
                       ))}
@@ -198,7 +232,7 @@ export default function NewBlogPage() {
                 <Label htmlFor="status">Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value: "published" | "draft" | "scheduled") =>
+                  onValueChange={(value: "PUBLISHED" | "DRAFT" | "SCHEDULED") =>
                     setFormData({ ...formData, status: value })
                   }
                 >
@@ -206,9 +240,9 @@ export default function NewBlogPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="published">Published</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="scheduled">Scheduled</SelectItem>
+                    <SelectItem value="PUBLISHED">Published</SelectItem>
+                    <SelectItem value="DRAFT">Draft</SelectItem>
+                    <SelectItem value="SCHEDULED">Scheduled</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -319,9 +353,18 @@ export default function NewBlogPage() {
           <Button variant="outline" type="button" asChild>
             <Link href="/admin/blogs">Cancel</Link>
           </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
-            Create Blog Post
+          <Button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2" />
+                Create Blog Post
+              </>
+            )}
           </Button>
         </div>
       </form>

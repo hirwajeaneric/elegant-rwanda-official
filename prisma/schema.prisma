@@ -79,6 +79,12 @@ model User {
   passwordResetTokens PasswordResetToken[] // Password reset tokens
   otpVerifications    OTPVerification[]    // OTP verifications
   images        Image[]  // Images uploaded by user
+  categoriesCreated Category[] @relation("CategoryCreatedBy")
+  categoriesUpdated Category[] @relation("CategoryUpdatedBy")
+  blogsCreated  Blog[]   @relation("BlogCreatedBy")
+  blogsUpdated  Blog[]   @relation("BlogUpdatedBy")
+  faqsCreated   FAQ[]    @relation("FAQCreatedBy")
+  faqsUpdated   FAQ[]    @relation("FAQUpdatedBy")
 
   @@index([email])
   @@index([role])
@@ -172,7 +178,9 @@ model Image {
   title      String?
   alt        String?
   description String?
-  category   String?  // Category name (Wildlife, Landscapes, etc.)
+  category   String?  // Category name (Wildlife, Landscapes, etc.) - legacy field
+  categoryId String?  // Reference to Category model
+  categoryRef Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   folder     String?  // Cloudinary folder path
   width      Int?
   height     Int?
@@ -187,9 +195,107 @@ model Image {
   user       User?    @relation(fields: [uploadedBy], references: [id], onDelete: SetNull)
 
   @@index([category])
+  @@index([categoryId])
   @@index([active])
   @@index([featured])
   @@index([uploadedBy])
   @@index([createdAt])
   @@index([publicId])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  type        CategoryType[] // Array of category types
+  color       String?
+  icon        String?
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  createdByUser User?  @relation("CategoryCreatedBy", fields: [createdBy], references: [id], onDelete: SetNull)
+  updatedByUser User?  @relation("CategoryUpdatedBy", fields: [updatedBy], references: [id], onDelete: SetNull)
+  blogs       Blog[]
+  faqs        FAQ[]
+  images      Image[]
+
+  @@index([slug])
+  @@index([active])
+  @@index([order])
+  @@index([createdAt])
+}
+
+enum CategoryType {
+  FAQ
+  BLOG
+  EVENT
+  TOUR
+  IMAGE
+  GENERAL
+}
+
+model Blog {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  excerpt         String
+  content         String   // HTML content
+  author          String
+  authorImage     String?
+  publishDate     DateTime?
+  readTime        String   @default("5 min")
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags            String[]
+  featuredImage   String?
+  featured        Boolean  @default(false)
+  metaTitle       String?
+  metaDescription String?
+  status          BlogStatus @default(DRAFT)
+  views           Int      @default(0)
+  comments        Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  createdBy       String?
+  updatedBy       String?
+  createdByUser   User?    @relation("BlogCreatedBy", fields: [createdBy], references: [id], onDelete: SetNull)
+  updatedByUser   User?    @relation("BlogUpdatedBy", fields: [updatedBy], references: [id], onDelete: SetNull)
+
+  @@index([slug])
+  @@index([status])
+  @@index([featured])
+  @@index([categoryId])
+  @@index([publishDate])
+  @@index([createdAt])
+}
+
+enum BlogStatus {
+  PUBLISHED
+  DRAFT
+  SCHEDULED
+}
+
+model FAQ {
+  id          String   @id @default(cuid())
+  question    String
+  answer      String   // HTML content
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  createdByUser User?  @relation("FAQCreatedBy", fields: [createdBy], references: [id], onDelete: SetNull)
+  updatedByUser User?  @relation("FAQUpdatedBy", fields: [updatedBy], references: [id], onDelete: SetNull)
+
+  @@index([categoryId])
+  @@index([active])
+  @@index([order])
+  @@index([createdAt])
 }

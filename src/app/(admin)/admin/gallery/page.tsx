@@ -6,7 +6,7 @@ import { GalleryTableView } from "@/components/dashboard/GalleryTableView";
 import { GalleryGridView } from "@/components/dashboard/GalleryGridView";
 import { Button } from "@/components/ui/button";
 import { Upload, Table2, Grid3x3, Loader2, X } from "lucide-react";
-import { getCategoriesForEntity } from "@/data/categories";
+import { useCategories } from "@/lib/hooks/use-categories";
 import Image from "next/image";
 import {
   Dialog,
@@ -60,7 +60,11 @@ interface CloudinaryImage {
 }
 
 export default function GalleryPage() {
-  const availableCategories = useMemo(() => getCategoriesForEntity(['image']), []);
+  const { categories: categoryList } = useCategories({ type: ['IMAGE'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
   const [images, setImages] = useState<CloudinaryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<CloudinaryImage | null>(null);

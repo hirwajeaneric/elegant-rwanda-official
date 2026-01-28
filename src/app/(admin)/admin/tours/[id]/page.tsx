@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { tours, Tour } from "@/data/tours";
-import { getCategoriesForEntity } from "@/data/categories";
+import { useCategories } from "@/lib/hooks/use-categories";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 
@@ -23,7 +23,11 @@ export default function TourDetailPage() {
   const params = useParams();
   const id = params.id as string;
   const tour = getTourById(id);
-  const availableCategories = useMemo(() => getCategoriesForEntity(['tour']), []);
+  const { categories: categoryList } = useCategories({ type: ['TOUR'], active: true });
+  const availableCategories = useMemo(() => 
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+    [categoryList]
+  );
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<Tour>>({
