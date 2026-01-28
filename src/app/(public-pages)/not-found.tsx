@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Home, ArrowLeft, MapPin, Phone, Mail } from "lucide-react";
-
-export const dynamic = 'force-dynamic';
+import { Home, ArrowLeft, MapPin, Mail } from "lucide-react";
 
 export default function NotFound() {
   return (
@@ -25,19 +23,6 @@ export default function NotFound() {
             The page you&apos;re looking for seems to have wandered off on its own adventure.
             Let us help you find your way back to exploring Rwanda&apos;s beauty.
           </p>
-        </div>
-
-        {/* Search Bar */}
-        <div className="mb-12 max-w-md mx-auto">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search for tours, services, or destinations..."
-              className="w-full px-6 py-4 pl-12 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              aria-label="Search for content on the website"
-            />
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-muted-foreground" />
-          </div>
         </div>
 
         {/* Quick Links */}
@@ -89,50 +74,6 @@ export default function NotFound() {
             <ArrowLeft className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
             Go Back
           </button>
-        </div>
-
-        {/* Contact Information */}
-        <div className="bg-card border border-border rounded-2xl p-8 max-w-2xl mx-auto">
-          <h3 className="text-xl font-semibold text-foreground mb-4">
-            Need Help Finding Something?
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            Our travel experts are here to help you discover the perfect Rwanda experience.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex items-center space-x-3">
-              <Phone className="h-5 w-5 text-primary" />
-              <div className="text-left">
-                <div className="text-foreground font-medium">Call Us</div>
-                <div className="text-muted-foreground text-sm">+250 787 095 392</div>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <Mail className="h-5 w-5 text-primary" />
-              <div className="text-left">
-                <div className="text-foreground font-medium">Email Us</div>
-                <div className="text-muted-foreground text-sm">info@elegantrwanda.com</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-black font-medium rounded-lg hover:bg-primary/80 transition-colors duration-200"
-            >
-              Get in Touch
-            </Link>
-          </div>
-        </div>
-
-        {/* Footer Note */}
-        <div className="mt-12 text-muted-foreground text-sm">
-          <p>
-            © 2025 Elegant Travel and Tours. All Rights Reserved. | Designed with ♥ in Rwanda
-          </p>
         </div>
       </div>
     </div>

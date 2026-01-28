@@ -6,18 +6,24 @@ import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumb
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, EyeOff, Eye, Save } from "lucide-react";
 import Link from "next/link";
-import { UserRole } from "@/data/users";
+import { UserRole } from "@/lib/rbac";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { RoleGuard } from "@/components/auth/RoleGuard";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export default function NewUserPage() {
   const router = useRouter();
   const currentUser = useAuthStore((state) => state.user);
-  
+  const csrfToken = useAuthStore((state) => state.csrfToken);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,6 +33,10 @@ export default function NewUserPage() {
     active: true,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -57,168 +67,255 @@ export default function NewUserPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setSubmitError(null);
+
     if (!validateForm()) {
       return;
     }
 
-    // In production, this would call an API
-    console.log("Creating user:", {
-      ...formData,
-      password: "***", // Don't log password
-      createdBy: currentUser?.id,
-    });
-    
-    alert("User created successfully!");
-    router.push("/admin/users");
+    setIsSubmitting(true);
+
+    try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      if (csrfToken) {
+        headers["X-CSRF-Token"] = csrfToken;
+      }
+
+      const response = await fetch(`${API_URL}/api/auth/users`, {
+        method: "POST",
+        credentials: "include",
+        headers,
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+          active: formData.active,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.details && Array.isArray(data.details)) {
+          const validationErrors: Record<string, string> = {};
+          data.details.forEach((detail: { path: string; message: string }) => {
+            validationErrors[detail.path] = detail.message;
+          });
+          setErrors(validationErrors);
+          const errorMessage = data.error || "Validation failed";
+          setSubmitError(errorMessage);
+          toast.error("Failed to create user", {
+            description: errorMessage,
+          });
+        } else {
+          const errorMessage = data.error || data.message || "Failed to create user";
+          setSubmitError(errorMessage);
+          toast.error("Failed to create user", {
+            description: errorMessage,
+          });
+        }
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Success
+      toast.success("User created successfully", {
+        description: `${data.user?.name || "User"} has been created.`,
+      });
+      router.push("/admin/users");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Network error";
+      setSubmitError(errorMessage);
+      toast.error("Failed to create user", {
+        description: errorMessage,
+      });
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <RoleGuard requiredRole="ADMIN">
       <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <DashboardBreadcrumbs />
-          <h1 className="text-3xl font-bold mt-4">Create New User</h1>
-        </div>
-        <Button variant="outline" asChild>
-          <Link href="/admin/users">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Link>
-        </Button>
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Basic Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-              <CardDescription>User account details</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Enter full name"
-                  required
-                />
-                {errors.name && (
-                  <p className="text-sm text-destructive">{errors.name}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="Enter email address"
-                  required
-                />
-                {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="role">Role *</Label>
-                <Select
-                  value={formData.role}
-                  onValueChange={(value: UserRole) => setFormData({ ...formData, role: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="EDITOR">Editor</SelectItem>
-                    <SelectItem value="CONTENT_MANAGER">Content Manager</SelectItem>
-                    {currentUser?.role === "ADMIN" && (
-                      <SelectItem value="ADMIN">Admin</SelectItem>
-                    )}
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">
-                  {formData.role === "ADMIN" && "Full access to all features and user management"}
-                  {formData.role === "CONTENT_MANAGER" && "Can manage all content except user management"}
-                  {formData.role === "EDITOR" && "Can only manage Blog, Categories, FAQs, and Gallery"}
-                </p>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="active"
-                  checked={formData.active}
-                  onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                  className="rounded border-gray-300"
-                />
-                <Label htmlFor="active" className="text-sm font-normal cursor-pointer">
-                  Active (User can login)
-                </Label>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Password Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Password</CardTitle>
-              <CardDescription>Set initial password</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">Password *</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  placeholder="Enter password (min 8 characters)"
-                  required
-                />
-                {errors.password && (
-                  <p className="text-sm text-destructive">{errors.password}</p>
-                )}
-                <p className="text-xs text-muted-foreground">
-                  Password must be at least 8 characters long
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password *</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  placeholder="Confirm password"
-                  required
-                />
-                {errors.confirmPassword && (
-                  <p className="text-sm text-destructive">{errors.confirmPassword}</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="flex justify-end gap-2 mt-6">
-          <Button variant="outline" type="button" asChild>
-            <Link href="/admin/users">Cancel</Link>
-          </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
-            Create User
+        <div className="flex items-center justify-between">
+          <div>
+            <DashboardBreadcrumbs />
+            <h1 className="text-3xl font-bold mt-4">Create New User</h1>
+          </div>
+          <Button variant="outline" asChild>
+            <Link href="/admin/users">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Link>
           </Button>
         </div>
-      </form>
+
+        {submitError && (
+          <Card className="border-destructive">
+            <CardContent className="pt-6">
+              <p className="text-destructive">{submitError}</p>
+            </CardContent>
+          </Card>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Basic Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Basic Information</CardTitle>
+                <CardDescription>User account details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name *</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Enter full name"
+                    required
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-destructive">{errors.name}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="Enter email address"
+                    required
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-destructive">{errors.email}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="role">Role *</Label>
+                  <Select
+                    value={formData.role}
+                    onValueChange={(value: UserRole) => setFormData({ ...formData, role: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="EDITOR">Editor</SelectItem>
+                      <SelectItem value="CONTENT_MANAGER">Content Manager</SelectItem>
+                      {currentUser?.role === "ADMIN" && (
+                        <SelectItem value="ADMIN">Admin</SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    {formData.role === "ADMIN" && "Full access to all features and user management"}
+                    {formData.role === "CONTENT_MANAGER" && "Can manage all content except user management"}
+                    {formData.role === "EDITOR" && "Can only manage Blog, Categories, FAQs, and Gallery"}
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="active"
+                    checked={formData.active}
+                    onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
+                  />
+                  <Label htmlFor="active" className="text-sm font-normal cursor-pointer">
+                    Active (User can login)
+                  </Label>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Password Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Password</CardTitle>
+                <CardDescription>Set initial password</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password *</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      placeholder="Enter password (min 8 characters)"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-sm text-destructive">{errors.password}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Password must be at least 8 characters long
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password *</Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={formData.confirmPassword}
+                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                      placeholder="Confirm password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="text-sm text-destructive">{errors.confirmPassword}</p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" type="button" asChild disabled={isSubmitting}>
+              <Link href="/admin/users">Cancel</Link>
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Create User
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
       </div>
     </RoleGuard>
   );

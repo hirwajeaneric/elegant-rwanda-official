@@ -6,6 +6,7 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { canAccessRoute } from "@/lib/rbac";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function AdminLayout({
   children,
@@ -52,6 +53,7 @@ export default function AdminLayout({
         <DashboardHeader />
         <main className="p-4 md:p-6 lg:p-8 pt-20 lg:pt-8">{children}</main>
       </div>
+      <Toaster position="top-right" richColors closeButton />
     </div>
   );
 }

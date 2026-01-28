@@ -1,40 +1,95 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
+import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { getAllUsers, UserRole } from "@/data/users";
-import { Plus, Search, Edit, Shield, UserCheck, UserX } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { UserRole } from "@/lib/rbac";
+import { Plus, Edit, Shield, UserCheck, UserX } from "lucide-react";
 import { RoleGuard } from "@/components/auth/RoleGuard";
+import { useAuthStore } from "@/lib/stores/auth-store";
+import { toast } from "sonner";
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: UserRole;
+  active: boolean;
+  lastLogin?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  createdBy?: string | null;
+  updatedBy?: string | null;
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+async function fetchUsers(csrfToken: string | null): Promise<{ success: boolean; users?: User[]; error?: string }> {
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    const response = await fetch(`${API_URL}/api/auth/users`, {
+      method: "GET",
+      credentials: "include",
+      headers,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || data.message || "Failed to fetch users",
+      };
+    }
+
+    return {
+      success: true,
+      users: data.users || [],
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Network error",
+    };
+  }
+}
 
 export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const csrfToken = useAuthStore((state) => state.csrfToken);
+  const hasLoadedRef = useRef(false);
 
-  const users = getAllUsers();
+  useEffect(() => {
+    // Prevent duplicate requests in React Strict Mode
+    if (hasLoadedRef.current) return;
+    hasLoadedRef.current = true;
 
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    const matchesStatus = statusFilter === "all" || (statusFilter === "active" && user.active) || (statusFilter === "inactive" && !user.active);
-    return matchesSearch && matchesRole && matchesStatus;
-  });
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () => {
+    setLoading(true);
+    const result = await fetchUsers(csrfToken);
+    if (result.success && result.users) {
+      setUsers(result.users);
+    } else {
+      const errorMessage = result.error || "Failed to load users";
+      toast.error("Failed to load users", {
+        description: errorMessage,
+      });
+    }
+    setLoading(false);
+  };
 
   const getRoleBadgeVariant = (role: UserRole) => {
     switch (role) {
@@ -60,141 +115,141 @@ export default function UsersPage() {
     }
   };
 
+  const columns = [
+    {
+      key: "name",
+      label: "Name",
+      sortable: true,
+    },
+    {
+      key: "email",
+      label: "Email",
+      sortable: true,
+    },
+    {
+      key: "role",
+      label: "Role",
+      sortable: true,
+      render: (user: User) => (
+        <Badge variant={getRoleBadgeVariant(user.role)} className="flex items-center gap-1 w-fit">
+          {getRoleIcon(user.role)}
+          {user.role.replace("_", " ")}
+        </Badge>
+      ),
+    },
+    {
+      key: "active",
+      label: "Status",
+      sortable: true,
+      render: (user: User & { active?: string | boolean }) => {
+        const isActive = typeof user.active === "string" ? user.active === "true" : user.active;
+        return (
+          <Badge variant={isActive ? "default" : "secondary"}>
+            {isActive ? "Active" : "Inactive"}
+          </Badge>
+        );
+      },
+    },
+    {
+      key: "lastLogin",
+      label: "Last Login",
+      sortable: true,
+      render: (user: User) => (
+        user.lastLogin
+          ? new Date(user.lastLogin).toLocaleDateString()
+          : "Never"
+      ),
+    },
+    {
+      key: "createdAt",
+      label: "Created",
+      sortable: true,
+      render: (user: User) => new Date(user.createdAt).toLocaleDateString(),
+    },
+    {
+      key: "actions",
+      label: "Actions",
+      render: (user: User) => (
+        <Button variant="ghost" size="sm" asChild>
+          <Link href={`/admin/users/${user.id}`}>
+            <Edit className="h-4 w-4 mr-2" />
+            Edit
+          </Link>
+        </Button>
+      ),
+    },
+  ];
+
+  if (loading && users.length === 0) {
+    return (
+      <RoleGuard requiredRole="ADMIN">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <DashboardBreadcrumbs />
+              <h1 className="text-3xl font-bold mt-4">User Management</h1>
+              <p className="text-muted-foreground mt-2">
+                Manage user accounts, roles, and access permissions
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Loading users...</p>
+            </div>
+          </div>
+        </div>
+      </RoleGuard>
+    );
+  }
+
   return (
     <RoleGuard requiredRole="ADMIN">
       <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <DashboardBreadcrumbs />
-          <h1 className="text-3xl font-bold mt-4">User Management</h1>
-          <p className="text-muted-foreground mt-2">
-            Manage user accounts, roles, and access permissions
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <DashboardBreadcrumbs />
+            <h1 className="text-3xl font-bold mt-4">User Management</h1>
+            <p className="text-muted-foreground mt-2">
+              Manage user accounts, roles, and access permissions
+            </p>
+          </div>
+          <Button asChild>
+            <Link href="/admin/users/new">
+              <Plus className="h-4 w-4 mr-2" />
+              Add New User
+            </Link>
+          </Button>
         </div>
-        <Button asChild>
-          <Link href="/admin/users/new">
-            <Plus className="h-4 w-4 mr-2" />
-            Add New User
-          </Link>
-        </Button>
-      </div>
 
-      {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Filters</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Search</label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search by name or email..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Role</label>
-              <Select value={roleFilter} onValueChange={setRoleFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All Roles" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Roles</SelectItem>
-                  <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="CONTENT_MANAGER">Content Manager</SelectItem>
-                  <SelectItem value="EDITOR">Editor</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Status</label>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Users Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Users ({filteredUsers.length})</CardTitle>
-          <CardDescription>List of all system users</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Last Login</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
-                      No users found
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredUsers.map((user) => (
-                    <TableRow key={user.id}>
-                      <TableCell className="font-medium">{user.name}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={getRoleBadgeVariant(user.role)} className="flex items-center gap-1 w-fit">
-                          {getRoleIcon(user.role)}
-                          {user.role.replace("_", " ")}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={user.active ? "default" : "secondary"}>
-                          {user.active ? "Active" : "Inactive"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        {user.lastLogin
-                          ? new Date(user.lastLogin).toLocaleDateString()
-                          : "Never"}
-                      </TableCell>
-                      <TableCell>
-                        {new Date(user.createdAt).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" asChild>
-                          <Link href={`/admin/users/${user.id}`}>
-                            <Edit className="h-4 w-4" />
-                          </Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+        <DataTable
+          data={users.map(user => ({
+            ...user,
+            active: user.active ? "true" : "false", // Convert boolean to string for filtering
+          }))}
+          columns={columns}
+          searchPlaceholder="Search by name or email..."
+          filterOptions={[
+            {
+              key: "role",
+              label: "Role",
+              options: [
+                { value: "ADMIN", label: "Admin" },
+                { value: "CONTENT_MANAGER", label: "Content Manager" },
+                { value: "EDITOR", label: "Editor" },
+              ],
+            },
+            {
+              key: "active",
+              label: "Status",
+              options: [
+                { value: "true", label: "Active" },
+                { value: "false", label: "Inactive" },
+              ],
+            },
+          ]}
+        />
       </div>
     </RoleGuard>
   );

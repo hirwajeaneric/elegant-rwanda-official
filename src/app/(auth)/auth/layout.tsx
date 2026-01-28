@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import { useAuthStore } from "@/lib/stores/auth-store";
 
 export default function AuthPagesLayout({
@@ -20,8 +21,27 @@ export default function AuthPagesLayout({
     }
   }, [isAuthenticated, router, pathname]);
 
+  const customStyles = {
+    background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-muted/30 to-muted/50 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-muted/30 to-muted/50 p-4" style={customStyles}>
+      {/* Logo */}
+      <div className="mb-8">
+        <Link href="/" className="flex items-center gap-0">
+          <div className="leading-tight flex flex-col items-center justify-center">
+            <span className="text-2xl font-display block font-semibold text-white">
+              Elegant Travel & Tours
+            </span>
+            <span className="text-xl font-display block font-semibold text-white">ET&T</span>
+          </div>
+        </Link>
+      </div>
+      
       {children}
     </div>
   );

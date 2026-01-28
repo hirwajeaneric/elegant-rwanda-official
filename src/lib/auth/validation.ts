@@ -75,6 +75,10 @@ export const resetPasswordConfirmSchema = z.object({
   newPassword: z.string().min(8, "New password must be at least 8 characters"),
 });
 
+export const adminResetPasswordSchema = z.object({
+  newPassword: z.string().min(8, "New password must be at least 8 characters"),
+});
+
 /**
  * Validate request body against a schema
  */
