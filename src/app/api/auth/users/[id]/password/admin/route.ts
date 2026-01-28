@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAuth, requireRole } from "@/lib/auth/middleware";
+import { requireAuth } from "@/lib/auth/middleware";
 import { validateRequest, adminResetPasswordSchema } from "@/lib/auth/validation";
 import { hashPassword, validatePasswordStrength } from "@/lib/auth/password";
 import { rateLimit } from "@/lib/auth/rate-limit";

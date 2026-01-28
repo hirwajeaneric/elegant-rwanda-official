@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { UserRole } from "@/lib/rbac";
 import { Plus, Edit, Shield, UserCheck, UserX } from "lucide-react";
 import { RoleGuard } from "@/components/auth/RoleGuard";
-import { useAuthStore } from "@/lib/stores/auth-store";
 import { toast } from "sonner";
 
 interface User {
@@ -25,9 +24,12 @@ interface User {
   updatedBy?: string | null;
 }
 
+// Type for table data where active is converted to string for filtering
+type TableUser = Omit<User, "active"> & { active: string };
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-async function fetchUsers(csrfToken: string | null): Promise<{ success: boolean; users?: User[]; error?: string }> {
+async function fetchUsers(): Promise<{ success: boolean; users?: User[]; error?: string }> {
   try {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -61,25 +63,13 @@ async function fetchUsers(csrfToken: string | null): Promise<{ success: boolean;
 }
 
 export default function UsersPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [roleFilter, setRoleFilter] = useState<string>("all");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const csrfToken = useAuthStore((state) => state.csrfToken);
   const hasLoadedRef = useRef(false);
 
-  useEffect(() => {
-    // Prevent duplicate requests in React Strict Mode
-    if (hasLoadedRef.current) return;
-    hasLoadedRef.current = true;
-
-    loadUsers();
-  }, []);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
-    const result = await fetchUsers(csrfToken);
+    const result = await fetchUsers();
     if (result.success && result.users) {
       setUsers(result.users);
     } else {
@@ -89,7 +79,15 @@ export default function UsersPage() {
       });
     }
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    // Prevent duplicate requests in React Strict Mode
+    if (hasLoadedRef.current) return;
+    hasLoadedRef.current = true;
+
+    loadUsers();
+  }, [loadUsers]);
 
   const getRoleBadgeVariant = (role: UserRole) => {
     switch (role) {
@@ -130,7 +128,7 @@ export default function UsersPage() {
       key: "role",
       label: "Role",
       sortable: true,
-      render: (user: User) => (
+      render: (user: TableUser) => (
         <Badge variant={getRoleBadgeVariant(user.role)} className="flex items-center gap-1 w-fit">
           {getRoleIcon(user.role)}
           {user.role.replace("_", " ")}
@@ -141,8 +139,8 @@ export default function UsersPage() {
       key: "active",
       label: "Status",
       sortable: true,
-      render: (user: User & { active?: string | boolean }) => {
-        const isActive = typeof user.active === "string" ? user.active === "true" : user.active;
+      render: (user: TableUser) => {
+        const isActive = user.active === "true";
         return (
           <Badge variant={isActive ? "default" : "secondary"}>
             {isActive ? "Active" : "Inactive"}
@@ -154,7 +152,7 @@ export default function UsersPage() {
       key: "lastLogin",
       label: "Last Login",
       sortable: true,
-      render: (user: User) => (
+      render: (user: TableUser) => (
         user.lastLogin
           ? new Date(user.lastLogin).toLocaleDateString()
           : "Never"
@@ -164,12 +162,12 @@ export default function UsersPage() {
       key: "createdAt",
       label: "Created",
       sortable: true,
-      render: (user: User) => new Date(user.createdAt).toLocaleDateString(),
+      render: (user: TableUser) => new Date(user.createdAt).toLocaleDateString(),
     },
     {
       key: "actions",
       label: "Actions",
-      render: (user: User) => (
+      render: (user: TableUser) => (
         <Button variant="ghost" size="sm" asChild>
           <Link href={`/admin/users/${user.id}`}>
             <Edit className="h-4 w-4 mr-2" />
@@ -223,7 +221,7 @@ export default function UsersPage() {
           </Button>
         </div>
 
-        <DataTable
+        <DataTable<TableUser>
           data={users.map(user => ({
             ...user,
             active: user.active ? "true" : "false", // Convert boolean to string for filtering
