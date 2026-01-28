@@ -2,12 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
-import { DataTable } from "@/components/dashboard/DataTable";
+import { GalleryTableView } from "@/components/dashboard/GalleryTableView";
+import { GalleryGridView } from "@/components/dashboard/GalleryGridView";
 import { Button } from "@/components/ui/button";
-import { Upload, Trash2, Edit, Eye } from "lucide-react";
+import { Upload, Table2, Grid3x3 } from "lucide-react";
 import { galleryImages } from "@/data/gallery";
 import { getCategoriesForEntity } from "@/data/categories";
-import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import {
   Dialog,
@@ -29,6 +29,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
+type ViewMode = "table" | "grid";
+
 export default function GalleryPage() {
   const availableCategories = useMemo(() => getCategoriesForEntity(['image']), []);
   const [images, setImages] = useState(galleryImages);
@@ -36,6 +38,7 @@ export default function GalleryPage() {
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this image?")) {
@@ -53,92 +56,6 @@ export default function GalleryPage() {
     setIsViewDialogOpen(true);
   };
 
-  const columns = [
-    {
-      key: "src",
-      label: "Image",
-      render: (item: typeof galleryImages[0]) => (
-        <div className="relative h-12 w-12 rounded overflow-hidden">
-          <Image
-            src={`/${item.src}`}
-            alt={item.title}
-            fill
-            className="object-cover"
-          />
-        </div>
-      ),
-    },
-    {
-      key: "title",
-      label: "Title",
-      sortable: true,
-    },
-    {
-      key: "category",
-      label: "Category",
-      sortable: true,
-      render: (item: typeof galleryImages[0]) => (
-        <Badge variant="outline">{item.category}</Badge>
-      ),
-    },
-    {
-      key: "featured",
-      label: "Featured",
-      sortable: true,
-      render: (item: typeof galleryImages[0]) => (
-        <Badge variant={item.featured ? "default" : "secondary"}>
-          {item.featured ? "Yes" : "No"}
-        </Badge>
-      ),
-    },
-    {
-      key: "active",
-      label: "Active",
-      sortable: true,
-      render: (item: typeof galleryImages[0]) => (
-        <Badge variant={item.active ? "default" : "secondary"}>
-          {item.active ? "Yes" : "No"}
-        </Badge>
-      ),
-    },
-    {
-      key: "uploadedAt",
-      label: "Uploaded",
-      sortable: true,
-      render: (item: typeof galleryImages[0]) =>
-        new Date(item.uploadedAt).toLocaleDateString(),
-    },
-    {
-      key: "actions",
-      label: "Actions",
-      render: (item: typeof galleryImages[0]) => (
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleView(item)}
-          >
-            <Eye className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleEdit(item)}
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => handleDelete(item.id)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      ),
-    },
-  ];
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -149,13 +66,35 @@ export default function GalleryPage() {
             Manage images and assets for the website
           </p>
         </div>
-        <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Upload className="h-4 w-4 mr-2" />
-              Upload Image
+        <div className="flex items-center gap-2">
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-1 border rounded-md p-1">
+            <Button
+              variant={viewMode === "table" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("table")}
+              className="h-8"
+            >
+              <Table2 className="h-4 w-4 mr-1" />
+              Table
             </Button>
-          </DialogTrigger>
+            <Button
+              variant={viewMode === "grid" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("grid")}
+              className="h-8"
+            >
+              <Grid3x3 className="h-4 w-4 mr-1" />
+              Grid
+            </Button>
+          </div>
+          <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Upload className="h-4 w-4 mr-2" />
+                Upload Image
+              </Button>
+            </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>Upload New Image</DialogTitle>
@@ -203,20 +142,27 @@ export default function GalleryPage() {
             </div>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
-      <DataTable
-        data={images}
-        columns={columns}
-        searchPlaceholder="Search images..."
-        filterOptions={[
-          {
-            key: "category",
-            label: "Category",
-            options: availableCategories.map(cat => ({ value: cat.name, label: cat.name })),
-          },
-        ]}
-      />
+      {/* View Components */}
+      {viewMode === "table" ? (
+        <GalleryTableView
+          images={images}
+          onView={handleView}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          availableCategories={availableCategories}
+        />
+      ) : (
+        <GalleryGridView
+          images={images}
+          onView={handleView}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          availableCategories={availableCategories}
+        />
+      )}
 
       {/* View Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>

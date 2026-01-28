@@ -21,7 +21,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     { resource: "faqs", actions: ["create", "read", "update", "delete"] },
     { resource: "categories", actions: ["create", "read", "update", "delete"] },
     { resource: "gallery", actions: ["create", "read", "update", "delete"] },
-    { resource: "settings", actions: ["read", "update"] },
+    { resource: "profile", actions: ["read", "update"] },
     // No access to users
   ],
   EDITOR: [
@@ -29,6 +29,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     { resource: "categories", actions: ["create", "read", "update", "delete"] },
     { resource: "faqs", actions: ["create", "read", "update", "delete"] },
     { resource: "gallery", actions: ["create", "read", "update", "delete"] },
+    { resource: "profile", actions: ["read", "update"] },
     // Read-only access to dashboard
     { resource: "dashboard", actions: ["read"] },
   ],
@@ -74,8 +75,8 @@ export function canAccessRoute(userRole: UserRole | undefined, route: string): b
     return userRole === "ADMIN"; // Only admins can access user management
   }
 
-  if (route.startsWith("/admin/settings")) {
-    return userRole === "ADMIN" || userRole === "CONTENT_MANAGER";
+  if (route.startsWith("/admin/profile")) {
+    return true; // All authenticated users can access profile
   }
 
   // Check permissions for the resource
@@ -99,7 +100,7 @@ export function getAccessibleRoutes(userRole: UserRole | undefined): string[] {
     "/admin/categories",
     "/admin/gallery",
     "/admin/users",
-    "/admin/settings",
+    "/admin/profile",
   ];
 
   return allRoutes.filter((route) => canAccessRoute(userRole, route));

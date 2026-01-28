@@ -15,11 +15,12 @@ import {
   Map,
   HelpCircle,
   Image as ImageIcon,
-  Settings,
+  User,
   LogOut,
   Menu,
   Tag,
   UserCog,
+  Globe,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useRouter } from "next/navigation";
@@ -40,7 +41,7 @@ const allNavigationItems = [
   { name: "FAQs", href: "/admin/faqs", icon: HelpCircle, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
   { name: "Categories", href: "/admin/categories", icon: Tag, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
   { name: "Gallery", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Settings", href: "/admin/settings", icon: Settings, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Profile", href: "/admin/profile", icon: User, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
 ];
 
 const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
@@ -64,7 +65,7 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   return (
     <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
       <div className="flex h-16 shrink-0 items-center">
-        <h1 className="text-xl font-bold">Elegant Rwanda</h1>
+        <h1 className="text-xl font-bold">ET&T</h1>
       </div>
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col gap-y-1">
@@ -88,7 +89,17 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
               </li>
             );
           })}
-          <li className="mt-auto">
+          <li className="mt-auto space-y-1">
+            <Link
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onLinkClick}
+              className="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            >
+              <Globe className="h-5 w-5 shrink-0" />
+              View Website
+            </Link>
             <button
               onClick={handleLogout}
               className="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-colors w-full"
