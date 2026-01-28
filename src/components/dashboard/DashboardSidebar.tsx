@@ -65,7 +65,10 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   return (
     <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
       <div className="flex h-16 shrink-0 items-center">
-        <h1 className="text-xl font-bold">ET&T</h1>
+        <h1 className="text-xl font-bold flex justify-start items-start flex-col gap-1">
+          <span className="text-primary text-2xl">ET&T</span>
+          <span className="text-black text-sm font-normal">Elegant Travel & Tours</span>
+        </h1>
       </div>
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col gap-y-1">
@@ -77,7 +80,7 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
                   href={item.href}
                   onClick={onLinkClick}
                   className={cn(
-                    "group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold transition-colors",
+                    "group flex gap-x-3 rounded-lg py-1 px-2 text-sm leading-6 font-semibold transition-colors",
                     isActive
                       ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
