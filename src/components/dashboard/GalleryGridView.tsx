@@ -128,10 +128,11 @@ export function GalleryGridView({
               <div key={image.id} className="overflow-hidden group hover:shadow-lg transition-shadow rounded-lg border bg-card">
                 <div className="relative aspect-square overflow-hidden bg-muted">
                   <Image
-                    src={`/${image.src}`}
+                    src={image.src}
                     alt={image.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    unoptimized={image.src.startsWith("http")}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                   <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

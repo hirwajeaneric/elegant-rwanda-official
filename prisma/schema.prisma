@@ -78,6 +78,7 @@ model User {
   sessions      Session[] // User sessions
   passwordResetTokens PasswordResetToken[] // Password reset tokens
   otpVerifications    OTPVerification[]    // OTP verifications
+  images        Image[]  // Images uploaded by user
 
   @@index([email])
   @@index([role])
@@ -161,4 +162,34 @@ enum OTPPurpose {
   REGISTRATION
   PASSWORD_RESET
   EMAIL_VERIFICATION
+}
+
+model Image {
+  id          String   @id @default(cuid())
+  publicId   String   @unique // Cloudinary public_id
+  url        String   // Cloudinary secure URL
+  urlRaw     String?  // Raw URL without transformations
+  title      String?
+  alt        String?
+  description String?
+  category   String?  // Category name (Wildlife, Landscapes, etc.)
+  folder     String?  // Cloudinary folder path
+  width      Int?
+  height     Int?
+  format     String?  // jpg, png, webp, etc.
+  bytes      Int?     // File size in bytes
+  tags       String[] // Array of tags
+  featured   Boolean  @default(false)
+  active     Boolean  @default(true)
+  uploadedBy String?  // User ID who uploaded
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User?    @relation(fields: [uploadedBy], references: [id], onDelete: SetNull)
+
+  @@index([category])
+  @@index([active])
+  @@index([featured])
+  @@index([uploadedBy])
+  @@index([createdAt])
+  @@index([publicId])
 }

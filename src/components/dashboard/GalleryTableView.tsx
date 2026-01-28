@@ -29,10 +29,11 @@ export function GalleryTableView({
       render: (item: GalleryImage) => (
         <div className="relative h-12 w-12 rounded overflow-hidden">
           <Image
-            src={`/${item.src}`}
+            src={item.src}
             alt={item.title}
             fill
             className="object-cover"
+            unoptimized={item.src.startsWith("http")}
           />
         </div>
       ),

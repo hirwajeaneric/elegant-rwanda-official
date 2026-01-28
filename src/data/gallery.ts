@@ -1,17 +1,17 @@
 export interface GalleryImage {
   id: string;
-  src: string;
+  src: string; // Can be relative path or full URL (Cloudinary)
   title: string;
-  category: 'Wildlife' | 'Landscapes' | 'Culture' | 'Accommodation' | 'Food & Cuisine' | 'City & Architecture' | 'Events' | 'Transportation';
+  category: 'Wildlife' | 'Landscapes' | 'Culture' | 'Accommodation' | 'Food & Cuisine' | 'City & Architecture' | 'Events' | 'Transportation' | 'Uncategorized';
   alt?: string;
   description?: string;
   
   // Dashboard-specific fields
-  size?: number;
+  size?: number; // File size in bytes
   width?: number;
   height?: number;
-  uploadedAt: string;
-  uploadedBy?: string;
+  uploadedAt: string; // ISO date string
+  uploadedBy?: string; // User ID
   tags?: string[];
   featured: boolean;
   active: boolean;
