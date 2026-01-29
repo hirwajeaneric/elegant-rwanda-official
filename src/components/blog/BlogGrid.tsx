@@ -197,7 +197,7 @@ export function BlogGrid() {
               </h3>
 
               {/* Excerpt */}
-              <p className="text-muted-foreground mb-4 leading-relaxed">
+              <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3">
                 {post.excerpt}
               </p>
 

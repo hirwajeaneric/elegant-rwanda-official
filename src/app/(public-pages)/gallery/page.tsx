@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
-import { GalleryHero } from "@/components/gallery/GalleryHero";
-import { GalleryGrid } from "@/components/gallery/GalleryGrid";
+import { GalleryPageClient } from "@/components/gallery/GalleryPageClient";
 
 export const dynamic = 'force-dynamic';
 
@@ -20,10 +19,7 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <PageWrapper>
-      <GalleryHero />
-      <div className="container-elegant py-16">
-        <GalleryGrid />
-      </div>
+      <GalleryPageClient />
     </PageWrapper>
   );
 }

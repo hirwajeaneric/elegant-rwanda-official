@@ -2,9 +2,11 @@ import { RateLimiterMemory, RateLimiterRedis } from "rate-limiter-flexible";
 import { NextRequest, NextResponse } from "next/server";
 
 // Memory-based rate limiter (for development)
-// In production, use Redis-based rate limiter
+// Shared across all API routes that use rateLimit() – keep high enough for normal admin use
+// (e.g. loading gallery + categories + multiple image updates in one session)
+// In production, use Redis-based rate limiter and consider per-route limits
 const rateLimiter = new RateLimiterMemory({
-  points: 5, // Number of requests
+  points: 120, // Requests per window (e.g. 2 per second over 1 min)
   duration: 60, // Per 60 seconds
 });
 

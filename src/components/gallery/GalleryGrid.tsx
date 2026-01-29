@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, Heart, Loader2 } from "lucide-react";
 import { ShareButton } from "@/components/ui/share-button";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
-interface GalleryImage {
+export interface GalleryImage {
   id: string;
   url: string;
   title: string | null;
@@ -14,41 +14,24 @@ interface GalleryImage {
   category: string | null;
 }
 
-const PAGE_SIZE = 24;
+interface GalleryGridProps {
+  images: GalleryImage[];
+  loading: boolean;
+  page: number;
+  totalPages: number;
+  total: number;
+  onPageChange: (page: number) => void;
+}
 
-export function GalleryGrid() {
-  const [images, setImages] = useState<GalleryImage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [total, setTotal] = useState(0);
+export function GalleryGrid({
+  images,
+  loading,
+  page,
+  totalPages,
+  total,
+  onPageChange,
+}: GalleryGridProps) {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
-
-  const loadImages = useCallback(async (pageNum: number) => {
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `/api/public/images?page=${pageNum}&limit=${PAGE_SIZE}`
-      );
-      const data = await res.json();
-      if (data.success) {
-        setImages(data.images || []);
-        const pag = data.pagination;
-        if (pag) {
-          setTotalPages(pag.pages ?? 1);
-          setTotal(pag.total ?? 0);
-        }
-      }
-    } catch {
-      setImages([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadImages(page);
-  }, [page, loadImages]);
 
   const openLightbox = (image: GalleryImage) => setSelectedImage(image);
   const closeLightbox = () => setSelectedImage(null);
@@ -85,11 +68,6 @@ export function GalleryGrid() {
 
   return (
     <div>
-      {/* Featured label */}
-      <p className="text-center text-muted-foreground mb-8">
-        Showing featured images ({total} total)
-      </p>
-
       {/* Gallery Grid */}
       <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
         {images.map((image) => (
@@ -145,7 +123,7 @@ export function GalleryGrid() {
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
           <Button
             variant="outline"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() => onPageChange(Math.max(1, page - 1))}
             disabled={page <= 1}
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
@@ -156,7 +134,7 @@ export function GalleryGrid() {
           </span>
           <Button
             variant="outline"
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() => onPageChange(Math.min(totalPages, page + 1))}
             disabled={page >= totalPages}
           >
             Next

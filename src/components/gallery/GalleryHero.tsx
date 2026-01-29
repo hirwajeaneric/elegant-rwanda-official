@@ -1,6 +1,14 @@
 "use client";
 
-export function GalleryHero() {
+interface GalleryHeroProps {
+  totalPhotos?: number | null;
+  totalCategories?: number | null;
+}
+
+export function GalleryHero({ totalPhotos, totalCategories }: GalleryHeroProps) {
+  const photosLabel = totalPhotos != null ? String(totalPhotos) : "—";
+  const categoriesLabel = totalCategories != null ? String(totalCategories) : "—";
+
   return (
     <section className="relative py-24 bg-[url('/pexels-gjpzoom-33707404.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
@@ -12,15 +20,15 @@ export function GalleryHero() {
         <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
           Explore our fleet of vehicles, places we have been, experience with our previous clients and the services we offer.
         </p>
-        
-        {/* Gallery Stats */}
+
+        {/* Gallery Stats – from API where available */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
           <div className="text-center">
-            <div className="text-3xl font-bold text-yellow-500 mb-2">500+</div>
+            <div className="text-3xl font-bold text-yellow-500 mb-2">{photosLabel}</div>
             <div className="text-white/90 text-sm">Photos</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-yellow-500 mb-2">15+</div>
+            <div className="text-3xl font-bold text-yellow-500 mb-2">{categoriesLabel}</div>
             <div className="text-white/90 text-sm">Categories</div>
           </div>
           <div className="text-center">
