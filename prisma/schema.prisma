@@ -324,3 +324,25 @@ enum TeamStatus {
   ACTIVE
   INACTIVE
 }
+
+model Testimonial {
+  id              String   @id @default(cuid())
+  name            String   // Customer name
+  location        String?  // Customer location
+  rating          Int      @default(5) // 1-5
+  review          String   // Main review text
+  service         String   // Tour | Cab Booking | Car Rental | Air Travel Assistance | Event
+  image           String?  // URL to customer image
+  active          Boolean  @default(true) // Toggle: show (active) or hide (inactive)
+  metaTitle       String?
+  metaDescription String?
+  title           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  createdBy       String?
+  updatedBy       String?
+
+  @@index([active])
+  @@index([service])
+  @@index([createdAt])
+}

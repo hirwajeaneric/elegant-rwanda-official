@@ -1,16 +1,56 @@
 "use client";
 
-
+import { useState, useEffect, useCallback } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { testimonials } from "@/data/testimonials";
+import { Plus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
+import { toast } from "sonner";
+
+interface TestimonialRow {
+  id: string;
+  name: string;
+  location: string | null;
+  rating: number;
+  review: string;
+  service: string;
+  image: string | null;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export default function TestimonialsPage() {
+  const [testimonials, setTestimonials] = useState<TestimonialRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadTestimonials = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/testimonials?limit=500");
+      const data = await response.json();
+      if (data.success) {
+        setTestimonials(data.testimonials || []);
+      } else {
+        toast.error("Failed to load testimonials", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to load testimonials");
+      console.error("Error loading testimonials:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTestimonials();
+  }, [loadTestimonials]);
+
   const columns = [
     {
       key: "name",
@@ -21,7 +61,7 @@ export default function TestimonialsPage() {
       key: "service",
       label: "Service",
       sortable: true,
-      render: (item: typeof testimonials[0]) => (
+      render: (item: TestimonialRow) => (
         <Badge variant="outline">{item.service}</Badge>
       ),
     },
@@ -29,7 +69,7 @@ export default function TestimonialsPage() {
       key: "rating",
       label: "Rating",
       sortable: true,
-      render: (item: typeof testimonials[0]) => (
+      render: (item: TestimonialRow) => (
         <div className="flex items-center gap-1">
           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           <span>{item.rating}</span>
@@ -37,26 +77,19 @@ export default function TestimonialsPage() {
       ),
     },
     {
-      key: "status",
+      key: "active",
       label: "Status",
       sortable: true,
-      render: (item: typeof testimonials[0]) => (
-        <Badge variant={item.status === "approved" ? "default" : "secondary"}>
-          {item.status}
+      render: (item: TestimonialRow) => (
+        <Badge variant={item.active ? "default" : "secondary"}>
+          {item.active ? "Active" : "Inactive"}
         </Badge>
       ),
     },
     {
-      key: "date",
-      label: "Date",
-      sortable: true,
-      render: (item: typeof testimonials[0]) =>
-        new Date(item.date).toLocaleDateString(),
-    },
-    {
       key: "actions",
       label: "Actions",
-      render: (item: typeof testimonials[0]) => (
+      render: (item: TestimonialRow) => (
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/testimonials/${item.id}`}>Edit</Link>
@@ -65,6 +98,23 @@ export default function TestimonialsPage() {
       ),
     },
   ];
+
+  // Flatten active to string for DataTable filter (it compares by string)
+  const testimonialsForTable = testimonials.map((t) => ({
+    ...t,
+    activeLabel: t.active ? "Active" : "Inactive",
+  }));
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-24">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -85,17 +135,16 @@ export default function TestimonialsPage() {
       </div>
 
       <DataTable
-        data={testimonials}
+        data={testimonialsForTable}
         columns={columns}
         searchPlaceholder="Search testimonials..."
         filterOptions={[
           {
-            key: "status",
+            key: "activeLabel",
             label: "Status",
             options: [
-              { value: "approved", label: "Approved" },
-              { value: "pending", label: "Pending" },
-              { value: "rejected", label: "Rejected" },
+              { value: "Active", label: "Active" },
+              { value: "Inactive", label: "Inactive" },
             ],
           },
           {
@@ -110,7 +159,6 @@ export default function TestimonialsPage() {
             ],
           },
         ]}
-        dateFilterKey="date"
       />
     </div>
   );

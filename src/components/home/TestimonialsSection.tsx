@@ -1,22 +1,71 @@
 "use client";
 
-import { useState } from "react";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import { getFeaturedTestimonials } from "@/data/testimonials";
+import { useState, useEffect } from "react";
+import { Star, Quote, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+
+interface TestimonialItem {
+  id: string;
+  name: string;
+  location: string | null;
+  rating: number;
+  review: string;
+  service: string;
+  image: string | null;
+}
 
 export function TestimonialsSection() {
+  const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const testimonials = getFeaturedTestimonials();
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/public/testimonials");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.testimonials)) {
+          setTestimonials(data.testimonials);
+        }
+      } catch {
+        setTestimonials([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   const nextTestimonial = () => {
+    if (testimonials.length === 0) return;
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
   const prevTestimonial = () => {
+    if (testimonials.length === 0) return;
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
+  if (loading) {
+    return (
+      <section className="section-padding bg-linear-to-br from-secondary/10 to-primary/10">
+        <div className="container-elegant">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+              What Our <span className="text-primary">Clients Say</span>
+            </h2>
+          </div>
+          <div className="flex flex-col items-center justify-center py-16">
+            <Loader2 className="h-10 w-10 animate-spin text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">Loading testimonials...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   if (testimonials.length === 0) return null;
+
+  const current = testimonials[currentIndex];
 
   return (
     <section className="section-padding bg-linear-to-br from-secondary/10 to-primary/10">
@@ -28,7 +77,7 @@ export function TestimonialsSection() {
             <span className="text-primary">Clients Say</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Don&apos;t just take our word for it. Here&apos;s what our satisfied clients have to say about 
+            Don&apos;t just take our word for it. Here&apos;s what our satisfied clients have to say about
             their experiences with Elegant Travel and Tours.
           </p>
         </div>
@@ -51,9 +100,9 @@ export function TestimonialsSection() {
                   <Star
                     key={i}
                     className={`h-6 w-6 ${
-                      i < testimonials[currentIndex].rating
-                        ? 'text-yellow-400 fill-current'
-                        : 'text-gray-300'
+                      i < current.rating
+                        ? "text-yellow-400 fill-current"
+                        : "text-gray-300"
                     }`}
                   />
                 ))}
@@ -61,23 +110,21 @@ export function TestimonialsSection() {
 
               {/* Testimonial Text */}
               <blockquote className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed italic">
-                &quot;{testimonials[currentIndex].review}&quot;
+                &quot;{current.review}&quot;
               </blockquote>
 
               {/* Client Info */}
               <div className="flex items-center justify-center space-x-4">
-                <div className="w-16 h-16 rounded-full bg-linear-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xl">
-                  {testimonials[currentIndex].name.charAt(0)}
+                <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">
+                  {current.name.charAt(0)}
                 </div>
                 <div className="text-left">
-                  <h4 className="font-semibold text-foreground">
-                    {testimonials[currentIndex].name}
-                  </h4>
+                  <h4 className="font-semibold text-foreground">{current.name}</h4>
                   <p className="text-sm text-muted-foreground">
-                    {testimonials[currentIndex].location}
+                    {current.location ?? "—"}
                   </p>
                   <p className="text-xs text-primary font-medium">
-                    {testimonials[currentIndex].service} Service
+                    {current.service} Service
                   </p>
                 </div>
               </div>
@@ -92,7 +139,7 @@ export function TestimonialsSection() {
             <span className="sr-only">Previous</span>
             <ChevronLeft className="h-5 w-5" />
           </button>
-          
+
           <button
             className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-white hover:text-primary border hover:border-white hover:scale-105 transition-all duration-300 flex items-center justify-center rounded-full px-3 py-3"
             onClick={nextTestimonial}
@@ -105,11 +152,11 @@ export function TestimonialsSection() {
           <div className="flex justify-center mt-8 space-x-2">
             {testimonials.map((_, index) => (
               <button
-                key={index}
+                key={testimonials[index].id}
                 className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                  index === currentIndex 
-                    ? 'bg-primary scale-125' 
-                    : 'bg-white hover:bg-primary/50'
+                  index === currentIndex
+                    ? "bg-primary scale-125"
+                    : "bg-white hover:bg-primary/50"
                 }`}
                 onClick={() => setCurrentIndex(index)}
                 aria-label={`Go to testimonial ${index + 1}`}

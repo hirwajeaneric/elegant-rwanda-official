@@ -9,13 +9,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Save } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export default function NewTestimonialPage() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -23,18 +26,35 @@ export default function NewTestimonialPage() {
     review: "",
     service: "Tour" as "Tour" | "Cab Booking" | "Car Rental" | "Air Travel Assistance" | "Event",
     image: "",
-    date: new Date().toISOString().split("T")[0],
-    featured: false,
-    status: "pending" as "approved" | "pending" | "rejected",
-    verified: false,
-    helpful: 0,
+    active: true,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Creating testimonial:", formData);
-    alert("Testimonial created successfully!");
-    router.push("/admin/testimonials");
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        ...formData,
+        image: formData.image?.trim() || null,
+        location: formData.location?.trim() || null,
+      };
+      const res = await fetch("/api/testimonials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Testimonial created successfully");
+        router.push("/admin/testimonials");
+      } else {
+        toast.error(data.error || "Failed to create testimonial");
+        setIsSubmitting(false);
+      }
+    } catch {
+      toast.error("Failed to create testimonial");
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -82,7 +102,7 @@ export default function NewTestimonialPage() {
               </div>
 
               <div className="space-y-2">
-                <Label>Customer Image</Label>
+                <Label>Customer Image (optional)</Label>
                 <AssetSelector
                   value={formData.image}
                   onSelect={(image) => {
@@ -103,15 +123,6 @@ export default function NewTestimonialPage() {
                 )}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="date">Date</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                />
-              </div>
             </CardContent>
           </Card>
 
@@ -173,35 +184,28 @@ export default function NewTestimonialPage() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
-                <Select
-                  value={formData.status}
-                  onValueChange={(value: "approved" | "pending" | "rejected") =>
-                    setFormData({ ...formData, status: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="approved">Approved</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="flex items-center justify-between space-x-2">
+                <Label htmlFor="active">Show on site (Active)</Label>
+                <Switch
+                  id="active"
+                  checked={formData.active}
+                  onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
+                />
               </div>
+              <p className="text-sm text-muted-foreground">
+                Inactive testimonials are hidden from the public site.
+              </p>
             </CardContent>
           </Card>
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button variant="outline" type="button" asChild>
+          <Button variant="outline" type="button" asChild disabled={isSubmitting}>
             <Link href="/admin/testimonials">Cancel</Link>
           </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
-            Create Testimonial
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+            {isSubmitting ? "Creating..." : "Create Testimonial"}
           </Button>
         </div>
       </form>

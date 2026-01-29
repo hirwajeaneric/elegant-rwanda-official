@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -10,48 +10,115 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { testimonials, Testimonial } from "@/data/testimonials";
-import { ArrowLeft, Edit, Save, X, Star } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { ArrowLeft, Edit, Save, X, Star, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
 import Image from "next/image";
+import { toast } from "sonner";
 
-function getTestimonialById(id: string) {
-  return testimonials.find((testimonial) => testimonial.id === id);
+type ServiceType = "Tour" | "Cab Booking" | "Car Rental" | "Air Travel Assistance" | "Event";
+
+interface TestimonialData {
+  id: string;
+  name: string;
+  location: string | null;
+  rating: number;
+  review: string;
+  service: string;
+  image: string | null;
+  active: boolean;
 }
 
 export default function TestimonialDetailPage() {
   const params = useParams();
   const id = params.id as string;
-  const testimonial = getTestimonialById(id);
 
+  const [testimonial, setTestimonial] = useState<TestimonialData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<Partial<Testimonial>>({
+  const [isSaving, setIsSaving] = useState(false);
+  const [formData, setFormData] = useState<Partial<TestimonialData>>({
     name: "",
     location: "",
     rating: 5,
     review: "",
     service: "Tour",
     image: "",
-    date: "",
-    featured: false,
-    customerName: "",
-    customerLocation: "",
-    title: "",
-    content: "",
-    tour: "",
-    status: "pending",
-    verified: false,
-    helpful: 0,
+    active: true,
   });
 
-  useEffect(() => {
-    if (testimonial) {
-      setFormData({
-        ...testimonial,
-      });
+  const loadTestimonial = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/testimonials/${id}`);
+      const data = await res.json();
+      if (data.success && data.testimonial) {
+        setTestimonial(data.testimonial);
+        setFormData({
+          name: data.testimonial.name,
+          location: data.testimonial.location ?? "",
+          rating: data.testimonial.rating,
+          review: data.testimonial.review,
+          service: data.testimonial.service,
+          image: data.testimonial.image ?? "",
+          active: data.testimonial.active !== false,
+        });
+      } else {
+        setTestimonial(null);
+      }
+    } catch {
+      setTestimonial(null);
+    } finally {
+      setLoading(false);
     }
-  }, [testimonial]);
+  }, [id]);
+
+  useEffect(() => {
+    loadTestimonial();
+  }, [loadTestimonial]);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const res = await fetch(`/api/testimonials/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          location: formData.location?.trim() || null,
+          rating: formData.rating,
+          review: formData.review,
+          service: formData.service,
+          image: formData.image?.trim() || null,
+          active: formData.active !== false,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setTestimonial(data.testimonial);
+        setIsEditing(false);
+        toast.success("Testimonial updated successfully");
+      } else {
+        toast.error(data.error || "Failed to update testimonial");
+      }
+    } catch {
+      toast.error("Failed to update testimonial");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-24">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   if (!testimonial) {
     return (
@@ -72,11 +139,8 @@ export default function TestimonialDetailPage() {
     );
   }
 
-  const handleSave = () => {
-    console.log("Saving testimonial:", formData);
-    setIsEditing(false);
-    alert("Testimonial saved successfully!");
-  };
+  const display = isEditing ? formData : testimonial;
+  const imageUrl = (isEditing ? formData.image : testimonial.image) || "";
 
   return (
     <div className="space-y-6">
@@ -84,13 +148,13 @@ export default function TestimonialDetailPage() {
         <div>
           <DashboardBreadcrumbs />
           <div className="flex items-center gap-4 mt-4">
-            <h1 className="text-3xl font-bold">{testimonial.name}</h1>
-            <Badge variant={testimonial.status === "approved" ? "default" : "secondary"}>
-              {testimonial.status}
+            <h1 className="text-3xl font-bold">{display?.name ?? testimonial.name}</h1>
+            <Badge variant={(display?.active ?? testimonial.active) ? "default" : "secondary"}>
+              {(display?.active ?? testimonial.active) ? "Active" : "Inactive"}
             </Badge>
             <div className="flex items-center gap-1">
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span>{testimonial.rating}</span>
+              <span>{display?.rating ?? testimonial.rating}</span>
             </div>
           </div>
         </div>
@@ -110,13 +174,13 @@ export default function TestimonialDetailPage() {
             </>
           ) : (
             <>
-              <Button variant="outline" onClick={() => setIsEditing(false)}>
+              <Button variant="outline" onClick={() => setIsEditing(false)} disabled={isSaving}>
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button onClick={handleSave}>
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
+              <Button onClick={handleSave} disabled={isSaving}>
+                {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+                {isSaving ? "Saving..." : "Save Changes"}
               </Button>
             </>
           )}
@@ -137,7 +201,7 @@ export default function TestimonialDetailPage() {
                 <Input
                   id="name"
                   value={formData.name || ""}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value, customerName: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
               ) : (
                 <p className="text-sm text-muted-foreground">{testimonial.name}</p>
@@ -150,15 +214,15 @@ export default function TestimonialDetailPage() {
                 <Input
                   id="location"
                   value={formData.location || ""}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value, customerLocation: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 />
               ) : (
-                <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                <p className="text-sm text-muted-foreground">{testimonial.location ?? "—"}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image">Customer Image</Label>
+              <Label htmlFor="image">Customer Image (optional)</Label>
               {isEditing ? (
                 <div className="space-y-2">
                   <AssetSelector
@@ -168,19 +232,30 @@ export default function TestimonialDetailPage() {
                       setFormData({ ...formData, image: imageValue });
                     }}
                   />
-                  {formData.image && (
-                    <div className="mt-2">
+                  {formData.image ? (
+                    <div className="mt-2 flex items-center gap-2">
                       <Image
                         src={formData.image}
                         alt={formData.name || "Preview"}
                         className="w-24 h-24 object-cover rounded-full"
                         width={100}
                         height={100}
+                        unoptimized={formData.image.startsWith("http")}
                       />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setFormData({ ...formData, image: "" })}
+                      >
+                        Remove image
+                      </Button>
                     </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">No image selected</p>
                   )}
                 </div>
-              ) : (
+              ) : testimonial.image ? (
                 <div>
                   <Image
                     src={testimonial.image}
@@ -188,26 +263,14 @@ export default function TestimonialDetailPage() {
                     className="w-24 h-24 object-cover rounded-full"
                     width={100}
                     height={100}
+                    unoptimized={testimonial.image.startsWith("http")}
                   />
                 </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">No image</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="date">Date</Label>
-              {isEditing ? (
-                <Input
-                  id="date"
-                  type="date"
-                  value={formData.date || ""}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  {new Date(testimonial.date).toLocaleDateString()}
-                </p>
-              )}
-            </div>
           </CardContent>
         </Card>
 
@@ -222,11 +285,11 @@ export default function TestimonialDetailPage() {
               <Label htmlFor="rating">Rating</Label>
               {isEditing ? (
                 <Select
-                  value={String(formData.rating || 5)}
+                  value={String(formData.rating ?? 5)}
                   onValueChange={(value) => setFormData({ ...formData, rating: parseInt(value) })}
                 >
                   <SelectTrigger>
-                    <SelectValue />
+                    <SelectValue placeholder="Select rating" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="5">5 Stars</SelectItem>
@@ -255,12 +318,10 @@ export default function TestimonialDetailPage() {
               {isEditing ? (
                 <Select
                   value={formData.service || "Tour"}
-                  onValueChange={(value: Testimonial["service"]) =>
-                    setFormData({ ...formData, service: value })
-                  }
+                  onValueChange={(value: ServiceType) => setFormData({ ...formData, service: value })}
                 >
                   <SelectTrigger>
-                    <SelectValue />
+                    <SelectValue placeholder="Select service" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Tour">Tour</SelectItem>
@@ -281,7 +342,7 @@ export default function TestimonialDetailPage() {
                 <Textarea
                   id="review"
                   value={formData.review || ""}
-                  onChange={(e) => setFormData({ ...formData, review: e.target.value, content: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, review: e.target.value })}
                   rows={6}
                 />
               ) : (
@@ -289,52 +350,25 @@ export default function TestimonialDetailPage() {
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+            <div className="flex items-center justify-between space-x-2">
+              <Label htmlFor="active">Show on site (Active)</Label>
               {isEditing ? (
-                <Select
-                  value={formData.status || "pending"}
-                  onValueChange={(value: "approved" | "pending" | "rejected") =>
-                    setFormData({ ...formData, status: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="approved">Approved</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Switch
+                  id="active"
+                  checked={formData.active !== false}
+                  onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
+                />
               ) : (
-                <Badge variant={testimonial.status === "approved" ? "default" : "secondary"}>
-                  {testimonial.status}
+                <Badge variant={testimonial.active ? "default" : "secondary"}>
+                  {testimonial.active ? "Active" : "Inactive"}
                 </Badge>
               )}
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Statistics */}
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Statistics</CardTitle>
-            <CardDescription>Performance metrics</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Helpful</p>
-                <p className="text-2xl font-bold">{testimonial.helpful}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Verified</p>
-                <Badge variant={testimonial.verified ? "default" : "secondary"}>
-                  {testimonial.verified ? "Yes" : "No"}
-                </Badge>
-              </div>
-            </div>
+            {isEditing && (
+              <p className="text-sm text-muted-foreground">
+                Inactive testimonials are hidden from the public site.
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
