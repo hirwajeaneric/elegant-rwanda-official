@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 export type CategoryType = "FAQ" | "BLOG" | "EVENT" | "TOUR" | "IMAGE" | "GENERAL";
 
@@ -31,6 +31,19 @@ export function useCategories(options: UseCategoriesOptions = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Create a stable array reference to prevent infinite loops when arrays are passed inline
+  // Compare arrays by their stringified sorted contents
+  const typeKeyRef = useRef<string | undefined>(undefined);
+  const stableTypeRef = useRef<CategoryType[] | undefined>(undefined);
+  
+  const currentTypeKey = type ? JSON.stringify([...type].sort()) : undefined;
+  
+  // Only create a new array reference if the type content actually changed
+  if (currentTypeKey !== typeKeyRef.current) {
+    typeKeyRef.current = currentTypeKey;
+    stableTypeRef.current = type ? [...type].sort() : undefined;
+  }
+
   const fetchCategories = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -38,8 +51,9 @@ export function useCategories(options: UseCategoriesOptions = {}) {
       const endpoint = publicEndpoint ? "/api/public/categories" : "/api/categories";
       const params = new URLSearchParams();
       
-      if (type && type.length > 0) {
-        params.append("type", type[0]); // API expects single type
+      const currentStableType = stableTypeRef.current;
+      if (currentStableType && currentStableType.length > 0) {
+        params.append("type", currentStableType[0]); // API expects single type
       }
       if (active !== undefined) {
         params.append("active", active.toString());
@@ -53,9 +67,9 @@ export function useCategories(options: UseCategoriesOptions = {}) {
         let fetchedCategories = data.categories || [];
         
         // Filter by multiple types on client side if needed
-        if (type && type.length > 1) {
+        if (currentStableType && currentStableType.length > 1) {
           fetchedCategories = fetchedCategories.filter((cat: Category) =>
-            type.some(t => cat.type.includes(t))
+            currentStableType.some(t => cat.type.includes(t))
           );
         }
         
@@ -69,7 +83,7 @@ export function useCategories(options: UseCategoriesOptions = {}) {
     } finally {
       setLoading(false);
     }
-  }, [type, active, publicEndpoint]);
+  }, [active, publicEndpoint]);
 
   useEffect(() => {
     fetchCategories();

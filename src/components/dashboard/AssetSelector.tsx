@@ -168,7 +168,7 @@ export function AssetSelector({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="min-w-2xl sm:min-w-3xl md:min-w-4xl lg:min-w-6xl xl:min-w-8xl  max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{multiple ? "Select Images" : "Select Image"}</DialogTitle>
           <DialogDescription>
@@ -257,7 +257,7 @@ export function AssetSelector({
 
           {/* Image Grid */}
           {!loading && !error && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {filteredImages.map((image) => {
                 const isSelected = selectedImages.includes(image.url);
                 return (

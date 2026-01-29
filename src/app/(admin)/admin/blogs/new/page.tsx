@@ -270,9 +270,9 @@ export default function NewBlogPage() {
                     <Image
                       src={formData.featuredImage}
                       alt={formData.title || "Preview"}
-                      className="w-full h-48 object-cover rounded-md"
-                      width={100}
-                      height={100}
+                      className="w-full h-96 object-cover rounded-md"
+                      width={400}
+                      height={400}
                     />
                   </div>
                 )}
