@@ -28,7 +28,6 @@ export default function NewFAQPage() {
     question: "",
     answer: "",
     categoryId: defaultCategoryId,
-    order: 0,
     active: true,
   });
 
@@ -82,9 +81,9 @@ export default function NewFAQPage() {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-4">
           {/* Question & Answer */}
-          <Card className="md:col-span-2">
+          <Card className="lg:col-span-3">
             <CardHeader>
               <CardTitle>Question & Answer</CardTitle>
               <CardDescription>FAQ content</CardDescription>
@@ -114,7 +113,7 @@ export default function NewFAQPage() {
           </Card>
 
           {/* Settings */}
-          <Card>
+          <Card className="lg:col-span-1">
             <CardHeader>
               <CardTitle>Settings</CardTitle>
               <CardDescription>FAQ configuration</CardDescription>
@@ -128,8 +127,8 @@ export default function NewFAQPage() {
                     setFormData({ ...formData, categoryId: value })
                   }
                 >
-                  <SelectTrigger>
-                    <SelectValue />
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
                     {availableCategories.map((cat) => (
@@ -142,23 +141,13 @@ export default function NewFAQPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="order">Display Order</Label>
-                <Input
-                  id="order"
-                  type="number"
-                  value={formData.order}
-                  onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                />
-              </div>
-
-              <div className="space-y-2">
                 <Label htmlFor="active">Status</Label>
                 <Select
                   value={formData.active ? "active" : "inactive"}
                   onValueChange={(value) => setFormData({ ...formData, active: value === "active" })}
                 >
-                  <SelectTrigger>
-                    <SelectValue />
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="active">Active</SelectItem>

@@ -76,7 +76,6 @@ export async function PUT(
         question: body.question ?? existingFAQ.question,
         answer: body.answer ?? existingFAQ.answer,
         categoryId: body.categoryId ?? existingFAQ.categoryId,
-        order: body.order ?? existingFAQ.order,
         active: body.active ?? existingFAQ.active,
         updatedBy: authResult.auth.userId,
       },

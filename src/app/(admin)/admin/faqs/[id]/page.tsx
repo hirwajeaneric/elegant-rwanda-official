@@ -48,7 +48,6 @@ export default function FAQDetailPage() {
     question: "",
     answer: "",
     categoryId: "",
-    order: 0,
     active: true,
   });
 
@@ -69,7 +68,6 @@ export default function FAQDetailPage() {
           question: faqData.question,
           answer: faqData.answer,
           categoryId: faqData.categoryId || "",
-          order: faqData.order || 0,
           active: faqData.active ?? true,
         });
       } else {
@@ -199,9 +197,9 @@ export default function FAQDetailPage() {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-4">
         {/* Question & Answer */}
-        <Card className="md:col-span-2">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>Question & Answer</CardTitle>
             <CardDescription>FAQ content</CardDescription>
@@ -233,12 +231,12 @@ export default function FAQDetailPage() {
         </Card>
 
         {/* Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Settings</CardTitle>
-            <CardDescription>FAQ configuration</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <Card className="lg:col-span-1">
+            <CardHeader>
+              <CardTitle>Settings</CardTitle>
+              <CardDescription>FAQ configuration</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
@@ -246,8 +244,8 @@ export default function FAQDetailPage() {
                 onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
                 disabled={!isEditing}
               >
-                <SelectTrigger>
-                  <SelectValue />
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
                   {availableCategories.map((cat) => (
@@ -260,25 +258,14 @@ export default function FAQDetailPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="order">Display Order</Label>
-              <Input
-                id="order"
-                type="number"
-                value={formData.order}
-                onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                disabled={!isEditing}
-              />
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="active">Status</Label>
               <Select
                 value={formData.active ? "active" : "inactive"}
                 onValueChange={(value) => setFormData({ ...formData, active: value === "active" })}
                 disabled={!isEditing}
               >
-                <SelectTrigger>
-                  <SelectValue />
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="active">Active</SelectItem>

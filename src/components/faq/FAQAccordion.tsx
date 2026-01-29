@@ -1,129 +1,107 @@
 "use client";
 
-import { useState } from "react";
-import { Search } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Search, Loader2 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
+interface FAQCategory {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+  categoryId: string | null;
+  category: FAQCategory | null;
+  order: number;
+  active: boolean;
+}
 
 export function FAQAccordion() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [faqs, setFaqs] = useState<FAQItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const faqData = {
-    "General Travel": [
-      {
-        question: "What is the best time to visit Rwanda?",
-        answer: "The best time to visit Rwanda is during the dry seasons: June to September and December to February. These periods offer the best conditions for gorilla trekking, wildlife viewing, and outdoor activities. However, Rwanda's pleasant climate makes it a year-round destination."
-      },
-      {
-        question: "Do I need a visa to visit Rwanda?",
-        answer: "Most nationalities require a visa to enter Rwanda. You can apply for an e-visa online through the Rwanda Immigration website or obtain one upon arrival at Kigali International Airport. The process is straightforward and typically takes 1-3 business days for approval."
-      },
-      {
-        question: "What currency is used in Rwanda?",
-        answer: "The official currency of Rwanda is the Rwandan Franc (RWF). US Dollars are also widely accepted in major tourist areas, hotels, and for tour payments. We recommend carrying some local currency for smaller purchases and tips."
-      },
-      {
-        question: "Is Rwanda safe for tourists?",
-        answer: "Yes, Rwanda is one of the safest countries in Africa for tourists. The country has low crime rates, excellent healthcare, and a strong focus on tourism safety. Our team provides 24/7 support throughout your journey to ensure a secure and enjoyable experience."
-      }
-    ],
-    "Gorilla Trekking": [
-      {
-        question: "How far in advance should I book gorilla trekking?",
-        answer: "Gorilla trekking permits are limited and in high demand. We recommend booking at least 6-12 months in advance, especially for peak season (July-August). Last-minute bookings are possible but subject to availability."
-      },
-      {
-        question: "What should I pack for gorilla trekking?",
-        answer: "Essential items include: sturdy hiking boots, long pants and long-sleeved shirts, rain gear, insect repellent, sunscreen, hat, gloves, and a camera. We provide a detailed packing list upon booking confirmation."
-      },
-      {
-        question: "How physically demanding is gorilla trekking?",
-        answer: "Gorilla trekking can be moderately challenging. Treks typically last 2-8 hours depending on gorilla location. Terrain varies from gentle slopes to steep hills. We offer different difficulty levels and can arrange porter services for those who need assistance."
-      },
-      {
-        question: "What is the minimum age for gorilla trekking?",
-        answer: "The minimum age for gorilla trekking in Rwanda is 15 years old. This is strictly enforced by the park authorities. Children under 15 can participate in other activities like cultural visits and nature walks."
-      }
-    ],
-    "Tours & Packages": [
-      {
-        question: "What is included in your tour packages?",
-        answer: "Our tour packages typically include: accommodation, meals as specified, transportation, professional guides, park fees, and activities listed in the itinerary. We provide detailed inclusions and exclusions for each tour package."
-      },
-      {
-        question: "Can I customize a tour package?",
-        answer: "Absolutely! We specialize in creating personalized itineraries. You can modify existing packages or request a completely custom tour based on your interests, schedule, and budget. Our travel experts will work with you to design the perfect experience."
-      },
-      {
-        question: "What is your cancellation policy?",
-        answer: "Our cancellation policy varies by tour type and timing. Generally, cancellations made 30+ days before departure receive a full refund, 15-29 days receive 75% refund, and 14 days or less receive 50% refund. We recommend travel insurance for additional protection."
-      },
-      {
-        question: "Do you offer group discounts?",
-        answer: "Yes, we offer attractive group discounts for bookings of 4 or more people. Group rates vary by tour type and group size. Contact us for a personalized group quote and special group arrangements."
-      }
-    ],
-    "Transportation": [
-      {
-        question: "What types of vehicles do you use for tours?",
-        answer: "We use modern, well-maintained vehicles including 4x4 Land Cruisers for safari tours, comfortable minibuses for group tours, and Unique sedans for private transfers. All vehicles are equipped with air conditioning and safety features."
-      },
-      {
-        question: "Do you provide airport transfers?",
-        answer: "Yes, we provide airport transfers from Kigali International Airport to your hotel or tour starting point. Transfers can be arranged for arrival and departure. We recommend booking transfers in advance to ensure smooth arrival."
-      },
-      {
-        question: "Can I rent a car and drive myself?",
-        answer: "Yes, we offer both self-drive and chauffeur-driven car rental options. Self-drive requires a valid international driving permit and experience with left-hand driving. We recommend chauffeur service for first-time visitors to Rwanda."
-      },
-      {
-        question: "What are your cab booking rates?",
-        answer: "Our cab rates are competitive and transparent. Rates vary by distance, vehicle type, and service level. We offer fixed rates for airport transfers and hourly rates for city tours. Contact us for specific pricing."
-      }
-    ],
-    "Accommodation": [
-      {
-        question: "What types of accommodation do you offer?",
-        answer: "We offer a range of accommodation options from Unique lodges and boutique hotels to comfortable mid-range hotels. All accommodations are carefully selected for quality, location, and service standards. We can arrange accommodation to match your preferences and budget."
-      },
-      {
-        question: "Are meals included in accommodation?",
-        answer: "Meal inclusion varies by tour package and accommodation type. Most Unique lodges include full board (breakfast, lunch, dinner), while city hotels typically include breakfast. We clearly specify meal inclusions in all tour packages."
-      },
-      {
-        question: "Can you accommodate dietary restrictions?",
-        answer: "Yes, we can accommodate various dietary restrictions including vegetarian, vegan, gluten-free, and other special dietary needs. Please inform us of any requirements when booking, and we'll ensure your needs are met throughout your stay."
-      },
-      {
-        question: "What is the accommodation quality like?",
-        answer: "We partner with the finest accommodations in Rwanda, ensuring high standards of comfort, cleanliness, and service. Our Unique options include 5-star lodges with world-class amenities, while mid-range options offer excellent value and comfort."
-      }
-    ]
-  };
-
-  // Filter FAQs based on search query
-  const filteredFAQs = Object.entries(faqData).reduce((acc, [category, questions]) => {
-    if (activeCategory === "all" || category === activeCategory) {
-      const filteredQuestions = questions.filter(q =>
-        q.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        q.answer.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      if (filteredQuestions.length > 0) {
-        acc[category] = filteredQuestions;
+  useEffect(() => {
+    async function fetchFAQs() {
+      try {
+        const response = await fetch("/api/public/faqs");
+        const data = await response.json();
+        if (data.success && Array.isArray(data.faqs)) {
+          setFaqs(data.faqs);
+        } else {
+          setError("Failed to load FAQs");
+        }
+      } catch {
+        setError("Failed to load FAQs");
+      } finally {
+        setLoading(false);
       }
     }
-    return acc;
-  }, {} as Record<string, typeof faqData[keyof typeof faqData]>);
+    fetchFAQs();
+  }, []);
 
-  const categories = Object.keys(faqData);
+  // Group FAQs by category name
+  const faqDataByCategory = useMemo(() => {
+    const grouped: Record<string, FAQItem[]> = {};
+    for (const faq of faqs) {
+      const categoryName = faq.category?.name ?? "Uncategorized";
+      if (!grouped[categoryName]) grouped[categoryName] = [];
+      grouped[categoryName].push(faq);
+    }
+    // Sort FAQs within each category by order
+    for (const name of Object.keys(grouped)) {
+      grouped[name].sort((a, b) => a.order - b.order);
+    }
+    return grouped;
+  }, [faqs]);
+
+  const categories = useMemo(() => Object.keys(faqDataByCategory).sort(), [faqDataByCategory]);
+
+  // Filter FAQs based on search and category
+  const filteredFAQs = useMemo(() => {
+    const result: Record<string, FAQItem[]> = {};
+    for (const [category, questions] of Object.entries(faqDataByCategory)) {
+      if (activeCategory !== "all" && category !== activeCategory) continue;
+      const filtered = questions.filter(
+        (q) =>
+          q.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          q.answer.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      if (filtered.length > 0) result[category] = filtered;
+    }
+    return result;
+  }, [faqDataByCategory, activeCategory, searchQuery]);
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto flex flex-col items-center justify-center py-16">
+        <Loader2 className="h-10 w-10 animate-spin text-muted-foreground mb-4" />
+        <p className="text-muted-foreground">Loading FAQs...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-4xl mx-auto text-center py-16">
+        <p className="text-destructive mb-4">{error}</p>
+        <p className="text-sm text-muted-foreground">Please try again later.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
       {/* Search and Filter */}
       <div className="mb-12 space-y-6">
-        {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search for questions..."
@@ -133,7 +111,6 @@ export function FAQAccordion() {
           />
         </div>
 
-        {/* Category Filter */}
         <div className="flex flex-wrap gap-3">
           <button
             onClick={() => setActiveCategory("all")}
@@ -169,13 +146,16 @@ export function FAQAccordion() {
               {category}
             </h2>
             <Accordion type="single" collapsible className="w-full">
-              {questions.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
+              {questions.map((faq) => (
+                <AccordionItem key={faq.id} value={faq.id}>
                   <AccordionTrigger className="text-left text-lg hover:text-primary transition-colors">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground leading-relaxed">
-                    {faq.answer}
+                    <div
+                      className="prose prose-sm max-w-none dark:prose-invert"
+                      dangerouslySetInnerHTML={{ __html: faq.answer }}
+                    />
                   </AccordionContent>
                 </AccordionItem>
               ))}

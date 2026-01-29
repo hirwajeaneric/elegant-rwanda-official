@@ -36,11 +36,11 @@ export function GalleryGridView({
   pageSize = 12,
 }: GalleryGridViewProps) {
   const { getParam, setParam } = useSearchParamsStore();
-  const [localSearch, setLocalSearch] = useState(getParam(searchKey));
-
-  const search = getParam(searchKey);
+  const [localSearch, setLocalSearch] = useState(() => getParam(searchKey));
+  const [localCategory, setLocalCategory] = useState(() => getParam("category") || "");
+  const search = localSearch;
   const page = parseInt(getParam("page") || "1");
-  const categoryFilter = getParam("category");
+  const categoryFilter = localCategory;
 
   // Filter data
   const filteredData = useMemo(() => {
@@ -48,16 +48,18 @@ export function GalleryGridView({
 
     // Search filter
     if (search) {
+      const q = search.toLowerCase();
       result = result.filter((item) =>
-        Object.values(item).some((value) =>
-          String(value).toLowerCase().includes(search.toLowerCase())
-        )
+        Object.values(item).some((value) => {
+          if (value == null || (typeof value === "object" && !(value instanceof Date))) return false;
+          return String(value).toLowerCase().includes(q);
+        })
       );
     }
 
     // Category filter
     if (categoryFilter && categoryFilter !== "all") {
-      result = result.filter((item) => item.category === categoryFilter);
+      result = result.filter((item) => item.category != null && item.category === categoryFilter);
     }
 
     return result;
@@ -94,11 +96,9 @@ export function GalleryGridView({
         <Select
           value={categoryFilter || "all"}
           onValueChange={(value) => {
-            if (value === "all") {
-              setParam("category", "");
-            } else {
-              setParam("category", value);
-            }
+            const next = value === "all" ? "" : value;
+            setLocalCategory(next);
+            setParam("category", next);
             setParam("page", "1");
           }}
         >

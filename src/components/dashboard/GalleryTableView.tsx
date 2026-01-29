@@ -13,6 +13,7 @@ interface GalleryTableViewProps {
   onEdit: (image: GalleryImage) => void;
   onDelete: (id: string) => void;
   availableCategories: { id: string; name: string }[];
+  pageSize?: number;
 }
 
 export function GalleryTableView({
@@ -21,6 +22,7 @@ export function GalleryTableView({
   onEdit,
   onDelete,
   availableCategories,
+  pageSize = 10,
 }: GalleryTableViewProps) {
   const columns = [
     {
@@ -114,6 +116,7 @@ export function GalleryTableView({
       data={images}
       columns={columns}
       searchPlaceholder="Search images..."
+      pageSize={pageSize}
       filterOptions={[
         {
           key: "category",

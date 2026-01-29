@@ -26,12 +26,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Default order to end of list when not provided
+    const maxOrder = await prisma.fAQ.aggregate({ _max: { order: true } });
+    const nextOrder = order !== undefined && order !== null ? order : (maxOrder._max.order ?? -1) + 1;
+
     const faq = await prisma.fAQ.create({
       data: {
         question,
         answer,
         categoryId,
-        order: order ?? 0,
+        order: nextOrder,
         active: active ?? true,
         createdBy: authResult.auth.userId,
       },

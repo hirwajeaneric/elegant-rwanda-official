@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, ChevronUp, ChevronDown } from "lucide-react";
 import { useCategories } from "@/lib/hooks/use-categories";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +41,16 @@ export default function FAQsPage() {
     [availableCategories]
   );
 
+  // Flatten category to a string for DataTable filtering (it compares by string; FAQ has category as object)
+  const faqsForTable = useMemo(
+    () =>
+      faqs.map((faq) => ({
+        ...faq,
+        categoryName: faq.category?.name ?? "Uncategorized",
+      })),
+    [faqs]
+  );
+
   const loadFAQs = useCallback(async () => {
     setLoading(true);
     try {
@@ -65,18 +75,78 @@ export default function FAQsPage() {
     loadFAQs();
   }, [loadFAQs]);
 
+  const [reorderingId, setReorderingId] = useState<string | null>(null);
+  const minOrder = faqs.length ? Math.min(...faqs.map((f) => f.order)) : 0;
+  const maxOrder = faqs.length ? Math.max(...faqs.map((f) => f.order)) : 0;
+
+  const handleReorder = useCallback(
+    async (id: string, direction: "up" | "down") => {
+      setReorderingId(id);
+      try {
+        const response = await fetch(`/api/faqs/${id}/reorder`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ direction }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          await loadFAQs();
+        } else {
+          toast.error(data.error || "Failed to reorder");
+        }
+      } catch {
+        toast.error("Failed to reorder FAQ");
+      } finally {
+        setReorderingId(null);
+      }
+    },
+    [loadFAQs]
+  );
+
   const columns = [
+    {
+      key: "order",
+      label: "Order",
+      sortable: false,
+      render: (item: FAQ) => (
+        <div className="flex items-center gap-1">
+          <span className="tabular-nums w-6">{item.order}</span>
+          <div className="flex flex-col">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              disabled={item.order <= minOrder || reorderingId === item.id}
+              onClick={() => handleReorder(item.id, "up")}
+              title="Move up"
+            >
+              <ChevronUp className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              disabled={item.order >= maxOrder || reorderingId === item.id}
+              onClick={() => handleReorder(item.id, "down")}
+              title="Move down"
+            >
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      ),
+    },
     {
       key: "question",
       label: "Question",
       sortable: true,
     },
     {
-      key: "category",
+      key: "categoryName",
       label: "Category",
       sortable: true,
-      render: (item: FAQ) => (
-        <Badge variant="outline">{item.category?.name || "Uncategorized"}</Badge>
+      render: (item: FAQ & { categoryName?: string }) => (
+        <Badge variant="outline">{item.categoryName ?? item.category?.name ?? "Uncategorized"}</Badge>
       ),
     },
     {
@@ -132,12 +202,12 @@ export default function FAQsPage() {
       </div>
 
       <DataTable
-        data={faqs}
+        data={faqsForTable}
         columns={columns}
         searchPlaceholder="Search FAQs..."
         filterOptions={[
           {
-            key: "category",
+            key: "categoryName",
             label: "Category",
             options: categoryFilterOptions,
           },

@@ -29,8 +29,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
+import { useSearchParamsStore } from "@/lib/stores/search-params-store";
 
 type ViewMode = "table" | "grid";
+
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
 interface CloudinaryImage {
   id: string;
@@ -72,6 +75,8 @@ export default function GalleryPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("table");
+  const [pageSize, setPageSize] = useState(10);
+  const { setParam } = useSearchParamsStore();
   const [uploading, setUploading] = useState(false);
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [uploadFormData, setUploadFormData] = useState({
@@ -81,12 +86,20 @@ export default function GalleryPage() {
     featured: false,
     active: true,
   });
+  const [updating, setUpdating] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    title: "",
+    category: "",
+    description: "",
+    featured: false,
+    active: true,
+  });
 
-  // Load images from API
+  // Load images from API (higher limit so client-side search/filter/sort have enough data)
   const loadImages = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/images?active=true");
+      const response = await fetch("/api/images?active=true&limit=500");
       const data = await response.json();
       if (data.success) {
         setImages(data.images || []);
@@ -215,6 +228,13 @@ export default function GalleryPage() {
     const cloudinaryImage = images.find((img) => img.id === image.id);
     if (cloudinaryImage) {
       setSelectedImage(cloudinaryImage);
+      setEditFormData({
+        title: cloudinaryImage.title ?? "",
+        category: cloudinaryImage.category ?? "",
+        description: cloudinaryImage.description ?? "",
+        featured: cloudinaryImage.featured ?? false,
+        active: cloudinaryImage.active ?? true,
+      });
       setIsEditDialogOpen(true);
     }
   };
@@ -222,19 +242,20 @@ export default function GalleryPage() {
   const handleUpdate = async () => {
     if (!selectedImage) return;
 
+    setUpdating(true);
     try {
-      const formData = {
-        title: (document.getElementById("edit-title") as HTMLInputElement)?.value || null,
-        category: (document.getElementById("edit-category") as HTMLSelectElement)?.value || null,
-        description: (document.getElementById("edit-description") as HTMLTextAreaElement)?.value || null,
-        featured: (document.getElementById("edit-featured") as HTMLInputElement)?.checked || false,
-        active: (document.getElementById("edit-active") as HTMLInputElement)?.checked ?? true,
+      const payload = {
+        title: editFormData.title || null,
+        category: editFormData.category || null,
+        description: editFormData.description || null,
+        featured: editFormData.featured,
+        active: editFormData.active,
       };
 
       const response = await fetch(`/api/images/${selectedImage.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
@@ -252,6 +273,8 @@ export default function GalleryPage() {
     } catch (error) {
       toast.error("Failed to update image");
       console.error("Update error:", error);
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -330,6 +353,24 @@ export default function GalleryPage() {
               Grid
             </Button>
           </div>
+          <Select
+            value={String(pageSize)}
+            onValueChange={(value) => {
+              setPageSize(Number(value));
+              setParam("page", "1");
+            }}
+          >
+            <SelectTrigger className="w-[110px] h-9">
+              <SelectValue placeholder="Per page" />
+            </SelectTrigger>
+            <SelectContent>
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <SelectItem key={size} value={String(size)}>
+                  {size} per page
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
             <DialogTrigger asChild>
               <Button>
@@ -494,6 +535,7 @@ export default function GalleryPage() {
           onEdit={handleEdit}
           onDelete={handleDelete}
           availableCategories={availableCategories}
+          pageSize={pageSize}
         />
       ) : (
         <GalleryGridView
@@ -502,18 +544,19 @@ export default function GalleryPage() {
           onEdit={handleEdit}
           onDelete={handleDelete}
           availableCategories={availableCategories}
+          pageSize={pageSize}
         />
       )}
 
       {/* View Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-7xl">
           <DialogHeader>
             <DialogTitle>{selectedImage?.title || "Untitled"}</DialogTitle>
             <DialogDescription>{selectedImage?.category || "Uncategorized"}</DialogDescription>
           </DialogHeader>
           {selectedImage && (
-            <div className="space-y-4">
+            <div>
               <div className="relative h-96 w-full rounded-lg overflow-hidden">
                 <Image
                   src={selectedImage.url}
@@ -557,17 +600,18 @@ export default function GalleryPage() {
               <div className="space-y-2">
                 <Label>Title</Label>
                 <Input
-                  id="edit-title"
-                  defaultValue={selectedImage.title || ""}
+                  value={editFormData.title}
+                  onChange={(e) => setEditFormData((prev) => ({ ...prev, title: e.target.value }))}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Category</Label>
                 <Select
-                  defaultValue={selectedImage.category || ""}
+                  value={editFormData.category || ""}
+                  onValueChange={(value) => setEditFormData((prev) => ({ ...prev, category: value }))}
                 >
-                  <SelectTrigger id="edit-category">
-                    <SelectValue />
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
                     {availableCategories.map((cat) => (
@@ -581,26 +625,36 @@ export default function GalleryPage() {
               <div className="space-y-2">
                 <Label>Description</Label>
                 <Textarea
-                  id="edit-description"
-                  defaultValue={selectedImage.description || ""}
+                  value={editFormData.description}
+                  onChange={(e) => setEditFormData((prev) => ({ ...prev, description: e.target.value }))}
+                  rows={4}
                 />
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="edit-featured"
-                  defaultChecked={selectedImage.featured}
+                  checked={editFormData.featured}
+                  onCheckedChange={(checked) => setEditFormData((prev) => ({ ...prev, featured: checked === true }))}
                 />
                 <Label htmlFor="edit-featured">Featured</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="edit-active"
-                  defaultChecked={selectedImage.active}
+                  checked={editFormData.active}
+                  onCheckedChange={(checked) => setEditFormData((prev) => ({ ...prev, active: checked === true }))}
                 />
                 <Label htmlFor="edit-active">Active</Label>
               </div>
-              <Button className="w-full" onClick={handleUpdate}>
-                Save Changes
+              <Button className="w-full" onClick={handleUpdate} disabled={updating}>
+                {updating ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
               </Button>
             </div>
           )}

@@ -320,7 +320,7 @@ export function BlogPostForm({
                       }
                     }}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select author" />
                     </SelectTrigger>
                     <SelectContent>
@@ -363,7 +363,7 @@ export function BlogPostForm({
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue />
+                  <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="PUBLISHED">Published</SelectItem>
@@ -378,6 +378,7 @@ export function BlogPostForm({
                 id="publishDate"
                 type="date"
                 value={formData.publishDate || ""}
+                className="w-full"
                 onChange={(e) => setFormData({ ...formData, publishDate: e.target.value || null })}
               />
             </div>
@@ -391,7 +392,7 @@ export function BlogPostForm({
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue />
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
                   {availableCategories.map((cat) => (

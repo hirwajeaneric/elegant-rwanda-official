@@ -53,37 +53,50 @@ export function DataTable<T extends Record<string, any>>({
   dateFilterKey,
 }: DataTableProps<T>) {
   const { getParam, setParam } = useSearchParamsStore();
-  const [localSearch, setLocalSearch] = useState(getParam(searchKey));
-
-  const search = getParam(searchKey);
+  const [localSearch, setLocalSearch] = useState(() => getParam(searchKey));
+  const [filterValues, setFilterValues] = useState<Record<string, string>>(() => {
+    const obj: Record<string, string> = {};
+    filterOptions.forEach((f) => {
+      obj[f.key] = getParam(f.key) || "";
+    });
+    return obj;
+  });
+  const search = localSearch;
   const page = parseInt(getParam("page") || "1");
-  const sortBy = getParam("sortBy");
-  const sortOrder = getParam("sortOrder") as "asc" | "desc" | "";
+  const [sortState, setSortState] = useState(() => ({
+    sortBy: getParam("sortBy"),
+    sortOrder: getParam("sortOrder") as "asc" | "desc" | "",
+  }));
+  const sortBy = sortState.sortBy;
+  const sortOrder = sortState.sortOrder;
   const dateFrom = getParam("dateFrom");
   const dateTo = getParam("dateTo");
 
-  // Filter data
+  // Filter data (use local state so search and filters apply immediately)
   const filteredData = useMemo(() => {
     let result = [...data];
 
     // Search filter
     if (search) {
+      const q = search.toLowerCase();
       result = result.filter((item) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Object.values(item as Record<string, any>).some((value) =>
-          String(value).toLowerCase().includes(search.toLowerCase())
-        )
+        Object.values(item as Record<string, any>).some((value) => {
+          if (value == null) return false;
+          if (typeof value === "object" || Array.isArray(value)) return false;
+          return String(value).toLowerCase().includes(q);
+        })
       );
     }
 
-    // Filter options
+    // Filter options (category, etc.) – use local filterValues for immediate effect
     filterOptions.forEach((filter) => {
-      const filterValue = getParam(filter.key);
+      const filterValue = filterValues[filter.key];
       if (filterValue && filterValue !== "all") {
         result = result.filter((item) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const itemValue = (item as Record<string, any>)[filter.key];
-          return String(itemValue) === filterValue;
+          return itemValue != null && String(itemValue) === filterValue;
         });
       }
     });
@@ -99,21 +112,32 @@ export function DataTable<T extends Record<string, any>>({
       });
     }
 
-    // Sort
+    // Sort (handles string, number, boolean, date)
     if (sortBy && sortOrder) {
       result.sort((a, b) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const aVal = (a as Record<string, any>)[sortBy];
+        let aVal = (a as Record<string, any>)[sortBy];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const bVal = (b as Record<string, any>)[sortBy];
-        if (aVal < bVal) return sortOrder === "asc" ? -1 : 1;
-        if (aVal > bVal) return sortOrder === "asc" ? 1 : -1;
+        let bVal = (b as Record<string, any>)[sortBy];
+        const asc = sortOrder === "asc";
+        if (aVal == null && bVal == null) return 0;
+        if (aVal == null) return asc ? 1 : -1;
+        if (bVal == null) return asc ? -1 : 1;
+        if (typeof aVal === "boolean" && typeof bVal === "boolean") {
+          aVal = aVal ? 1 : 0;
+          bVal = bVal ? 1 : 0;
+        } else if (typeof aVal === "string" && typeof bVal === "string" && /^\d{4}-\d{2}-\d{2}/.test(aVal) && /^\d{4}-\d{2}-\d{2}/.test(bVal)) {
+          aVal = new Date(aVal).getTime();
+          bVal = new Date(bVal).getTime();
+        }
+        if (aVal < bVal) return asc ? -1 : 1;
+        if (aVal > bVal) return asc ? 1 : -1;
         return 0;
       });
     }
 
     return result;
-  }, [data, search, sortBy, sortOrder, dateFrom, dateTo, filterOptions, dateFilterKey, getParam]);
+  }, [data, search, sortBy, sortOrder, dateFrom, dateTo, filterOptions, filterValues, dateFilterKey]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / pageSize);
@@ -123,14 +147,18 @@ export function DataTable<T extends Record<string, any>>({
   const handleSort = (key: string) => {
     if (sortBy === key) {
       if (sortOrder === "asc") {
+        setSortState({ sortBy: key, sortOrder: "desc" });
         setParam("sortOrder", "desc");
       } else if (sortOrder === "desc") {
+        setSortState({ sortBy: "", sortOrder: "" });
         setParam("sortBy", "");
         setParam("sortOrder", "");
       } else {
+        setSortState({ sortBy: key, sortOrder: "asc" });
         setParam("sortOrder", "asc");
       }
     } else {
+      setSortState({ sortBy: key, sortOrder: "asc" });
       setParam("sortBy", key);
       setParam("sortOrder", "asc");
     }
@@ -162,13 +190,11 @@ export function DataTable<T extends Record<string, any>>({
         {filterOptions.map((filter) => (
           <Select
             key={filter.key}
-            value={getParam(filter.key) || "all"}
+            value={filterValues[filter.key] || "all"}
             onValueChange={(value) => {
-              if (value === "all") {
-                setParam(filter.key, "");
-              } else {
-                setParam(filter.key, value);
-              }
+              const next = value === "all" ? "" : value;
+              setFilterValues((prev) => ({ ...prev, [filter.key]: next }));
+              setParam(filter.key, next);
               setParam("page", "1");
             }}
           >
