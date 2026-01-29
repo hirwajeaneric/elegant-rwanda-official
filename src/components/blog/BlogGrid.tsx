@@ -1,58 +1,142 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
-import { getAllPosts, getPostsByCategory, type BlogPost } from "@/data/blog";
+import { Calendar, Clock, ArrowRight, Loader2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  author: string;
+  authorImage: string | null;
+  publishDate: string | null;
+  readTime: string;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  tags: string[];
+  featuredImage: string | null;
+  featured: boolean;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 export function BlogGrid() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const postsPerPage = 6;
 
-  const allPosts = getAllPosts();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [blogsRes, categoriesRes] = await Promise.all([
+          fetch("/api/public/blogs?limit=100"),
+          fetch("/api/public/categories?type=BLOG&active=true"),
+        ]);
+
+        const blogsData = await blogsRes.json();
+        const categoriesData = await categoriesRes.json();
+
+        if (blogsData.success) {
+          setPosts(blogsData.blogs || []);
+        }
+        if (categoriesData.success) {
+          setCategories(categoriesData.categories || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch blog data:", err);
+        setError("Failed to load blog posts. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const filteredPosts = selectedCategory === "all" 
-    ? allPosts 
-    : getPostsByCategory(selectedCategory as BlogPost['category']);
+    ? posts 
+    : posts.filter(post => post.category?.id === selectedCategory);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
   const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
 
-  const categories = [
-    { id: "all", name: "All Posts", count: allPosts.length },
-    { id: "Tours", name: "Tours", count: getPostsByCategory("Tours").length },
-    { id: "Tips", name: "Travel Tips", count: getPostsByCategory("Tips").length },
-    { id: "Culture", name: "Culture", count: getPostsByCategory("Culture").length },
-    { id: "Wildlife", name: "Wildlife", count: getPostsByCategory("Wildlife").length },
-    { id: "Unique", name: "Unique", count: getPostsByCategory("Unique").length },
+  const categoryCounts = categories.map(cat => ({
+    id: cat.id,
+    name: cat.name,
+    count: posts.filter(p => p.category?.id === cat.id).length,
+  }));
+
+  const allCategories = [
+    { id: "all", name: "All Posts", count: posts.length },
+    ...categoryCounts,
   ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">{error}</p>
+      </div>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">No blog posts available yet. Check back soon!</p>
+      </div>
+    );
+  }
 
   return (
     <div>
       {/* Category Filter */}
-      <div className="mb-8">
-        <div className="flex flex-wrap gap-3">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => {
-                setSelectedCategory(category.id);
-                setCurrentPage(1);
-              }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                selectedCategory === category.id
-                  ? "bg-primary text-white shadow-lg"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
-            >
-              {category.name} ({category.count})
-            </button>
-          ))}
+      {allCategories.length > 1 && (
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-3">
+            {allCategories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => {
+                  setSelectedCategory(category.id);
+                  setCurrentPage(1);
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  selectedCategory === category.id
+                    ? "bg-primary text-white shadow-lg"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                {category.name} ({category.count})
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Blog Posts Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -63,34 +147,46 @@ export function BlogGrid() {
           >
             {/* Featured Image */}
             <div className="relative h-48 overflow-hidden">
-              <div
-                className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
-                style={{
-                  backgroundImage: `url('/${post.featuredImage}')`
-                }}
-              />
+              {post.featuredImage ? (
+                <div
+                  className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
+                  style={{
+                    backgroundImage: `url('${post.featuredImage}')`
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  <span className="text-muted-foreground">No image</span>
+                </div>
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               
               {/* Category Badge */}
-              <div className="absolute top-4 left-4">
-                <Badge variant="secondary" className="bg-white/90 text-foreground">
-                  {post.category}
-                </Badge>
-              </div>
+              {post.category && (
+                <div className="absolute top-4 left-4">
+                  <Badge variant="secondary" className="bg-white/90 text-foreground">
+                    {post.category.name}
+                  </Badge>
+                </div>
+              )}
             </div>
 
             {/* Content */}
             <div className="p-6">
               {/* Meta Information */}
               <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-4">
-                <div className="flex items-center space-x-1">
-                  <Calendar className="h-4 w-4" />
-                  <span>{formatDate(post.publishDate)}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Clock className="h-4 w-4" />
-                  <span>{post.readTime}</span>
-                </div>
+                {post.publishDate && (
+                  <div className="flex items-center space-x-1">
+                    <Calendar className="h-4 w-4" />
+                    <span>{formatDate(post.publishDate)}</span>
+                  </div>
+                )}
+                {post.readTime && (
+                  <div className="flex items-center space-x-1">
+                    <Clock className="h-4 w-4" />
+                    <span>{post.readTime}</span>
+                  </div>
+                )}
               </div>
 
               {/* Title */}

@@ -1,18 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
-import { getRecentPosts } from "@/data/blog";
+import { ArrowRight, Calendar, Clock, Loader2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { subscribeToNewsletter } from "@/lib/client-submit";
 import { toast } from "sonner";
 
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  publishDate: string | null;
+  readTime: string;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  tags: string[];
+  featuredImage: string | null;
+}
+
 export function LatestBlogPosts() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const recentPosts = getRecentPosts(3);
+  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/public/blogs?limit=3&featured=false");
+        const data = await response.json();
+        if (data.success) {
+          setRecentPosts(data.blogs || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch recent posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="section-padding bg-gradient-to-br from-muted/30 to-muted/50">
+        <div className="container-elegant">
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (recentPosts.length === 0) return null;
 
@@ -64,34 +111,46 @@ export function LatestBlogPosts() {
             >
               {/* Featured Image */}
               <div className="relative h-48 overflow-hidden">
-                <div
-                  className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
-                  style={{
-                    backgroundImage: `url(${post.featuredImage})`,
-                  }}
-                />
+                {post.featuredImage ? (
+                  <div
+                    className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
+                    style={{
+                      backgroundImage: `url('${post.featuredImage}')`,
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <span className="text-muted-foreground">No image</span>
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
                 {/* Category Badge */}
-                <div className="absolute top-4 left-4">
-                  <Badge className="bg-primary/90 hover:bg-primary text-white">
-                    {post.category}
-                  </Badge>
-                </div>
+                {post.category && (
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-primary/90 hover:bg-primary text-white">
+                      {post.category.name}
+                    </Badge>
+                  </div>
+                )}
               </div>
 
               {/* Content */}
               <div className="p-6 w-full">
                 {/* Meta Information */}
                 <div className="flex items-center w-full space-x-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="h-4 w-4" />
-                    <span>{formatDate(post.publishDate)}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{post.readTime}</span>
-                  </div>
+                  {post.publishDate && (
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="h-4 w-4" />
+                      <span>{formatDate(post.publishDate)}</span>
+                    </div>
+                  )}
+                  {post.readTime && (
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-4 w-4" />
+                      <span>{post.readTime}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Title */}
@@ -105,16 +164,18 @@ export function LatestBlogPosts() {
                 </p>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {post.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 bg-muted text-xs text-muted-foreground rounded-md"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {post.tags && post.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {post.tags.slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-muted text-xs text-muted-foreground rounded-md"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 {/* Read More Link */}
                 <Link

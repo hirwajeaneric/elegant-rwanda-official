@@ -1,12 +1,24 @@
 "use client";
 
-import type { BlogPost } from "@/data/blog";
+import { sanitizeHtml } from "@/lib/html-sanitizer";
 
 interface BlogPostContentProps {
-  post: BlogPost;
+  post: {
+    content: string;
+  };
 }
 
 export function BlogPostContent({ post }: BlogPostContentProps) {
+  if (!post.content) {
+    return (
+      <article className="bg-white">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-muted-foreground">No content available for this post.</p>
+        </div>
+      </article>
+    );
+  }
+
   return (
     <article className="bg-white">
       {/* Article Content */}
@@ -16,7 +28,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
           <div className="prose prose-lg max-w-none">
             <div 
               className="blog-content-wrapper"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
             />
           </div>
         </div>

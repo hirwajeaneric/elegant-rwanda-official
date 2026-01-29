@@ -1,18 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Calendar } from "lucide-react";
-import { getRecentPosts } from "@/data/blog";
+import { Search, Calendar, Loader2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { subscribeToNewsletter } from "@/lib/client-submit";
 import { toast } from "sonner";
+
+interface RecentPost {
+  id: string;
+  slug: string;
+  title: string;
+  featuredImage: string | null;
+  publishDate: string | null;
+}
 
 export function BlogSidebar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const recentPosts = getRecentPosts(5);
+  const [recentPosts, setRecentPosts] = useState<RecentPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/public/blogs?limit=5");
+        const data = await response.json();
+        if (data.success) {
+          setRecentPosts(data.blogs || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch recent posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentPosts();
+  }, []);
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,33 +85,47 @@ export function BlogSidebar() {
       {/* Recent Posts */}
       <div className="bg-muted/80 rounded-xl p-6">
         <h3 className="text-lg font-display font-semibold mb-4">Recent Posts</h3>
-        <div className="space-y-4">
-          {recentPosts.map((post) => (
-            <article key={post.id} className="group">
-              <Link href={`/blog/${post.slug}`} className="block">
-                <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-full overflow-hidden">
-                    <div
-                      className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-300"
-                      style={{
-                        backgroundImage: `url('/${post.featuredImage}')`
-                      }}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                      {post.title}
-                    </h4>
-                    <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-1">
-                      <Calendar className="h-3 w-3" />
-                      <span>{formatDate(post.publishDate)}</span>
+        {loading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : recentPosts.length > 0 ? (
+          <div className="space-y-4">
+            {recentPosts.map((post) => (
+              <article key={post.id} className="group">
+                <Link href={`/blog/${post.slug}`} className="block">
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-16 h-16 rounded-full overflow-hidden">
+                      {post.featuredImage ? (
+                        <div
+                          className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-300"
+                          style={{
+                            backgroundImage: `url('${post.featuredImage}')`
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-muted" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {post.title}
+                      </h4>
+                      {post.publishDate && (
+                        <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>{formatDate(post.publishDate)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              </Link>
-            </article>
-          ))}
-        </div>
+                </Link>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">No recent posts available.</p>
+        )}
       </div>
 
       {/* Newsletter Signup */}

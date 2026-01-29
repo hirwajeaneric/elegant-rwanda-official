@@ -1,15 +1,50 @@
 "use client";
 
-
+import { useState, useEffect } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { team } from "@/data/team";
+import { Plus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  image: string | null;
+  status: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+}
 
 export default function TeamPage() {
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadTeam();
+  }, []);
+
+  const loadTeam = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/team");
+      const data = await response.json();
+      if (data.success) {
+        setTeam(data.teams || []);
+      } else {
+        toast.error("Failed to load team members");
+      }
+    } catch (error) {
+      console.error("Failed to load team:", error);
+      toast.error("Failed to load team members");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const columns = [
     {
       key: "name",
@@ -22,29 +57,19 @@ export default function TeamPage() {
       sortable: true,
     },
     {
-      key: "department",
-      label: "Department",
-      sortable: true,
-    },
-    {
       key: "status",
       label: "Status",
       sortable: true,
-      render: (item: typeof team[0]) => (
-        <Badge variant={item.status === "active" ? "default" : "secondary"}>
+      render: (item: TeamMember) => (
+        <Badge variant={item.status === "ACTIVE" ? "default" : "secondary"}>
           {item.status}
         </Badge>
       ),
     },
     {
-      key: "location",
-      label: "Location",
-      sortable: true,
-    },
-    {
       key: "actions",
       label: "Actions",
-      render: (item: typeof team[0]) => (
+      render: (item: TeamMember) => (
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/team/${item.id}`}>Edit</Link>
@@ -53,6 +78,17 @@ export default function TeamPage() {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -72,30 +108,33 @@ export default function TeamPage() {
         </Button>
       </div>
 
-      <DataTable
-        data={team}
-        columns={columns}
-        searchPlaceholder="Search team members..."
-        filterOptions={[
-          {
-            key: "status",
-            label: "Status",
-            options: [
-              { value: "active", label: "Active" },
-              { value: "inactive", label: "Inactive" },
-            ],
-          },
-          {
-            key: "department",
-            label: "Department",
-            options: [
-              { value: "Management", label: "Management" },
-              { value: "Operations", label: "Operations" },
-              { value: "Customer Service", label: "Customer Service" },
-            ],
-          },
-        ]}
-      />
+      {team.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground mb-4">No team members found.</p>
+          <Button asChild>
+            <Link href="/admin/team/new">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Your First Team Member
+            </Link>
+          </Button>
+        </div>
+      ) : (
+        <DataTable
+          data={team}
+          columns={columns}
+          searchPlaceholder="Search team members..."
+          filterOptions={[
+            {
+              key: "status",
+              label: "Status",
+              options: [
+                { value: "ACTIVE", label: "Active" },
+                { value: "INACTIVE", label: "Inactive" },
+              ],
+            },
+          ]}
+        />
+      )}
     </div>
   );
 }

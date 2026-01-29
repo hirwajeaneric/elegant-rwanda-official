@@ -1,8 +1,16 @@
 import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
-import { team } from "@/data/team";
+import Image from "next/image";
 
 export const dynamic = 'force-dynamic';
+
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  image: string | null;
+}
 
 export const metadata: Metadata = {
   title: "About Elegant Travel and Tours: Premier Unique Travel Experts in Rwanda",
@@ -16,7 +24,27 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function AboutPage() {
+async function getTeamMembers(): Promise<TeamMember[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const response = await fetch(`${baseUrl}/api/public/team`, {
+      cache: "no-store",
+    });
+    
+    if (!response.ok) {
+      return [];
+    }
+    
+    const data = await response.json();
+    return data.success ? data.teams : [];
+  } catch (error) {
+    console.error("Failed to fetch team members:", error);
+    return [];
+  }
+}
+
+export default async function AboutPage() {
+  const team = await getTeamMembers();
   return (
     <PageWrapper>
       <div className="container-elegant py-16">
@@ -96,20 +124,37 @@ export default function AboutPage() {
             Meet the passionate professionals who make every journey extraordinary. Our team combines 
             local expertise with international standards to deliver exceptional travel experiences.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member) => (
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-border" key={member.id}>
-              <div className="w-20 h-20 bg-accent rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-2xl">
-                {member.name.charAt(0)}
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
-              <p className="text-primary font-medium mb-2">{member.role}</p>
-              <p className="text-muted-foreground text-sm">
-                {member.bio}
-              </p>
-              </div>
-            ))}
-          </div>
+          {team.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Our team members will be displayed here soon.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {team.map((member) => (
+                <div className="bg-white rounded-xl p-6 shadow-lg border border-border" key={member.id}>
+                  {member.image ? (
+                    <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden relative">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-20 h-20 bg-accent rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-2xl">
+                      {member.name.charAt(0)}
+                    </div>
+                  )}
+                  <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
+                  <p className="text-primary font-medium mb-2">{member.role}</p>
+                  <p className="text-muted-foreground text-sm">
+                    {member.bio}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </PageWrapper>

@@ -10,48 +10,110 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { team, TeamMember } from "@/data/team";
-import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Edit, Save, X, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
 import Image from "next/image";
+import { toast } from "sonner";
 
-function getTeamMemberById(id: string) {
-  return team.find((member) => member.id === id);
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  image: string | null;
+  status: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function TeamMemberDetailPage() {
   const params = useParams();
   const id = params.id as string;
-  const member = getTeamMemberById(id);
-
+  const [member, setMember] = useState<TeamMember | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<Partial<TeamMember>>({
+  const [formData, setFormData] = useState({
     name: "",
     role: "",
     bio: "",
     image: "",
-    experience: "",
-    specialties: [],
-    email: "",
-    linkedin: "",
-    phone: "",
-    department: "Operations",
-    location: "",
-    hireDate: "",
-    status: "active",
-    languages: [],
+    status: "ACTIVE" as "ACTIVE" | "INACTIVE",
   });
-  const [newSpecialty, setNewSpecialty] = useState("");
-  const [newLanguage, setNewLanguage] = useState("");
 
   useEffect(() => {
-    if (member) {
-      setFormData({
-        ...member,
-      });
+    loadTeamMember();
+  }, [id]);
+
+  const loadTeamMember = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/team/${id}`);
+      const data = await response.json();
+      if (data.success) {
+        setMember(data.team);
+        setFormData({
+          name: data.team.name,
+          role: data.team.role,
+          bio: data.team.bio,
+          image: data.team.image || "",
+          status: data.team.status,
+        });
+      } else {
+        toast.error("Failed to load team member");
+      }
+    } catch (error) {
+      console.error("Failed to load team member:", error);
+      toast.error("Failed to load team member");
+    } finally {
+      setLoading(false);
     }
-  }, [member]);
+  };
+
+  const handleSave = async () => {
+    if (!formData.name || !formData.role || !formData.bio) {
+      toast.error("Name, role, and bio are required");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/team/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Team member updated successfully");
+        setIsEditing(false);
+        loadTeamMember();
+      } else {
+        toast.error("Failed to update team member", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to update team member");
+      console.error("Update team error:", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   if (!member) {
     return (
@@ -72,30 +134,6 @@ export default function TeamMemberDetailPage() {
     );
   }
 
-  const handleSave = () => {
-    console.log("Saving team member:", formData);
-    setIsEditing(false);
-    alert("Team member saved successfully!");
-  };
-
-  const handleAddArrayItem = (field: "specialties" | "languages", value: string) => {
-    if (value.trim()) {
-      setFormData({
-        ...formData,
-        [field]: [...(formData[field] || []), value.trim()],
-      });
-      if (field === "specialties") setNewSpecialty("");
-      if (field === "languages") setNewLanguage("");
-    }
-  };
-
-  const handleRemoveArrayItem = (field: "specialties" | "languages", index: number) => {
-    setFormData({
-      ...formData,
-      [field]: (formData[field] || []).filter((_, i) => i !== index),
-    });
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -103,7 +141,7 @@ export default function TeamMemberDetailPage() {
           <DashboardBreadcrumbs />
           <div className="flex items-center gap-4 mt-4">
             <h1 className="text-3xl font-bold">{member.name}</h1>
-            <Badge variant={member.status === "active" ? "default" : "secondary"}>
+            <Badge variant={member.status === "ACTIVE" ? "default" : "secondary"}>
               {member.status}
             </Badge>
             <Badge variant="outline">{member.role}</Badge>
@@ -129,85 +167,72 @@ export default function TeamMemberDetailPage() {
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button onClick={handleSave}>
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </>
+                )}
               </Button>
             </>
           )}
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Basic Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
-            <CardDescription>Team member details</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              {isEditing ? (
-                <Input
-                  id="name"
-                  value={formData.name || ""}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{member.name}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              {isEditing ? (
-                <Input
-                  id="role"
-                  value={formData.role || ""}
-                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{member.role}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
-              {isEditing ? (
-                <Textarea
-                  id="bio"
-                  value={formData.bio || ""}
-                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                  rows={4}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{member.bio}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="experience">Experience</Label>
-              {isEditing ? (
-                <Input
-                  id="experience"
-                  value={formData.experience || ""}
-                  onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{member.experience}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="image">Profile Image</Label>
-              {isEditing ? (
+      {isEditing ? (
+        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Basic Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Basic Information</CardTitle>
+                <CardDescription>Team member details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div className="space-y-2">
+                  <Label htmlFor="name">Name *</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="role">Role *</Label>
+                  <Input
+                    id="role"
+                    value={formData.role}
+                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bio">Bio *</Label>
+                  <Textarea
+                    id="bio"
+                    value={formData.bio}
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                    rows={6}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Profile Image</Label>
                   <AssetSelector
-                    value={formData.image || ""}
+                    value={formData.image}
                     onSelect={(image) => {
                       const imageValue = Array.isArray(image) ? image[0] || "" : image;
-                      setFormData({ ...formData, image: imageValue, avatar: imageValue });
+                      setFormData({ ...formData, image: imageValue });
                     }}
                   />
                   {formData.image && (
@@ -216,135 +241,27 @@ export default function TeamMemberDetailPage() {
                         src={formData.image}
                         alt={formData.name || "Preview"}
                         className="w-32 h-32 object-cover rounded-full"
-                        width={100}
-                        height={100}
+                        width={128}
+                        height={128}
                       />
                     </div>
                   )}
                 </div>
-              ) : (
-                <div>
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    className="w-32 h-32 object-cover rounded-full"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
 
-        {/* Contact & Department */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact & Department</CardTitle>
-            <CardDescription>Contact information and department</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              {isEditing ? (
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email || ""}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{member.email || "Not set"}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              {isEditing ? (
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={formData.phone || ""}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{member.phone || "Not set"}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="linkedin">LinkedIn</Label>
-              {isEditing ? (
-                <Input
-                  id="linkedin"
-                  type="url"
-                  value={formData.linkedin || ""}
-                  onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{member.linkedin || "Not set"}</p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="department">Department</Label>
-                {isEditing ? (
+            {/* Status */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Status</CardTitle>
+                <CardDescription>Team member status</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
                   <Select
-                    value={formData.department || "Operations"}
-                    onValueChange={(value) => setFormData({ ...formData, department: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Management">Management</SelectItem>
-                      <SelectItem value="Operations">Operations</SelectItem>
-                      <SelectItem value="Customer Service">Customer Service</SelectItem>
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <Badge variant="outline">{member.department}</Badge>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
-                {isEditing ? (
-                  <Input
-                    id="location"
-                    value={formData.location || ""}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  />
-                ) : (
-                  <p className="text-sm text-muted-foreground">{member.location}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="hireDate">Hire Date</Label>
-                {isEditing ? (
-                  <Input
-                    id="hireDate"
-                    type="date"
-                    value={formData.hireDate || ""}
-                    onChange={(e) => setFormData({ ...formData, hireDate: e.target.value })}
-                  />
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    {new Date(member.hireDate).toLocaleDateString()}
-                  </p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
-                {isEditing ? (
-                  <Select
-                    value={formData.status || "active"}
-                    onValueChange={(value: "active" | "inactive") =>
+                    value={formData.status}
+                    onValueChange={(value: "ACTIVE" | "INACTIVE") =>
                       setFormData({ ...formData, status: value })
                     }
                   >
@@ -352,148 +269,93 @@ export default function TeamMemberDetailPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
+                      <SelectItem value="ACTIVE">Active</SelectItem>
+                      <SelectItem value="INACTIVE">Inactive</SelectItem>
                     </SelectContent>
                   </Select>
-                ) : (
-                  <Badge variant={member.status === "active" ? "default" : "secondary"}>
-                    {member.status}
-                  </Badge>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* Specialties */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Specialties</CardTitle>
-            <CardDescription>Areas of expertise</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {isEditing ? (
-              <div className="space-y-2">
-                <div className="flex gap-2">
-                  <Input
-                    value={newSpecialty}
-                    onChange={(e) => setNewSpecialty(e.target.value)}
-                    placeholder="Add a specialty"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleAddArrayItem("specialties", newSpecialty);
-                      }
-                    }}
-                  />
-                  <Button type="button" onClick={() => handleAddArrayItem("specialties", newSpecialty)} size="icon">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="space-y-1">
-                  {(formData.specialties || []).map((specialty, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
-                      <span className="text-sm">{specialty}</span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleRemoveArrayItem("specialties", index)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {member.specialties.map((specialty, index) => (
-                  <Badge key={index} variant="secondary">
-                    {specialty}
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Languages */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Languages</CardTitle>
-            <CardDescription>Languages spoken</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {isEditing ? (
-              <div className="space-y-2">
-                <div className="flex gap-2">
-                  <Input
-                    value={newLanguage}
-                    onChange={(e) => setNewLanguage(e.target.value)}
-                    placeholder="Add a language"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleAddArrayItem("languages", newLanguage);
-                      }
-                    }}
-                  />
-                  <Button type="button" onClick={() => handleAddArrayItem("languages", newLanguage)} size="icon">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="space-y-1">
-                  {(formData.languages || []).map((language, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
-                      <span className="text-sm">{language}</span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleRemoveArrayItem("languages", index)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {(member.languages || []).map((language, index) => (
-                  <Badge key={index} variant="outline">
-                    {language}
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Statistics */}
-        {member.rating && (
-          <Card className="md:col-span-2">
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" type="button" onClick={() => setIsEditing(false)}>
+              <X className="h-4 w-4 mr-2" />
+              Cancel
+            </Button>
+            <Button type="submit" disabled={saving}>
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Basic Information */}
+          <Card>
             <CardHeader>
-              <CardTitle>Statistics</CardTitle>
-              <CardDescription>Performance metrics</CardDescription>
+              <CardTitle>Basic Information</CardTitle>
+              <CardDescription>Team member details</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Rating</p>
-                  <p className="text-2xl font-bold">{member.rating}</p>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Name</Label>
+                <p className="text-sm text-muted-foreground">{member.name}</p>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Role</Label>
+                <p className="text-sm text-muted-foreground">{member.role}</p>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Bio</Label>
+                <p className="text-sm text-muted-foreground">{member.bio}</p>
+              </div>
+
+              {member.image && (
+                <div className="space-y-2">
+                  <Label>Profile Image</Label>
+                  <div>
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      className="w-32 h-32 object-cover rounded-full"
+                      width={128}
+                      height={128}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Tours Completed</p>
-                  <p className="text-2xl font-bold">{member.toursCompleted || 0}</p>
-                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Status */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Status</CardTitle>
+              <CardDescription>Team member status</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Status</Label>
+                <Badge variant={member.status === "ACTIVE" ? "default" : "secondary"}>
+                  {member.status}
+                </Badge>
               </div>
             </CardContent>
           </Card>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

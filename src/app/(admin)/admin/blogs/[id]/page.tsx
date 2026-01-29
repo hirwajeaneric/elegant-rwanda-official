@@ -1,21 +1,16 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useCategories } from "@/lib/hooks/use-categories";
-import { ArrowLeft, Edit, Save, X, Loader2 } from "lucide-react";
+import { ArrowLeft, Edit, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { AssetSelector } from "@/components/dashboard/AssetSelector";
-import Image from "next/image";
 import { toast } from "sonner";
+import { BlogPostForm, type BlogPostFormData } from "@/components/blog/BlogPostForm";
+import { sanitizeHtml } from "@/lib/html-sanitizer";
 
 interface Blog {
   id: string;
@@ -38,7 +33,7 @@ interface Blog {
   featured: boolean;
   metaTitle: string | null;
   metaDescription: string | null;
-  status: "PUBLISHED" | "DRAFT" | "SCHEDULED";
+  status: "PUBLISHED" | "DRAFT";
   views: number;
   comments: number;
 }
@@ -49,31 +44,7 @@ export default function BlogDetailPage() {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const { categories: categoryList } = useCategories({ type: ['BLOG'], active: true });
-  const availableCategories = useMemo(() => 
-    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
-    [categoryList]
-  );
-
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    excerpt: "",
-    content: "",
-    author: "",
-    authorImage: "",
-    publishDate: "",
-    readTime: "5 min",
-    categoryId: "",
-    tags: [] as string[],
-    featuredImage: "",
-    featured: false,
-    metaTitle: "",
-    metaDescription: "",
-    status: "DRAFT" as "PUBLISHED" | "DRAFT" | "SCHEDULED",
-  });
-  const [newTag, setNewTag] = useState("");
 
   useEffect(() => {
     loadBlog();
@@ -86,25 +57,7 @@ export default function BlogDetailPage() {
       const response = await fetch(`/api/blogs/${id}`);
       const data = await response.json();
       if (data.success) {
-        const blogData = data.blog;
-        setBlog(blogData);
-        setFormData({
-          title: blogData.title,
-          slug: blogData.slug,
-          excerpt: blogData.excerpt,
-          content: blogData.content,
-          author: blogData.author,
-          authorImage: blogData.authorImage || "",
-          publishDate: blogData.publishDate ? new Date(blogData.publishDate).toISOString().split("T")[0] : "",
-          readTime: blogData.readTime,
-          categoryId: blogData.categoryId || "",
-          tags: blogData.tags || [],
-          featuredImage: blogData.featuredImage || "",
-          featured: blogData.featured,
-          metaTitle: blogData.metaTitle || "",
-          metaDescription: blogData.metaDescription || "",
-          status: blogData.status,
-        });
+        setBlog(data.blog);
       } else {
         toast.error("Failed to load blog post", {
           description: data.error || "Unknown error",
@@ -118,21 +71,13 @@ export default function BlogDetailPage() {
     }
   };
 
-  const handleSave = async () => {
-    if (!formData.title || !formData.slug || !formData.excerpt || !formData.content) {
-      toast.error("Title, slug, excerpt, and content are required");
-      return;
-    }
-
+  const handleSave = async (formData: BlogPostFormData) => {
     setSaving(true);
     try {
       const response = await fetch(`/api/blogs/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          publishDate: formData.publishDate || null,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -152,30 +97,6 @@ export default function BlogDetailPage() {
     } finally {
       setSaving(false);
     }
-  };
-
-  const handleAddTag = () => {
-    if (newTag.trim()) {
-      setFormData({
-        ...formData,
-        tags: [...formData.tags, newTag.trim()],
-      });
-      setNewTag("");
-    }
-  };
-
-  const handleRemoveTag = (index: number) => {
-    setFormData({
-      ...formData,
-      tags: formData.tags.filter((_, i) => i !== index),
-    });
-  };
-
-  const generateSlug = (name: string) => {
-    return name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
   };
 
   if (loading) {
@@ -235,174 +156,46 @@ export default function BlogDetailPage() {
                 Edit
               </Button>
             </>
-          ) : (
-            <>
-              <Button variant="outline" onClick={() => setIsEditing(false)}>
-                <X className="h-4 w-4 mr-2" />
-                Cancel
-              </Button>
-              <Button onClick={handleSave} disabled={saving}>
-                {saving ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4 mr-2" />
-                    Save Changes
-                  </>
-                )}
-              </Button>
-            </>
-          )}
+          ) : null}
         </div>
       </div>
 
-      {/* Rest of the form - keeping existing structure but updating fields */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => {
-                  const title = e.target.value;
-                  setFormData({
-                    ...formData,
-                    title,
-                    slug: isEditing ? generateSlug(title) : formData.slug,
-                  });
-                }}
-                disabled={!isEditing}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="slug">Slug *</Label>
-              <Input
-                id="slug"
-                value={formData.slug}
-                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                disabled={!isEditing}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="excerpt">Excerpt *</Label>
-              <Textarea
-                id="excerpt"
-                value={formData.excerpt}
-                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                disabled={!isEditing}
-                rows={3}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="content">Content *</Label>
-              <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                disabled={!isEditing}
-                rows={10}
-                required
-              />
-            </div>
-          </CardContent>
-        </Card>
-
+      {isEditing ? (
+        <BlogPostForm
+          initialData={{
+            title: blog.title,
+            slug: blog.slug,
+            excerpt: blog.excerpt,
+            content: blog.content,
+            author: blog.author,
+            authorImage: blog.authorImage || "",
+            publishDate: blog.publishDate ? new Date(blog.publishDate).toISOString().split("T")[0] : "",
+            readTime: blog.readTime,
+            categoryId: blog.categoryId || "",
+            tags: blog.tags || [],
+            featuredImage: blog.featuredImage || "",
+            featured: blog.featured,
+            metaTitle: blog.metaTitle || "",
+            metaDescription: blog.metaDescription || "",
+            status: blog.status,
+          }}
+          onSubmit={handleSave}
+          isLoading={saving}
+          isEditing={true}
+          onCancel={() => setIsEditing(false)}
+        />
+      ) : (
         <Card>
-          <CardHeader>
-            <CardTitle>Category & Status</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <Select
-                value={formData.categoryId}
-                onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
-                disabled={!isEditing}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableCategories.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(value: "PUBLISHED" | "DRAFT" | "SCHEDULED") =>
-                  setFormData({ ...formData, status: value })
-                }
-                disabled={!isEditing}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="PUBLISHED">Published</SelectItem>
-                  <SelectItem value="DRAFT">Draft</SelectItem>
-                  <SelectItem value="SCHEDULED">Scheduled</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="publishDate">Publish Date</Label>
-              <Input
-                id="publishDate"
-                type="date"
-                value={formData.publishDate}
-                onChange={(e) => setFormData({ ...formData, publishDate: e.target.value })}
-                disabled={!isEditing}
+          <CardContent className="pt-6">
+            <div className="prose max-w-none">
+              <div 
+                className="p-4 border rounded-md min-h-[200px]"
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(blog.content) }}
               />
             </div>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Featured Image</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {isEditing && (
-              <AssetSelector
-                value={formData.featuredImage}
-                onSelect={(image) => {
-                  const imageValue = Array.isArray(image) ? image[0] || "" : image;
-                  setFormData({ ...formData, featuredImage: imageValue });
-                }}
-              />
-            )}
-            {formData.featuredImage && (
-              <div className="mt-2">
-                <Image
-                  src={formData.featuredImage}
-                  alt="Featured"
-                  className="w-full h-48 object-cover rounded-md"
-                  width={100}
-                  height={100}
-                  unoptimized={formData.featuredImage.startsWith("http")}
-                />
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      )}
     </div>
   );
 }

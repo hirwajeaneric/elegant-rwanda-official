@@ -85,6 +85,8 @@ model User {
   blogsUpdated  Blog[]   @relation("BlogUpdatedBy")
   faqsCreated   FAQ[]    @relation("FAQCreatedBy")
   faqsUpdated   FAQ[]    @relation("FAQUpdatedBy")
+  teamsCreated  Team[]   @relation("TeamCreatedBy")
+  teamsUpdated  Team[]   @relation("TeamUpdatedBy")
 
   @@index([email])
   @@index([role])
@@ -298,4 +300,27 @@ model FAQ {
   @@index([active])
   @@index([order])
   @@index([createdAt])
+}
+
+model Team {
+  id            String   @id @default(cuid())
+  name          String
+  role          String
+  bio           String
+  image         String?
+  status        TeamStatus @default(ACTIVE)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdBy     String?
+  updatedBy     String?
+  createdByUser User?    @relation("TeamCreatedBy", fields: [createdBy], references: [id], onDelete: SetNull)
+  updatedByUser User?    @relation("TeamUpdatedBy", fields: [updatedBy], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum TeamStatus {
+  ACTIVE
+  INACTIVE
 }

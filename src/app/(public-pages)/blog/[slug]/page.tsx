@@ -3,19 +3,62 @@ import { notFound } from "next/navigation";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { BlogPostContent } from "@/components/blog/BlogPostContent";
 import { BlogPostSidebar } from "@/components/blog/BlogPostSidebar";
-import { getPostBySlug, getRelatedPosts } from "@/data/blog";
 import { Calendar, Clock, User, Bookmark } from "lucide-react";
 import { ShareButton } from "@/components/ui/share-button";
 import { formatDate } from "@/lib/utils";
-
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
+async function getBlogPost(slug: string) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const response = await fetch(`${baseUrl}/api/public/blogs/${slug}`, {
+      cache: "no-store",
+    });
+    
+    if (!response.ok) {
+      return null;
+    }
+    
+    const data = await response.json();
+    return data.success ? data.blog : null;
+  } catch (error) {
+    console.error("Failed to fetch blog post:", error);
+    return null;
+  }
+}
+
+async function getRelatedPosts(categoryId: string | null, currentSlug: string) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const url = categoryId 
+      ? `${baseUrl}/api/public/blogs?categoryId=${categoryId}&limit=4`
+      : `${baseUrl}/api/public/blogs?limit=4`;
+    
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
+    
+    if (!response.ok) {
+      return [];
+    }
+    
+    const data = await response.json();
+    if (data.success) {
+      return (data.blogs || []).filter((post: { slug: string }) => post.slug !== currentSlug).slice(0, 3);
+    }
+    return [];
+  } catch (error) {
+    console.error("Failed to fetch related posts:", error);
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getBlogPost(slug);
 
   if (!post) {
     return {
@@ -26,44 +69,50 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   return {
     title: post.metaTitle || post.title,
     description: post.metaDescription || post.excerpt,
-    keywords: post.tags.join(", "),
+    keywords: (post.tags || []).join(", "),
     openGraph: {
       title: post.metaTitle || post.title,
       description: post.metaDescription || post.excerpt,
       type: "article",
       url: `https://elegantrwanda.com/blog/${post.slug}`,
-      images: [
+      images: post.featuredImage ? [
         {
-          url: `/${post.featuredImage}`,
+          url: post.featuredImage,
           width: 1200,
           height: 630,
           alt: post.title,
         },
-      ],
+      ] : [],
     },
   };
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getBlogPost(slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = getRelatedPosts(post.slug, post.category);
+  const relatedPosts = await getRelatedPosts(post.categoryId, post.slug);
 
   return (
     <PageWrapper>
       {/* Hero Section */}
       <div className="relative h-96 md:h-[500px] overflow-hidden">
-        <div
-          className="w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('/${post.featuredImage}')`
-          }}
-        />
+        {post.featuredImage ? (
+          <div
+            className="w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('${post.featuredImage}')`
+            }}
+          />
+        ) : (
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+            <span className="text-muted-foreground text-lg">No featured image</span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
 
         {/* Category Badge */}
@@ -100,18 +149,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Meta Information */}
             <div className="flex flex-wrap items-center gap-4 text-white/90 text-sm">
-              <div className="flex items-center space-x-1">
-                <User className="h-4 w-4" />
-                <span>{post.author}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Calendar className="h-4 w-4" />
-                <span>{formatDate(post.publishDate)}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Clock className="h-4 w-4" />
-                <span>{post.readTime}</span>
-              </div>
+              {post.author && (
+                <div className="flex items-center space-x-1">
+                  <User className="h-4 w-4" />
+                  <span>{post.author}</span>
+                </div>
+              )}
+              {post.publishDate && (
+                <div className="flex items-center space-x-1">
+                  <Calendar className="h-4 w-4" />
+                  <span>{formatDate(post.publishDate)}</span>
+                </div>
+              )}
+              {post.readTime && (
+                <div className="flex items-center space-x-1">
+                  <Clock className="h-4 w-4" />
+                  <span>{post.readTime}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -134,18 +189,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   Related Posts
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {relatedPosts.map((relatedPost) => (
+                  {relatedPosts.map((relatedPost: { id: string; slug: string; title: string; excerpt: string; featuredImage: string | null }) => (
                     <article
                       key={relatedPost.id}
                       className="bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group"
                     >
                       <div className="relative h-40 overflow-hidden">
-                        <div
-                          className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
-                          style={{
-                            backgroundImage: `url('/${relatedPost.featuredImage}')`
-                          }}
-                        />
+                        {relatedPost.featuredImage ? (
+                          <div
+                            className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
+                            style={{
+                              backgroundImage: `url('${relatedPost.featuredImage}')`
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-muted" />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       </div>
                       <div className="p-4">
