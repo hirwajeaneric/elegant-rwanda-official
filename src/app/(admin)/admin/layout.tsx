@@ -51,7 +51,7 @@ export default function AdminLayout({
       <DashboardSidebar />
       <div className="lg:pl-64">
         <DashboardHeader />
-        <main className="p-4 md:p-6 lg:p-8 pt-20 lg:pt-8">{children}</main>
+        <main className="p-4 md:p-6 lg:p-8 pt-6 lg:pt-8">{children}</main>
       </div>
       <Toaster position="top-right" richColors closeButton />
     </div>
