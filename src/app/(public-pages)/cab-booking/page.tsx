@@ -16,12 +16,12 @@ import { JsonLd } from "@/components/seo/JsonLd";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
-  title: "Premium Cab Booking in Rwanda: Reliable & Comfortable Rides | Elegant Travel and Tours",
+  title: "Premium Cab Booking in Rwanda: Reliable & Comfortable Rides | Elegant Travel & Tours",
   description:
     "Book premium cab services in Rwanda with Elegant Travel and Tours. Professional drivers, 24/7 availability, and custom routes for seamless transfers across the country.",
   path: "cab-booking",
   keywords:
-    "cab booking Rwanda, taxi service Rwanda, airport transfer Rwanda, luxury cab Rwanda, reliable taxi Rwanda",
+    "cab booking Rwanda, taxi service Rwanda, airport transfer Rwanda, luxury cab Rwanda, reliable taxi Rwanda, car booking near me, car near me, car to book near me, car rental near me, car rental to book near me, car rental to book near me in Rwanda, tour guide near me, trip planner near me, events near me, cab near me, cab to book near me, cab to book near me in Rwanda",
   openGraph: {
     title: "Premium Cab Booking in Rwanda: Reliable & Comfortable Rides",
     description: "Book premium cab services in Rwanda with professional drivers and 24/7 availability.",

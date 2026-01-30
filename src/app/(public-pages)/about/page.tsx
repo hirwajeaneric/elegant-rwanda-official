@@ -14,16 +14,31 @@ interface TeamMember {
 }
 
 export const metadata = buildMetadata({
-  title: "About Elegant Travel and Tours: Premier Luxury Travel Experts in Rwanda",
+  title: "About Elegant Travel & Tours: Premier Luxury and Affordable Travel Experts in Rwanda",
   description:
-    "Learn about Elegant Travel and Tours's mission to provide exceptional luxury travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
+    "Learn about Elegant Travel & Tours's mission to provide exceptional luxury and affordable travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
   path: "about",
   keywords: [
-    "About Elegant Travel and Tours",
+    "About Elegant Travel & Tours",
     "Rwanda travel company",
-    "Luxury travel experts",
+    "Luxury and affordable travel experts",
     "Tourism Rwanda",
     "Travel professionals Rwanda",
+    "Affordable travel in Rwanda",
+    "Luxury travel in Rwanda",
+    "Travel in Rwanda",
+    "Travel to Rwanda",
+    "Travel to Africa",
+    "Travel to East Africa",
+    "Car booking near me",
+    "Car near me",
+    "Car to book near me",
+    "Car rental near me",
+    "Car rental to book near me",
+    "Car rental to book near me in Rwanda",
+    "Tour guide near me",
+    "Trip planner near me",
+    "Events near me",
   ],
 });
 
@@ -84,7 +99,7 @@ export default async function AboutPage() {
               create meaningful connections with local communities and contribute to sustainable tourism development.
             </p>
           </div>
-          <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20">
+          <div className="bg-linear-to-br from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20">
             <h3 className="text-2xl font-display font-semibold mb-4">Quick Facts</h3>
             <div className="space-y-4">
               <div className="flex justify-between items-center">

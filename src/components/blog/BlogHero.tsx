@@ -3,7 +3,7 @@
 export function BlogHero() {
   return (
     <section className="relative py-24 bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
+      <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/70 to-black/60" />
       <div className="container-elegant relative z-10 text-center">
         <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-6">
           Discover{" "}

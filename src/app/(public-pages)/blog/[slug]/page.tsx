@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
   if (!post) {
     return buildMetadata({
-      title: "Post Not Found | Elegant Travel and Tours",
+      title: "Post Not Found | Elegant Travel & Tours",
       description: "The requested blog post could not be found.",
       path: "blog",
       noIndex: true,
@@ -150,7 +150,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <span className="text-muted-foreground text-lg">No featured image</span>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/40 to-transparent" />
 
         {/* Category Badge */}
         {/* <div className="absolute top-6 left-6">
@@ -242,7 +242,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         ) : (
                           <div className="w-full h-full bg-muted" />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                       </div>
                       <div className="p-4">
                         <h3 className="font-display font-semibold mb-2 group-hover:text-primary transition-colors">

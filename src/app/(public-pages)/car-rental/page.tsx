@@ -16,16 +16,20 @@ import { JsonLd } from "@/components/seo/JsonLd";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
-  title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options | Elegant Travel and Tours",
+  title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options | Elegant Travel & Tours",
   description:
     "Rent luxury cars in Rwanda with Elegant Travel and Tours. Choose between self-drive and chauffeur-driven options. Premium vehicles for business and leisure travel.",
   path: "car-rental",
   keywords:
-    "car rental Rwanda, luxury car hire Rwanda, self-drive Rwanda, chauffeur service Rwanda, vehicle rental Rwanda",
+    "car rental Rwanda, luxury car hire Rwanda, self-drive Rwanda, chauffeur service Rwanda, vehicle rental Rwanda, car rental near me, car near me, car to book near me, car rental near me, car rental to book near me, car rental to book near me in Rwanda, tour guide near me, trip planner near me, events near me, car near me, car to book near me, car to book near me in Rwanda",
   openGraph: {
     title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options",
     description: "Rent luxury cars in Rwanda with self-drive and chauffeur-driven options for business and leisure travel.",
     type: "website",
+    images: [
+      { url: "/car-rental.jpg", width: 1200, height: 630, alt: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options" },
+      { url: "/car-rental.jpg", width: 960, height: 540, alt: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options" },
+    ],
   },
   twitter: {
     card: "summary_large_image",

@@ -4,7 +4,7 @@ import { Calendar, Users, MapPin, Clock } from "lucide-react";
 
 export function EventsHero() {
   return (
-    <section className="relative py-24 bg-[url('/pexels-joshsorenson-976866.jpg')] bg-cover bg-center bg-no-repeat">
+    <section className="relative py-24 bg-[url('/events.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/70 to-black/60" />
       <div className="container-elegant relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

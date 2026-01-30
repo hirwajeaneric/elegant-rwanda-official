@@ -43,7 +43,7 @@ export function EventHero({ event }: EventHeroProps) {
             priority
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/40" />
+          <div className="w-full h-full bg-linear-to-br from-primary/20 to-primary/40" />
         )}
         <div className="absolute inset-0 bg-black/50" />
       </div>

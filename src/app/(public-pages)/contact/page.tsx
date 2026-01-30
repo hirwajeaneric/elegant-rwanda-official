@@ -7,17 +7,45 @@ import { JsonLd } from "@/components/seo/JsonLd";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
-  title: "Contact Elegant Travel and Tours: Inquire About Tours & Services",
+  title: "Contact Elegant Travel & Tours: Inquire About Tours & Services",
   description:
-    "Get in touch with Elegant Travel and Tours for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
+    "Get in touch with Elegant Travel & Tours for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
   path: "contact",
   keywords: [
-    "Contact Elegant Travel and Tours",
+    "Contact Elegant Travel & Tours",
     "Rwanda travel inquiry",
     "Tour booking Rwanda",
     "Travel consultation Rwanda",
     "Customer support Rwanda",
+    "Car rental near me",
+    "Car near me",
+    "Car to book near me",
+    "Car rental near me",
+    "Car rental to book near me",
+    "Car rental to book near me in Rwanda",
+    "Tour guide near me",
+    "Trip planner near me",
+    "Events near me",
+    "Car near me",
+    "Car to book near me",
+    "Car to book near me in Rwanda",
   ],
+  openGraph: {
+    title: "Contact Elegant Travel & Tours: Inquire About Tours & Services",
+    description:
+      "Get in touch with Elegant Travel & Tours for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
+    type: "website",
+    images: [
+      { url: "/hero-image.jpg", width: 1200, height: 630, alt: "Contact Elegant Travel & Tours: Inquire About Tours & Services" },
+      { url: "/hero-image.jpg", width: 960, height: 540, alt: "Contact Elegant Travel & Tours: Inquire About Tours & Services" },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Elegant Travel & Tours: Inquire About Tours & Services",
+    description:
+      "Get in touch with Elegant Travel & Tours for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
+  },
 });
 
 const contactJsonLd = [
@@ -102,7 +130,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border border-primary/20">
+            <div className="bg-linear-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border border-primary/20">
               <h3 className="text-lg font-semibold mb-3">Emergency Support</h3>
               <p className="text-muted-foreground text-sm mb-3">
                 For urgent matters outside business hours, please call our 24/7 emergency line:

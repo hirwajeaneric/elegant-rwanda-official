@@ -31,7 +31,7 @@ export function FleetOverview() {
     },
     {
       name: "Unique Vehicle",
-      image: "Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg",
+      image: "unique-car.jpg",
       capacity: "4 passengers",
       features: ["Premium amenities", "Professional driver", "Concierge service", "Refreshments"],
       bestFor: "Special occasions, VIP service",

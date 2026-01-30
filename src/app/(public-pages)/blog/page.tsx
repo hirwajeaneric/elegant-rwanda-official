@@ -8,17 +8,21 @@ import { JsonLd } from "@/components/seo/JsonLd";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
-  title: "Rwanda Travel Blog: Tips, Stories & Insights | Elegant Travel and Tours",
+  title: "Rwanda Travel Blog: Tips, Stories & Insights | Elegant Travel & Tours",
   description:
     "Discover Rwanda through our travel blog featuring expert tips, cultural insights, wildlife stories, and insider knowledge about Rwanda's hidden gems.",
   path: "blog",
   keywords:
-    "Rwanda travel blog, gorilla trekking tips, Rwanda culture, wildlife photography, luxury travel Rwanda, travel guides",
+    "Rwanda travel blog, gorilla trekking tips, Rwanda culture, wildlife photography, luxury travel Rwanda, travel guides, car rental near me, car near me, car to book near me, car rental near me, car rental to book near me, car rental to book near me in Rwanda, tour guide near me, trip planner near me, events near me, car near me, car to book near me, car to book near me in Rwanda",
   openGraph: {
-    title: "Rwanda Travel Blog: Tips, Stories & Insights | Elegant Travel and Tours",
+    title: "Rwanda Travel Blog: Tips, Stories & Insights | Elegant Travel & Tours",
     description:
       "Discover Rwanda through our travel blog featuring expert tips, cultural insights, wildlife stories, and insider knowledge about Rwanda's hidden gems.",
     type: "website",
+    images: [
+      { url: "/green-hills-of-rwanda.jpg", width: 1200, height: 630, alt: "Rwanda Travel Blog: Tips, Stories & Insights" },
+      { url: "/green-hills-of-rwanda.jpg", width: 960, height: 540, alt: "Rwanda Travel Blog: Tips, Stories & Insights" },
+    ],
   },
 });
 
