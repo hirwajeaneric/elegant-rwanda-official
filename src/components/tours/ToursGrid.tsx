@@ -1,21 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Calendar, Users, ArrowRight, Search } from "lucide-react";
-import { getAllTours, getToursByCategory } from "@/data/tours";
 import { getCategoryColor } from "@/lib/utils";
 
+interface Tour {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  duration: string;
+  location: string;
+  maxGroupSize: number;
+  highlights: string[];
+  images: string[];
+  category: string;
+  featured: boolean;
+}
+
 export function ToursGrid() {
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedDuration, setSelectedDuration] = useState<string>("all");
 
-  const allTours = getAllTours();
-  
+  useEffect(() => {
+    fetchTours();
+  }, []);
+
+  const fetchTours = async () => {
+    try {
+      const res = await fetch("/api/public/tours?limit=100");
+      const data = await res.json();
+      if (data.success) {
+        setTours(data.tours);
+      }
+    } catch (error) {
+      console.error("Error fetching tours:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Filter tours based on selected criteria
-  let filteredTours = allTours;
+  let filteredTours = tours;
   
   if (selectedCategory !== "all") {
     filteredTours = filteredTours.filter(tour => tour.category === selectedCategory);
@@ -40,12 +71,12 @@ export function ToursGrid() {
   }
 
   const categories = [
-    { id: "all", name: "All Categories", count: allTours.length },
-    { id: "Wildlife", name: "Wildlife", count: getToursByCategory("Wildlife").length },
-    { id: "Cultural", name: "Cultural", count: getToursByCategory("Cultural").length },
-    { id: "Adventure", name: "Adventure", count: getToursByCategory("Adventure").length },
-    { id: "Unique", name: "Unique", count: getToursByCategory("Unique").length },
-    { id: "Nature", name: "Nature", count: getToursByCategory("Nature").length },
+    { id: "all", name: "All Categories", count: tours.length },
+    { id: "Wildlife", name: "Wildlife", count: tours.filter(t => t.category === "Wildlife").length },
+    { id: "Cultural", name: "Cultural", count: tours.filter(t => t.category === "Cultural").length },
+    { id: "Adventure", name: "Adventure", count: tours.filter(t => t.category === "Adventure").length },
+    { id: "Unique", name: "Unique", count: tours.filter(t => t.category === "Unique").length },
+    { id: "Nature", name: "Nature", count: tours.filter(t => t.category === "Nature").length },
   ];
  
   const durations = [
@@ -118,13 +149,19 @@ export function ToursGrid() {
 
         {/* Results Count */}
         <div className="text-sm text-muted-foreground">
-          Showing {filteredTours.length} of {allTours.length} tours
+          Showing {filteredTours.length} of {tours.length} tours
         </div>
       </div>
 
-      {/* Tours Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {filteredTours.map((tour) => (
+      {loading ? (
+        <div className="text-center py-16">
+          <p className="text-muted-foreground">Loading tours...</p>
+        </div>
+      ) : (
+        <>
+          {/* Tours Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredTours.map((tour) => (
           <article
             key={tour.id}
             className="bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group"
@@ -221,11 +258,11 @@ export function ToursGrid() {
               </div>
             </div>
           </article>
-        ))}
-      </div>
+            ))}
+          </div>
 
-      {/* No Results */}
-      {filteredTours.length === 0 && (
+          {/* No Results */}
+          {filteredTours.length === 0 && (
         <div className="text-center py-16">
           <div className="text-6xl mb-4">🔍</div>
           <h3 className="text-xl font-display font-semibold mb-2">No tours found</h3>
@@ -243,6 +280,8 @@ export function ToursGrid() {
             Clear All Filters
           </button>
         </div>
+          )}
+        </>
       )}
     </div>
   );

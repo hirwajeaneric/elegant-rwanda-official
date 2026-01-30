@@ -1,15 +1,48 @@
 "use client";
 
-
+import { useState, useEffect } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { tours } from "@/data/tours";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+
+interface Tour {
+  id: string;
+  title: string;
+  category: string;
+  status: string;
+  price: number;
+  bookings: number;
+}
 
 export default function ToursPage() {
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTours();
+  }, []);
+
+  const fetchTours = async () => {
+    try {
+      const res = await fetch("/api/tours?limit=500");
+      const data = await res.json();
+      if (data.success) {
+        setTours(data.tours);
+      } else {
+        toast.error("Failed to load tours");
+      }
+    } catch (error) {
+      console.error("Error fetching tours:", error);
+      toast.error("Failed to load tours");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const columns = [
     {
       key: "title",
@@ -20,7 +53,7 @@ export default function ToursPage() {
       key: "category",
       label: "Category",
       sortable: true,
-      render: (item: typeof tours[0]) => (
+      render: (item: Tour) => (
         <Badge variant="outline">{item.category}</Badge>
       ),
     },
@@ -28,7 +61,7 @@ export default function ToursPage() {
       key: "status",
       label: "Status",
       sortable: true,
-      render: (item: typeof tours[0]) => (
+      render: (item: Tour) => (
         <Badge variant={item.status === "active" ? "default" : "secondary"}>
           {item.status}
         </Badge>
@@ -38,7 +71,7 @@ export default function ToursPage() {
       key: "price",
       label: "Price",
       sortable: true,
-      render: (item: typeof tours[0]) => `$${item.price}`,
+      render: (item: Tour) => `$${item.price}`,
     },
     {
       key: "bookings",
@@ -48,7 +81,7 @@ export default function ToursPage() {
     {
       key: "actions",
       label: "Actions",
-      render: (item: typeof tours[0]) => (
+      render: (item: Tour) => (
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/tours/${item.id}`}>Edit</Link>
@@ -57,6 +90,15 @@ export default function ToursPage() {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <p className="text-muted-foreground">Loading tours...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

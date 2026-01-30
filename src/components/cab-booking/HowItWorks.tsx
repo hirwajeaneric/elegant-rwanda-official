@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList, Calculator, CheckCircle } from "lucide-react";
+import { ClipboardList, Calculator, CheckCircle, ArrowRight } from "lucide-react";
 
 export function HowItWorks() {
   const steps = [
@@ -8,19 +8,19 @@ export function HowItWorks() {
       icon: ClipboardList,
       title: "Submit Request",
       description: "Fill out our simple form with your travel details, pickup location, and destination.",
-      details: ["Service type selection", "Pickup & drop-off locations", "Date and time preferences", "Number of passengers"]
+      details: ["Service type selection", "Pickup & drop-off locations", "Date and time preferences", "Number of passengers"],
     },
     {
       icon: Calculator,
       title: "Receive Quotation",
       description: "Get a detailed quote within 30 minutes, including all costs and service details.",
-      details: ["Transparent pricing", "Service inclusions", "Vehicle specifications", "Driver information"]
+      details: ["Transparent pricing", "Service inclusions", "Vehicle specifications", "Driver information"],
     },
     {
       icon: CheckCircle,
       title: "Confirm & Ride",
       description: "Confirm your booking and enjoy a comfortable, safe journey with our professional drivers.",
-      details: ["Instant confirmation", "Real-time tracking", "Professional service", "24/7 support"]
+      details: ["Instant confirmation", "Real-time tracking", "Professional service", "24/7 support"],
     }
   ];
 
@@ -36,85 +36,82 @@ export function HowItWorks() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {steps.map((step, index) => (
-            <div key={index} className="relative">
-              {/* Step Number */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm z-10">
-                {index + 1}
-              </div>
+        {/* Desktop Timeline Layout */}
+        <div className="hidden md:block relative">
+          {/* Horizontal Connector Line */}
+          <div className="absolute top-24 left-0 right-0 h-0.5 bg-primary/20" />
 
-              {/* Card */}
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-border/50 relative">
-                {/* Icon */}
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                  <step.icon className="h-8 w-8 text-primary" />
+          <div className="grid grid-cols-3 gap-8 relative">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <div key={index} className="relative group">
+                  {/* Step Number Badge */}
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+                    <div className="relative w-16 h-16 bg-primary rounded-full shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-white font-bold text-xl">{index + 1}</span>
+                    </div>
+                  </div>
+
+                  {/* Card */}
+                  <div className="bg-muted/30 rounded-2xl p-8 shadow-lg border border-border/50 hover:border-primary/30 hover:shadow-xl transition-all duration-300 mt-8">
+                    {/* Icon Container */}
+                    <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:bg-primary/20 transition-colors duration-300">
+                      <Icon className="h-8 w-8 text-primary" />
+                    </div>
+
+                    {/* Content */}
+                    <h3 className="text-xl font-display font-semibold mb-4 text-center group-hover:text-primary transition-colors duration-300">
+                      {step.title}
+                    </h3>
+                    <p className="text-muted-foreground text-center mb-6 leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Content */}
-                <h3 className="text-2xl font-display font-semibold mb-4 text-center">
-                  {step.title}
-                </h3>
-                <p className="text-muted-foreground text-center mb-6 leading-relaxed">
-                  {step.description}
-                </p>
-
-                {/* Details List */}
-                <ul className="space-y-2">
-                  {step.details.map((detail, detailIndex) => (
-                    <li key={detailIndex} className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Connector Line */}
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-primary/30" />
-              )}
-            </div>
-          ))}
+              );
+            })}
+          </div>
         </div>
 
-        {/* Additional Info */}
-        <div className="mt-16 text-center">
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-border/50 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-display font-semibold mb-4">
-              Why Choose Our Cab Service?
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm">Professional, licensed drivers</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm">Well-maintained, clean vehicles</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm">GPS tracking for safety</span>
+        {/* Mobile Vertical Timeline Layout */}
+        <div className="md:hidden space-y-8">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <div key={index} className="relative group">
+                {/* Vertical Connector Line */}
+                {index < steps.length - 1 && (
+                  <div className="absolute left-8 top-20 bottom-0 w-0.5 bg-primary/20" />
+                )}
+
+                <div className="flex gap-6">
+                  {/* Step Number */}
+                  <div className="shrink-0">
+                    <div className="relative w-16 h-16 bg-primary rounded-full shadow-lg flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">{index + 1}</span>
+                    </div>
+                  </div>
+
+                  {/* Card */}
+                  <div className="flex-1 bg-muted/30 rounded-2xl p-6 shadow-lg border border-border/50 hover:border-primary/30 transition-all duration-300">
+                    {/* Icon */}
+                    <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                      <Icon className="h-8 w-8 text-primary" />
+                    </div>
+
+                    {/* Content */}
+                    <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                      {step.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-4 leading-relaxed text-sm">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm">Fixed, transparent pricing</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm">24/7 customer support</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm">Flexible booking options</span>
-                </div>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -397,3 +397,59 @@ model Vehicle {
   @@index([available])
   @@index([createdAt])
 }
+
+enum TourCategory {
+  Wildlife
+  Cultural
+  Adventure
+  Unique
+  Nature
+}
+
+enum TourDifficulty {
+  Easy
+  Moderate
+  Challenging
+}
+
+enum TourStatus {
+  active
+  draft
+  scheduled
+}
+
+model Tour {
+  id              String         @id @default(cuid())
+  slug            String         @unique
+  title           String
+  description     String         // HTML content (rich text)
+  duration        String
+  location        String
+  difficulty      TourDifficulty
+  maxGroupSize    Int
+  highlights      String[]
+  itinerary       Json           // Array of Day objects: { day, title, description, activities[], accommodation?, meals[] }
+  inclusions      String[]
+  exclusions      String[]
+  images          String[]
+  category        TourCategory
+  featured        Boolean        @default(false)
+  availableDates  String[]
+  price           Float
+  status          TourStatus     @default(draft)
+  bookings        Int            @default(0)
+  capacity        Int
+  guide           String?
+  rating          Float?
+  reviews         Int            @default(0)
+  metaTitle       String?
+  metaDescription String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([status])
+  @@index([featured])
+  @@index([createdAt])
+}

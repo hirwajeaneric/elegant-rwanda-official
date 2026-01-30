@@ -7,7 +7,7 @@ export function FleetOverview() {
   const vehicles = [
     {
       name: "Unique Sedan",
-      image: "hotel-exterior-daytime.jpg",
+      image: "sedan.jpg",
       capacity: "4 passengers",
       features: ["Leather seats", "Climate control", "WiFi", "Charging ports"],
       bestFor: "Business travel, Airport transfers",
@@ -15,7 +15,7 @@ export function FleetOverview() {
     },
     {
       name: "Premium SUV",
-      image: "hotel-exterior.jpg",
+      image: "suv.jpg",
       capacity: "6 passengers",
       features: ["Spacious interior", "All-wheel drive", "Premium audio", "Luggage space"],
       bestFor: "Family trips, Group travel",
@@ -23,7 +23,7 @@ export function FleetOverview() {
     },
     {
       name: "Executive Minivan",
-      image: "kigali-serena-hotel.jpg",
+      image: "mini-van.jpg",
       capacity: "8 passengers",
       features: ["Comfortable seating", "Entertainment system", "Climate control", "Large luggage area"],
       bestFor: "Corporate groups, Events",

@@ -2,11 +2,19 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Check, X, MapPin, Calendar, Users, Star } from "lucide-react";
-
-import type { Tour } from "@/data/tours";
+import { sanitizeHtml } from "@/lib/html-sanitizer";
 
 interface TourDetailsProps {
-  tour: Tour;
+  tour: {
+    description: string;
+    location: string;
+    duration: string;
+    maxGroupSize: number;
+    difficulty: string;
+    availableDates: string[];
+    inclusions: string[];
+    exclusions: string[];
+  };
 }
 
 export function TourDetails({ tour }: TourDetailsProps) {
@@ -19,9 +27,10 @@ export function TourDetails({ tour }: TourDetailsProps) {
         <div className="space-y-6">
           <div>
             <h3 className="text-xl font-semibold mb-3">About This Tour</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              {tour.description}
-            </p>
+            <div 
+              className="text-muted-foreground leading-relaxed prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(tour.description) }}
+            />
           </div>
 
           <div>

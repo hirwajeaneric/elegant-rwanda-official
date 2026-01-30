@@ -1,19 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MapPin, Phone, Mail, Star } from "lucide-react";
-import { getFeaturedTours } from "@/data/tours";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import { subscribeToNewsletter } from "@/lib/client-submit";
 import { toast } from "sonner";
 
+interface Tour {
+  id: string;
+  slug: string;
+  title: string;
+  location: string;
+  images: string[];
+}
+
 export function ToursSidebar() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const featuredTours = getFeaturedTours();
+  const [featuredTours, setFeaturedTours] = useState<Tour[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    fetchFeaturedTours();
+  }, []);
+
+  const fetchFeaturedTours = async () => {
+    try {
+      const res = await fetch("/api/public/tours?featured=true&limit=3");
+      const data = await res.json();
+      if (data.success) {
+        setFeaturedTours(data.tours);
+      }
+    } catch (error) {
+      console.error("Error fetching featured tours:", error);
+    }
+  };
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

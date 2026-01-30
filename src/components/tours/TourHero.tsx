@@ -1,22 +1,47 @@
 "use client";
 
 import { MapPin, Share2 } from "lucide-react";
-import type { Tour } from "@/data/tours";
 
 interface TourHeroProps {
-  tour: Tour;
+  tour: {
+    title: string;
+    description: string;
+    duration: string;
+    location: string;
+    maxGroupSize: number;
+    images: string[];
+  };
+}
+
+// Strip HTML tags for hero display
+function stripHtml(html: string): string {
+  if (typeof window === "undefined") {
+    // Server-side: simple regex strip
+    return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+  }
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
 }
 
 export function TourHero({ tour }: TourHeroProps) {
+  const descriptionText = stripHtml(tour.description);
+  const backgroundImage = tour.images && tour.images.length > 0 ? `url('/${tour.images[0]}')` : undefined;
+
   return (
     <section className="relative h-full min-h-[600px] overflow-hidden">
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('/${tour.images[0]}')`
-        }}
-      />
+      {backgroundImage && (
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage
+          }}
+        />
+      )}
+      {!backgroundImage && (
+        <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary" />
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/80 to-black/70" />
       
       {/* Action Buttons */}
@@ -40,7 +65,7 @@ export function TourHero({ tour }: TourHeroProps) {
 
             {/* Description */}
             <p className="text-lg md:text-2xl text-white/90 mb-8 leading-relaxed max-w-3xl">
-              {tour.description}
+              {descriptionText}
             </p>
 
             {/* Tour Info Grid */}

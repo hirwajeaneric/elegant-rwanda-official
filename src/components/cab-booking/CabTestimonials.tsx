@@ -1,43 +1,43 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Star, Quote } from "lucide-react";
 
+type Testimonial = {
+  id: string;
+  name: string;
+  location: string | null;
+  rating: number;
+  review: string;
+  service: string;
+  image: string | null;
+};
+
 export function CabTestimonials() {
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Business Traveler",
-      image: "Umuganura-Muhondo-Gakenke-Paying-tribute-to-the-king.jpg",
-      rating: 5,
-      text: "The cab service was exceptional! My driver was professional, the vehicle was spotless, and they were right on time for my early morning airport transfer. Highly recommend!",
-      service: "Airport Transfer"
-    },
-    {
-      name: "Michael Chen",
-      role: "Tourist",
-      image: "Nyanza-Traditional-Intore-Dancers-1650x1100.jpg",
-      rating: 5,
-      text: "We used their cab service for a city tour and it was perfect. The driver knew all the best spots and was very knowledgeable about Rwanda's history and culture.",
-      service: "City Tour"
-    },
-    {
-      name: "Emma Rodriguez",
-      role: "Event Organizer",
-      image: "IbyIwacu-Cultural-Village.jpg",
-      rating: 5,
-      text: "For our corporate event, we needed reliable transportation for 20+ people. Elegant Travel and Tours delivered perfectly with their fleet of vehicles and professional service.",
-      service: "Group Transport"
-    },
-    {
-      name: "David Thompson",
-      role: "Local Resident",
-      image: "butare-museum-750x450.jpg",
-      rating: 5,
-      text: "I've been using their cab service for months now. Always reliable, clean vehicles, and friendly drivers. They've become my go-to for all transportation needs.",
-      service: "Regular Service"
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        const res = await fetch("/api/public/testimonials?limit=100");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.testimonials)) {
+          // Filter for Cab Booking testimonials
+          const cabTestimonials = data.testimonials.filter(
+            (t: Testimonial) => t.service === "Cab Booking"
+          );
+          setTestimonials(cabTestimonials.slice(0, 4)); // Show up to 4 testimonials
+        }
+      } catch (error) {
+        console.error("Failed to fetch testimonials:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+    fetchTestimonials();
+  }, []);
 
   return (
     <section className="section-padding bg-muted/30">
@@ -52,50 +52,65 @@ export function CabTestimonials() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-2xl p-8 shadow-lg border border-border/50 relative">
-              {/* Quote Icon */}
-              <div className="absolute top-6 right-6 text-primary/20">
-                <Quote className="h-12 w-12" />
-              </div>
-
-              {/* Rating */}
-              <div className="flex items-center space-x-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-
-              {/* Testimonial Text */}
-              <blockquote className="text-lg text-muted-foreground mb-6 leading-relaxed italic">
-                &ldquo;{testimonial.text}&rdquo;
-              </blockquote>
-
-              {/* Service Badge */}
-              <div className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
-                {testimonial.service}
-              </div>
-
-              {/* Author */}
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-muted">
-                  <Image
-                    src={`/${testimonial.image}`}
-                    alt={testimonial.name}
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">Loading testimonials...</p>
+          </div>
+        ) : testimonials.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No testimonials available at the moment.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial.id} className="bg-white rounded-2xl p-8 shadow-lg border border-border/50 relative">
+                {/* Quote Icon */}
+                <div className="absolute top-6 right-6 text-primary/20">
+                  <Quote className="h-12 w-12" />
                 </div>
-                <div>
-                  <div className="font-semibold text-foreground">{testimonial.name}</div>
-                  <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+
+                {/* Rating */}
+                <div className="flex items-center space-x-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+
+                {/* Testimonial Text */}
+                <blockquote className="text-lg text-muted-foreground mb-6 leading-relaxed italic">
+                  &ldquo;{testimonial.review}&rdquo;
+                </blockquote>
+
+                {/* Author */}
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-muted">
+                    {testimonial.image ? (
+                      <Image
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-primary font-semibold text-lg">
+                          {testimonial.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">{testimonial.name}</div>
+                    {testimonial.location && (
+                      <div className="text-sm text-muted-foreground">{testimonial.location}</div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Stats Section */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -119,7 +134,7 @@ export function CabTestimonials() {
 
         {/* CTA Section */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
+          <div className="bg-linear-to-r from-primary to-secondary rounded-2xl p-8 text-white">
             <h3 className="text-3xl font-display font-bold mb-4">
               Ready to Experience the Best Cab Service in Rwanda?
             </h3>
