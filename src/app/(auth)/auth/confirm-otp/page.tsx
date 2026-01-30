@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 import {
   InputOTP,
   InputOTPGroup,
@@ -43,11 +44,13 @@ export default function ConfirmOTPPage() {
     setError("");
 
     if (otp.length !== 6) {
+      toast.error("Please enter the complete 6-digit code");
       setError("Please enter the complete 6-digit code");
       return;
     }
 
     if (!email) {
+      toast.error("Email is required");
       setError("Email is required");
       return;
     }
@@ -60,6 +63,7 @@ export default function ConfirmOTPPage() {
       const registrationData = sessionStorage.getItem(registrationKey);
       
       if (!registrationData) {
+        toast.error("Registration session expired. Please register again.");
         setError("Registration session expired. Please register again.");
         router.push("/auth/create-account");
         return;
@@ -69,15 +73,19 @@ export default function ConfirmOTPPage() {
       
       const result = await verifyOTP(email, otp, name, password);
       if (result.success) {
-        // Clear registration data after successful verification
         sessionStorage.removeItem(registrationKey);
+        toast.success("Account verified! Welcome.");
         router.push("/admin/dashboard");
       } else {
-        setError(result.error || "Invalid or expired verification code. Please try again.");
+        const msg = result.error || "Invalid or expired verification code. Please try again.";
+        setError(msg);
+        toast.error(msg);
       }
     } catch (error) {
       console.error("OTP verification error:", error);
-      setError("An error occurred. Please try again.");
+      const msg = "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -90,8 +98,15 @@ export default function ConfirmOTPPage() {
     setResendCooldown(60);
 
     try {
-      await resendOTP(email);
+      const result = await resendOTP(email);
+      if (result?.success ?? true) {
+        toast.success("Verification code sent. Check your email.");
+      } else {
+        toast.error(result?.error || "Failed to resend code.");
+        setError("Failed to resend code. Please try again.");
+      }
     } catch {
+      toast.error("Failed to resend code. Please try again.");
       setError("Failed to resend code. Please try again.");
     }
   };

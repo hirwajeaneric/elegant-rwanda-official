@@ -353,7 +353,7 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
                 size="sm"
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.href);
-                  alert("Event link copied to clipboard!");
+                  toast.success("Event link copied to clipboard!");
                 }}
               >
                 Copy Link

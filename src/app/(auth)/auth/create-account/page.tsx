@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 import { Lock, Mail, User, Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 
@@ -31,11 +32,13 @@ export default function CreateAccountPage() {
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
       setError("Passwords do not match");
       return;
     }
 
     if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
       setError("Password must be at least 8 characters long");
       return;
     }
@@ -45,7 +48,7 @@ export default function CreateAccountPage() {
     try {
       const result = await register(formData.name, formData.email, formData.password);
       if (result.success) {
-        // Store registration data temporarily for OTP verification
+        toast.success("Check your email for a verification code");
         sessionStorage.setItem(
           `registration_${formData.email}`,
           JSON.stringify({
@@ -56,10 +59,14 @@ export default function CreateAccountPage() {
         );
         router.push("/auth/confirm-otp?email=" + encodeURIComponent(formData.email));
       } else {
-        setError(result.error || "Registration failed. Email may already be in use.");
+        const msg = result.error || "Registration failed. Email may already be in use.";
+        setError(msg);
+        toast.error(msg);
       }
     } catch {
-      setError("An error occurred. Please try again.");
+      const msg = "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

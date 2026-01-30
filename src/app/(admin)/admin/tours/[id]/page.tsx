@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { tours, Tour } from "@/data/tours";
 import { useCategories } from "@/lib/hooks/use-categories";
+import { toast } from "sonner";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 
@@ -84,7 +85,7 @@ export default function TourDetailPage() {
   const handleSave = () => {
     console.log("Saving tour:", formData);
     setIsEditing(false);
-    alert("Tour saved successfully!");
+    toast.success("Tour saved successfully!");
   };
 
   const handleAddArrayItem = (field: "highlights" | "inclusions" | "exclusions", value: string) => {

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
@@ -35,8 +36,7 @@ export default function NewServicePage() {
     e.preventDefault();
     // In a real app, this would make an API call
     console.log("Creating service:", formData);
-    // Show success message and redirect
-    alert("Service created successfully!");
+    toast.success("Service created successfully!");
     router.push("/admin/services");
   };
 

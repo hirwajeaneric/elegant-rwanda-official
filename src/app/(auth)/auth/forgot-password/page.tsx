@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 import { Mail, ArrowLeft } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 
@@ -25,13 +26,18 @@ export default function ForgotPasswordPage() {
 
     try {
       const result = await forgotPassword(email);
-      if (result) {
+      if (result?.success ?? result) {
         setSuccess(true);
+        toast.success("Check your email for a reset link");
       } else {
-        setError("Email not found. Please check your email address.");
+        const msg = "Email not found. Please check your email address.";
+        setError(msg);
+        toast.error(msg);
       }
     } catch {
-      setError("An error occurred. Please try again.");
+      const msg = "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

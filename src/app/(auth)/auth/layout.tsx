@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/lib/stores/auth-store";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function AuthPagesLayout({
   children,
@@ -41,8 +42,9 @@ export default function AuthPagesLayout({
           </div>
         </Link>
       </div>
-      
+
       {children}
+      <Toaster position="top-center" richColors closeButton />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 
@@ -43,11 +44,13 @@ export default function ResetPasswordPage() {
     }
 
     if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
       setError("Passwords do not match");
       return;
     }
 
     if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
       setError("Password must be at least 8 characters long");
       return;
     }
@@ -56,16 +59,21 @@ export default function ResetPasswordPage() {
 
     try {
       const result = await resetPassword(email, token, formData.password);
-      if (result) {
+      if (result?.success ?? result) {
         setSuccess(true);
+        toast.success("Password reset successfully");
         setTimeout(() => {
           router.push("/auth/login");
         }, 2000);
       } else {
-        setError("Invalid or expired reset token. Please request a new one.");
+        const msg = "Invalid or expired reset token. Please request a new one.";
+        setError(msg);
+        toast.error(msg);
       }
     } catch {
-      setError("An error occurred. Please try again.");
+      const msg = "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useCategories } from "@/lib/hooks/use-categories";
@@ -46,7 +47,7 @@ export default function NewTourPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Creating tour:", formData);
-    alert("Tour created successfully!");
+    toast.success("Tour created successfully!");
     router.push("/admin/tours");
   };
 

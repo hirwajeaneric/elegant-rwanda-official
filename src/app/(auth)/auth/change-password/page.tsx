@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 
@@ -38,12 +39,16 @@ export default function ChangePasswordPage() {
     setSuccess(false);
 
     if (formData.newPassword !== formData.confirmPassword) {
-      setError("New passwords do not match");
+      const msg = "New passwords do not match";
+      setError(msg);
+      toast.error(msg);
       return;
     }
 
     if (formData.newPassword.length < 8) {
-      setError("New password must be at least 8 characters long");
+      const msg = "New password must be at least 8 characters long";
+      setError(msg);
+      toast.error(msg);
       return;
     }
 
@@ -51,16 +56,21 @@ export default function ChangePasswordPage() {
 
     try {
       const result = await changePassword(formData.currentPassword, formData.newPassword);
-      if (result) {
+      if (result?.success ?? result) {
         setSuccess(true);
+        toast.success("Password changed successfully");
         setTimeout(() => {
-          router.push("/admin/settings");
+          router.push("/admin/profile");
         }, 2000);
       } else {
-        setError("Current password is incorrect");
+        const msg = "Current password is incorrect";
+        setError(msg);
+        toast.error(msg);
       }
     } catch {
-      setError("An error occurred. Please try again.");
+      const msg = "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getServiceById } from "@/data/services";
+import { toast } from "sonner";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
@@ -77,10 +78,8 @@ export default function ServiceDetailPage() {
   const handleSave = () => {
     // In a real app, this would make an API call
     console.log("Saving service:", formData);
-    // For now, just toggle edit mode
     setIsEditing(false);
-    // Show success message (you could add a toast here)
-    alert("Service saved successfully!");
+    toast.success("Service saved successfully!");
   };
 
   const handleAddFeature = () => {

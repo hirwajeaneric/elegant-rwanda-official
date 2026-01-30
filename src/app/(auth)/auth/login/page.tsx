@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 
 export default function LoginPage() {
@@ -28,12 +29,17 @@ export default function LoginPage() {
     try {
       const result = await login(email, password);
       if (result.success) {
+        toast.success("Welcome back!");
         router.push("/admin/dashboard");
       } else {
-        setError(result.error || "Invalid email or password");
+        const msg = result.error || "Invalid email or password";
+        setError(msg);
+        toast.error(msg);
       }
     } catch {
-      setError("An error occurred. Please try again.");
+      const msg = "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

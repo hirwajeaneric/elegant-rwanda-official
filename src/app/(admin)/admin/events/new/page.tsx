@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useCategories } from "@/lib/hooks/use-categories";
@@ -50,7 +51,7 @@ export default function NewEventPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Creating event:", formData);
-    alert("Event created successfully!");
+    toast.success("Event created successfully!");
     router.push("/admin/events");
   };
 

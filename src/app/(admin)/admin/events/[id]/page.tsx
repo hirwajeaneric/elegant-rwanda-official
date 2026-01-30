@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { events, Event } from "@/data/events";
 import { useCategories } from "@/lib/hooks/use-categories";
+import { toast } from "sonner";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
@@ -84,7 +85,7 @@ export default function EventDetailPage() {
   const handleSave = () => {
     console.log("Saving event:", formData);
     setIsEditing(false);
-    alert("Event saved successfully!");
+    toast.success("Event saved successfully!");
   };
 
   const handleAddArrayItem = (field: "highlights" | "activities", value: string) => {

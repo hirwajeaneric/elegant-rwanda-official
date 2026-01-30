@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { vehicles, Vehicle } from "@/data/car-rental";
+import { toast } from "sonner";
 import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
@@ -108,7 +109,7 @@ export default function VehicleDetailPage() {
   const handleSave = () => {
     console.log("Saving vehicle:", formData);
     setIsEditing(false);
-    alert("Vehicle saved successfully!");
+    toast.success("Vehicle saved successfully!");
   };
 
   const handleAddFeature = () => {
