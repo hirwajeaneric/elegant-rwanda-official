@@ -79,8 +79,8 @@ export function FleetGallery() {
               key={category}
               onClick={() => setActiveCategory(category)}
               className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${activeCategory === category
-                  ? "bg-primary text-white shadow-lg"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+                ? "bg-primary text-white shadow-lg"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
             >
               {category === "All" ? `All (${vehicles.length})` : `${category} (${vehicles.filter(v => v.category === category).length})`}
@@ -113,8 +113,8 @@ export function FleetGallery() {
                 {/* Availability Badge */}
                 <div className="absolute top-4 right-4">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${vehicle.available
-                      ? "bg-green-500 text-white"
-                      : "bg-red-500 text-white"
+                    ? "bg-green-500 text-white"
+                    : "bg-red-500 text-white"
                     }`}>
                     {vehicle.available ? "Available" : "Unavailable"}
                   </span>
