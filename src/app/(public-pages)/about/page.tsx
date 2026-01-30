@@ -1,8 +1,9 @@
-import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import Image from "next/image";
+import { buildMetadata, buildOrganizationJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 interface TeamMember {
   id: string;
@@ -12,17 +13,24 @@ interface TeamMember {
   image: string | null;
 }
 
-export const metadata: Metadata = {
-  title: "About Elegant Travel and Tours: Premier Unique Travel Experts in Rwanda",
-  description: "Learn about Elegant Travel and Tours's mission to provide exceptional Unique travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
+export const metadata = buildMetadata({
+  title: "About Elegant Travel and Tours: Premier Luxury Travel Experts in Rwanda",
+  description:
+    "Learn about Elegant Travel and Tours's mission to provide exceptional luxury travel experiences in Rwanda. Discover our story, values, and dedicated team of travel professionals.",
+  path: "about",
   keywords: [
     "About Elegant Travel and Tours",
     "Rwanda travel company",
-    "Unique travel experts",
+    "Luxury travel experts",
     "Tourism Rwanda",
-    "Travel professionals Rwanda"
+    "Travel professionals Rwanda",
   ],
-};
+});
+
+const aboutJsonLd = [
+  buildOrganizationJsonLd(),
+  buildBreadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "About", path: "/about" }]),
+];
 
 async function getTeamMembers(): Promise<TeamMember[]> {
   try {
@@ -47,6 +55,7 @@ export default async function AboutPage() {
   const team = await getTeamMembers();
   return (
     <PageWrapper>
+      <JsonLd data={aboutJsonLd} />
       <div className="container-elegant py-16">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">

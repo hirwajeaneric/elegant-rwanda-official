@@ -18,7 +18,7 @@ const services = [
     description: "Custom itineraries for unforgettable adventures across Rwanda&apos;s most stunning landscapes.",
     features: ["Gorilla Trekking", "Cultural Experiences", "Unique Lodges", "Expert Guides"],
     href: "/tours",
-    image: "/pexels-isaac-mitchell-278678383-16884778.jpg"
+    image: "/hero-image.jpg"
   },
   {
     icon: Car,
@@ -79,7 +79,7 @@ const services = [
 
 export function ServicesOverview() {
   return (
-    <section className="section-padding bg-gradient-to-br from-muted/30 to-muted/50">
+    <section className="section-padding bg-linear-to-br from-muted/30 to-muted/50">
       <div className="container-elegant">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -106,13 +106,13 @@ export function ServicesOverview() {
                 <div className="absolute inset-0 bg-cover bg-center" style={{
                   backgroundImage: `url('${service.image}')`
                 }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/70 to-black/50" />
               </div>
 
               {/* Content Container */}
               <div className="relative z-10">
                 {/* Service Icon */}
-                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-16 h-16 rounded-xl bg-linear-to-br flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <service.icon className="h-8 w-8 text-white" />
                 </div>
 
@@ -130,7 +130,7 @@ export function ServicesOverview() {
                   <ul className="space-y-2">
                     {service.features.map((feature) => (
                       <li key={feature} className="flex items-center space-x-2 text-sm text-white/80">
-                        <div className={`w-2 h-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600`} />
+                        <div className={`w-2 h-2 rounded-full bg-linear-to-r from-emerald-500 to-emerald-600`} />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -157,7 +157,7 @@ export function ServicesOverview() {
         <div className="text-center mt-16 rounded-2xl">
           <div className="text-white rounded-2xl p-8 shadow-lg border border-border relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('/landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg')] rounded-2xl bg-cover bg-center bg-no-repeat" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
+            <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/70 to-black/60" />
             <div className="relative z-10 rounded-2xl">
               <h3 className="text-xl md:text-4xl font-display font-semibold mb-4 text-yellow-500">
                 Need a Custom Package?

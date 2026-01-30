@@ -1,29 +1,37 @@
-import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { buildMetadata, buildOrganizationJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Privacy Policy | Elegant Travel and Tours",
-  description: "Learn about how Elegant Travel and Tours collects, uses, and protects your personal information. Read our comprehensive privacy policy.",
+  description:
+    "Learn about how Elegant Travel and Tours collects, uses, and protects your personal information. Read our comprehensive privacy policy.",
+  path: "privacy",
   keywords: "privacy policy, data protection, personal information, Elegant Travel and Tours",
   openGraph: {
     title: "Privacy Policy | Elegant Travel and Tours",
     description: "Learn about how Elegant Travel and Tours collects, uses, and protects your personal information.",
     type: "website",
-    url: "https://elegantrwanda.com/privacy",
   },
   twitter: {
     card: "summary_large_image",
     title: "Privacy Policy | Elegant Travel and Tours",
     description: "Learn about how Elegant Travel and Tours collects, uses, and protects your personal information.",
   },
-};
+});
+
+const privacyJsonLd = [
+  buildOrganizationJsonLd(),
+  buildBreadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Privacy Policy", path: "/privacy" }]),
+];
 
 export default function PrivacyPolicyPage() {
   return (
     <PageWrapper>
-      <section className="py-24 bg-gradient-to-r from-primary to-primary/80">
+      <JsonLd data={privacyJsonLd} />
+      <section className="py-24 bg-linear-to-r from-primary to-primary/80">
         <div className="container-elegant text-center text-white">
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
             Privacy Policy

@@ -11,10 +11,10 @@ export function HeroSection() {
     <section className="hero-section relative">
       {/* Background Video/Image */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/70 to-black/60 z-10" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/50 via-black/70 to-black/60 z-10" />
         
-        <div className="w-full h-full inset-0 bg-gradient-to-r from-black/50 via-black/70 to-black/60">
-          <div className="absolute inset-0 bg-[url('/pexels-isaac-mitchell-278678383-16884778.jpg')] bg-cover bg-center bg-no-repeat" />
+        <div className="w-full h-full inset-0 bg-linear-to-r from-black/50 via-black/70 to-black/60">
+          <div className="absolute inset-0 bg-[url('/hero-image.jpg')] bg-cover bg-center bg-no-repeat" />
         </div>
       </div>
 

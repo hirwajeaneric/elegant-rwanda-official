@@ -40,9 +40,9 @@ export function TourHero({ tour }: TourHeroProps) {
         />
       )}
       {!backgroundImage && (
-        <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary to-secondary" />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/80 to-black/70" />
+      <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/80 to-black/70" />
       
       {/* Action Buttons */}
       <div className="flex space-x-2 z-10 container-elegant mx-auto w-full justify-end p-4">

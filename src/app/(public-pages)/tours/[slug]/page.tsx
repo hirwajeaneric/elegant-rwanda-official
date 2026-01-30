@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { TourHero } from "@/components/tours/TourHero";
@@ -7,6 +6,12 @@ import { TourItinerary } from "@/components/tours/TourItinerary";
 import { TourGallery } from "@/components/tours/TourGallery";
 import { TourBooking } from "@/components/tours/TourBooking";
 import { RelatedTours } from "@/components/tours/RelatedTours";
+import {
+  buildMetadata,
+  buildBreadcrumbJsonLd,
+  buildTourJsonLd,
+} from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 interface TourPageProps {
   params: Promise<{ slug: string }>;
@@ -71,37 +76,42 @@ function mapApiTourToTour(apiTour: any) {
   };
 }
 
-export async function generateMetadata({ params }: TourPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: TourPageProps) {
   const { slug } = await params;
   const apiTour = await getTourBySlug(slug);
-  
+
   if (!apiTour) {
-    return {
+    return buildMetadata({
       title: "Tour Not Found | Elegant Travel and Tours",
-    };
+      description: "The requested tour could not be found.",
+      path: "tours",
+      noIndex: true,
+    });
   }
 
   const tour = mapApiTourToTour(apiTour);
-
-  return {
-    title: tour.metaTitle || tour.title,
-    description: tour.metaDescription || tour.description,
+  const description =
+    tour.metaDescription || tour.description.replace(/<[^>]*>/g, "").substring(0, 160);
+  return buildMetadata({
+    title: `${tour.metaTitle || tour.title} - Rwanda Tours | Elegant Travel and Tours`,
+    description,
+    path: `tours/${tour.slug}`,
     keywords: tour.highlights.join(", ") + ", " + tour.category + ", Rwanda tours",
     openGraph: {
       title: tour.metaTitle || tour.title,
-      description: tour.metaDescription || tour.description,
+      description,
       type: "website",
-      url: `https://elegantrwanda.com/tours/${tour.slug}`,
-      images: tour.images.length > 0 ? [
-        {
-          url: `/${tour.images[0]}`,
-          width: 1200,
-          height: 630,
-          alt: tour.title,
-        },
-      ] : [],
+      images:
+        tour.images?.length > 0
+          ? [{ url: `/${tour.images[0]}`, width: 1200, height: 630, alt: tour.title }]
+          : undefined,
     },
-  };
+    twitter: {
+      card: "summary_large_image",
+      title: tour.metaTitle || tour.title,
+      description,
+    },
+  });
 }
 
 export default async function TourPage({ params }: TourPageProps) {
@@ -115,8 +125,29 @@ export default async function TourPage({ params }: TourPageProps) {
   const tour = mapApiTourToTour(apiTour);
   const relatedTours = await getRelatedTours(tour.category, tour.id);
 
+  const tourDescription =
+    tour.metaDescription || tour.description.replace(/<[^>]*>/g, "").substring(0, 200);
+  const toursJsonLd = [
+    buildBreadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Tours", path: "/tours" },
+      { name: tour.title, path: `/tours/${tour.slug}` },
+    ]),
+    buildTourJsonLd({
+      title: tour.title,
+      description: tourDescription,
+      slug: tour.slug,
+      images: tour.images,
+      price: tour.price,
+      duration: tour.duration,
+      location: tour.location,
+      category: tour.category,
+    }),
+  ];
+
   return (
     <PageWrapper>
+      <JsonLd data={toursJsonLd} />
       <TourHero tour={tour} />
       <div className="container-elegant py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">

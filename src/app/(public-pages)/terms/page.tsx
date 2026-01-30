@@ -1,29 +1,39 @@
-import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { buildMetadata, buildOrganizationJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Terms of Service | Elegant Travel and Tours",
-  description: "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
+  description:
+    "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
+  path: "terms",
   keywords: "terms of service, terms and conditions, Elegant Travel and Tours, travel terms",
   openGraph: {
     title: "Terms of Service | Elegant Travel and Tours",
-    description: "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
+    description:
+      "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
     type: "website",
-    url: "https://elegantrwanda.com/terms",
   },
   twitter: {
     card: "summary_large_image",
     title: "Terms of Service | Elegant Travel and Tours",
-    description: "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
+    description:
+      "Read our terms of service and conditions for using Elegant Travel and Tours's travel services, tours, and accommodations.",
   },
-};
+});
+
+const termsJsonLd = [
+  buildOrganizationJsonLd(),
+  buildBreadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Terms of Service", path: "/terms" }]),
+];
 
 export default function TermsOfServicePage() {
   return (
     <PageWrapper>
-      <section className="py-24 bg-gradient-to-r from-primary to-primary/80">
+      <JsonLd data={termsJsonLd} />
+      <section className="py-24 bg-linear-to-r from-primary to-primary/80">
         <div className="container-elegant text-center text-white">
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
             Terms of Service

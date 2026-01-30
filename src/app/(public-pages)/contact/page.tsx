@@ -1,25 +1,34 @@
-import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import ContactForm from "@/components/forms/ContactForm";
+import { buildMetadata, buildOrganizationJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Contact Elegant Travel and Tours: Inquire About Tours & Services",
-  description: "Get in touch with Elegant Travel and Tours for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
+  description:
+    "Get in touch with Elegant Travel and Tours for personalized travel quotes, tour bookings, and expert travel advice. We're here to help plan your perfect Rwanda adventure.",
+  path: "contact",
   keywords: [
     "Contact Elegant Travel and Tours",
     "Rwanda travel inquiry",
     "Tour booking Rwanda",
     "Travel consultation Rwanda",
-    "Customer support Rwanda"
+    "Customer support Rwanda",
   ],
-};
+});
+
+const contactJsonLd = [
+  buildOrganizationJsonLd(),
+  buildBreadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]),
+];
 
 export default function ContactPage() {
   return (
     <PageWrapper>
+      <JsonLd data={contactJsonLd} />
       <div className="container-elegant py-16">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">

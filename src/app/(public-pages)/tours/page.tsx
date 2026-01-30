@@ -1,26 +1,47 @@
-import { Metadata } from "next";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { ToursHero } from "@/components/tours/ToursHero";
 import { ToursGrid } from "@/components/tours/ToursGrid";
 import { ToursSidebar } from "@/components/tours/ToursSidebar";
+import {
+  buildMetadata,
+  buildOrganizationJsonLd,
+  buildBreadcrumbJsonLd,
+  buildServiceJsonLd,
+} from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Unique Rwanda Tours: Gorilla Treks, Safaris & Cultural Experiences | Elegant Travel and Tours",
-  description: "Discover our exclusive Unique tours in Rwanda including gorilla trekking, wildlife safaris, cultural experiences, and Unique retreats. Expert guides and personalized itineraries.",
-  keywords: "Rwanda tours, gorilla trekking, Unique safaris, cultural tours, wildlife tours, Rwanda travel packages",
+export const metadata = buildMetadata({
+  title: "Luxury Rwanda Tours: Gorilla Treks, Safaris & Cultural Experiences | Elegant Travel and Tours",
+  description:
+    "Discover our exclusive luxury tours in Rwanda including gorilla trekking, wildlife safaris, cultural experiences, and luxury retreats. Expert guides and personalized itineraries.",
+  path: "tours",
+  keywords:
+    "Rwanda tours, gorilla trekking, luxury safaris, cultural tours, wildlife tours, Rwanda travel packages",
   openGraph: {
-    title: "Unique Rwanda Tours: Gorilla Treks, Safaris & Cultural Experiences | Elegant Travel and Tours",
-    description: "Discover our exclusive Unique tours in Rwanda including gorilla trekking, wildlife safaris, cultural experiences, and Unique retreats.",
+    title: "Luxury Rwanda Tours: Gorilla Treks, Safaris & Cultural Experiences | Elegant Travel and Tours",
+    description:
+      "Discover our exclusive luxury tours in Rwanda including gorilla trekking, wildlife safaris, cultural experiences, and luxury retreats.",
     type: "website",
-    url: "https://elegantrwanda.com/tours",
   },
-};
+});
+
+const toursJsonLd = [
+  buildOrganizationJsonLd(),
+  buildBreadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Tours", path: "/tours" }]),
+  buildServiceJsonLd({
+    name: "Luxury Rwanda Tours",
+    description:
+      "Gorilla trekking, wildlife safaris, cultural experiences, and luxury retreats in Rwanda. Expert guides and personalized itineraries.",
+    path: "tours",
+  }),
+];
 
 export default function ToursPage() {
   return (
     <PageWrapper>
+      <JsonLd data={toursJsonLd} />
       <ToursHero />
       <div className="container-elegant py-16">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">

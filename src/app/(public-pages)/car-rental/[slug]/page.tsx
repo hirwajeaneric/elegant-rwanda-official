@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { CarRentalGalleryHero } from "@/components/car-rental/CarRentalGalleryHero";
@@ -6,6 +5,12 @@ import { CarRentalDetails } from "@/components/car-rental/CarRentalDetails";
 import { CarRentalBooking } from "@/components/car-rental/CarRentalBooking";
 import { RelatedVehicles } from "@/components/car-rental/RelatedVehicles";
 import type { Vehicle } from "@/data/car-rental";
+import {
+  buildMetadata,
+  buildBreadcrumbJsonLd,
+  buildProductJsonLd,
+} from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 interface CarRentalPageProps {
   params: Promise<{ slug: string }>;
@@ -136,32 +141,42 @@ async function getRelatedVehicles(category: string, excludeSlug: string): Promis
   }
 }
 
-export async function generateMetadata({ params }: CarRentalPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: CarRentalPageProps) {
   const { slug } = await params;
   const vehicle = await getVehicleBySlug(slug);
-  
+
   if (!vehicle) {
-    return {
+    return buildMetadata({
       title: "Vehicle Not Found | Elegant Travel and Tours",
-    };
+      description: "The requested vehicle could not be found.",
+      path: "car-rental",
+      noIndex: true,
+    });
   }
 
-  return {
+  const description =
+    vehicle.shortDescription ||
+    vehicle.description.replace(/<[^>]*>/g, "").substring(0, 160);
+  return buildMetadata({
     title: `${vehicle.name} - Car Rental in Rwanda | Elegant Travel and Tours`,
-    description: vehicle.shortDescription || vehicle.description.substring(0, 160),
-    keywords: `car rental Rwanda, ${vehicle.name}, ${vehicle.category} rental, Unique car hire Rwanda`,
+    description,
+    path: `car-rental/${vehicle.slug}`,
+    keywords: `car rental Rwanda, ${vehicle.name}, ${vehicle.category} rental, luxury car hire Rwanda`,
     openGraph: {
       title: `${vehicle.name} - Car Rental in Rwanda`,
-      description: vehicle.shortDescription || vehicle.description.substring(0, 160),
+      description,
       type: "website",
-      url: `https://elegantrwanda.com/car-rental/${vehicle.slug}`,
+      images:
+        vehicle.images?.length > 0
+          ? [{ url: vehicle.images[0], alt: vehicle.name }]
+          : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: `${vehicle.name} - Car Rental in Rwanda`,
-      description: vehicle.shortDescription || vehicle.description.substring(0, 160),
+      description,
     },
-  };
+  });
 }
 
 export default async function CarRentalPage({ params }: CarRentalPageProps) {
@@ -174,8 +189,30 @@ export default async function CarRentalPage({ params }: CarRentalPageProps) {
 
   const relatedVehicles = await getRelatedVehicles(vehicle.category, vehicle.slug);
 
+  const description =
+    vehicle.shortDescription ||
+    vehicle.description.replace(/<[^>]*>/g, "").substring(0, 200);
+  const carRentalJsonLd = [
+    buildBreadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Car Rental", path: "/car-rental" },
+      { name: vehicle.name, path: `/car-rental/${vehicle.slug}` },
+    ]),
+    buildProductJsonLd({
+      name: vehicle.name,
+      description,
+      slug: vehicle.slug,
+      pathSegment: "car-rental",
+      image: vehicle.images?.[0],
+      price: vehicle.dailyRate,
+      priceCurrency: "USD",
+      category: vehicle.category,
+    }),
+  ];
+
   return (
     <PageWrapper>
+      <JsonLd data={carRentalJsonLd} />
       {/* Gallery Hero Section */}
       <CarRentalGalleryHero vehicle={vehicle} />
       

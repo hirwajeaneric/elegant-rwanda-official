@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { BlogPostContent } from "@/components/blog/BlogPostContent";
@@ -6,6 +5,12 @@ import { BlogPostSidebar } from "@/components/blog/BlogPostSidebar";
 import { Calendar, Clock, User, Bookmark } from "lucide-react";
 import { ShareButton } from "@/components/ui/share-button";
 import { formatDate } from "@/lib/utils";
+import {
+  buildMetadata,
+  buildBreadcrumbJsonLd,
+  buildArticleJsonLd,
+} from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -56,35 +61,40 @@ async function getRelatedPosts(categoryId: string | null, currentSlug: string) {
   }
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = await getBlogPost(slug);
 
   if (!post) {
-    return {
+    return buildMetadata({
       title: "Post Not Found | Elegant Travel and Tours",
-    };
+      description: "The requested blog post could not be found.",
+      path: "blog",
+      noIndex: true,
+    });
   }
 
-  return {
-    title: post.metaTitle || post.title,
-    description: post.metaDescription || post.excerpt,
+  const title = post.metaTitle || post.title;
+  const description = post.metaDescription || post.excerpt;
+  return buildMetadata({
+    title: title,
+    description,
+    path: `blog/${post.slug}`,
     keywords: (post.tags || []).join(", "),
     openGraph: {
-      title: post.metaTitle || post.title,
-      description: post.metaDescription || post.excerpt,
+      title,
+      description,
       type: "article",
-      url: `https://elegantrwanda.com/blog/${post.slug}`,
-      images: post.featuredImage ? [
-        {
-          url: post.featuredImage,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ] : [],
+      images: post.featuredImage
+        ? [{ url: post.featuredImage, width: 1200, height: 630, alt: post.title }]
+        : undefined,
     },
-  };
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  });
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -97,8 +107,35 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const relatedPosts = await getRelatedPosts(post.categoryId, post.slug);
 
+  const publishedAt =
+    typeof post.publishDate === "string"
+      ? post.publishDate
+      : post.publishedAt ?? new Date().toISOString();
+  const modifiedAt =
+    typeof (post as { updatedAt?: string }).updatedAt === "string"
+      ? (post as { updatedAt: string }).updatedAt
+      : publishedAt;
+  const blogJsonLd = [
+    buildBreadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: post.title, path: `/blog/${post.slug}` },
+    ]),
+    buildArticleJsonLd({
+      title: post.title,
+      description: post.metaDescription || post.excerpt,
+      slug: post.slug,
+      featuredImage: post.featuredImage,
+      publishedAt,
+      modifiedAt,
+      author: post.author ?? undefined,
+      tags: post.tags ?? undefined,
+    }),
+  ];
+
   return (
     <PageWrapper>
+      <JsonLd data={blogJsonLd} />
       {/* Hero Section */}
       <div className="relative h-96 md:h-[500px] overflow-hidden">
         {post.featuredImage ? (
