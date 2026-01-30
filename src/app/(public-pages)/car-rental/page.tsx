@@ -1,8 +1,6 @@
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { CarRentalMainHero } from "@/components/car-rental/CarRentalMainHero";
-import { RentalOptions } from "@/components/car-rental/RentalOptions";
 import { FleetGallery } from "@/components/car-rental/FleetGallery";
-import { CarBookingForm } from "@/components/car-rental/CarBookingForm";
 import { TermsConditions } from "@/components/car-rental/TermsConditions";
 import { CarRentalFAQ } from "@/components/car-rental/CarRentalFAQ";
 import {
@@ -55,8 +53,8 @@ export default function CarRentalPage() {
       <JsonLd data={carRentalJsonLd} />
       <CarRentalMainHero />
       <FleetGallery />
-      <RentalOptions />
-      <CarBookingForm />
+      {/* <RentalOptions />
+      <CarBookingForm /> */}
       <TermsConditions />
       <CarRentalFAQ />
     </PageWrapper>
