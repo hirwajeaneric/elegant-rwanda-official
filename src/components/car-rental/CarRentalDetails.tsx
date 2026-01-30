@@ -136,50 +136,56 @@ export function CarRentalDetails({ vehicle }: CarRentalDetailsProps) {
       </div>
 
       {/* What's Included, Requirements, and Insurance Details - Last */}
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* What&apos;s Included */}
-        <div className="bg-green-50 rounded-2xl p-8 border border-green-200">
-          <h3 className="text-2xl font-display font-semibold text-green-900 mb-4 flex items-center">
-            <Check className="h-6 w-6 text-green-600 mr-3" />
+        <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
+          <h3 className="text-xl font-display font-semibold text-gray-900 mb-4 flex items-center">
+            <div className="bg-primary/10 rounded-full p-2 mr-3">
+              <Check className="h-5 w-5 text-primary" />
+            </div>
             What&apos;s Included
           </h3>
           <ul className="space-y-3">
             {vehicle.includedServices.map((service, index) => (
               <li key={index} className="flex items-start space-x-3">
-                <Check className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
-                <span className="text-green-800">{service}</span>
+                <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <span className="text-gray-700">{service}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Requirements */}
-        <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
-          <h3 className="text-2xl font-display font-semibold text-blue-900 mb-4 flex items-center">
-            <Shield className="h-6 w-6 text-blue-600 mr-3" />
+        <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
+          <h3 className="text-xl font-display font-semibold text-gray-900 mb-4 flex items-center">
+            <div className="bg-primary/10 rounded-full p-2 mr-3">
+              <Shield className="h-5 w-5 text-primary" />
+            </div>
             Requirements
           </h3>
           <ul className="space-y-3">
             {vehicle.requirements.map((requirement, index) => (
               <li key={index} className="flex items-start space-x-3">
-                <div className="h-2 w-2 bg-blue-600 rounded-full mt-2 shrink-0" />
-                <span className="text-blue-800">{requirement}</span>
+                <div className="h-2 w-2 bg-primary rounded-full mt-2 shrink-0" />
+                <span className="text-gray-700">{requirement}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Insurance Information */}
-        <div className="bg-yellow-50 rounded-2xl p-8 border border-yellow-200">
-          <h3 className="text-2xl font-display font-semibold text-yellow-900 mb-4 flex items-center">
-            <Shield className="h-6 w-6 text-yellow-600 mr-3" />
+        <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
+          <h3 className="text-xl font-display font-semibold text-gray-900 mb-4 flex items-center">
+            <div className="bg-primary/10 rounded-full p-2 mr-3">
+              <Shield className="h-5 w-5 text-primary" />
+            </div>
             Insurance Details
           </h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-yellow-800">Coverage Included</span>
+              <span className="text-gray-700">Coverage Included</span>
               <span
-                className={`font-semibold ${vehicle.insurance.included ? "text-green-600" : "text-red-600"
+                className={`font-semibold ${vehicle.insurance.included ? "text-primary" : "text-gray-500"
                   }`}
               >
                 {vehicle.insurance.included ? "Yes" : "No"}
@@ -187,11 +193,11 @@ export function CarRentalDetails({ vehicle }: CarRentalDetailsProps) {
             </div>
             {vehicle.insurance.included && (
               <>
-                <div className="text-sm text-yellow-700">
-                  <strong>Coverage:</strong> {vehicle.insurance.coverage}
+                <div className="text-sm text-gray-600">
+                  <strong className="text-gray-900">Coverage:</strong> {vehicle.insurance.coverage}
                 </div>
-                <div className="text-sm text-yellow-700">
-                  <strong>Excess:</strong> {vehicle.insurance.excess}
+                <div className="text-sm text-gray-600">
+                  <strong className="text-gray-900">Excess:</strong> {vehicle.insurance.excess}
                 </div>
               </>
             )}

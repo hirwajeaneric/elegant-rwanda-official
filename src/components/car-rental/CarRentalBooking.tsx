@@ -128,13 +128,13 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
     <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6" id="booking">
       <div>
         <h2 className="text-2xl font-display font-bold text-foreground mb-3">
-          Book Your Car Rental
+          Book this <span className="text-primary">{vehicle.name}</span>
         </h2>
-        <p className="text-sm text-muted-foreground mb-6">
-          Request a quote for the {vehicle.name}. We&apos;ll respond within 1 hour.
+        <p className="text-sm text-muted-foreground mb-4">
+          Request a quote for this {vehicle.name}. We&apos;ll respond within 1 hour.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Rental Type */}
           <div className="space-y-2">
             <Label htmlFor="rentalType" className="text-sm font-medium">
@@ -340,44 +340,6 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
             )}
           </Button>
         </form>
-
-        {/* Rental Summary */}
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <h3 className="text-lg font-semibold text-foreground mb-4">
-            Rental Summary
-          </h3>
-          <div className="space-y-3 text-sm">
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Vehicle</span>
-              <span className="font-semibold text-foreground">{vehicle.name}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Category</span>
-              <span className="font-semibold text-foreground">{vehicle.category}</span>
-            </div>
-            {formData.startDate && formData.endDate && (
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Duration</span>
-                <span className="font-semibold text-foreground">{calculateDays()} days</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* What's Included - Compact */}
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <h3 className="text-lg font-semibold text-primary mb-3">
-            What&apos;s Included
-          </h3>
-          <ul className="space-y-2">
-            {vehicle.includedServices.slice(0, 4).map((service, index) => (
-              <li key={index} className="flex items-center space-x-2 text-sm">
-                <CheckCircle className="h-4 w-4 text-primary shrink-0" />
-                <span className="text-foreground">{service}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     </div>
   );
