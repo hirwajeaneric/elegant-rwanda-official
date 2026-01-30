@@ -7,7 +7,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
     const search = searchParams.get("search");
-    const limit = parseInt(searchParams.get("limit") || "50");
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "12");
+    const skip = (page - 1) * limit;
 
     const where: Record<string, unknown> = {
       available: true,
@@ -27,15 +29,26 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    const vehicles = await prisma.vehicle.findMany({
-      where,
-      take: limit,
-      orderBy: { createdAt: "desc" },
-    });
+    const [vehicles, total] = await Promise.all([
+      prisma.vehicle.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.vehicle.count({ where }),
+    ]);
 
     return NextResponse.json({
       success: true,
       vehicles,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+        hasMore: page * limit < total,
+      },
     });
   } catch (error) {
     console.error("List public vehicles error:", error);

@@ -3,14 +3,16 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Car, Users, Zap, Shield } from "lucide-react";
+import { Car, Users, Zap, Shield, MapPin } from "lucide-react";
 
 type Vehicle = {
   id: string;
   slug: string;
   name: string;
   category: string;
+  make: string;
   images: string[];
+  pickupLocations: string[];
   available: boolean;
 };
 
@@ -91,11 +93,15 @@ export function FleetGallery() {
         {/* Vehicle Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredVehicles.map((vehicle, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-lg border border-border/50 overflow-hidden group hover:shadow-xl transition-all duration-300">
+            <Link
+              key={index}
+              href={`/car-rental/${vehicle.slug}`}
+              className="bg-white rounded-2xl shadow-lg border border-border/50 overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer block"
+            >
               {/* Vehicle Image */}
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={vehicle.images[0]}
+                  src={vehicle.images[0] || "/placeholder-car.jpg"}
                   alt={vehicle.name}
                   width={400}
                   height={192}
@@ -127,18 +133,38 @@ export function FleetGallery() {
               </div>
 
               {/* Vehicle Details */}
-              <div className="p-6 flex flex-col justify-between">
-                {/* Action Buttons */}
-                <div className="flex space-x-3">
-                  <Link
-                    href={`/car-rental/${vehicle.slug}`}
-                    className="flex-1 bg-primary text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors text-center"
-                  >
-                    View Details
-                  </Link>
+              <div className="p-6">
+                {/* Make */}
+                <div className="mb-3">
+                  <p className="text-base font-semibold text-gray-900">{vehicle.make}</p>
                 </div>
+
+                {/* Pickup Locations */}
+                {vehicle.pickupLocations && vehicle.pickupLocations.length > 0 && (
+                  <div className="mb-3">
+                    <p className="text-sm text-muted-foreground mb-2 flex items-center gap-1">
+                      <MapPin className="h-4 w-4" />
+                      Pickup Locations
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {vehicle.pickupLocations.slice(0, 2).map((location, locIndex) => (
+                        <span
+                          key={locIndex}
+                          className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-md"
+                        >
+                          {location}
+                        </span>
+                      ))}
+                      {vehicle.pickupLocations.length > 2 && (
+                        <span className="text-xs text-muted-foreground">
+                          +{vehicle.pickupLocations.length - 2} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
