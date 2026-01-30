@@ -101,6 +101,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "dotenv": "^16.4.5",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
