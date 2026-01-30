@@ -261,6 +261,9 @@ importers:
       chromatic:
         specifier: ^13.3.0
         version: 13.3.4
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
       eslint:
         specifier: ^9
         version: 9.39.1(jiti@2.6.1)
