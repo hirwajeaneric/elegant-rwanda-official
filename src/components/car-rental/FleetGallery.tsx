@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Car, Users, Zap, Shield, MapPin } from "lucide-react";
+import { Car, Users, Zap, Shield, MapPin, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type Vehicle = {
   id: string;
@@ -16,33 +17,96 @@ type Vehicle = {
   available: boolean;
 };
 
+type PaginationInfo = {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+  hasMore: boolean;
+};
+
 export function FleetGallery() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [pagination, setPagination] = useState<PaginationInfo | null>(null);
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    async function fetchVehicles() {
-      try {
-        const res = await fetch("/api/public/vehicles?limit=100");
-        const data = await res.json();
-        if (data.success && Array.isArray(data.vehicles)) {
+  const PAGE_SIZE = 12;
+
+  const fetchVehicles = async (page: number = 1, category?: string, append: boolean = false) => {
+    try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: PAGE_SIZE.toString(),
+      });
+      if (category && category !== "all") {
+        params.append("category", category);
+      }
+
+      const res = await fetch(`/api/public/vehicles?${params.toString()}`);
+      const data = await res.json();
+      if (data.success && Array.isArray(data.vehicles)) {
+        if (append) {
+          setVehicles((prev) => [...prev, ...data.vehicles]);
+        } else {
           setVehicles(data.vehicles);
         }
-      } catch (error) {
-        console.error("Failed to fetch vehicles:", error);
-      } finally {
-        setLoading(false);
+        if (data.pagination) {
+          setPagination(data.pagination);
+        }
       }
+    } catch (error) {
+      console.error("Failed to fetch vehicles:", error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
     }
-    fetchVehicles();
-  }, []);
+  };
+
+  const fetchCategoryCounts = async () => {
+    try {
+      const categories = ["Economy", "Compact", "SUV", "Unique", "Minivan", "Adventure", "Executive"];
+      const counts: Record<string, number> = {};
+
+      // Fetch count for each category
+      const promises = categories.map(async (cat) => {
+        const res = await fetch(`/api/public/vehicles?category=${cat}&limit=1`);
+        const data = await res.json();
+        return { category: cat, total: data.pagination?.total || 0 };
+      });
+
+      const results = await Promise.all(promises);
+      results.forEach(({ category, total }) => {
+        counts[category] = total;
+      });
+
+      // Fetch total count
+      const totalRes = await fetch(`/api/public/vehicles?limit=1`);
+      const totalData = await totalRes.json();
+      counts.all = totalData.pagination?.total || 0;
+
+      setCategoryCounts(counts);
+    } catch (error) {
+      console.error("Failed to fetch category counts:", error);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchVehicles(1, activeCategory, false);
+    fetchCategoryCounts();
+  }, [activeCategory]);
+
+  const handleLoadMore = () => {
+    if (pagination && pagination.hasMore && !loadingMore) {
+      setLoadingMore(true);
+      fetchVehicles(pagination.page + 1, activeCategory === "all" ? undefined : activeCategory, true);
+    }
+  };
 
   const categories = ["All", "Economy", "Compact", "SUV", "Unique", "Minivan", "Adventure", "Executive"];
-
-  const filteredVehicles = activeCategory === "all"
-    ? vehicles
-    : vehicles.filter(vehicle => vehicle.category === activeCategory);
 
   if (loading) {
     return (
@@ -85,14 +149,16 @@ export function FleetGallery() {
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
             >
-              {category === "All" ? `All (${vehicles.length})` : `${category} (${vehicles.filter(v => v.category === category).length})`}
+              {category === "All" 
+                ? `All (${categoryCounts.all || vehicles.length})` 
+                : `${category} (${categoryCounts[category] || 0})`}
             </button>
           ))}
         </div>
 
         {/* Vehicle Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredVehicles.map((vehicle, index) => (
+          {vehicles.map((vehicle, index) => (
             <Link
               key={index}
               href={`/car-rental/${vehicle.slug}`}
@@ -167,6 +233,28 @@ export function FleetGallery() {
             </Link>
           ))}
         </div>
+
+        {/* Load More Button */}
+        {pagination && pagination.hasMore && (
+          <div className="flex justify-center mt-12">
+            <Button
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+              variant="outline"
+              size="lg"
+              className="min-w-[200px]"
+            >
+              {loadingMore ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                `Load More (${pagination.total - vehicles.length} remaining)`
+              )}
+            </Button>
+          </div>
+        )}
 
         {/* Fleet Stats */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8">
