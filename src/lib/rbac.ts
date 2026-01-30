@@ -11,7 +11,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     { resource: "*", actions: ["*"] }, // Full access to everything
   ],
   CONTENT_MANAGER: [
-    { resource: "services", actions: ["create", "read", "update", "delete"] },
     { resource: "tours", actions: ["create", "read", "update", "delete"] },
     { resource: "car-rental", actions: ["create", "read", "update", "delete"] },
     { resource: "events", actions: ["create", "read", "update", "delete"] },
@@ -89,7 +88,6 @@ export function getAccessibleRoutes(userRole: UserRole | undefined): string[] {
 
   const allRoutes = [
     "/admin/dashboard",
-    "/admin/services",
     "/admin/tours",
     "/admin/car-rental",
     "/admin/events",

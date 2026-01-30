@@ -7,7 +7,6 @@ export interface Vehicle {
   shortDescription: string;
 
   images: string[];
-  features: string[];
   specifications: {
     passengers: number;
     doors: number;
@@ -63,15 +62,6 @@ export const vehicles: Vehicle[] = [
       "/pexels-mikebirdy-170811.jpg",
       "/pexels-mikebirdy-170811.jpg",
       "/pexels-mikebirdy-170811.jpg"
-    ],
-    features: [
-      "4 passengers",
-      "Automatic transmission",
-      "Air conditioning",
-      "Bluetooth connectivity",
-      "USB charging ports",
-      "Fuel efficient",
-      "Easy parking"
     ],
     specifications: {
       passengers: 4,
@@ -144,15 +134,6 @@ export const vehicles: Vehicle[] = [
       "/pexels-mikebirdy-170811.jpg",
       "/pexels-mikebirdy-170811.jpg"
     ],
-    features: [
-      "6 passengers",
-      "All-wheel drive",
-      "Spacious interior",
-      "Large luggage area",
-      "Premium audio system",
-      "Safety features",
-      "Comfortable seating"
-    ],
     specifications: {
       passengers: 6,
       doors: 5,
@@ -223,15 +204,6 @@ export const vehicles: Vehicle[] = [
       "/pexels-mikebirdy-170811.jpg",
       "/Landscape-of-the-Virunga-Mountains-in-Rwanda.jpg",
       "/hotel-exterior-daytime.jpg"
-    ],
-    features: [
-      "4 passengers",
-      "Premium leather seats",
-      "Advanced navigation",
-      "Premium audio system",
-      "Driver assistance",
-      "Unique amenities",
-      "Executive comfort"
     ],
     specifications: {
       passengers: 4,
@@ -305,15 +277,6 @@ export const vehicles: Vehicle[] = [
       "/pexels-esmihel-20200900.jpg",
       "/pexels-mikebirdy-170811.jpg"
     ],
-    features: [
-      "8 passengers",
-      "Large luggage area",
-      "Comfortable seating",
-      "Business ready",
-      "Sliding doors",
-      "High roof",
-      "Easy access"
-    ],
     specifications: {
       passengers: 8,
       doors: 5,
@@ -382,15 +345,6 @@ export const vehicles: Vehicle[] = [
     images: [
       "/pexels-esmihel-20200900.jpg",
       "/pexels-esmihel-20200900.jpg"
-    ],
-    features: [
-      "4 passengers",
-      "Off-road capability",
-      "Rugged design",
-      "Adventure ready",
-      "High ground clearance",
-      "4x4 system",
-      "Durable construction"
     ],
     specifications: {
       passengers: 4,
@@ -464,15 +418,6 @@ export const vehicles: Vehicle[] = [
       "/pexels-esmihel-20200900.jpg",
       "/pexels-esmihel-20200900.jpg",
       "/hotel-exterior-daytime.jpg"
-    ],
-    features: [
-      "4 passengers",
-      "Executive comfort",
-      "Premium audio system",
-      "Driver assistance",
-      "Unique interior",
-      "Advanced technology",
-      "Performance oriented"
     ],
     specifications: {
       passengers: 4,

@@ -4,9 +4,7 @@ import { useState, useEffect } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mountain, MessageSquare, FileText, Car, Calendar, Users, HelpCircle, Image as ImageIcon } from "lucide-react";
-import { services } from "@/data/services";
 import { blogPosts } from "@/data/blog";
-import { vehicles } from "@/data/car-rental";
 import { events } from "@/data/events";
 import { team } from "@/data/team";
 import { faqs } from "@/data/faq";
@@ -15,6 +13,7 @@ import { tours } from "@/data/tours";
 
 export default function DashboardPage() {
   const [testimonialStats, setTestimonialStats] = useState<{ value: number; total: number } | null>(null);
+  const [vehicleStats, setVehicleStats] = useState<{ value: number; total: number } | null>(null);
 
   useEffect(() => {
     async function fetchTestimonials() {
@@ -35,14 +34,26 @@ export default function DashboardPage() {
     fetchTestimonials();
   }, []);
 
+  useEffect(() => {
+    async function fetchVehicles() {
+      try {
+        const res = await fetch("/api/vehicles?limit=500");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.vehicles)) {
+          const total = data.vehicles.length;
+          const value = data.vehicles.filter((v: { status: string }) => v.status === "available").length;
+          setVehicleStats({ value, total });
+        } else {
+          setVehicleStats({ value: 0, total: 0 });
+        }
+      } catch {
+        setVehicleStats({ value: 0, total: 0 });
+      }
+    }
+    fetchVehicles();
+  }, []);
+
   const stats = [
-    {
-      name: "Services",
-      value: services.filter((s) => s.status === "active").length,
-      total: services.length,
-      icon: Mountain,
-      href: "/admin/services",
-    },
     {
       name: "Tours",
       value: tours.filter((t) => t.status === "active").length,
@@ -52,8 +63,8 @@ export default function DashboardPage() {
     },
     {
       name: "Car Rentals",
-      value: vehicles.filter((v) => v.status === "available").length,
-      total: vehicles.length,
+      value: vehicleStats?.value ?? "—",
+      total: vehicleStats?.total ?? "—",
       icon: Car,
       href: "/admin/car-rental",
     },

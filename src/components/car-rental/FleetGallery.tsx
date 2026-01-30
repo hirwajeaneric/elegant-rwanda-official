@@ -1,20 +1,63 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Car, Users, Zap, Shield } from "lucide-react";
-import { getAllVehicles } from "@/data/car-rental";
+
+type Vehicle = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  images: string[];
+  available: boolean;
+};
 
 export function FleetGallery() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const vehicles = getAllVehicles();
+  useEffect(() => {
+    async function fetchVehicles() {
+      try {
+        const res = await fetch("/api/public/vehicles?limit=100");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.vehicles)) {
+          setVehicles(data.vehicles);
+        }
+      } catch (error) {
+        console.error("Failed to fetch vehicles:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchVehicles();
+  }, []);
+
   const categories = ["All", "Economy", "Compact", "SUV", "Unique", "Minivan", "Adventure", "Executive"];
 
   const filteredVehicles = activeCategory === "all"
     ? vehicles
     : vehicles.filter(vehicle => vehicle.category === activeCategory);
+
+  if (loading) {
+    return (
+      <section className="section-padding bg-white">
+        <div className="container-elegant">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+              Our <span className="text-primary">Fleet</span> Gallery
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Loading vehicles...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="section-padding bg-white">
@@ -85,16 +128,6 @@ export function FleetGallery() {
 
               {/* Vehicle Details */}
               <div className="p-6 flex flex-col justify-between">
-                {/* Features */}
-                <div className="grid grid-cols-2 gap-2 mb-6">
-                  {vehicle.features.slice(0, 4).map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <div className="w-2 h-2 bg-primary rounded-full shrink-0" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-
                 {/* Action Buttons */}
                 <div className="flex space-x-3">
                   <Link

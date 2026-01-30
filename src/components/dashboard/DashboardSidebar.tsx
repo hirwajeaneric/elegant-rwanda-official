@@ -31,7 +31,6 @@ import { canAccessRoute } from "@/lib/rbac";
 const allNavigationItems = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
   { name: "Users", href: "/admin/users", icon: UserCog, roles: ["ADMIN"] },
-  { name: "Services", href: "/admin/services", icon: Mountain, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Tours", href: "/admin/tours", icon: Map, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Car Rental", href: "/admin/car-rental", icon: Car, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Events", href: "/admin/events", icon: Calendar, roles: ["ADMIN", "CONTENT_MANAGER"] },

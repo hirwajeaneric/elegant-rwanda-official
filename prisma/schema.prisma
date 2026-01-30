@@ -346,3 +346,54 @@ model Testimonial {
   @@index([service])
   @@index([createdAt])
 }
+
+enum VehicleCategory {
+  Economy
+  Compact
+  SUV
+  Unique
+  Minivan
+  Adventure
+  Executive
+}
+
+enum VehicleStatus {
+  available
+  rented
+  maintenance
+}
+
+model Vehicle {
+  id                 String          @id @default(cuid())
+  slug               String         @unique
+  name               String
+  category           VehicleCategory
+  description        String         // HTML content (rich text)
+  shortDescription   String
+  images             String[]
+  specifications     Json           // passengers, doors, transmission, fuelType, engineSize, power, fuelEfficiency, luggageCapacity, airConditioning, bluetooth, navigation, cruiseControl, parkingSensors, backupCamera, usbPorts, wifi
+  available          Boolean        @default(true)
+  pickupLocations    String[]
+  includedServices   String[]
+  additionalServices String[]
+  requirements       String[]
+  insurance          Json           // { included, coverage, excess }
+  make               String
+  model              String
+  year               Int
+  plateNumber        String
+  dailyRate          Float
+  status             VehicleStatus  @default(available)
+  location           String
+  mileage            Int            @default(0)
+  lastService        String?        // date string
+  nextService        String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([status])
+  @@index([available])
+  @@index([createdAt])
+}

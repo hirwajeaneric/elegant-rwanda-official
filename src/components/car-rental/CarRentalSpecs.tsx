@@ -101,7 +101,7 @@ export function CarRentalSpecs({ vehicle }: CarRentalSpecsProps) {
       </div>
 
       {/* Safety & Security */}
-      <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
+      {/* <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
         <h3 className="text-xl font-display font-semibold text-gray-900 mb-4">
           Safety & Security Features
         </h3>
@@ -135,7 +135,7 @@ export function CarRentalSpecs({ vehicle }: CarRentalSpecsProps) {
             </ul>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
