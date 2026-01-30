@@ -2,9 +2,22 @@
   "name": "elegant-rwanda",
   "version": "0.1.0",
   "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@firebase/util",
+      "@prisma/engines",
+      "@swc/core",
+      "bcrypt",
+      "core-js",
+      "prisma",
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
   "scripts": {
     "dev": "prisma generate && next dev --turbopack",
-    "build": "prisma generate && prism db push && next build --turbopack",
+    "build": "prisma generate && prisma db push && next build --turbopack",
     "build-storybook": "build-script-name",
     "start": "next start",
     "lint": "eslint",
