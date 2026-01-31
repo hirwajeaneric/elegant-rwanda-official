@@ -47,7 +47,6 @@ export const tours: Tour[] = [
         title: 'Gorilla Trekking Adventure',
         description: 'Experience the magic of encountering mountain gorillas in their natural habitat. This exclusive tour takes you deep into the misty forests of Volcanoes National Park for an unforgettable wildlife encounter.',
         duration: '3 Days / 2 Nights',
-    
         location: 'North',
         difficulty: 'Moderate',
         maxGroupSize: 8,

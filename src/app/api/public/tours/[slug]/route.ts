@@ -11,6 +11,7 @@ export async function GET(
 
     const tour = await prisma.tour.findUnique({
       where: { slug },
+      include: { category: { select: { id: true, name: true, slug: true } } },
     });
 
     if (!tour || tour.status !== "active") {

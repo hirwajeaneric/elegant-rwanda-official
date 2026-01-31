@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
@@ -22,9 +22,10 @@ import {
 interface Tour {
   id: string;
   title: string;
-  category: string;
+  categoryId?: string | null;
+  category?: { id: string; name: string; slug: string } | null;
   status: string;
-  price: number;
+  price?: number | null;
   bookings: number;
 }
 
@@ -64,7 +65,7 @@ export default function ToursPage() {
       label: "Category",
       sortable: true,
       render: (item: Tour) => (
-        <Badge variant="outline">{item.category}</Badge>
+        <Badge variant="outline">{item.category?.name ?? "—"}</Badge>
       ),
     },
     {
@@ -81,7 +82,7 @@ export default function ToursPage() {
       key: "price",
       label: "Price",
       sortable: true,
-      render: (item: Tour) => `$${item.price}`,
+      render: (item: Tour) => (item.price != null ? `$${item.price}` : "—"),
     },
     {
       key: "bookings",
@@ -100,6 +101,37 @@ export default function ToursPage() {
       ),
     },
   ];
+
+  const categoryFilterOptions = useMemo(() => {
+    const seen = new Set<string>();
+    const options: { value: string; label: string }[] = [];
+    tours.forEach((t) => {
+      if (t.category && !seen.has(t.category.id)) {
+        seen.add(t.category.id);
+        options.push({ value: t.category.id, label: t.category.name });
+      }
+    });
+    return options;
+  }, [tours]);
+
+  const filterOptions = useMemo(
+    () => [
+      {
+        key: "status",
+        label: "Status",
+        options: [
+          { value: "active", label: "Active" },
+          { value: "draft", label: "Draft" },
+        ],
+      },
+      {
+        key: "categoryId",
+        label: "Category",
+        options: categoryFilterOptions,
+      },
+    ],
+    [categoryFilterOptions]
+  );
 
   if (loading) {
     return (
@@ -175,28 +207,7 @@ export default function ToursPage() {
         data={tours}
         columns={columns}
         searchPlaceholder="Search tours..."
-        filterOptions={[
-          {
-            key: "status",
-            label: "Status",
-            options: [
-              { value: "active", label: "Active" },
-              { value: "draft", label: "Draft" },
-              { value: "scheduled", label: "Scheduled" },
-            ],
-          },
-          {
-            key: "category",
-            label: "Category",
-            options: [
-              { value: "Wildlife", label: "Wildlife" },
-              { value: "Cultural", label: "Cultural" },
-              { value: "Adventure", label: "Adventure" },
-              { value: "Unique", label: "Unique" },
-              { value: "Nature", label: "Nature" },
-            ],
-          },
-        ]}
+        filterOptions={filterOptions}
       />
     </div>
   );

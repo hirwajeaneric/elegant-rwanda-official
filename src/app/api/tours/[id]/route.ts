@@ -18,6 +18,7 @@ export async function GET(
 
     const tour = await prisma.tour.findUnique({
       where: { id },
+      include: { category: { select: { id: true, name: true, slug: true } } },
     });
 
     if (!tour) {
@@ -79,6 +80,23 @@ export async function PUT(
       }
     }
 
+    const allowedStatuses = ["active", "draft"];
+    const newStatus = body.status !== undefined
+      ? (allowedStatuses.includes(body.status) ? body.status : existingTour.status)
+      : existingTour.status;
+
+    if (body.categoryId !== undefined && body.categoryId !== null) {
+      const cat = await prisma.category.findFirst({
+        where: { id: body.categoryId, type: { has: "TOUR" } },
+      });
+      if (!cat) {
+        return NextResponse.json(
+          { error: "Invalid tour category. Category must have type TOUR." },
+          { status: 400 }
+        );
+      }
+    }
+
     const tour = await prisma.tour.update({
       where: { id },
       data: {
@@ -94,11 +112,11 @@ export async function PUT(
         inclusions: body.inclusions !== undefined ? body.inclusions : existingTour.inclusions,
         exclusions: body.exclusions !== undefined ? body.exclusions : existingTour.exclusions,
         images: body.images !== undefined ? body.images : existingTour.images,
-        category: body.category ?? existingTour.category,
+        categoryId: body.categoryId !== undefined ? body.categoryId : existingTour.categoryId,
         featured: body.featured !== undefined ? body.featured : existingTour.featured,
         availableDates: body.availableDates !== undefined ? body.availableDates : existingTour.availableDates,
-        price: body.price !== undefined ? Number(body.price) : existingTour.price,
-        status: body.status ?? existingTour.status,
+        price: body.price !== undefined ? (body.price === null || body.price === "" ? null : Number(body.price)) : existingTour.price,
+        status: newStatus,
         capacity: body.capacity !== undefined ? Number(body.capacity) : existingTour.capacity,
         guide: body.guide !== undefined ? body.guide : existingTour.guide,
         metaTitle: body.metaTitle !== undefined ? body.metaTitle : existingTour.metaTitle,

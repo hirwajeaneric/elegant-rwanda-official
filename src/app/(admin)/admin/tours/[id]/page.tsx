@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,8 @@ interface ApiTour {
   inclusions: string[];
   exclusions: string[];
   images: string[];
-  category: string;
+  categoryId?: string | null;
+  category?: { id: string; name: string; slug: string } | null;
   featured: boolean;
   availableDates: string[];
   price: number;
@@ -39,11 +40,12 @@ export default function TourEditPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
-  const { categories: categoryList } = useCategories({ type: ['TOUR'], active: true });
+  const { categories: categoryList, refetch: refetchCategories } = useCategories({ type: ['TOUR'], active: true });
   const availableCategories = useMemo(() => 
     categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
     [categoryList]
   );
+  const onCategoryAdded = useCallback(() => refetchCategories(), [refetchCategories]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tour, setTour] = useState<ApiTour | null>(null);
@@ -85,11 +87,11 @@ export default function TourEditPage() {
       inclusions: apiTour.inclusions,
       exclusions: apiTour.exclusions,
       images: apiTour.images,
-      category: apiTour.category as TourFormData["category"],
+      categoryId: apiTour.categoryId ?? apiTour.category?.id ?? "",
       featured: apiTour.featured,
       availableDates: apiTour.availableDates,
-      price: apiTour.price,
-      status: apiTour.status as TourFormData["status"],
+      price: apiTour.price ?? undefined,
+      status: (apiTour.status === "active" || apiTour.status === "draft" ? apiTour.status : "draft") as TourFormData["status"],
       capacity: apiTour.capacity,
       guide: apiTour.guide || undefined,
       metaTitle: apiTour.metaTitle || undefined,
@@ -167,6 +169,7 @@ export default function TourEditPage() {
         isLoading={isSubmitting}
         isEditing={true}
         availableCategories={availableCategories}
+        onCategoryAdded={onCategoryAdded}
         onCancel={() => router.push("/admin/tours")}
       />
     </div>

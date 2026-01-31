@@ -224,6 +224,7 @@ model Category {
   blogs       Blog[]
   faqs        FAQ[]
   images      Image[]
+  tours       Tour[]
 
   @@index([slug])
   @@index([active])
@@ -398,14 +399,6 @@ model Vehicle {
   @@index([createdAt])
 }
 
-enum TourCategory {
-  Wildlife
-  Cultural
-  Adventure
-  Unique
-  Nature
-}
-
 enum TourDifficulty {
   Easy
   Moderate
@@ -432,10 +425,11 @@ model Tour {
   inclusions      String[]
   exclusions      String[]
   images          String[]
-  category        TourCategory
+  categoryId      String?
+  category        Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   featured        Boolean        @default(false)
   availableDates  String[]
-  price           Float
+  price           Float?
   status          TourStatus     @default(draft)
   bookings        Int            @default(0)
   capacity        Int
@@ -448,7 +442,7 @@ model Tour {
   updatedAt       DateTime       @updatedAt
 
   @@index([slug])
-  @@index([category])
+  @@index([categoryId])
   @@index([status])
   @@index([featured])
   @@index([createdAt])

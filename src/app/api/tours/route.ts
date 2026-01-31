@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       inclusions,
       exclusions,
       images,
-      category,
+      categoryId,
       featured,
       availableDates,
       price,
@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
       metaDescription,
     } = body;
 
-    if (!title || !slug || !description || !duration || !location || price == null || capacity == null) {
+    if (!title || !slug || !description || !duration || !location || capacity == null) {
       return NextResponse.json(
-        { error: "Title, slug, description, duration, location, price, and capacity are required" },
+        { error: "Title, slug, description, duration, location, and capacity are required" },
         { status: 400 }
       );
     }
@@ -57,6 +57,21 @@ export async function POST(request: NextRequest) {
         { error: "Tour with this slug already exists" },
         { status: 409 }
       );
+    }
+
+    const allowedStatuses = ["active", "draft"];
+    const tourStatus = status && allowedStatuses.includes(status) ? status : "draft";
+
+    if (categoryId) {
+      const cat = await prisma.category.findFirst({
+        where: { id: categoryId, type: { has: "TOUR" } },
+      });
+      if (!cat) {
+        return NextResponse.json(
+          { error: "Invalid tour category. Category must have type TOUR." },
+          { status: 400 }
+        );
+      }
     }
 
     const tour = await prisma.tour.create({
@@ -73,11 +88,11 @@ export async function POST(request: NextRequest) {
         inclusions: Array.isArray(inclusions) ? inclusions : [],
         exclusions: Array.isArray(exclusions) ? exclusions : [],
         images: Array.isArray(images) ? images : [],
-        category: category || "Wildlife",
+        categoryId: categoryId || null,
         featured: featured ?? false,
         availableDates: Array.isArray(availableDates) ? availableDates : [],
-        price: Number(price),
-        status: status || "draft",
+        price: price != null && price !== "" ? Number(price) : null,
+        status: tourStatus,
         capacity: Number(capacity),
         guide: guide || null,
         metaTitle: metaTitle || null,
@@ -105,7 +120,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
-    const category = searchParams.get("category");
+    const categoryId = searchParams.get("categoryId");
     const featured = searchParams.get("featured");
     const search = searchParams.get("search");
     const page = parseInt(searchParams.get("page") || "1");
@@ -118,8 +133,8 @@ export async function GET(request: NextRequest) {
       where.status = status;
     }
 
-    if (category) {
-      where.category = category;
+    if (categoryId) {
+      where.categoryId = categoryId;
     }
 
     if (featured !== null) {
@@ -140,6 +155,7 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
+        include: { category: { select: { id: true, name: true, slug: true } } },
       }),
       prisma.tour.count({ where }),
     ]);

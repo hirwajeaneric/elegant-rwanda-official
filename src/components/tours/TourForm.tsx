@@ -14,9 +14,17 @@ import JoditEditor from "jodit-react";
 import { sanitizeHtml } from "@/lib/html-sanitizer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-const CATEGORIES = ["Wildlife", "Cultural", "Adventure", "Unique", "Nature"] as const;
-const STATUSES = ["active", "draft", "scheduled"] as const;
+const STATUSES = ["active", "draft"] as const;
 const DIFFICULTIES = ["Easy", "Moderate", "Challenging"] as const;
 
 export interface TourDay {
@@ -41,10 +49,10 @@ export interface TourFormData {
   inclusions: string[];
   exclusions: string[];
   images: string[];
-  category: (typeof CATEGORIES)[number];
+  categoryId: string;
   featured: boolean;
   availableDates: string[];
-  price: number;
+  price?: number;
   status: (typeof STATUSES)[number];
   capacity: number;
   guide?: string;
@@ -66,10 +74,10 @@ function defaultFormData(initial?: Partial<TourFormData>): TourFormData {
     inclusions: initial?.inclusions ?? [],
     exclusions: initial?.exclusions ?? [],
     images: initial?.images ?? [],
-    category: initial?.category ?? "Wildlife",
+    categoryId: initial?.categoryId ?? "",
     featured: initial?.featured ?? false,
     availableDates: initial?.availableDates ?? [],
-    price: initial?.price ?? 0,
+    price: initial?.price,
     status: initial?.status ?? "draft",
     capacity: initial?.capacity ?? 0,
     guide: initial?.guide,
@@ -86,6 +94,7 @@ interface TourFormProps {
   submitLabel?: string;
   onCancel?: () => void;
   availableCategories?: Array<{ id: string; name: string }>;
+  onCategoryAdded?: (newCategory: { id: string; name: string }) => void;
 }
 
 export function TourForm({
@@ -96,10 +105,17 @@ export function TourForm({
   submitLabel,
   onCancel,
   availableCategories = [],
+  onCategoryAdded,
 }: TourFormProps) {
   const editorRef = useRef(null);
   const [formData, setFormData] = useState<TourFormData>(() => defaultFormData(initialData));
   const [editorContent, setEditorContent] = useState(initialData?.description ?? "");
+
+  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategorySlug, setNewCategorySlug] = useState("");
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [addCategoryError, setAddCategoryError] = useState<string | null>(null);
 
   const [newHighlight, setNewHighlight] = useState("");
   const [newInclusion, setNewInclusion] = useState("");
@@ -115,6 +131,44 @@ export function TourForm({
       setEditorContent(initialData.description ?? "");
     }
   }, [initialData]);
+
+  useEffect(() => {
+    if (availableCategories.length === 0) return;
+    setFormData((prev) =>
+      prev.categoryId === "" ? { ...prev, categoryId: availableCategories[0].id } : prev
+    );
+  }, [availableCategories]);
+
+  const handleAddCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAddCategoryError(null);
+    const name = newCategoryName.trim();
+    const slug = newCategorySlug.trim() || name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    if (!name) {
+      setAddCategoryError("Name is required");
+      return;
+    }
+    setAddingCategory(true);
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, slug, type: ["TOUR"], active: true }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create category");
+      const newCategory = { id: data.category.id, name: data.category.name };
+      onCategoryAdded?.(newCategory);
+      setFormData((prev) => ({ ...prev, categoryId: newCategory.id }));
+      setNewCategoryName("");
+      setNewCategorySlug("");
+      setAddCategoryOpen(false);
+    } catch (err) {
+      setAddCategoryError(err instanceof Error ? err.message : "Failed to create category");
+    } finally {
+      setAddingCategory(false);
+    }
+  };
 
   const editorConfig = useMemo(
     () => ({
@@ -240,10 +294,6 @@ export function TourForm({
     await onSubmit({ ...formData, description });
   };
 
-  const categoryOptions = availableCategories.length > 0
-    ? availableCategories.map((cat) => cat.name)
-    : CATEGORIES;
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="grid gap-6 md:grid-cols-2">
@@ -342,13 +392,18 @@ export function TourForm({
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price">Price ($) *</Label>
+                <Label htmlFor="price">Price ($)</Label>
                 <Input
                   id="price"
                   type="number"
-                  value={formData.price || ""}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
-                  required
+                  min={0}
+                  step={0.01}
+                  value={formData.price ?? ""}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setFormData((prev) => ({ ...prev, price: v === "" ? undefined : parseFloat(v) || undefined }));
+                  }}
+                  placeholder="Optional"
                 />
               </div>
               <div className="space-y-2">
@@ -369,7 +424,7 @@ export function TourForm({
                   value={formData.status}
                   onValueChange={(v) => setFormData((prev) => ({ ...prev, status: v as TourFormData["status"] }))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -382,22 +437,76 @@ export function TourForm({
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
-                <Select
-                  value={formData.category}
-                  onValueChange={(v) => setFormData((prev) => ({ ...prev, category: v as TourFormData["category"] }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categoryOptions.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="category">Tour Category</Label>
+                <div className="flex gap-2">
+                  <Select
+                    value={formData.categoryId || undefined}
+                    onValueChange={(v) => setFormData((prev) => ({ ...prev, categoryId: v }))}
+                  >
+                    <SelectTrigger id="category" className="flex-1">
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableCategories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Dialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen}>
+                    <DialogTrigger asChild>
+                      <Button type="button" variant="outline" size="icon" title="Add new category">
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Add Tour Category</DialogTitle>
+                        <DialogDescription>
+                          Create a new tour category. It will be available in the list above.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handleAddCategory}>
+                        <div className="grid gap-4 py-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="newCategoryName">Name</Label>
+                            <Input
+                              id="newCategoryName"
+                              value={newCategoryName}
+                              onChange={(e) => {
+                                setNewCategoryName(e.target.value);
+                                if (!newCategorySlug) setNewCategorySlug(e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""));
+                              }}
+                              placeholder="e.g. Wildlife"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="newCategorySlug">Slug (optional)</Label>
+                            <Input
+                              id="newCategorySlug"
+                              value={newCategorySlug}
+                              onChange={(e) => setNewCategorySlug(e.target.value)}
+                              placeholder="e.g. wildlife"
+                            />
+                          </div>
+                          {addCategoryError && (
+                            <p className="text-sm text-destructive">{addCategoryError}</p>
+                          )}
+                        </div>
+                        <DialogFooter>
+                          <Button type="button" variant="outline" onClick={() => setAddCategoryOpen(false)}>
+                            Cancel
+                          </Button>
+                          <Button type="submit" disabled={addingCategory}>
+                            {addingCategory ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                            Add Category
+                          </Button>
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
             </div>
             <div className="space-y-2">
@@ -437,7 +546,7 @@ export function TourForm({
               multiple
             />
             {formData.images.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {formData.images.map((url, i) => (
                   <div key={i} className="relative group">
                     <div className="relative aspect-video rounded-lg overflow-hidden border">
@@ -449,7 +558,7 @@ export function TourForm({
                         className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
                         onClick={() => setFormData((prev) => ({ ...prev, images: prev.images.filter((_, j) => j !== i) }))}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-2 w-2" />
                       </Button>
                     </div>
                   </div>

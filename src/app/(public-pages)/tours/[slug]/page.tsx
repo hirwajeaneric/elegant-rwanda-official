@@ -30,9 +30,10 @@ async function getTourBySlug(slug: string) {
   }
 }
 
-async function getRelatedTours(category: string, excludeId: string) {
+async function getRelatedTours(categoryId: string, excludeId: string) {
+  if (!categoryId) return [];
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/public/tours?category=${category}&limit=10`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/public/tours?categoryId=${categoryId}&limit=10`, {
       cache: "no-store",
     });
     const data = await res.json();
@@ -61,7 +62,8 @@ function mapApiTourToTour(apiTour: any) {
     inclusions: apiTour.inclusions,
     exclusions: apiTour.exclusions,
     images: apiTour.images,
-    category: apiTour.category,
+    category: apiTour.category?.name ?? "",
+    categoryId: apiTour.categoryId ?? apiTour.category?.id,
     featured: apiTour.featured,
     availableDates: apiTour.availableDates,
     price: apiTour.price,
@@ -96,7 +98,7 @@ export async function generateMetadata({ params }: TourPageProps) {
     title: `${tour.metaTitle || tour.title} - Rwanda Tours | Elegant Travel and Tours`,
     description,
     path: `tours/${tour.slug}`,
-    keywords: tour.highlights.join(", ") + ", " + tour.category + ", Rwanda tours",
+    keywords: tour.highlights.join(", ") + ", " + (tour.category || "Rwanda tours") + ", Rwanda tours",
     openGraph: {
       title: tour.metaTitle || tour.title,
       description,
@@ -123,7 +125,7 @@ export default async function TourPage({ params }: TourPageProps) {
   }
 
   const tour = mapApiTourToTour(apiTour);
-  const relatedTours = await getRelatedTours(tour.category, tour.id);
+  const relatedTours = await getRelatedTours(tour.categoryId ?? "", tour.id);
 
   const tourDescription =
     tour.metaDescription || tour.description.replace(/<[^>]*>/g, "").substring(0, 200);
@@ -141,7 +143,7 @@ export default async function TourPage({ params }: TourPageProps) {
       price: tour.price,
       duration: tour.duration,
       location: tour.location,
-      category: tour.category,
+      category: tour.category || undefined,
     }),
   ];
 
@@ -161,7 +163,14 @@ export default async function TourPage({ params }: TourPageProps) {
           </div>
         </div>
       </div>
-      {relatedTours.length > 0 && <RelatedTours tours={relatedTours} />}
+      {relatedTours.length > 0 && (
+        <RelatedTours
+          tours={relatedTours.map((t: { category?: { name: string }; [key: string]: unknown }) => ({
+            ...t,
+            category: t.category?.name ?? "",
+          }))}
+        />
+      )}
     </PageWrapper>
   );
 }

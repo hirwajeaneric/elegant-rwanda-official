@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -12,12 +12,15 @@ import { useCategories } from "@/lib/hooks/use-categories";
 
 export default function NewTourPage() {
   const router = useRouter();
-  const { categories: categoryList } = useCategories({ type: ['TOUR'], active: true });
+  const { categories: categoryList, refetch: refetchCategories } = useCategories({ type: ['TOUR'], active: true });
   const availableCategories = useMemo(() => 
     categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
     [categoryList]
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const onCategoryAdded = useCallback(() => {
+    refetchCategories();
+  }, [refetchCategories]);
 
   const handleSubmit = async (data: TourFormData) => {
     setIsSubmitting(true);
@@ -63,6 +66,7 @@ export default function NewTourPage() {
         onSubmit={handleSubmit}
         isLoading={isSubmitting}
         availableCategories={availableCategories}
+        onCategoryAdded={onCategoryAdded}
         onCancel={() => router.push("/admin/tours")}
       />
     </div>

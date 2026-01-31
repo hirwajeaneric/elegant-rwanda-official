@@ -16,7 +16,7 @@ interface Tour {
   maxGroupSize: number;
   highlights: string[];
   images: string[];
-  category: string;
+  category?: { id: string; name: string; slug?: string } | null;
   featured: boolean;
 }
 
@@ -49,7 +49,7 @@ export function ToursGrid() {
   let filteredTours = tours;
   
   if (selectedCategory !== "all") {
-    filteredTours = filteredTours.filter(tour => tour.category === selectedCategory);
+    filteredTours = filteredTours.filter(tour => tour.category?.id === selectedCategory);
   }
   
   if (selectedDuration !== "all") {
@@ -70,13 +70,16 @@ export function ToursGrid() {
     );
   }
 
+  const categoryCounts = tours.reduce<{ id: string; name: string; count: number }[]>((acc, t) => {
+    if (!t.category) return acc;
+    const existing = acc.find((c) => c.id === t.category!.id);
+    if (existing) existing.count += 1;
+    else acc.push({ id: t.category.id, name: t.category.name, count: 1 });
+    return acc;
+  }, []);
   const categories = [
     { id: "all", name: "All Categories", count: tours.length },
-    { id: "Wildlife", name: "Wildlife", count: tours.filter(t => t.category === "Wildlife").length },
-    { id: "Cultural", name: "Cultural", count: tours.filter(t => t.category === "Cultural").length },
-    { id: "Adventure", name: "Adventure", count: tours.filter(t => t.category === "Adventure").length },
-    { id: "Unique", name: "Unique", count: tours.filter(t => t.category === "Unique").length },
-    { id: "Nature", name: "Nature", count: tours.filter(t => t.category === "Nature").length },
+    ...categoryCounts,
   ];
  
   const durations = [
@@ -177,14 +180,16 @@ export function ToursGrid() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               
               {/* Category Badge */}
-              <div className="absolute top-4 left-4">
-                <Badge 
-                  variant="secondary" 
-                  className={`${getCategoryColor(tour.category)} text-black`}
-                >
-                  {tour.category}
-                </Badge>
-              </div>
+              {tour.category && (
+                <div className="absolute top-4 left-4">
+                  <Badge
+                    variant="secondary"
+                    className={`${getCategoryColor(tour.category.name)} text-black`}
+                  >
+                    {tour.category.name}
+                  </Badge>
+                </div>
+              )}
 
               {/* Featured Badge */}
               {tour.featured && (

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const category = searchParams.get("category");
+    const categoryId = searchParams.get("categoryId") || searchParams.get("category");
     const featured = searchParams.get("featured");
     const search = searchParams.get("search");
     const limit = parseInt(searchParams.get("limit") || "50");
@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
       status: "active",
     };
 
-    if (category) {
-      where.category = category;
+    if (categoryId) {
+      where.categoryId = categoryId;
     }
 
     if (featured === "true") {
@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
       where,
       take: limit,
       orderBy: { createdAt: "desc" },
+      include: { category: { select: { id: true, name: true, slug: true } } },
     });
 
     return NextResponse.json({

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,8 @@ const categoryTypes: { value: string; label: string }[] = [
 
 export default function NewCategoryPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const typeFromUrl = searchParams.get("type");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -34,6 +36,15 @@ export default function NewCategoryPage() {
     icon: "",
     active: true,
   });
+
+  useEffect(() => {
+    if (typeFromUrl && ["FAQ", "BLOG", "EVENT", "TOUR", "IMAGE", "GENERAL"].includes(typeFromUrl.toUpperCase())) {
+      setFormData((prev) => ({
+        ...prev,
+        type: prev.type.includes(typeFromUrl.toUpperCase()) ? prev.type : [...prev.type, typeFromUrl.toUpperCase()],
+      }));
+    }
+  }, [typeFromUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
