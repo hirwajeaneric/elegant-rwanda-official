@@ -100,7 +100,7 @@ export function ToursSidebar() {
                       <div
                         className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-300"
                         style={{
-                          backgroundImage: `url('/${tour.images[0]}')`
+                          backgroundImage: `url('${tour.images[0]}')`
                         }}
                       />
                     </div>

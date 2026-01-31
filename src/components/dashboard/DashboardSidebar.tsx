@@ -42,7 +42,12 @@ type NavItem = {
 
 const allNavigationItems: NavItem[] = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Users", href: "/admin/users", icon: UserCog, roles: ["ADMIN"] },
+  { name: "Blogs", href: "/admin/blogs", icon: FileText, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Team", href: "/admin/team", icon: Users, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "FAQs", href: "/admin/faqs", icon: HelpCircle, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Categories", href: "/admin/categories", icon: Tag, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Gallery", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
   {
     name: "Tours",
     href: "/admin/tours",
@@ -77,12 +82,7 @@ const allNavigationItems: NavItem[] = [
   { name: "Air Travel Bookings", href: "/admin/air-travel-bookings", icon: Plane, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Contact", href: "/admin/contact", icon: Mail, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Subscribers", href: "/admin/subscribers", icon: BookUser, roles: ["ADMIN", "CONTENT_MANAGER"] },
-  { name: "Blogs", href: "/admin/blogs", icon: FileText, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare, roles: ["ADMIN", "CONTENT_MANAGER"] },
-  { name: "Team", href: "/admin/team", icon: Users, roles: ["ADMIN", "CONTENT_MANAGER"] },
-  { name: "FAQs", href: "/admin/faqs", icon: HelpCircle, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Categories", href: "/admin/categories", icon: Tag, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Gallery", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Users", href: "/admin/users", icon: UserCog, roles: ["ADMIN"] },
   { name: "Profile", href: "/admin/profile", icon: User, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
 ];
 
