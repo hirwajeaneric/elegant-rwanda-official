@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -9,22 +9,28 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Plus, Trash2, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useCategories } from "@/lib/hooks/use-categories";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
 import Image from "next/image";
+import { useCategories } from "@/lib/hooks/use-categories";
+
+const EVENT_STATUSES = ["Open", "Filling Fast", "Waitlist", "Closed"] as const;
 
 export default function NewEventPage() {
   const router = useRouter();
-  const { categories: categoryList } = useCategories({ type: ['EVENT'], active: true });
-  const availableCategories = useMemo(() => 
-    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
-    [categoryList]
-  );
-  const defaultCategory = availableCategories[0]?.name || "";
-  
+  const { categories: categoryList, refetch: refetchCategories } = useCategories({ type: ["EVENT"], active: true });
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -34,25 +40,83 @@ export default function NewEventPage() {
     location: "",
     maxParticipants: 0,
     currentParticipants: 0,
-    category: defaultCategory,
+    categoryId: "",
     highlights: [] as string[],
     activities: [] as string[],
     images: [] as string[],
     featured: false,
     registrationDeadline: "",
-    status: "Open" as "Open" | "Filling Fast" | "Waitlist" | "Closed",
+    status: "Open" as (typeof EVENT_STATUSES)[number],
     time: "08:00 AM",
     price: 0,
     active: true,
   });
   const [newHighlight, setNewHighlight] = useState("");
   const [newActivity, setNewActivity] = useState("");
+  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategorySlug, setNewCategorySlug] = useState("");
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [addCategoryError, setAddCategoryError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (categoryList.length > 0 && !formData.categoryId) {
+      setFormData((prev) => ({ ...prev, categoryId: categoryList[0].id }));
+    }
+  }, [categoryList, formData.categoryId]);
+
+  const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Creating event:", formData);
-    toast.success("Event created successfully!");
-    router.push("/admin/events");
+    setAddCategoryError(null);
+    const name = newCategoryName.trim();
+    const slug = newCategorySlug.trim() || name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    if (!name) {
+      setAddCategoryError("Name is required");
+      return;
+    }
+    setAddingCategory(true);
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, slug, type: ["EVENT"], active: true }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create category");
+      await refetchCategories();
+      setFormData((prev) => ({ ...prev, categoryId: data.category.id }));
+      setNewCategoryName("");
+      setNewCategorySlug("");
+      setAddCategoryOpen(false);
+    } catch (err) {
+      setAddCategoryError(err instanceof Error ? err.message : "Failed to create category");
+    } finally {
+      setAddingCategory(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.title || !formData.slug || !formData.description || !formData.date || !formData.location || formData.maxParticipants == null || !formData.registrationDeadline || formData.price == null) {
+      toast.error("Please fill required fields");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create event");
+      toast.success("Event created successfully!");
+      router.push("/admin/events");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to create event");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleAddArrayItem = (field: "highlights" | "activities", value: string) => {
@@ -103,10 +167,11 @@ export default function NewEventPage() {
                   id="title"
                   value={formData.title}
                   onChange={(e) => {
-                    setFormData({ ...formData, title: e.target.value });
+                    const title = e.target.value;
                     setFormData((prev) => ({
                       ...prev,
-                      slug: e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+                      title,
+                      slug: title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
                     }));
                   }}
                   required
@@ -169,6 +234,28 @@ export default function NewEventPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
+                  <Label htmlFor="registrationDeadline">Registration Deadline *</Label>
+                  <Input
+                    id="registrationDeadline"
+                    type="date"
+                    value={formData.registrationDeadline}
+                    onChange={(e) => setFormData({ ...formData, registrationDeadline: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="time">Time</Label>
+                  <Input
+                    id="time"
+                    value={formData.time}
+                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                    placeholder="08:00 AM"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
                   <Label htmlFor="maxParticipants">Max Participants *</Label>
                   <Input
                     id="maxParticipants"
@@ -216,23 +303,77 @@ export default function NewEventPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="category">Category</Label>
-                  <Select
-                    value={formData.category}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, category: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableCategories.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.name}>
-                          {cat.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2">
+                    <Select
+                      value={formData.categoryId || undefined}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, categoryId: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={categoryList.length === 0 ? "No categories" : "Select category"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categoryList.map((cat) => (
+                          <SelectItem key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Dialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen}>
+                      <DialogTrigger asChild>
+                        <Button type="button" variant="outline" size="icon" title="Add new event category">
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Add Event Category</DialogTitle>
+                          <DialogDescription>
+                            Create a new event category. It will be available in the list above.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <form onSubmit={handleAddCategory}>
+                          <div className="grid gap-4 py-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="newCategoryName">Name</Label>
+                              <Input
+                                id="newCategoryName"
+                                value={newCategoryName}
+                                onChange={(e) => {
+                                  setNewCategoryName(e.target.value);
+                                  if (!newCategorySlug) setNewCategorySlug(e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""));
+                                }}
+                                placeholder="e.g. Cultural Event"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="newCategorySlug">Slug (optional)</Label>
+                              <Input
+                                id="newCategorySlug"
+                                value={newCategorySlug}
+                                onChange={(e) => setNewCategorySlug(e.target.value)}
+                                placeholder="e.g. cultural-event"
+                              />
+                            </div>
+                            {addCategoryError && (
+                              <p className="text-sm text-destructive">{addCategoryError}</p>
+                            )}
+                          </div>
+                          <DialogFooter>
+                            <Button type="button" variant="outline" onClick={() => setAddCategoryOpen(false)}>
+                              Cancel
+                            </Button>
+                            <Button type="submit" disabled={addingCategory}>
+                              {addingCategory ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                              Add Category
+                            </Button>
+                          </DialogFooter>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -325,7 +466,7 @@ export default function NewEventPage() {
         </div>
 
         {/* Images */}
-        <Card className="md:col-span-2">
+        <Card className="md:col-span-2 mt-8">
           <CardHeader>
             <CardTitle>Images</CardTitle>
             <CardDescription>Event images (can have multiple images)</CardDescription>
@@ -381,8 +522,8 @@ export default function NewEventPage() {
           <Button variant="outline" type="button" asChild>
             <Link href="/admin/events">Cancel</Link>
           </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
+          <Button type="submit" disabled={submitting}>
+            {submitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
             Create Event
           </Button>
         </div>

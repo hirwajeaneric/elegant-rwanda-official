@@ -35,12 +35,21 @@ model Request {
   data      Json
   userEmail String?
   userName  String?
+  tourId    String?
+  tour      Tour?         @relation(fields: [tourId], references: [id], onDelete: SetNull)
+  eventId   String?
+  event     Event?        @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  vehicleId String?
+  vehicle   Vehicle?      @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 
   @@index([type])
   @@index([status])
   @@index([userEmail])
+  @@index([tourId])
+  @@index([eventId])
+  @@index([vehicleId])
   @@index([createdAt])
 }
 
@@ -225,6 +234,7 @@ model Category {
   faqs        FAQ[]
   images      Image[]
   tours       Tour[]
+  events      Event[]
 
   @@index([slug])
   @@index([active])
@@ -348,6 +358,49 @@ model Testimonial {
   @@index([createdAt])
 }
 
+enum EventStatus {
+  Open
+  Filling_Fast
+  Waitlist
+  Closed
+}
+
+model Event {
+  id                    String         @id @default(cuid())
+  slug                  String         @unique
+  title                 String
+  description           String
+  metaTitle             String?
+  metaDescription       String?
+  date                  DateTime
+  endDate               DateTime?
+  location              String
+  maxParticipants       Int
+  currentParticipants   Int             @default(0)
+  categoryId            String?
+  category              Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  highlights            String[]
+  activities            String[]
+  images                String[]
+  featured              Boolean         @default(false)
+  registrationDeadline  DateTime
+  status                EventStatus     @default(Open)
+  time                  String          // e.g. "08:00 AM"
+  price                 Float
+  active                Boolean         @default(true)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  requests              Request[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([categoryId])
+  @@index([date])
+  @@index([active])
+  @@index([createdAt])
+}
+
 enum VehicleCategory {
   Economy
   Compact
@@ -391,6 +444,8 @@ model Vehicle {
   nextService        String?
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
+
+  requests           Request[]
 
   @@index([slug])
   @@index([category])
@@ -440,6 +495,8 @@ model Tour {
   metaDescription String?
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
+
+  requests        Request[]
 
   @@index([slug])
   @@index([categoryId])

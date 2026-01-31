@@ -296,7 +296,7 @@ export function TourForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         {/* Basic Information */}
         <Card>
           <CardHeader>
@@ -309,6 +309,7 @@ export function TourForm({
               <Input
                 id="title"
                 value={formData.title}
+                placeholder="e.g. 7-Day Safari Adventure"
                 onChange={(e) => {
                   const title = e.target.value;
                   setFormData((prev) => ({
@@ -325,6 +326,7 @@ export function TourForm({
               <Input
                 id="slug"
                 value={formData.slug}
+                placeholder="auto-generated-from-title"
                 onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
               />
             </div>
@@ -356,6 +358,7 @@ export function TourForm({
                 <Input
                   id="location"
                   value={formData.location}
+                  placeholder="e.g. Kigali"
                   onChange={(e) => setFormData((prev) => ({ ...prev, location: e.target.value }))}
                   required
                 />
@@ -530,43 +533,76 @@ export function TourForm({
           </CardContent>
         </Card>
 
-        {/* Images */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Images</CardTitle>
-            <CardDescription>Tour images</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <AssetSelector
-              value={formData.images}
-              onSelect={(images) => {
-                const arr = Array.isArray(images) ? images : [images];
-                setFormData((prev) => ({ ...prev, images: arr }));
-              }}
-              multiple
-            />
-            {formData.images.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {formData.images.map((url, i) => (
-                  <div key={i} className="relative group">
-                    <div className="relative aspect-video rounded-lg overflow-hidden border">
-                      <Image src={url} alt="" className="object-cover" fill sizes="150px" />
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="icon"
-                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                        onClick={() => setFormData((prev) => ({ ...prev, images: prev.images.filter((_, j) => j !== i) }))}
-                      >
-                        <Trash2 className="h-2 w-2" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+        <div className="flex flex-col gap-4">
+          {/* Inclusions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Inclusions</CardTitle>
+              <CardDescription>What&apos;s included</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  value={newInclusion}
+                  onChange={(e) => setNewInclusion(e.target.value)}
+                  placeholder="Add inclusion"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddArrayItem("inclusions", newInclusion);
+                    }
+                  }}
+                />
+                <Button type="button" size="icon" onClick={() => handleAddArrayItem("inclusions", newInclusion)}>
+                  <Plus className="h-4 w-4" />
+                </Button>
               </div>
-            )}
-          </CardContent>
-        </Card>
+              {formData.inclusions.map((inc, i) => (
+                <div key={i} className="flex items-center justify-between px-2 bg-muted rounded">
+                  <span className="text-sm">{inc}</span>
+                  <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("inclusions", i)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Exclusions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Exclusions</CardTitle>
+              <CardDescription>What&apos;s not included</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  value={newExclusion}
+                  onChange={(e) => setNewExclusion(e.target.value)}
+                  placeholder="Add exclusion"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddArrayItem("exclusions", newExclusion);
+                    }
+                  }}
+                />
+                <Button type="button" size="icon" onClick={() => handleAddArrayItem("exclusions", newExclusion)}>
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+              {formData.exclusions.map((exc, i) => (
+                <div key={i} className="flex items-center justify-between px-2 bg-muted rounded">
+                  <span className="text-sm">{exc}</span>
+                  <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("exclusions", i)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+
 
         {/* Highlights */}
         <Card>
@@ -592,77 +628,9 @@ export function TourForm({
               </Button>
             </div>
             {formData.highlights.map((h, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
+              <div key={i} className="flex items-center justify-between px-2 bg-muted rounded">
                 <span className="text-sm">{h}</span>
                 <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("highlights", i)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Inclusions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Inclusions</CardTitle>
-            <CardDescription>What&apos;s included</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <Input
-                value={newInclusion}
-                onChange={(e) => setNewInclusion(e.target.value)}
-                placeholder="Add inclusion"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleAddArrayItem("inclusions", newInclusion);
-                  }
-                }}
-              />
-              <Button type="button" size="icon" onClick={() => handleAddArrayItem("inclusions", newInclusion)}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-            {formData.inclusions.map((inc, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
-                <span className="text-sm">{inc}</span>
-                <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("inclusions", i)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Exclusions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Exclusions</CardTitle>
-            <CardDescription>What&apos;s not included</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <Input
-                value={newExclusion}
-                onChange={(e) => setNewExclusion(e.target.value)}
-                placeholder="Add exclusion"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleAddArrayItem("exclusions", newExclusion);
-                  }
-                }}
-              />
-              <Button type="button" size="icon" onClick={() => handleAddArrayItem("exclusions", newExclusion)}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-            {formData.exclusions.map((exc, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
-                <span className="text-sm">{exc}</span>
-                <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("exclusions", i)}>
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
@@ -849,6 +817,44 @@ export function TourForm({
                 </div>
               ))}
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Images */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Images</CardTitle>
+            <CardDescription>Tour images</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <AssetSelector
+              value={formData.images}
+              onSelect={(images) => {
+                const arr = Array.isArray(images) ? images : [images];
+                setFormData((prev) => ({ ...prev, images: arr }));
+              }}
+              multiple
+            />
+            {formData.images.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {formData.images.map((url, i) => (
+                  <div key={i} className="relative group">
+                    <div className="relative aspect-video rounded-lg overflow-hidden border">
+                      <Image src={url} alt="" className="object-cover" fill sizes="150px" />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => setFormData((prev) => ({ ...prev, images: prev.images.filter((_, j) => j !== i) }))}
+                      >
+                        <Trash2 className="h-2 w-2" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 

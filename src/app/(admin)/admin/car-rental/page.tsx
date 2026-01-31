@@ -6,6 +6,7 @@ import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
 import { Badge } from "@/components/ui/badge";
 
 type Vehicle = {
@@ -95,17 +96,7 @@ export default function CarRentalPage() {
   ];
 
   if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <DashboardBreadcrumbs />
-            <h1 className="text-3xl font-bold mt-4">Car Rental</h1>
-            <p className="text-muted-foreground mt-2">Loading vehicles...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <DataTableLoader columnCount={5} rowCount={8} />;
   }
 
   return (

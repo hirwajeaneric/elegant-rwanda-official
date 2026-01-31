@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { UserRole } from "@/lib/rbac";
 import { Plus, Edit, Shield, UserCheck, UserX } from "lucide-react";
 import { RoleGuard } from "@/components/auth/RoleGuard";
+import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
 import { toast } from "sonner";
 
 interface User {
@@ -181,23 +182,7 @@ export default function UsersPage() {
   if (loading && users.length === 0) {
     return (
       <RoleGuard requiredRole="ADMIN">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <DashboardBreadcrumbs />
-              <h1 className="text-3xl font-bold mt-4">User Management</h1>
-              <p className="text-muted-foreground mt-2">
-                Manage user accounts, roles, and access permissions
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">Loading users...</p>
-            </div>
-          </div>
-        </div>
+        <DataTableLoader columnCount={6} rowCount={8} />
       </RoleGuard>
     );
   }

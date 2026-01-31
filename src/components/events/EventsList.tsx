@@ -1,19 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar, Users, MapPin, Clock, ArrowRight } from "lucide-react";
-import { getUpcomingEvents, getPastEvents } from "@/data/events";
 import Link from "next/link";
 
-const upcomingEvents = getUpcomingEvents();
-const pastEvents = getPastEvents();
+interface EventItem {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  endDate?: string | null;
+  location: string;
+  maxParticipants: number;
+  currentParticipants: number;
+  category: string;
+  status: string;
+  highlights: string[];
+  activities: string[];
+  images: string[];
+  featured: boolean;
+  registrationDeadline: string;
+  time: string;
+  price: number;
+  active: boolean;
+}
 
 const categories = ["All", "Group Tour", "Cultural Event", "Adventure", "Unique Experience"];
 
 export function EventsList() {
+  const [events, setEvents] = useState<EventItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedDate, setSelectedDate] = useState("");
   const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
+
+  useEffect(() => {
+    fetch("/api/public/events?limit=100")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.events)) setEvents(data.events);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const now = new Date();
+  const upcomingEvents = events.filter((e) => new Date(e.date) > now).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const pastEvents = events.filter((e) => new Date(e.date) <= now).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const filteredUpcomingEvents = upcomingEvents.filter(event => {
     const categoryMatch = selectedCategory === "All" || event.category === selectedCategory;
@@ -87,6 +121,10 @@ export function EventsList() {
           </div>
         </div>
 
+        {loading ? (
+          <div className="text-center py-12 text-muted-foreground">Loading events...</div>
+        ) : (
+        <>
         {/* Filters */}
         <div className="flex flex-wrap justify-center gap-4 mb-4">
           {categories.map((category) => (
@@ -266,6 +304,8 @@ export function EventsList() {
               Load More {activeTab === "upcoming" ? "Upcoming" : "Past"} Events
             </button>
           </div>
+        )}
+        </>
         )}
       </div>
     </section>

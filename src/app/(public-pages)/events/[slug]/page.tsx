@@ -5,7 +5,6 @@ import { EventDetails } from "@/components/events/EventDetails";
 import { EventGallery } from "@/components/events/EventGallery";
 import { EventRegistration } from "@/components/events/EventRegistration";
 import { RelatedEvents } from "@/components/events/RelatedEvents";
-import { getEventBySlug, getEventsByCategory } from "@/data/events";
 import {
   buildMetadata,
   buildBreadcrumbJsonLd,
@@ -13,13 +12,38 @@ import {
 } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 
+const BASE = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+async function getEventBySlug(slug: string) {
+  try {
+    const res = await fetch(`${BASE}/api/public/events/${slug}`, { cache: "no-store" });
+    const data = await res.json();
+    return data.success ? data.event : null;
+  } catch {
+    return null;
+  }
+}
+
+async function getRelatedEvents(category: string, excludeSlug: string, limit = 3) {
+  try {
+    const res = await fetch(`${BASE}/api/public/events?limit=50`, { cache: "no-store" });
+    const data = await res.json();
+    if (!data.success || !Array.isArray(data.events)) return [];
+    return data.events
+      .filter((e: { category: string; slug: string }) => e.category === category && e.slug !== excludeSlug)
+      .slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
 interface EventPageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: EventPageProps) {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
 
   if (!event) {
     return buildMetadata({
@@ -56,15 +80,13 @@ export async function generateMetadata({ params }: EventPageProps) {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
 
   if (!event) {
     notFound();
   }
 
-  const relatedEvents = getEventsByCategory(event.category)
-    .filter((e) => e.slug !== event.slug)
-    .slice(0, 3);
+  const relatedEvents = await getRelatedEvents(event.category, event.slug, 3);
 
   const isUpcoming = new Date(event.date) > new Date();
 

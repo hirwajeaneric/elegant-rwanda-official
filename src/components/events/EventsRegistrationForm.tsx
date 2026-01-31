@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { eventRegistrationSchema, type EventRegistrationForm } from "@/lib/schemas";
@@ -13,12 +13,36 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Users, MapPin, Clock, CheckCircle, Ticket } from "lucide-react";
 import { toast } from "sonner";
-import { getUpcomingEvents } from "@/data/events";
 import { submitFormToEmail } from "@/lib/client-submit";
+
+interface EventItem {
+  id: string;
+  title: string;
+  description?: string;
+  date: string;
+  location: string;
+  category: string;
+  maxParticipants: number;
+}
 
 export function EventsRegistrationForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const upcomingEvents = getUpcomingEvents();
+  const [upcomingEvents, setUpcomingEvents] = useState<EventItem[]>([]);
+
+  useEffect(() => {
+    fetch("/api/public/events?limit=100")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.events)) {
+          const now = new Date();
+          const upcoming = data.events
+            .filter((e: { date: string }) => new Date(e.date) > now)
+            .sort((a: EventItem, b: EventItem) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          setUpcomingEvents(upcoming);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   const {
     register,
@@ -56,6 +80,7 @@ export function EventsRegistrationForm() {
         },
         userEmail: values.contactInfo.email,
         userName: values.contactInfo.name,
+        eventId: selectedEvent?.id,
       });
       
       toast.success("Event registration submitted successfully! We'll confirm your booking within 24 hours.");

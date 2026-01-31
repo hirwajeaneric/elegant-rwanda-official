@@ -6,6 +6,7 @@ import { GalleryTableView } from "@/components/dashboard/GalleryTableView";
 import { GalleryGridView } from "@/components/dashboard/GalleryGridView";
 import { Button } from "@/components/ui/button";
 import { Upload, Table2, Grid3x3, Loader2, X } from "lucide-react";
+import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
 import { useCategories } from "@/lib/hooks/use-categories";
 import Image from "next/image";
 import {
@@ -311,14 +312,7 @@ export default function GalleryPage() {
   }, [images]);
 
   if (loading && images.length === 0) {
-    return (
-      <div className="space-y-6">
-        <DashboardBreadcrumbs />
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      </div>
-    );
+    return <DataTableLoader columnCount={5} rowCount={8} />;
   }
 
   return (

@@ -160,6 +160,7 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
         data: registrationData,
         userEmail: formData.email,
         userName: `${formData.firstName} ${formData.lastName}`.trim(),
+        eventId: event.id,
       });
       
       toast.success('Registration submitted successfully! We will contact you soon.');

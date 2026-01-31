@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { TourForm, TourFormData, TourDay } from "@/components/tours/TourForm";
+import { EntityBookingsList } from "@/components/dashboard/EntityBookingsList";
 import { toast } from "sonner";
 import { useCategories } from "@/lib/hooks/use-categories";
 
@@ -172,6 +173,8 @@ export default function TourEditPage() {
         onCategoryAdded={onCategoryAdded}
         onCancel={() => router.push("/admin/tours")}
       />
+
+      <EntityBookingsList entityType="tour" entityId={tour.id} />
     </div>
   );
 }

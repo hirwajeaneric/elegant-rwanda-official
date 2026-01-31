@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus } from "lucide-react";
+import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
@@ -106,14 +107,7 @@ export default function TestimonialsPage() {
   }));
 
   if (loading) {
-    return (
-      <div className="space-y-6">
-        <DashboardBreadcrumbs />
-        <div className="flex items-center justify-center py-24">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      </div>
-    );
+    return <DataTableLoader columnCount={5} rowCount={8} />;
   }
 
   return (

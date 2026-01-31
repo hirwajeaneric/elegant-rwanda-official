@@ -4,7 +4,8 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2, ChevronUp, ChevronDown } from "lucide-react";
+import { Plus, ChevronUp, ChevronDown } from "lucide-react";
+import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
 import { useCategories } from "@/lib/hooks/use-categories";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -173,14 +174,7 @@ export default function FAQsPage() {
   ];
 
   if (loading && faqs.length === 0) {
-    return (
-      <div className="space-y-6">
-        <DashboardBreadcrumbs />
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      </div>
-    );
+    return <DataTableLoader columnCount={5} rowCount={8} />;
   }
 
   return (

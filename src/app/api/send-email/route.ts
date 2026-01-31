@@ -17,7 +17,7 @@ const formTypeToEnum: Record<string, RequestType> = {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { formType, data, userEmail, userName } = body ?? {};
+    const { formType, data, userEmail, userName, tourId, eventId, vehicleId } = body ?? {};
 
     if (!formType || !data || typeof data !== "object") {
       return NextResponse.json(
@@ -37,6 +37,9 @@ export async function POST(request: Request) {
             data: data as any, // Json type
             userEmail,
             userName,
+            tourId: tourId || null,
+            eventId: eventId || null,
+            vehicleId: vehicleId || null,
             status: "PENDING",
           },
         });

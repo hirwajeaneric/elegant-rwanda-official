@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,30 +10,60 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { events, Event } from "@/data/events";
-import { useCategories } from "@/lib/hooks/use-categories";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { ArrowLeft, Edit, Save, X, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Edit, Save, X, Plus, Trash2, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { AssetSelector } from "@/components/dashboard/AssetSelector";
+import { EntityBookingsList } from "@/components/dashboard/EntityBookingsList";
 import Image from "next/image";
+import { useCategories } from "@/lib/hooks/use-categories";
 
-function getEventById(id: string) {
-  return events.find((event) => event.id === id);
+interface ApiEvent {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  endDate?: string | null;
+  location: string;
+  maxParticipants: number;
+  currentParticipants: number;
+  category: string;
+  categoryId?: string | null;
+  status: string;
+  highlights: string[];
+  activities: string[];
+  images: string[];
+  featured: boolean;
+  registrationDeadline: string;
+  time: string;
+  price: number;
+  active: boolean;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
 }
+
+const EVENT_STATUSES = ["Open", "Filling Fast", "Waitlist", "Closed"] as const;
 
 export default function EventDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
-  const event = getEventById(id);
-  const { categories: categoryList } = useCategories({ type: ['EVENT'], active: true });
-  const availableCategories = useMemo(() => 
-    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
-    [categoryList]
-  );
-
+  const { categories: categoryList, refetch: refetchCategories } = useCategories({ type: ["EVENT"], active: true });
+  const [event, setEvent] = useState<ApiEvent | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<Partial<Event>>({
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState<Partial<ApiEvent>>({
     title: "",
     description: "",
     date: "",
@@ -41,7 +71,7 @@ export default function EventDetailPage() {
     location: "",
     maxParticipants: 0,
     currentParticipants: 0,
-    category: "Group Tour",
+    categoryId: "",
     highlights: [],
     activities: [],
     images: [],
@@ -54,14 +84,43 @@ export default function EventDetailPage() {
   });
   const [newHighlight, setNewHighlight] = useState("");
   const [newActivity, setNewActivity] = useState("");
+  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategorySlug, setNewCategorySlug] = useState("");
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [addCategoryError, setAddCategoryError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (event) {
-      setFormData({
-        ...event,
-      });
+    async function fetchEvent() {
+      try {
+        const res = await fetch(`/api/events/${id}`);
+        const data = await res.json();
+        if (data.success && data.event) {
+          setEvent(data.event);
+          setFormData(data.event);
+        } else {
+          setEvent(null);
+        }
+      } catch (err) {
+        console.error(err);
+        setEvent(null);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [event]);
+    fetchEvent();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <DashboardBreadcrumbs />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   if (!event) {
     return (
@@ -82,10 +141,55 @@ export default function EventDetailPage() {
     );
   }
 
-  const handleSave = () => {
-    console.log("Saving event:", formData);
-    setIsEditing(false);
-    toast.success("Event saved successfully!");
+  const handleAddCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAddCategoryError(null);
+    const name = newCategoryName.trim();
+    const slug = newCategorySlug.trim() || name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    if (!name) {
+      setAddCategoryError("Name is required");
+      return;
+    }
+    setAddingCategory(true);
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, slug, type: ["EVENT"], active: true }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create category");
+      await refetchCategories();
+      setFormData((prev) => ({ ...prev, categoryId: data.category.id }));
+      setNewCategoryName("");
+      setNewCategorySlug("");
+      setAddCategoryOpen(false);
+    } catch (err) {
+      setAddCategoryError(err instanceof Error ? err.message : "Failed to create category");
+    } finally {
+      setAddingCategory(false);
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/events/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to update event");
+      setEvent(data.event);
+      setFormData(data.event);
+      setIsEditing(false);
+      toast.success("Event saved successfully!");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to update event");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleAddArrayItem = (field: "highlights" | "activities", value: string) => {
@@ -147,8 +251,8 @@ export default function EventDetailPage() {
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button onClick={handleSave}>
-                <Save className="h-4 w-4 mr-2" />
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
                 Save Changes
               </Button>
             </>
@@ -292,7 +396,7 @@ export default function EventDetailPage() {
                 {isEditing ? (
                   <Select
                     value={formData.status || "Open"}
-                    onValueChange={(value: Event["status"]) => setFormData({ ...formData, status: value })}
+                    onValueChange={(value: ApiEvent["status"]) => setFormData({ ...formData, status: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -323,23 +427,77 @@ export default function EventDetailPage() {
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               {isEditing ? (
-                <Select
-                  value={formData.category || availableCategories[0]?.name || ""}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, category: value as Event["category"] })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableCategories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.name}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex gap-2">
+                  <Select
+                    value={formData.categoryId || undefined}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, categoryId: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={categoryList.length === 0 ? "No categories" : "Select category"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categoryList.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Dialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen}>
+                    <DialogTrigger asChild>
+                      <Button type="button" variant="outline" size="icon" title="Add new event category">
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Add Event Category</DialogTitle>
+                        <DialogDescription>
+                          Create a new event category. It will be available in the list above.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handleAddCategory}>
+                        <div className="grid gap-4 py-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="newCategoryName">Name</Label>
+                            <Input
+                              id="newCategoryName"
+                              value={newCategoryName}
+                              onChange={(e) => {
+                                setNewCategoryName(e.target.value);
+                                if (!newCategorySlug) setNewCategorySlug(e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""));
+                              }}
+                              placeholder="e.g. Cultural Event"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="newCategorySlug">Slug (optional)</Label>
+                            <Input
+                              id="newCategorySlug"
+                              value={newCategorySlug}
+                              onChange={(e) => setNewCategorySlug(e.target.value)}
+                              placeholder="e.g. cultural-event"
+                            />
+                          </div>
+                          {addCategoryError && (
+                            <p className="text-sm text-destructive">{addCategoryError}</p>
+                          )}
+                        </div>
+                        <DialogFooter>
+                          <Button type="button" variant="outline" onClick={() => setAddCategoryOpen(false)}>
+                            Cancel
+                          </Button>
+                          <Button type="submit" disabled={addingCategory}>
+                            {addingCategory ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                            Add Category
+                          </Button>
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               ) : (
                 <Badge variant="outline">{event.category}</Badge>
               )}
@@ -526,6 +684,8 @@ export default function EventDetailPage() {
             )}
           </CardContent>
         </Card>
+
+        <EntityBookingsList entityType="event" entityId={event.id} />
       </div>
     </div>
   );

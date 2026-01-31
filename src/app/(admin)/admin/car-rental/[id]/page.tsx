@@ -7,6 +7,7 @@ import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumb
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CarForm, type CarFormData } from "@/components/car-rental/CarForm";
+import { EntityBookingsList } from "@/components/dashboard/EntityBookingsList";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
@@ -215,6 +216,8 @@ export default function EditVehiclePage() {
         submitLabel="Update Vehicle"
         onCancel={() => router.push("/admin/car-rental")}
       />
+
+      <EntityBookingsList entityType="vehicle" entityId={vehicle.id} />
     </div>
   );
 }

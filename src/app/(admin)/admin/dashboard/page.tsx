@@ -5,7 +5,6 @@ import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumb
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mountain, MessageSquare, FileText, Car, Calendar, Users, HelpCircle, Image as ImageIcon } from "lucide-react";
 import { blogPosts } from "@/data/blog";
-import { events } from "@/data/events";
 import { team } from "@/data/team";
 import { faqs } from "@/data/faq";
 import { galleryImages } from "@/data/gallery";
@@ -14,6 +13,26 @@ import { tours } from "@/data/tours";
 export default function DashboardPage() {
   const [testimonialStats, setTestimonialStats] = useState<{ value: number; total: number } | null>(null);
   const [vehicleStats, setVehicleStats] = useState<{ value: number; total: number } | null>(null);
+  const [eventStats, setEventStats] = useState<{ value: number; total: number } | null>(null);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const res = await fetch("/api/events?limit=500");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.events)) {
+          const total = data.events.length;
+          const value = data.events.filter((e: { active?: boolean }) => e.active !== false).length;
+          setEventStats({ value, total });
+        } else {
+          setEventStats({ value: 0, total: 0 });
+        }
+      } catch {
+        setEventStats({ value: 0, total: 0 });
+      }
+    }
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     async function fetchTestimonials() {
@@ -70,8 +89,8 @@ export default function DashboardPage() {
     },
     {
       name: "Events",
-      value: events.filter((e) => e.active).length,
-      total: events.length,
+      value: eventStats?.value ?? "—",
+      total: eventStats?.total ?? "—",
       icon: Calendar,
       href: "/admin/events",
     },

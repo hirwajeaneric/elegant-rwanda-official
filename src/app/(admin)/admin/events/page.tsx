@@ -1,41 +1,72 @@
 "use client";
 
-
+import { useState, useEffect } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
+import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { events } from "@/data/events";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+
+interface Event {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  status: string;
+  date: string;
+  endDate?: string | null;
+  maxParticipants: number;
+  currentParticipants: number;
+}
 
 export default function EventsPage() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const res = await fetch("/api/events?limit=500");
+      const data = await res.json();
+      if (data.success) {
+        setEvents(data.events || []);
+      } else {
+        toast.error("Failed to load events");
+      }
+    } catch (error) {
+      console.error("Error loading events:", error);
+      toast.error("Failed to load events");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const columns = [
-    {
-      key: "title",
-      label: "Title",
-      sortable: true,
-    },
+    { key: "title", label: "Title", sortable: true },
     {
       key: "category",
       label: "Category",
       sortable: true,
-      render: (item: typeof events[0]) => (
-        <Badge variant="outline">{item.category}</Badge>
-      ),
+      render: (item: Event) => <Badge variant="outline">{item.category}</Badge>,
     },
     {
       key: "status",
       label: "Status",
       sortable: true,
-      render: (item: typeof events[0]) => (
+      render: (item: Event) => (
         <Badge
           variant={
             item.status === "Open"
               ? "default"
               : item.status === "Filling Fast"
-              ? "secondary"
-              : "destructive"
+                ? "secondary"
+                : "destructive"
           }
         >
           {item.status}
@@ -46,20 +77,19 @@ export default function EventsPage() {
       key: "date",
       label: "Date",
       sortable: true,
-      render: (item: typeof events[0]) =>
-        new Date(item.date).toLocaleDateString(),
+      render: (item: Event) => new Date(item.date).toLocaleDateString(),
     },
     {
-      key: "currentParticipants",
+      key: "participants",
       label: "Participants",
       sortable: true,
-      render: (item: typeof events[0]) =>
+      render: (item: Event) =>
         `${item.currentParticipants}/${item.maxParticipants}`,
     },
     {
       key: "actions",
       label: "Actions",
-      render: (item: typeof events[0]) => (
+      render: (item: Event) => (
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/events/${item.id}`}>Edit</Link>
@@ -68,6 +98,10 @@ export default function EventsPage() {
       ),
     },
   ];
+
+  if (loading) {
+    return <DataTableLoader columnCount={6} rowCount={8} />;
+  }
 
   return (
     <div className="space-y-6">

@@ -211,6 +211,7 @@ export function CarForm({
               <Input
                 id="name"
                 value={formData.name}
+                placeholder="e.g. Toyota Land Cruiser"
                 onChange={(e) => {
                   const name = e.target.value;
                   setFormData((prev) => ({
@@ -227,6 +228,7 @@ export function CarForm({
               <Input
                 id="slug"
                 value={formData.slug}
+                placeholder="e.g. toyota-land-cruiser"
                 onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
               />
             </div>
@@ -236,6 +238,7 @@ export function CarForm({
                 <Input
                   id="make"
                   value={formData.make}
+                  placeholder="e.g. Toyota"
                   onChange={(e) => setFormData((prev) => ({ ...prev, make: e.target.value }))}
                   required
                 />
@@ -245,6 +248,7 @@ export function CarForm({
                 <Input
                   id="model"
                   value={formData.model}
+                  placeholder="e.g. Land Cruiser"
                   onChange={(e) => setFormData((prev) => ({ ...prev, model: e.target.value }))}
                   required
                 />
@@ -306,6 +310,7 @@ export function CarForm({
                 <Input
                   id="plateNumber"
                   value={formData.plateNumber}
+                  placeholder="e.g. RAB-123A"
                   onChange={(e) => setFormData((prev) => ({ ...prev, plateNumber: e.target.value }))}
                   required
                 />
@@ -319,6 +324,7 @@ export function CarForm({
                   type="number"
                   value={formData.mileage || ""}
                   onChange={(e) => setFormData((prev) => ({ ...prev, mileage: parseInt(e.target.value, 10) || 0 }))}
+                  placeholder="e.g. 10000"
                 />
               </div>
               <div className="space-y-2">
@@ -344,6 +350,7 @@ export function CarForm({
                   id="dailyRate"
                   type="number"
                   value={formData.dailyRate || ""}
+                  placeholder="e.g. 100"
                   onChange={(e) => setFormData((prev) => ({ ...prev, dailyRate: parseFloat(e.target.value) || 0 }))}
                   required
                 />
@@ -372,6 +379,7 @@ export function CarForm({
               <Input
                 id="location"
                 value={formData.location}
+                placeholder="e.g. Kigali"
                 onChange={(e) => setFormData((prev) => ({ ...prev, location: e.target.value }))}
                 required
               />
@@ -413,7 +421,7 @@ export function CarForm({
               multiple
             />
             {formData.images.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {formData.images.map((url, i) => (
                   <div key={i} className="relative group">
                     <div className="relative aspect-video rounded-lg overflow-hidden border">
@@ -459,7 +467,7 @@ export function CarForm({
               </Button>
             </div>
             {formData.pickupLocations.map((loc, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
+              <div key={i} className="flex items-center justify-between px-2 bg-muted rounded">
                 <span className="text-sm">{loc}</span>
                 <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("pickupLocations", i)}>
                   <Trash2 className="h-4 w-4" />
@@ -480,7 +488,7 @@ export function CarForm({
               <Input
                 value={newIncludedService}
                 onChange={(e) => setNewIncludedService(e.target.value)}
-                placeholder="Add included service"
+                placeholder="e.g. GPS navigation"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -493,7 +501,7 @@ export function CarForm({
               </Button>
             </div>
             {formData.includedServices.map((s, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
+              <div key={i} className="flex items-center justify-between px-2 bg-muted rounded">
                 <span className="text-sm">{s}</span>
                 <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("includedServices", i)}>
                   <Trash2 className="h-4 w-4" />
@@ -514,7 +522,7 @@ export function CarForm({
               <Input
                 value={newAdditionalService}
                 onChange={(e) => setNewAdditionalService(e.target.value)}
-                placeholder="Add additional service"
+                placeholder="e.g. Additional driver"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -527,7 +535,7 @@ export function CarForm({
               </Button>
             </div>
             {formData.additionalServices.map((s, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
+              <div key={i} className="flex items-center justify-between px-2 bg-muted rounded">
                 <span className="text-sm">{s}</span>
                 <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("additionalServices", i)}>
                   <Trash2 className="h-4 w-4" />
@@ -548,7 +556,7 @@ export function CarForm({
               <Input
                 value={newRequirement}
                 onChange={(e) => setNewRequirement(e.target.value)}
-                placeholder="Add requirement"
+                placeholder="e.g. Valid driving license"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -561,7 +569,7 @@ export function CarForm({
               </Button>
             </div>
             {formData.requirements.map((r, i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
+              <div key={i} className="flex items-center justify-between px-2 bg-muted rounded">
                 <span className="text-sm">{r}</span>
                 <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveArrayItem("requirements", i)}>
                   <Trash2 className="h-4 w-4" />
@@ -584,6 +592,7 @@ export function CarForm({
                 <Input
                   type="number"
                   value={formData.specifications.passengers || ""}
+                  placeholder="e.g. 4"
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -597,6 +606,7 @@ export function CarForm({
                 <Input
                   type="number"
                   value={formData.specifications.doors || ""}
+                  placeholder="e.g. 4"
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -616,7 +626,7 @@ export function CarForm({
                     }))
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -639,7 +649,7 @@ export function CarForm({
                     }))
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -655,6 +665,7 @@ export function CarForm({
                 <Label>Engine Size</Label>
                 <Input
                   value={formData.specifications.engineSize}
+                  placeholder="e.g. 2.0L"
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, specifications: { ...prev.specifications, engineSize: e.target.value } }))
                   }
@@ -664,6 +675,7 @@ export function CarForm({
                 <Label>Power</Label>
                 <Input
                   value={formData.specifications.power}
+                  placeholder="e.g. 200 hp"
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, specifications: { ...prev.specifications, power: e.target.value } }))
                   }
@@ -673,6 +685,7 @@ export function CarForm({
                 <Label>Fuel Efficiency</Label>
                 <Input
                   value={formData.specifications.fuelEfficiency}
+                  placeholder="e.g. 10 km/l"
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -685,6 +698,7 @@ export function CarForm({
                 <Label>Luggage Capacity</Label>
                 <Input
                   value={formData.specifications.luggageCapacity}
+                  placeholder="e.g. 200 kg"
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -698,6 +712,7 @@ export function CarForm({
                 <Input
                   type="number"
                   value={formData.specifications.usbPorts ?? ""}
+                  placeholder="e.g. 2"
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -765,6 +780,7 @@ export function CarForm({
               <Label>Coverage</Label>
               <Input
                 value={formData.insurance.coverage}
+                placeholder="e.g. $1000"
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, insurance: { ...prev.insurance, coverage: e.target.value } }))
                 }
@@ -774,6 +790,7 @@ export function CarForm({
               <Label>Excess</Label>
               <Input
                 value={formData.insurance.excess}
+                placeholder="e.g. $100"
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, insurance: { ...prev.insurance, excess: e.target.value } }))
                 }

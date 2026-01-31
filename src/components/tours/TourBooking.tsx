@@ -43,6 +43,7 @@ export function TourBooking({ tour }: TourBookingProps) {
         data: payload,
         userEmail: String(payload.email || ""),
         userName: String(payload.name || ""),
+        tourId: (tour as { id?: string }).id || undefined,
       });
       toast.success("Booking request sent. We’ll send a quote shortly.");
       setIsSubmitted(true);

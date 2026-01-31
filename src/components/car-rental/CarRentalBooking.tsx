@@ -57,6 +57,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
         data: bookingData,
         userEmail: formData.email,
         userName: formData.driverName || "Guest",
+        vehicleId: (vehicle as { id?: string }).id,
       });
 
       toast.success("Car rental request received. We'll respond with a quote soon.");

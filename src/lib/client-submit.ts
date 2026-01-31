@@ -5,6 +5,9 @@ type FormPayload = {
   data: Record<string, unknown>;
   userEmail?: string;
   userName?: string;
+  tourId?: string;
+  eventId?: string;
+  vehicleId?: string;
 };
 
 export async function submitFormToEmail(payload: FormPayload) {
