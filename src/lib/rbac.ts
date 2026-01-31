@@ -21,6 +21,10 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     { resource: "categories", actions: ["create", "read", "update", "delete"] },
     { resource: "gallery", actions: ["create", "read", "update", "delete"] },
     { resource: "bookings", actions: ["read", "update"] },
+    { resource: "cab-bookings", actions: ["read", "update"] },
+    { resource: "air-travel-bookings", actions: ["read"] },
+    { resource: "contact", actions: ["read"] },
+    { resource: "subscribers", actions: ["read"] },
     { resource: "profile", actions: ["read", "update"] },
     // No access to users
   ],
@@ -89,10 +93,13 @@ export function getAccessibleRoutes(userRole: UserRole | undefined): string[] {
 
   const allRoutes = [
     "/admin/dashboard",
-    "/admin/bookings",
     "/admin/tours",
     "/admin/car-rental",
     "/admin/events",
+    "/admin/cab-bookings",
+    "/admin/air-travel-bookings",
+    "/admin/contact",
+    "/admin/subscribers",
     "/admin/blogs",
     "/admin/testimonials",
     "/admin/team",

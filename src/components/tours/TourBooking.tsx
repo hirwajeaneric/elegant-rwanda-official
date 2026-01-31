@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Phone, Mail, CheckCircle } from "lucide-react";
 import { submitFormToEmail } from "@/lib/client-submit";
 import { toast } from "sonner";
@@ -21,10 +21,12 @@ export function TourBooking({ tour }: TourBookingProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [travelers, setTravelers] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
+  const successShownRef = useRef(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    successShownRef.current = false;
 
     const formData = new FormData(e.currentTarget);
     const payload = {
@@ -45,6 +47,7 @@ export function TourBooking({ tour }: TourBookingProps) {
         userName: String(payload.name || ""),
         tourId: (tour as { id?: string }).id || undefined,
       });
+      successShownRef.current = true;
       toast.success("Booking request sent. We’ll send a quote shortly.");
       setIsSubmitted(true);
       e.currentTarget.reset();
@@ -53,7 +56,9 @@ export function TourBooking({ tour }: TourBookingProps) {
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error(error);
-      toast.error("We could not send your request. Please try again.");
+      if (!successShownRef.current) {
+        toast.error("We could not send your request. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }

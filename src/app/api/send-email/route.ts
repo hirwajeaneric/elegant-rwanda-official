@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendFormEmails } from "@/lib/email";
-import { prisma } from "@/lib/prisma";
+import { createBooking } from "@/lib/bookings/create-booking";
 import { RequestType } from "@/generated/prisma/enums";
 
 const formTypeToEnum: Record<string, RequestType> = {
@@ -15,59 +15,70 @@ const formTypeToEnum: Record<string, RequestType> = {
 };
 
 export async function POST(request: Request) {
+  let body: Record<string, unknown>;
   try {
-    const body = await request.json();
-    const { formType, data, userEmail, userName, tourId, eventId, vehicleId } = body ?? {};
-
-    if (!formType || !data || typeof data !== "object") {
-      return NextResponse.json(
-        { error: "Invalid payload. Provide formType and data." },
-        { status: 400 },
-      );
-    }
-
-    // Save to database
-    try {
-      const type = formTypeToEnum[formType];
-      if (type) {
-        await prisma.request.create({
-          data: {
-            type,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            data: data as any, // Json type
-            userEmail,
-            userName,
-            tourId: tourId || null,
-            eventId: eventId || null,
-            vehicleId: vehicleId || null,
-            status: "PENDING",
-          },
-        });
-      } else {
-        console.warn(`Unknown form type for DB storage: ${formType}`);
-      }
-    } catch (dbError) {
-      // Log but don't fail the request yet, try sending email still?
-      // Or fail? The user asked for "backup", so maybe if DB fails we should still try email.
-      // But if DB is the *backup*, maybe we want to ensure it works?
-      // "This will help to ensure that there is a way to get a backup of request in case emails are not working."
-      // So DB is critical. But if DB fails, maybe email still works.
-      console.error("Failed to save request to database", dbError);
-    }
-
-    await sendFormEmails({
-      formType,
-      data,
-      userEmail,
-      userName,
-    });
-
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    console.error("Email sending failed", error);
+    body = await request.json();
+  } catch {
     return NextResponse.json(
-      { error: "Failed to send email" },
+      { error: "Invalid JSON body." },
+      { status: 400 },
+    );
+  }
+
+  const formType = body.formType as string | undefined;
+  const data = body.data;
+  const userEmail = body.userEmail;
+  const userName = body.userName;
+  const tourId = body.tourId;
+  const eventId = body.eventId;
+  const vehicleId = body.vehicleId;
+
+  if (!formType || !data || typeof data !== "object") {
+    return NextResponse.json(
+      { error: "Invalid payload. Provide formType and data." },
+      { status: 400 },
+    );
+  }
+
+  const type = formTypeToEnum[formType as keyof typeof formTypeToEnum];
+  if (!type) {
+    return NextResponse.json(
+      { error: "Unknown form type." },
+      { status: 400 },
+    );
+  }
+
+  // Save to database: typed booking record only (per service)
+  try {
+    await createBooking({
+      type,
+      userEmail: (userEmail as string) || null,
+      userName: (userName as string) || null,
+      tourId: (tourId as string) || null,
+      eventId: (eventId as string) || null,
+      vehicleId: (vehicleId as string) || null,
+      data: data as Record<string, unknown>,
+    });
+  } catch (dbError) {
+    console.error("Failed to save request to database", dbError);
+    return NextResponse.json(
+      { error: "Could not save your request. Please try again." },
       { status: 500 },
     );
   }
+
+  // Send emails in background; do not fail the request if email fails
+  try {
+    await sendFormEmails({
+      formType,
+      data: data as Record<string, unknown>,
+      userEmail: (userEmail as string) ?? undefined,
+      userName: (userName as string) ?? undefined,
+    });
+  } catch (emailError) {
+    console.error("Email sending failed (request was saved)", emailError);
+    // Still return success — request is stored
+  }
+
+  return NextResponse.json({ ok: true });
 }

@@ -1,25 +1,37 @@
 "use server";
 
 import nodemailer from "nodemailer";
+import { getRequestDisplayConfig, getRequestDisplayRows } from "@/lib/request-display";
+
 const { EMAIL, EMAIL_PASSWORD, EMAIL_CLIENT, ADMIN_EMAIL_1, ADMIN_EMAIL_2 } =
   process.env;
 
-function requiredEnv() {
-  if (!EMAIL || !EMAIL_PASSWORD) {
-    throw new Error("Email credentials are not configured");
-  }
-}
+const formTypeToRequestType: Record<string, string> = {
+  "air-travel": "AIR_TRAVEL",
+  "cab-booking": "CAB_BOOKING",
+  "car-rental": "CAR_RENTAL",
+  "tour-booking": "TOUR_BOOKING",
+  contact: "CONTACT",
+  inquiry: "INQUIRY",
+  "event-registration": "EVENT_REGISTRATION",
+  "events-newsletter": "EVENTS_NEWSLETTER",
+};
 
-const transporter = (() => {
-  requiredEnv();
+function getTransporter() {
+  if (!EMAIL || !EMAIL_PASSWORD) {
+    throw new Error("Email credentials are not configured (EMAIL, EMAIL_PASSWORD)");
+  }
   return nodemailer.createTransport({
     service: EMAIL_CLIENT || "gmail",
-    auth: {
-      user: EMAIL,
-      pass: EMAIL_PASSWORD,
-    },
+    auth: { user: EMAIL, pass: EMAIL_PASSWORD },
   });
-})();
+}
+
+let _transporter: ReturnType<typeof nodemailer.createTransport> | null = null;
+function transporter() {
+  if (!_transporter) _transporter = getTransporter();
+  return _transporter;
+}
 
 type FieldValue =
   | string
@@ -67,19 +79,44 @@ function renderFieldRows(data: Record<string, FieldValue>): string {
   return rows.join("");
 }
 
+function renderStructuredSections(type: string, data: Record<string, unknown>): string {
+  const sections = getRequestDisplayRows(type, data as Record<string, unknown>);
+  if (sections.length === 0) return renderFieldRows(data as Record<string, FieldValue>);
+
+  const parts: string[] = [];
+  sections.forEach((section) => {
+    parts.push(
+      `<div style="margin-bottom:20px;"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;margin-bottom:10px;">${escapeHtml(section.section)}</div><table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;font-size:14px;"><tbody>`
+    );
+    section.rows.forEach((row) => {
+      parts.push(`
+        <tr><td style="padding:6px 0 6px 0;border-bottom:1px solid #e2e8f0;vertical-align:top;width:140px;font-weight:600;color:#475569;">${escapeHtml(row.label)}</td><td style="padding:6px 0 6px 0;border-bottom:1px solid #e2e8f0;color:#0f172a;">${escapeHtml(row.value)}</td></tr>
+      `);
+    });
+    parts.push("</tbody></table></div>");
+  });
+  return parts.join("");
+}
+
 function baseTemplate({
   title,
   intro,
   fields,
   footerNote,
+  structuredHtml,
 }: {
   title: string;
   intro: string;
   fields: Record<string, FieldValue>;
   footerNote?: string;
+  structuredHtml?: string;
 }) {
   const footer =
     footerNote ?? "We will get back to you shortly with a detailed response.";
+  const bodyHtml = structuredHtml ?? `
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;font-size:14px;line-height:1.5;">
+      <tbody>${renderFieldRows(fields)}</tbody>
+    </table>`;
   return `
     <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f8fafc;padding:32px 0;">
       <tr>
@@ -99,11 +136,7 @@ function baseTemplate({
                 <div style="font-size:15px;color:#475569;line-height:1.6;margin-bottom:20px;">
                   ${escapeHtml(intro)}
                 </div>
-                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;font-size:14px;line-height:1.5;">
-                  <tbody>
-                    ${renderFieldRows(fields)}
-                  </tbody>
-                </table>
+                ${bodyHtml}
                 <div style="margin-top:24px;padding:16px;border-radius:12px;background:#0ea5e910;color:#075985;font-size:14px;line-height:1.6;border:1px solid #0ea5e933;">
                   ${escapeHtml(footer)}
                 </div>
@@ -143,32 +176,38 @@ export async function sendFormEmails({
   userName,
 }: {
   formType: string;
-  data: Record<string, FieldValue>;
+  data: Record<string, unknown>;
   userEmail?: string;
   userName?: string;
 }) {
-  requiredEnv();
-
-  const to = [EMAIL, ADMIN_EMAIL_1, ADMIN_EMAIL_2].filter(Boolean) as string[];
-  if (!to.length) {
-    throw new Error("No admin recipients configured");
+  const envEmail = EMAIL;
+  const to = [envEmail, ADMIN_EMAIL_1, ADMIN_EMAIL_2].filter(Boolean) as string[];
+  if (!to.length || !envEmail) {
+    throw new Error("No admin recipients configured (EMAIL or ADMIN_EMAIL_1/2)");
   }
 
   const subject = formSubjectMap[formType] || `New ${formType} submission`;
+  const requestType = formTypeToRequestType[formType];
+  const structuredBody =
+    requestType && getRequestDisplayConfig(requestType)
+      ? renderStructuredSections(requestType, data as Record<string, FieldValue>)
+      : undefined;
+
   const adminHtml = baseTemplate({
     title: subject,
     intro:
       "A new request has been submitted on elegantrwanda.rw. Details are below:",
-    fields: data,
+    fields: data as Record<string, FieldValue>,
     footerNote: "Please reply to the guest promptly with a tailored quotation.",
+    structuredHtml: structuredBody,
   });
 
-  await transporter.sendMail({
-    from: `Elegant Travel and Tours <${EMAIL}>`,
+  await transporter().sendMail({
+    from: `Elegant Travel and Tours <${envEmail}>`,
     to,
     subject,
     html: adminHtml,
-    replyTo: userEmail || EMAIL,
+    replyTo: userEmail || envEmail,
   });
 
   if (userEmail) {
@@ -177,17 +216,18 @@ export async function sendFormEmails({
       intro: `Hello ${
         userName || "there"
       }, thank you for reaching out to Elegant Travel and Tours. We have your request and will respond with a tailored quotation shortly.`,
-      fields: data,
+      fields: data as Record<string, FieldValue>,
       footerNote:
         "Need immediate assistance? Reply to this email and our team will prioritize your request.",
+      structuredHtml: structuredBody,
     });
 
-    await transporter.sendMail({
-      from: `Elegant Travel and Tours <${EMAIL}>`,
+    await transporter().sendMail({
+      from: `Elegant Travel and Tours <${envEmail}>`,
       to: userEmail,
       subject: "We received your request",
       html: confirmationHtml,
-      replyTo: EMAIL,
+      replyTo: envEmail,
     });
   }
 }

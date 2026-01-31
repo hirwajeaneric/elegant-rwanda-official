@@ -9,10 +9,9 @@ import { Loader2 } from "lucide-react";
 
 interface BookingItem {
   id: string;
-  type: string;
   status: string;
-  userEmail: string | null;
-  userName: string | null;
+  name?: string;
+  email?: string;
   createdAt: string;
 }
 
@@ -21,38 +20,47 @@ interface EntityBookingsListProps {
   entityId: string;
 }
 
-const TYPE_LABELS: Record<string, string> = {
-  TOUR_BOOKING: "Tour",
-  CAR_RENTAL: "Car Rental",
-  EVENT_REGISTRATION: "Event",
-};
+const API_ENDPOINTS = {
+  tour: "/api/tour-bookings",
+  event: "/api/event-registrations",
+  vehicle: "/api/car-rental-bookings",
+} as const;
+
+const PARAM_KEYS = {
+  tour: "tourId",
+  event: "eventId",
+  vehicle: "vehicleId",
+} as const;
+
+const BASE_LINKS = {
+  tour: "/admin/tours/bookings",
+  event: "/admin/events/bookings",
+  vehicle: "/admin/car-rental/bookings",
+} as const;
 
 export function EntityBookingsList({ entityType, entityId }: EntityBookingsListProps) {
   const [bookings, setBookings] = useState<BookingItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const param =
-    entityType === "tour"
-      ? "tourId"
-      : entityType === "event"
-        ? "eventId"
-        : "vehicleId";
+  const paramKey = PARAM_KEYS[entityType];
+  const endpoint = API_ENDPOINTS[entityType];
+  const baseLink = BASE_LINKS[entityType];
 
   useEffect(() => {
     if (!entityId) {
       setLoading(false);
       return;
     }
-    fetch(`/api/requests?${param}=${entityId}&limit=50`)
+    fetch(`${endpoint}?${paramKey}=${entityId}&limit=50`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && Array.isArray(data.requests)) {
-          setBookings(data.requests);
+        if (data.success && Array.isArray(data.bookings)) {
+          setBookings(data.bookings);
         }
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [entityId, param]);
+  }, [entityId, endpoint, paramKey]);
 
   if (loading) {
     return (
@@ -95,16 +103,16 @@ export function EntityBookingsList({ entityType, entityId }: EntityBookingsListP
               className="flex items-center justify-between gap-4 py-2 border-b border-border last:border-0"
             >
               <div className="min-w-0">
-                <p className="font-medium truncate">{b.userName || b.userEmail || "—"}</p>
+                <p className="font-medium truncate">{b.name || b.email || "—"}</p>
                 <p className="text-sm text-muted-foreground">
-                  {new Date(b.createdAt).toLocaleString()} · {TYPE_LABELS[b.type] ?? b.type}
+                  {new Date(b.createdAt).toLocaleString()}
                 </p>
               </div>
               <Badge variant={b.status === "COMPLETED" ? "default" : "secondary"}>
                 {b.status.replace("_", " ")}
               </Badge>
               <Button variant="outline" size="sm" asChild>
-                <Link href={`/admin/bookings/${b.id}`}>View</Link>
+                <Link href={`${baseLink}/${b.id}`}>View</Link>
               </Button>
             </li>
           ))}

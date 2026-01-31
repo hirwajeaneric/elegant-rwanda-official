@@ -1,62 +1,51 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { EventRegistrationDetail } from "@/components/dashboard/bookings/EventRegistrationDetail";
 
-const TYPE_LABELS: Record<string, string> = {
-  TOUR_BOOKING: "Tour Booking",
-  CAR_RENTAL: "Car Rental",
-  EVENT_REGISTRATION: "Event Registration",
-  AIR_TRAVEL: "Air Travel",
-  CAB_BOOKING: "Cab Booking",
-  CONTACT: "Contact",
-  INQUIRY: "Inquiry",
-  EVENTS_NEWSLETTER: "Events Newsletter",
-};
-
-interface RequestDetail {
+interface EventRegistration {
   id: string;
-  type: string;
   status: string;
-  data: Record<string, unknown>;
-  userEmail: string | null;
-  userName: string | null;
+  numberOfParticipants: number;
+  name: string;
+  email: string;
+  phone: string;
+  organization: string | null;
+  specialRequests: string | null;
+  dietaryRestrictions: string | null;
   createdAt: string;
-  updatedAt: string;
-  tour?: { id: string; title: string; slug: string } | null;
   event?: { id: string; title: string; slug: string } | null;
-  vehicle?: { id: string; name: string; slug: string } | null;
 }
 
-export default function BookingDetailPage() {
+export default function EventRegistrationDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
-  const [request, setRequest] = useState<RequestDetail | null>(null);
+  const [booking, setBooking] = useState<EventRegistration | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
-    fetchRequest();
+    fetchBooking();
   }, [id]);
 
-  const fetchRequest = async () => {
+  const fetchBooking = async () => {
     try {
-      const res = await fetch(`/api/requests/${id}`);
+      const res = await fetch(`/api/event-registrations/${id}`);
       const data = await res.json();
-      if (data.success) setRequest(data.request);
-      else setRequest(null);
+      if (data.success) setBooking(data.booking);
+      else setBooking(null);
     } catch {
-      setRequest(null);
+      setBooking(null);
     } finally {
       setLoading(false);
     }
@@ -65,14 +54,14 @@ export default function BookingDetailPage() {
   const handleStatusChange = async (newStatus: string) => {
     setUpdating(true);
     try {
-      const res = await fetch(`/api/requests/${id}`, {
+      const res = await fetch(`/api/event-registrations/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update");
-      setRequest(data.request);
+      setBooking(data.booking);
       toast.success("Status updated");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to update");
@@ -92,17 +81,17 @@ export default function BookingDetailPage() {
     );
   }
 
-  if (!request) {
+  if (!booking) {
     return (
       <div className="space-y-6">
         <DashboardBreadcrumbs />
         <Card>
           <CardContent className="pt-6">
-            <p className="text-muted-foreground">Booking not found</p>
+            <p className="text-muted-foreground">Registration not found</p>
             <Button asChild className="mt-4">
-              <Link href="/admin/bookings">
+              <Link href="/admin/events/bookings">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Bookings
+                Back to Event Registrations
               </Link>
             </Button>
           </CardContent>
@@ -111,84 +100,61 @@ export default function BookingDetailPage() {
     );
   }
 
-  const entityLink =
-    request.tour
-      ? `/admin/tours/${request.tour.id}`
-      : request.event
-        ? `/admin/events/${request.event.id}`
-        : request.vehicle
-          ? `/admin/car-rental/${request.vehicle.id}`
-          : null;
-
-  const entityLabel = request.tour
-    ? request.tour.title
-    : request.event
-      ? request.event.title
-      : request.vehicle
-        ? request.vehicle.name
-        : "—";
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <DashboardBreadcrumbs />
           <div className="flex items-center gap-3 mt-4">
-            <h1 className="text-3xl font-bold">
-              {TYPE_LABELS[request.type] ?? request.type}
-            </h1>
+            <h1 className="text-3xl font-bold">Event Registration</h1>
             <Badge
               variant={
-                request.status === "COMPLETED"
+                booking.status === "COMPLETED"
                   ? "default"
-                  : request.status === "IN_PROGRESS"
+                  : booking.status === "IN_PROGRESS"
                     ? "secondary"
                     : "outline"
               }
             >
-              {request.status.replace("_", " ")}
+              {booking.status.replace("_", " ")}
             </Badge>
           </div>
           <p className="text-muted-foreground mt-1">
-            {new Date(request.createdAt).toLocaleString()}
+            {booking.event?.title ?? "—"} · {new Date(booking.createdAt).toLocaleString()}
           </p>
         </div>
         <Button variant="outline" asChild>
-          <Link href="/admin/bookings">
+          <Link href="/admin/events/bookings">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Link>
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact &amp; Related</CardTitle>
-            <CardDescription>Requester and linked entity</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="col-span-1">
+          <CardContent className="pt-6 space-y-4">
             <div>
               <Label className="text-muted-foreground">Name</Label>
-              <p className="font-medium">{request.userName ?? "—"}</p>
+              <p className="font-medium">{booking.name}</p>
             </div>
             <div>
               <Label className="text-muted-foreground">Email</Label>
-              <p className="font-medium">{request.userEmail ?? "—"}</p>
+              <p className="font-medium">{booking.email}</p>
             </div>
             <div>
-              <Label className="text-muted-foreground">Related to</Label>
-              <p className="font-medium">{entityLabel}</p>
-              {entityLink && (
-                <Button variant="link" className="px-0" asChild>
-                  <Link href={entityLink}>View In Source</Link>
-                </Button>
-              )}
+              <Label className="text-muted-foreground">Phone</Label>
+              <p className="font-medium">{booking.phone}</p>
             </div>
+            {booking.event && (
+              <Button variant="link" className="px-0" asChild>
+                <Link href={`/admin/events/${booking.event.id}`}>View event</Link>
+              </Button>
+            )}
             <div className="flex flex-col gap-2">
               <Label className="text-muted-foreground">Status</Label>
               <Select
-                value={request.status}
+                value={booking.status}
                 onValueChange={handleStatusChange}
                 disabled={updating}
               >
@@ -206,17 +172,9 @@ export default function BookingDetailPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Request details</CardTitle>
-            <CardDescription>Submitted form data</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <pre className="text-sm bg-muted p-4 rounded-md overflow-auto max-h-[400px]">
-              {JSON.stringify(request.data, null, 2)}
-            </pre>
-          </CardContent>
-        </Card>
+        <div className="col-span-2">
+          <EventRegistrationDetail booking={booking} />
+        </div>
       </div>
     </div>
   );

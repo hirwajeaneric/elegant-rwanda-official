@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { CheckCircle } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 import { submitFormToEmail } from "@/lib/client-submit";
@@ -40,8 +40,10 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
     }));
   };
 
+  const successShownRef = useRef(false);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    successShownRef.current = false;
     setIsSubmitting(true);
 
     try {
@@ -60,6 +62,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
         vehicleId: (vehicle as { id?: string }).id,
       });
 
+      successShownRef.current = true;
       toast.success("Car rental request received. We'll respond with a quote soon.");
       setIsSubmitted(true);
 
@@ -82,7 +85,9 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
       }, 3000);
     } catch (error) {
       console.error(error);
-      toast.error("We could not send your request. Please try again.");
+      if (!successShownRef.current) {
+        toast.error("We could not send your request. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }

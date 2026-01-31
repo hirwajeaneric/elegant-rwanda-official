@@ -16,9 +16,9 @@ export async function GET(
     const req = await prisma.request.findUnique({
       where: { id },
       include: {
-        tour: true,
-        event: true,
-        vehicle: true,
+        tour: { select: { id: true, title: true, slug: true } },
+        event: { select: { id: true, title: true, slug: true } },
+        vehicle: { select: { id: true, name: true, slug: true } },
       },
     });
 
@@ -59,9 +59,9 @@ export async function PUT(
       where: { id },
       data: { status },
       include: {
-        tour: true,
-        event: true,
-        vehicle: true,
+        tour: { select: { id: true, title: true, slug: true } },
+        event: { select: { id: true, title: true, slug: true } },
+        vehicle: { select: { id: true, name: true, slug: true } },
       },
     });
 
