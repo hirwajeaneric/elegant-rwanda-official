@@ -7,7 +7,6 @@ export type TourBooking = {
   status: string;
   numberOfPeople: number;
   preferredStart: string | null;
-  preferredEnd: string | null;
   specialRequests: string | null;
   name: string;
   email: string;
@@ -21,7 +20,6 @@ export function TourBookingDetail({ booking }: { booking: TourBooking }) {
     { label: "Tour", value: booking.tour?.title ?? "—" },
     { label: "Number of people", value: String(booking.numberOfPeople) },
     { label: "Preferred start", value: booking.preferredStart ?? "—" },
-    { label: "Preferred end", value: booking.preferredEnd ?? "—" },
   ];
   const contact = [
     { label: "Name", value: booking.name },

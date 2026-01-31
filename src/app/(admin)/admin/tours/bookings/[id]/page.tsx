@@ -18,7 +18,6 @@ interface TourBooking {
   status: string;
   numberOfPeople: number;
   preferredStart: string | null;
-  preferredEnd: string | null;
   specialRequests: string | null;
   name: string;
   email: string;

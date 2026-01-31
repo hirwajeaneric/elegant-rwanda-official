@@ -92,7 +92,6 @@ model TourBooking {
   tour            Tour?         @relation(fields: [tourId], references: [id], onDelete: SetNull)
   numberOfPeople  Int
   preferredStart  String?
-  preferredEnd    String?
   specialRequests String?
   name            String
   email           String

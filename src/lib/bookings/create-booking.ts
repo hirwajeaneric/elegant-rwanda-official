@@ -76,15 +76,13 @@ export async function createBooking(input: CreateBookingInput): Promise<{ id: st
     }
     case "TOUR_BOOKING": {
       const tourData = data as Record<string, unknown>;
-      const preferredDates = tourData.preferredDates as Record<string, unknown> | undefined;
       const contactInfo = tourData.contactInfo as Record<string, unknown> | undefined;
       const booking = await prisma.tourBooking.create({
         data: {
           status: "PENDING",
-          tourId: strOrNull(tourData.tourId) ?? undefined,
-          numberOfPeople: Number(tourData.numberOfPeople) || 1,
-          preferredStart: strOrNull(preferredDates?.startDate ?? tourData.preferredStart) ?? undefined,
-          preferredEnd: strOrNull(preferredDates?.endDate ?? tourData.preferredEnd) ?? undefined,
+          tourId: strOrNull(tourId ?? tourData.tourId) ?? undefined,
+          numberOfPeople: Number(tourData.numberOfPeople ?? tourData.travelers) || 1,
+          preferredStart: strOrNull(tourData.preferredStartDate ?? tourData.preferredStart) ?? undefined,
           specialRequests: strOrNull(tourData.specialRequests) ?? undefined,
           name: str(contactInfo?.name ?? tourData.name),
           email: str(contactInfo?.email ?? tourData.email),
