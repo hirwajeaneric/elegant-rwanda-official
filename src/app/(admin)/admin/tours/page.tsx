@@ -17,7 +17,12 @@ interface Tour {
   category?: { id: string; name: string; slug: string } | null;
   status: string;
   price?: number | null;
-  bookings: number;
+  duration?: string | null;
+  location?: string | null;
+  featured?: boolean;
+  bookings?: number | null;
+  capacity?: number | null;
+  createdAt?: string | null;
 }
 
 export default function ToursPage() {
@@ -70,15 +75,45 @@ export default function ToursPage() {
       ),
     },
     {
+      key: "duration",
+      label: "Duration",
+      sortable: true,
+      render: (item: Tour) => item.duration ?? "—",
+    },
+    {
+      key: "location",
+      label: "Location",
+      sortable: true,
+      render: (item: Tour) => item.location ?? "—",
+    },
+    {
       key: "price",
       label: "Price",
       sortable: true,
-      render: (item: Tour) => (item.price != null ? `$${item.price}` : "—"),
+      render: (item: Tour) =>
+        item.price != null ? `$${Number(item.price).toLocaleString()}` : "—",
+    },
+    {
+      key: "featured",
+      label: "Featured",
+      sortable: true,
+      render: (item: Tour) => (
+        <Badge variant={item.featured ? "default" : "outline"}>
+          {item.featured ? "Yes" : "No"}
+        </Badge>
+      ),
     },
     {
       key: "bookings",
       label: "Bookings",
       sortable: true,
+      render: (item: Tour) => {
+        const count = item.bookings;
+        if (count == null) return "—";
+        const cap = item.capacity ?? null;
+        if (cap != null) return `${count} / ${cap}`;
+        return String(count);
+      },
     },
     {
       key: "actions",
@@ -125,7 +160,7 @@ export default function ToursPage() {
   );
 
   if (loading) {
-    return <DataTableLoader columnCount={6} rowCount={8} />;
+    return <DataTableLoader columnCount={9} rowCount={8} />;
   }
 
   return (

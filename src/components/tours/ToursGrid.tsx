@@ -5,6 +5,14 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Calendar, Users, ArrowRight, Search } from "lucide-react";
 import { getCategoryColor } from "@/lib/utils";
+import { sanitizeHtml } from "@/lib/html-sanitizer";
+
+interface TourCategory {
+  id: string;
+  name: string;
+  slug: string;
+  color: string | null;
+}
 
 interface Tour {
   id: string;
@@ -16,7 +24,7 @@ interface Tour {
   maxGroupSize: number;
   highlights: string[];
   images: string[];
-  category?: { id: string; name: string; slug?: string } | null;
+  category: TourCategory | null;
   featured: boolean;
 }
 
@@ -70,18 +78,23 @@ export function ToursGrid() {
     );
   }
 
-  const categoryCounts = tours.reduce<{ id: string; name: string; count: number }[]>((acc, t) => {
-    if (!t.category) return acc;
-    const existing = acc.find((c) => c.id === t.category!.id);
-    if (existing) existing.count += 1;
-    else acc.push({ id: t.category.id, name: t.category.name, count: 1 });
-    return acc;
-  }, []);
-  const categories = [
-    { id: "all", name: "All Categories", count: tours.length },
-    ...categoryCounts,
-  ];
- 
+  // Derive categories from actual tour data (dynamic)
+  const categories = (() => {
+    const list: { id: string; name: string; count: number }[] = [
+      { id: "all", name: "All Categories", count: tours.length },
+    ];
+    const byId = new Map<string, { id: string; name: string; count: number }>();
+    for (const t of tours) {
+      const cat = t.category;
+      if (!cat) continue;
+      const cur = byId.get(cat.id);
+      if (cur) cur.count++;
+      else byId.set(cat.id, { id: cat.id, name: cat.name, count: 1 });
+    }
+    list.push(...Array.from(byId.values()));
+    return list;
+  })();
+
   const durations = [
     { id: "all", name: "All Durations" },
     { id: "1-3", name: "1-3 Days" },
@@ -174,17 +187,21 @@ export function ToursGrid() {
               <div
                 className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
                 style={{
-                  backgroundImage: `url('/${tour.images[0]}')`
+                  backgroundImage: `url('${tour.images[0]}')`
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
               
-              {/* Category Badge */}
+              {/* Category Badge - uses category color from API when available */}
               {tour.category && (
                 <div className="absolute top-4 left-4">
                   <Badge
                     variant="secondary"
-                    className={`${getCategoryColor(tour.category.name)} text-black`}
+                    className={
+                      tour.category.color
+                        ? tour.category.color
+                        : `${getCategoryColor(tour.category.name)} text-black`
+                    }
                   >
                     {tour.category.name}
                   </Badge>
@@ -210,10 +227,11 @@ export function ToursGrid() {
                 </Link>
               </h3>
 
-              {/* Description */}
-              <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3">
-                {tour.description}
-              </p>
+              {/* Description - HTML from API, sanitized before render */}
+              <div
+                className="text-muted-foreground mb-4 leading-relaxed line-clamp-3 prose prose-sm prose-muted max-w-none *:my-0 [&>*:last-child]:mb-0"
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(tour.description ?? "") }}
+              />
 
               {/* Tour Details */}
               <div className="space-y-3 mb-4">

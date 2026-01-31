@@ -130,6 +130,7 @@ export const tours: Tour[] = [
             'Lakeside Unique resort',
             'Water activities',
             'Spa treatments',
+            'Fishing',
             'Sunset boat cruises',
             'Gourmet dining'
         ],

@@ -59,13 +59,13 @@ export function TourGallery({ tour }: TourGalleryProps) {
         {tour.images.map((image, index) => (
           <div
             key={index}
-            className="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer group"
+            className="relative aspect-4/3 rounded-lg overflow-hidden cursor-pointer group"
             onClick={() => openLightbox(index)}
           >
             <div
               className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-300"
               style={{
-                backgroundImage: `url('/${image}')`
+                backgroundImage: `url('${image}')`
               }}
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
@@ -125,7 +125,7 @@ export function TourGallery({ tour }: TourGalleryProps) {
 
             {/* Main Image */}
             <Image
-              src={`/${tour.images[selectedImage]}`}
+              src={`${tour.images[selectedImage]}`}
               alt={`${tour.title} - Image ${selectedImage + 1}`}
               width={1200}
               height={800}

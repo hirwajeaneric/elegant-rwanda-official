@@ -164,12 +164,7 @@ export default async function TourPage({ params }: TourPageProps) {
         </div>
       </div>
       {relatedTours.length > 0 && (
-        <RelatedTours
-          tours={relatedTours.map((t: { category?: { name: string }; [key: string]: unknown }) => ({
-            ...t,
-            category: t.category?.name ?? "",
-          }))}
-        />
+        <RelatedTours tours={relatedTours} />
       )}
     </PageWrapper>
   );

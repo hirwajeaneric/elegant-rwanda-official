@@ -1,6 +1,9 @@
 "use client";
 
-import { MapPin, Share2 } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import { MapPin, Share2, ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 
 interface TourHeroProps {
   tour: {
@@ -25,8 +28,37 @@ function stripHtml(html: string): string {
 }
 
 export function TourHero({ tour }: TourHeroProps) {
+  const [sharing, setSharing] = useState(false);
   const descriptionText = stripHtml(tour.description);
-  const backgroundImage = tour.images && tour.images.length > 0 ? `url('/${tour.images[0]}')` : undefined;
+  const backgroundImage = tour.images && tour.images.length > 0 ? `url('${tour.images[0]}')` : undefined;
+
+  const handleShare = async () => {
+    if (sharing) return;
+    setSharing(true);
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    const text = descriptionText.length > 200 ? `${descriptionText.slice(0, 197)}...` : descriptionText;
+    const shareData: ShareData = {
+      title: tour.title,
+      text: text || `${tour.title} – ${tour.duration} in ${tour.location}`,
+      url,
+    };
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share(shareData);
+        toast.success("Thanks for sharing!");
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast.success("Link copied to clipboard");
+      }
+    } catch (err) {
+      if (err instanceof Error && err.name !== "AbortError") {
+        await navigator.clipboard?.writeText(url).catch(() => {});
+        toast.success("Link copied to clipboard");
+      }
+    } finally {
+      setSharing(false);
+    }
+  };
 
   return (
     <section className="relative h-full min-h-[600px] overflow-hidden">
@@ -45,9 +77,20 @@ export function TourHero({ tour }: TourHeroProps) {
       <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/80 to-black/70" />
       
       {/* Action Buttons */}
-      <div className="flex space-x-2 z-10 container-elegant mx-auto w-full justify-end p-4">
-        <button 
-          className="p-3 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
+      <div className="flex items-center justify-between z-10 container-elegant mt-10 mx-auto w-full p-4">
+        <Link
+          href="/tours"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors text-sm font-medium"
+          aria-label="Back to all tours"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Tours
+        </Link>
+        <button
+          type="button"
+          onClick={handleShare}
+          disabled={sharing}
+          className="p-3 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors disabled:opacity-70"
           aria-label="Share this tour"
         >
           <Share2 className="h-5 w-5" />
@@ -60,13 +103,8 @@ export function TourHero({ tour }: TourHeroProps) {
           <div className="max-w-4xl">
             {/* Title */}
             <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
-              {tour.title}
+              {tour.title} in {tour.location}
             </h1>
-
-            {/* Description */}
-            <p className="text-lg md:text-2xl text-white/90 mb-8 leading-relaxed max-w-3xl">
-              {descriptionText}
-            </p>
 
             {/* Tour Info Grid */}
             <div className="grid grid-cols-3 gap-6 mb-8">

@@ -181,18 +181,18 @@ export default function BookingDetailPage() {
               <p className="font-medium">{entityLabel}</p>
               {entityLink && (
                 <Button variant="link" className="px-0" asChild>
-                  <Link href={entityLink}>View in admin</Link>
+                  <Link href={entityLink}>View In Source</Link>
                 </Button>
               )}
             </div>
-            <div>
+            <div className="flex flex-col gap-2">
               <Label className="text-muted-foreground">Status</Label>
               <Select
                 value={request.status}
                 onValueChange={handleStatusChange}
                 disabled={updating}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

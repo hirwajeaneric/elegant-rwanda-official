@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, X, Maximize2, ArrowLeft } from "lucide-react";
 import type { Vehicle } from "@/data/car-rental";
 
 interface CarRentalGalleryHeroProps {
@@ -56,11 +57,22 @@ export function CarRentalGalleryHero({ vehicle }: CarRentalGalleryHeroProps) {
     <>
       <section className="relative bg-white py-8">
         <div className="container-elegant">
+          {/* Back to Car Rental - above the gallery */}
+          <div className="mb-6">
+            <Link
+              href="/car-rental"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+              aria-label="Back to car rental"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Car Rental Options
+            </Link>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Main Image - Left Side (10 columns on desktop, full width on mobile) */}
             <div className="lg:col-span-10 order-1 lg:order-1">
               <div 
-                className="relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group"
+                className="relative aspect-4/3 rounded-2xl overflow-hidden cursor-pointer group"
                 onClick={() => openLightbox(selectedImageIndex)}
               >
                 <Image
@@ -83,7 +95,7 @@ export function CarRentalGalleryHero({ vehicle }: CarRentalGalleryHeroProps) {
                 {thumbnailImages.map((image, index) => (
                   <div
                     key={index}
-                    className={`relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
+                    className={`relative aspect-4/3 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
                       selectedImageIndex === index
                         ? "ring-4 ring-primary scale-105"
                         : "opacity-70 hover:opacity-100 hover:scale-105"

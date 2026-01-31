@@ -149,16 +149,25 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    const [tours, total] = await Promise.all([
+    const [toursRaw, total] = await Promise.all([
       prisma.tour.findMany({
         where,
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
-        include: { category: { select: { id: true, name: true, slug: true } } },
+        include: {
+          category: { select: { id: true, name: true, slug: true } },
+          _count: { select: { requests: true } },
+        },
       }),
       prisma.tour.count({ where }),
     ]);
+
+    // Use actual booking count from Request table (tour bookings), not the denormalized Tour.bookings field
+    const tours = toursRaw.map(({ _count, ...t }) => ({
+      ...t,
+      bookings: _count.requests,
+    }));
 
     return NextResponse.json({
       success: true,

@@ -1,13 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Users } from "lucide-react";
-import { getFeaturedTours } from "@/data/tours";
+import { sanitizeHtml } from "@/lib/html-sanitizer";
+
+interface FeaturedTour {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  duration: string;
+  location: string;
+  maxGroupSize: number;
+  images: string[];
+}
 
 export function FeaturedTours() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const featuredTours = getFeaturedTours();
+  const [featuredTours, setFeaturedTours] = useState<FeaturedTour[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchFeaturedTours() {
+      try {
+        const res = await fetch("/api/public/tours?featured=true&limit=10");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.tours)) {
+          setFeaturedTours(data.tours);
+        }
+      } catch (error) {
+        console.error("Error fetching featured tours:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchFeaturedTours();
+  }, []);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % featuredTours.length);
@@ -20,6 +49,24 @@ export function FeaturedTours() {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  if (loading) {
+    return (
+      <section className="section-padding bg-white">
+        <div className="container-elegant">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+              Featured <span className="text-yellow-500">Tours</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Experience our most popular and highly-rated tours.
+            </p>
+          </div>
+          <div className="relative h-[600px] md:h-[700px] rounded-2xl bg-muted animate-pulse" />
+        </div>
+      </section>
+    );
+  }
 
   if (featuredTours.length === 0) return null;
 
@@ -51,7 +98,7 @@ export function FeaturedTours() {
                 }}
               >
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent" />
               </div>
 
               {/* Tour Content */}
@@ -62,10 +109,13 @@ export function FeaturedTours() {
                     {featuredTours[currentIndex].title}
                   </h3>
 
-                  {/* Tour Description */}
-                  <p className="text-lg md:text-xl text-white/90 mb-6 max-w-3xl leading-relaxed">
-                    {featuredTours[currentIndex].description}
-                  </p>
+                  {/* Tour Description - HTML from API, sanitized */}
+                  <div
+                    className="text-lg md:text-xl text-white/90 mb-6 max-w-3xl leading-relaxed prose prose-invert prose-sm *:my-0 [&>*:last-child]:mb-0"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeHtml(featuredTours[currentIndex].description ?? ""),
+                    }}
+                  />
 
                   {/* Tour Details */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
@@ -117,9 +167,9 @@ export function FeaturedTours() {
 
           {/* Dots Indicator */}
           <div className="flex justify-center mt-6 space-x-2">
-            {featuredTours.map((_, index) => (
+            {featuredTours.map((tour, index) => (
               <button
-                key={index}
+                key={tour.id}
                 className={`w-3 h-3 rounded-full transition-all duration-200 ${
                   index === currentIndex 
                     ? 'bg-primary scale-125' 

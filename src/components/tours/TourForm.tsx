@@ -414,7 +414,8 @@ export function TourForm({
                 <Input
                   id="capacity"
                   type="number"
-                  value={formData.capacity || ""}
+                  value={formData.capacity || ""} 
+                  placeholder="e.g: 10"
                   onChange={(e) => setFormData((prev) => ({ ...prev, capacity: parseInt(e.target.value, 10) || 0 }))}
                   required
                 />
@@ -433,7 +434,7 @@ export function TourForm({
                   <SelectContent>
                     {STATUSES.map((s) => (
                       <SelectItem key={s} value={s}>
-                        {s}
+                        {s.charAt(0).toUpperCase() + s.slice(1)}
                       </SelectItem>
                     ))}
                   </SelectContent>

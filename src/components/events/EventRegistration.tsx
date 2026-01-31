@@ -247,7 +247,7 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
           {canRegister && !isRegistrationOpen && (
             <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
               <div className="flex items-start space-x-2">
-                <AlertCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                <AlertCircle className="h-4 w-4 text-orange-600 mt-0.5  shrink-0" />
                 <div>
                   <p className="text-sm font-medium text-orange-800">Late Registration</p>
                   <p className="text-xs text-orange-700">
@@ -334,7 +334,7 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
             <div className="space-y-2">
               {event.highlights.slice(0, 4).map((highlight, index) => (
                 <div key={index} className="flex items-start space-x-2">
-                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                   <span className="text-sm text-gray-600">{highlight}</span>
                 </div>
               ))}

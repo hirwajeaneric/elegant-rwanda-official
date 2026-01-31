@@ -4,10 +4,30 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Calendar, Users, ArrowRight } from "lucide-react";
 import { getCategoryColor } from "@/lib/utils";
-import type { Tour } from "@/data/tours";
+import { sanitizeHtml } from "@/lib/html-sanitizer";
+
+interface TourCategory {
+  id: string;
+  name: string;
+  slug: string;
+  color: string | null;
+}
+
+interface RelatedTour {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  duration: string;
+  location: string;
+  maxGroupSize: number;
+  images: string[];
+  category: TourCategory | null;
+  featured: boolean;
+}
 
 interface RelatedToursProps {
-  tours: Tour[];
+  tours: RelatedTour[];
 }
 
 export function RelatedTours({ tours }: RelatedToursProps) {
@@ -36,20 +56,26 @@ export function RelatedTours({ tours }: RelatedToursProps) {
                 <div
                   className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
                   style={{
-                    backgroundImage: `url('/${tour.images[0]}')`
+                    backgroundImage: `url(${tour.images[0]})`
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                
-                {/* Category Badge */}
-                <div className="absolute top-4 left-4">
-                  <Badge 
-                    variant="secondary" 
-                    className={`${getCategoryColor(tour.category)} text-white`}
-                  >
-                    {tour.category}
-                  </Badge>
-                </div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
+
+                {/* Category Badge - uses category color from API when available */}
+                {tour.category && (
+                  <div className="absolute top-4 left-4">
+                    <Badge
+                      variant="secondary"
+                      className={
+                        tour.category.color
+                          ? tour.category.color
+                          : `${getCategoryColor(tour.category.name)} text-black`
+                      }
+                    >
+                      {tour.category.name}
+                    </Badge>
+                  </div>
+                )}
 
                 {/* Featured Badge */}
                 {tour.featured && (
@@ -71,9 +97,10 @@ export function RelatedTours({ tours }: RelatedToursProps) {
                 </h3>
 
                 {/* Description */}
-                <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-2">
-                  {tour.description}
-                </p>
+                <div
+                  className="text-muted-foreground leading-relaxed prose prose-sm max-w-none line-clamp-2 mb-4"
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(tour.description) }}
+                />
 
                 {/* Tour Details */}
                 <div className="space-y-2 mb-4">
@@ -110,7 +137,7 @@ export function RelatedTours({ tours }: RelatedToursProps) {
         <div className="text-center mt-12">
           <Link
             href="/tours"
-            className="inline-flex items-center px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-200"
+            className="inline-flex items-center px-8 py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary/90 transition-colors duration-200"
           >
             View All Tours
             <ArrowRight className="h-5 w-5 ml-2" />

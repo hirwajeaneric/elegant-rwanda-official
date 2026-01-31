@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       where,
       take: limit,
       orderBy: { createdAt: "desc" },
-      include: { category: { select: { id: true, name: true, slug: true } } },
+      include: { category: { select: { id: true, name: true, slug: true, color: true } } },
     });
 
     return NextResponse.json({
