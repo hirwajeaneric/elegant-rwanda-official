@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { X, ChevronLeft, ChevronRight, Heart, Loader2 } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ShareButton } from "@/components/ui/share-button";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -58,10 +59,14 @@ export function GalleryGrid({
     : -1;
 
   if (loading && images.length === 0) {
+    const placeholderCount = 24;
     return (
-      <div className="flex flex-col items-center justify-center py-24">
-        <Loader2 className="h-10 w-10 animate-spin text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">Loading gallery...</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {Array.from({ length: placeholderCount }).map((_, i) => (
+          <div key={i} className="break-inside-avoid">
+            <Skeleton className="aspect-square w-full rounded-lg" />
+          </div>
+        ))}
       </div>
     );
   }

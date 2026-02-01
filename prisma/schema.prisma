@@ -182,6 +182,15 @@ model WebsiteSettings {
   updatedAt      DateTime @updatedAt
 }
 
+// Singleton: one row (id = "default") for About page editable content
+model AboutPageContent {
+  id                   String   @id @default("default")
+  historicalBackground String   @default("") // HTML or plain text
+  quickFacts           Json     @default("[]") // [{ label, value }]
+  missionValues        Json     @default("[]") // [{ title, description }]
+  updatedAt            DateTime @updatedAt
+}
+
 model AirTravelRequest {
   id                   String   @id @default(cuid())
   tripType             String?

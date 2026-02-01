@@ -8,6 +8,7 @@ const PAGE_SIZE = 24;
 
 export function GalleryPageClient() {
   const [stats, setStats] = useState<{ totalPhotos: number; totalCategories: number } | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
   const [images, setImages] = useState<Array<{
     id: string;
     url: string;
@@ -37,6 +38,8 @@ export function GalleryPageClient() {
       setStats({ totalPhotos, totalCategories });
     } catch {
       setStats({ totalPhotos: 0, totalCategories: 0 });
+    } finally {
+      setStatsLoading(false);
     }
   }, []);
 
@@ -75,6 +78,7 @@ export function GalleryPageClient() {
       <GalleryHero
         totalPhotos={stats?.totalPhotos}
         totalCategories={stats?.totalCategories}
+        statsLoading={statsLoading}
       />
       <div className="container-elegant py-16">
         <GalleryGrid

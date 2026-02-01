@@ -1,11 +1,14 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 interface GalleryHeroProps {
   totalPhotos?: number | null;
   totalCategories?: number | null;
+  statsLoading?: boolean;
 }
 
-export function GalleryHero({ totalPhotos, totalCategories }: GalleryHeroProps) {
+export function GalleryHero({ totalPhotos, totalCategories, statsLoading }: GalleryHeroProps) {
   const photosLabel = totalPhotos != null ? String(totalPhotos) : "—";
   const categoriesLabel = totalCategories != null ? String(totalCategories) : "—";
 
@@ -21,14 +24,22 @@ export function GalleryHero({ totalPhotos, totalCategories }: GalleryHeroProps) 
           Explore our fleet of vehicles, places we have been, experience with our previous clients and the services we offer.
         </p>
 
-        {/* Gallery Stats – from API where available */}
+        {/* Gallery Stats – from API where available, skeleton when loading */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
           <div className="text-center">
-            <div className="text-3xl font-bold text-yellow-500 mb-2">{photosLabel}</div>
+            {statsLoading ? (
+              <Skeleton className="h-9 w-12 mx-auto mb-2 bg-white/20" />
+            ) : (
+              <div className="text-3xl font-bold text-yellow-500 mb-2">{photosLabel}</div>
+            )}
             <div className="text-white/90 text-sm">Photos</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-yellow-500 mb-2">{categoriesLabel}</div>
+            {statsLoading ? (
+              <Skeleton className="h-9 w-12 mx-auto mb-2 bg-white/20" />
+            ) : (
+              <div className="text-3xl font-bold text-yellow-500 mb-2">{categoriesLabel}</div>
+            )}
             <div className="text-white/90 text-sm">Categories</div>
           </div>
           <div className="text-center">

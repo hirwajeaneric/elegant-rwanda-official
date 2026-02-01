@@ -43,12 +43,6 @@ type NavItem = {
 
 const allNavigationItems: NavItem[] = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Blogs", href: "/admin/blogs", icon: FileText, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare, roles: ["ADMIN", "CONTENT_MANAGER"] },
-  { name: "Team", href: "/admin/team", icon: Users, roles: ["ADMIN", "CONTENT_MANAGER"] },
-  { name: "FAQs", href: "/admin/faqs", icon: HelpCircle, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Categories", href: "/admin/categories", icon: Tag, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
-  { name: "Gallery", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
   {
     name: "Tours",
     href: "/admin/tours",
@@ -82,9 +76,16 @@ const allNavigationItems: NavItem[] = [
   { name: "Cab Bookings", href: "/admin/cab-bookings", icon: Car, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Air Travel Bookings", href: "/admin/air-travel-bookings", icon: Plane, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Contact", href: "/admin/contact", icon: Mail, roles: ["ADMIN", "CONTENT_MANAGER"] },
-  { name: "Website Settings", href: "/admin/settings", icon: Settings, roles: ["ADMIN"] },
   { name: "Subscribers", href: "/admin/subscribers", icon: BookUser, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Blogs", href: "/admin/blogs", icon: FileText, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "FAQs", href: "/admin/faqs", icon: HelpCircle, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Categories", href: "/admin/categories", icon: Tag, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Gallery", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
+  { name: "Team", href: "/admin/team", icon: Users, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Users", href: "/admin/users", icon: UserCog, roles: ["ADMIN"] },
+  { name: "About Page", href: "/admin/about", icon: Globe, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Website Settings", href: "/admin/settings", icon: Settings, roles: ["ADMIN"] },
   { name: "Profile", href: "/admin/profile", icon: User, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },
 ];
 
@@ -138,7 +139,7 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   });
 
   return (
-    <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
+    <div className="flex flex-1 flex-col gap-y-5 min-h-0 overflow-y-auto overflow-x-hidden px-6 pb-4">
       <div className="flex h-16 shrink-0 items-center">
         <h1 className="text-xl font-bold flex justify-start items-start flex-col gap-1">
           <span className="text-primary text-2xl">ET&T</span>
@@ -264,15 +265,15 @@ export function DashboardSidebar() {
             <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-64 p-0">
-          <div className="border-r bg-background h-full">
+        <SheetContent side="left" className="w-64 p-0 flex flex-col">
+          <div className="flex flex-col flex-1 min-h-0 border-r bg-background overflow-hidden">
             <SidebarContent onLinkClick={() => setMobileMenuOpen(false)} />
           </div>
         </SheetContent>
       </Sheet>
 
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-background">
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col lg:min-h-0">
+        <div className="flex flex-1 flex-col min-h-0 border-r bg-background overflow-hidden">
           <SidebarContent />
         </div>
       </div>

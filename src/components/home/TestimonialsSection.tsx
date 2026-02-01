@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Star, Quote, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TestimonialItem {
   id: string;
@@ -49,14 +50,54 @@ export function TestimonialsSection() {
     return (
       <section className="section-padding bg-linear-to-br from-secondary/10 to-primary/10">
         <div className="container-elegant">
+          {/* Section Header Skeleton */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-              What Our <span className="text-primary">Clients Say</span>
-            </h2>
+            <Skeleton className="h-12 w-80 mx-auto mb-6" />
+            <Skeleton className="h-6 w-full max-w-3xl mx-auto" />
           </div>
-          <div className="flex flex-col items-center justify-center py-16">
-            <Loader2 className="h-10 w-10 animate-spin text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">Loading testimonials...</p>
+
+          {/* Testimonial Card Skeleton */}
+          <div className="relative max-w-4xl mx-auto">
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
+              <Skeleton className="w-16 h-16 rounded-full" />
+            </div>
+            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-20 relative">
+              <div className="text-center">
+                <div className="flex justify-center gap-1 mb-6">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <Skeleton key={i} className="h-6 w-6 rounded-sm" />
+                  ))}
+                </div>
+                <Skeleton className="h-5 w-full max-w-2xl mx-auto mb-2" />
+                <Skeleton className="h-5 w-full max-w-2xl mx-auto mb-2" />
+                <Skeleton className="h-5 w-3/4 max-w-2xl mx-auto mb-8" />
+                <div className="flex items-center justify-center gap-4">
+                  <Skeleton className="w-16 h-16 rounded-full shrink-0" />
+                  <div className="text-left space-y-2">
+                    <Skeleton className="h-5 w-32" />
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-3 w-28" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center mt-8 gap-2">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="w-3 h-3 rounded-full" />
+              ))}
+            </div>
+          </div>
+
+          {/* Trust Indicators Skeleton */}
+          <div className="mt-16">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="text-center">
+                  <Skeleton className="h-9 w-16 mx-auto mb-2" />
+                  <Skeleton className="h-4 w-24 mx-auto" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

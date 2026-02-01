@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Calendar, Clock, Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { subscribeToNewsletter } from "@/lib/client-submit";
 import { toast } from "sonner";
@@ -53,8 +54,48 @@ export function LatestBlogPosts() {
     return (
       <section className="section-padding bg-gradient-to-br from-muted/30 to-muted/50">
         <div className="container-elegant">
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          {/* Section Header Skeleton */}
+          <div className="text-center mb-16">
+            <Skeleton className="h-12 w-64 mx-auto mb-6" />
+            <Skeleton className="h-6 w-full max-w-3xl mx-auto" />
+          </div>
+
+          {/* Blog Cards Grid Skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {[1, 2, 3].map((i) => (
+              <article
+                key={i}
+                className="bg-card border border-border rounded-xl shadow-sm overflow-hidden"
+              >
+                <Skeleton className="h-48 w-full rounded-none" />
+                <div className="p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                  <Skeleton className="h-6 w-full mb-3" />
+                  <Skeleton className="h-4 w-full mb-1" />
+                  <Skeleton className="h-4 w-full mb-1" />
+                  <Skeleton className="h-4 w-3/4 mb-4" />
+                  <div className="flex gap-2 mb-4">
+                    <Skeleton className="h-6 w-14 rounded-md" />
+                    <Skeleton className="h-6 w-20 rounded-md" />
+                    <Skeleton className="h-6 w-16 rounded-md" />
+                  </div>
+                  <Skeleton className="h-5 w-24" />
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* View All CTA Skeleton */}
+          <div className="text-center mb-12">
+            <Skeleton className="h-12 w-48 rounded-full mx-auto" />
+          </div>
+
+          {/* Newsletter Skeleton */}
+          <div className="rounded-2xl overflow-hidden border border-border">
+            <Skeleton className="h-64 w-full" />
           </div>
         </div>
       </section>

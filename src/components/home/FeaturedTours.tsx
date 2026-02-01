@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Users } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { sanitizeHtml } from "@/lib/html-sanitizer";
 
 interface FeaturedTour {
@@ -54,15 +55,45 @@ export function FeaturedTours() {
     return (
       <section className="section-padding bg-white">
         <div className="container-elegant">
+          {/* Section Header Skeleton */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-              Featured <span className="text-yellow-500">Tours</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Experience our most popular and highly-rated tours.
-            </p>
+            <Skeleton className="h-12 w-72 mx-auto mb-6" />
+            <Skeleton className="h-6 w-full max-w-3xl mx-auto" />
           </div>
-          <div className="relative h-[600px] md:h-[700px] rounded-2xl bg-muted animate-pulse" />
+
+          {/* Carousel Skeleton */}
+          <div className="relative">
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+              <div className="relative h-[600px] md:h-[700px]">
+                <Skeleton className="absolute inset-0 rounded-2xl" />
+                {/* Bottom overlay content skeleton */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-20">
+                  <div className="max-w-4xl">
+                    <Skeleton className="h-10 md:h-12 w-full max-w-2xl mb-4 bg-white/20" />
+                    <Skeleton className="h-4 w-full max-w-3xl mb-2 bg-white/20" />
+                    <Skeleton className="h-4 w-full max-w-3xl mb-2 bg-white/20" />
+                    <Skeleton className="h-4 w-2/3 max-w-3xl mb-6 bg-white/20" />
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                      {[1, 2, 3].map((i) => (
+                        <Skeleton key={i} className="h-5 w-24 bg-white/20" />
+                      ))}
+                    </div>
+                    <Skeleton className="h-12 w-32 rounded-full bg-white/20" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center mt-6 gap-2">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="w-3 h-3 rounded-full" />
+              ))}
+            </div>
+          </div>
+
+          {/* View All CTA Skeleton */}
+          <div className="text-center mt-16">
+            <Skeleton className="h-12 w-36 rounded-full mx-auto" />
+          </div>
         </div>
       </section>
     );
