@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { Phone, Mail, CheckCircle } from "lucide-react";
 import { submitFormToEmail } from "@/lib/client-submit";
+import { useWebsiteSettings } from "@/contexts/WebsiteSettingsContext";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ interface TourBookingProps {
 }
 
 export function TourBooking({ tour }: TourBookingProps) {
+  const settings = useWebsiteSettings();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [travelers, setTravelers] = useState<string>("");
@@ -189,19 +191,25 @@ export function TourBooking({ tour }: TourBookingProps) {
             </Button>
 
             {/* Contact Info */}
-            <div className="text-center text-sm text-muted-foreground">
-              <p>Need immediate assistance?</p>
-              <div className="flex items-center flex-wrap justify-center space-x-4 mt-2">
-                <div className="flex items-center space-x-1">
-                  <Phone className="h-4 w-4 text-primary" />
-                  <span>‭+250 787 095 392‬</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Mail className="h-4 w-4 text-primary" />
-                  <span>tours@elegantrwanda.com</span>
+            {(settings.phonePrimary || settings.emailPrimary) && (
+              <div className="text-center text-sm text-muted-foreground">
+                <p>Need immediate assistance?</p>
+                <div className="flex items-center flex-wrap justify-center space-x-4 mt-2">
+                  {settings.phonePrimary && (
+                    <div className="flex items-center space-x-1">
+                      <Phone className="h-4 w-4 text-primary" />
+                      <span>{settings.phonePrimary}</span>
+                    </div>
+                  )}
+                  {(settings.emailPrimary || settings.emailSecondary) && (
+                    <div className="flex items-center space-x-1">
+                      <Mail className="h-4 w-4 text-primary" />
+                      <span>{settings.emailPrimary || settings.emailSecondary}</span>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
           </form>
         ) : (
           /* Success State */

@@ -79,6 +79,10 @@ export function canAccessRoute(userRole: UserRole | undefined, route: string): b
     return userRole === "ADMIN"; // Only admins can access user management
   }
 
+  if (route.startsWith("/admin/settings")) {
+    return userRole === "ADMIN"; // Only admins can access website settings
+  }
+
   if (route.startsWith("/admin/profile")) {
     return true; // All authenticated users can access profile
   }
@@ -99,6 +103,7 @@ export function getAccessibleRoutes(userRole: UserRole | undefined): string[] {
     "/admin/cab-bookings",
     "/admin/air-travel-bookings",
     "/admin/contact",
+    "/admin/settings",
     "/admin/subscribers",
     "/admin/blogs",
     "/admin/testimonials",

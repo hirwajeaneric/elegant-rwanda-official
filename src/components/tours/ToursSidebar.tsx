@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import { subscribeToNewsletter } from "@/lib/client-submit";
+import { useWebsiteSettings } from "@/contexts/WebsiteSettingsContext";
 import { toast } from "sonner";
 
 interface Tour {
@@ -17,6 +18,7 @@ interface Tour {
 }
 
 export function ToursSidebar() {
+  const settings = useWebsiteSettings();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [featuredTours, setFeaturedTours] = useState<Tour[]>([]);
@@ -69,14 +71,18 @@ export function ToursSidebar() {
           Our travel experts are here to help you plan the perfect Rwanda adventure.
         </p>
         <div className="space-y-3">
-          <div className="flex items-center space-x-2 text-sm">
-            <Phone className="h-4 w-4" />
-            <span>+250 787 095 392</span>
-          </div>
-          <div className="flex items-center space-x-2 text-sm">
-            <Mail className="h-4 w-4" />
-            <span>tours@elegantrwanda.com</span>
-          </div>
+          {settings.phonePrimary && (
+            <div className="flex items-center space-x-2 text-sm">
+              <Phone className="h-4 w-4" />
+              <span>{settings.phonePrimary}</span>
+            </div>
+          )}
+          {(settings.emailPrimary || settings.emailSecondary) && (
+            <div className="flex items-center space-x-2 text-sm">
+              <Mail className="h-4 w-4" />
+              <span>{settings.emailPrimary || settings.emailSecondary}</span>
+            </div>
+          )}
         </div>
         <button onClick={() => router.push("/contact")} className="w-full mt-4 bg-white text-primary font-medium py-3 hover:bg-white/90 transition-colors duration-200 rounded-full cursor-pointer">
           Contact Us

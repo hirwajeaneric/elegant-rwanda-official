@@ -3,8 +3,10 @@
 import { CheckCircle, LucideMail, LucidePhone } from "lucide-react";
 import { LucideClock } from "lucide-react";
 import ContactForm from "../forms/ContactForm";
+import { useWebsiteSettings } from "@/contexts/WebsiteSettingsContext";
 
 export function CTABanner() {
+  const settings = useWebsiteSettings();
   return (
     <section className="section-padding bg-[url('/green-hills-of-rwanda.jpg')] bg-cover bg-center bg-no-repeat relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/70 to-black/60 z-10" />
@@ -46,18 +48,24 @@ export function CTABanner() {
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <h3 className="text-lg font-semibold mb-3">Get in Touch</h3>
               <div className="space-y-2 text-sm text-white/90">
-                <p className="flex items-center space-x-2">
-                  <LucidePhone className="h-4 w-4" /> 
-                  <span>+250 787 095 392</span>
-                </p>
-                <p className="flex items-center space-x-2">
-                  <LucideMail className="h-4 w-4" />
-                  <span>info@elegantrwanda.com</span>
-                </p>
-                <p className="flex items-center space-x-2">
-                  <LucideClock className="h-4 w-4" />
-                  <span>24/7</span>
-                </p>
+                {settings.phonePrimary && (
+                  <p className="flex items-center space-x-2">
+                    <LucidePhone className="h-4 w-4" />
+                    <span>{settings.phonePrimary}</span>
+                  </p>
+                )}
+                {settings.emailPrimary && (
+                  <p className="flex items-center space-x-2">
+                    <LucideMail className="h-4 w-4" />
+                    <span>{settings.emailPrimary}</span>
+                  </p>
+                )}
+                {settings.businessHours && (
+                  <p className="flex items-center space-x-2">
+                    <LucideClock className="h-4 w-4" />
+                    <span>{settings.businessHours.split("\n")[0] ?? "24/7"}</span>
+                  </p>
+                )}
               </div>
             </div>
           </div>

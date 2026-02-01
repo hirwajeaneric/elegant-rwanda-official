@@ -1,8 +1,10 @@
 "use client";
 
 import { Phone, Mail, Clock } from "lucide-react";
+import { useWebsiteSettings } from "@/contexts/WebsiteSettingsContext";
 
 export function CabBookingHero() {
+  const settings = useWebsiteSettings();
   return (
     <section className="relative py-24 bg-[url('/cab-booking.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/60 to-black/50" />
@@ -38,18 +40,24 @@ export function CabBookingHero() {
 
             {/* Contact Info */}
             <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-yellow-500" />
-                <span className="text-white/90">+250 787 095 392</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-yellow-500" />
-                <span className="text-white/90">cabs@elegantrwanda.com</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Clock className="h-5 w-5 text-yellow-500" />
-                <span className="text-white/90">Available 24/7</span>
-              </div>
+              {settings.phonePrimary && (
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-5 w-5 text-yellow-500" />
+                  <span className="text-white/90">{settings.phonePrimary}</span>
+                </div>
+              )}
+              {(settings.emailPrimary || settings.emailSecondary) && (
+                <div className="flex items-center space-x-3">
+                  <Mail className="h-5 w-5 text-yellow-500" />
+                  <span className="text-white/90">{settings.emailPrimary || settings.emailSecondary}</span>
+                </div>
+              )}
+              {settings.businessHours && (
+                <div className="flex items-center space-x-3">
+                  <Clock className="h-5 w-5 text-yellow-500" />
+                  <span className="text-white/90">{settings.businessHours.split("\n")[0] ?? "Available 24/7"}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

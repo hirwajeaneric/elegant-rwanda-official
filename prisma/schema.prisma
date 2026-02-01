@@ -165,6 +165,23 @@ model ContactInquiry {
   @@index([createdAt])
 }
 
+// Singleton: one row (id = "default") for site-wide contact, hours, social links
+model WebsiteSettings {
+  id             String   @id @default("default")
+  siteName       String?
+  tagline        String?
+  address        String?
+  phonePrimary   String?
+  phoneSecondary String?
+  emailPrimary   String?
+  emailSecondary String?
+  businessHours  String?  // free text, e.g. "Mon–Fri 8am–6pm"
+  emergencyPhone String?
+  emergencyNote  String?
+  socialLinks    Json?    // [{ platform, label, url }]
+  updatedAt      DateTime @updatedAt
+}
+
 model AirTravelRequest {
   id                   String   @id @default(cuid())
   tripType             String?

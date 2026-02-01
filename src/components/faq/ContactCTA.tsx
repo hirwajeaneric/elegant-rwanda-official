@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { Phone, Mail, MessageCircle } from "lucide-react";
+import { useWebsiteSettings } from "@/contexts/WebsiteSettingsContext";
 
 export function ContactCTA() {
+  const settings = useWebsiteSettings();
   return (
     <section className="bg-[url('/kigali.jpeg')] bg-cover bg-center bg-no-repeat py-16 relative">
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/70 to-black/60" />
@@ -17,33 +19,37 @@ export function ContactCTA() {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-            <Phone className="h-8 w-8 text-yellow-500 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-white mb-2">Call Us</h3>
-            <p className="text-white/90 text-sm mb-3">
-              Speak directly with our travel experts
-            </p>
-            <a 
-              href="tel:+250788123456" 
-              className="text-yellow-500 font-medium hover:text-yellow-400 transition-colors"
-            >
-              ‭+250 787 095 392‬
-            </a>
-          </div>
-          
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-            <Mail className="h-8 w-8 text-yellow-500 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-white mb-2">Email Us</h3>
-            <p className="text-white/90 text-sm mb-3">
-              Send us a detailed message
-            </p>
-            <a 
-              href="mailto:info@elegantrwanda.com" 
-              className="text-yellow-500 font-medium hover:text-yellow-400 transition-colors"
-            >
-              info@elegantrwanda.com
-            </a>
-          </div>
+          {settings.phonePrimary && (
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <Phone className="h-8 w-8 text-yellow-500 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-white mb-2">Call Us</h3>
+              <p className="text-white/90 text-sm mb-3">
+                Speak directly with our travel experts
+              </p>
+              <a
+                href={`tel:${settings.phonePrimary.replace(/\s/g, "")}`}
+                className="text-yellow-500 font-medium hover:text-yellow-400 transition-colors"
+              >
+                {settings.phonePrimary}
+              </a>
+            </div>
+          )}
+
+          {(settings.emailPrimary || settings.emailSecondary) && (
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <Mail className="h-8 w-8 text-yellow-500 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-white mb-2">Email Us</h3>
+              <p className="text-white/90 text-sm mb-3">
+                Send us a detailed message
+              </p>
+              <a
+                href={`mailto:${settings.emailPrimary || settings.emailSecondary}`}
+                className="text-yellow-500 font-medium hover:text-yellow-400 transition-colors"
+              >
+                {settings.emailPrimary || settings.emailSecondary}
+              </a>
+            </div>
+          )}
           
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
             <MessageCircle className="h-8 w-8 text-yellow-500 mx-auto mb-3" />

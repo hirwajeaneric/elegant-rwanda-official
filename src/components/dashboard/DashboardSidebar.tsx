@@ -25,6 +25,7 @@ import {
   Plane,
   Mail,
   BookUser,
+  Settings,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useRouter } from "next/navigation";
@@ -81,6 +82,7 @@ const allNavigationItems: NavItem[] = [
   { name: "Cab Bookings", href: "/admin/cab-bookings", icon: Car, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Air Travel Bookings", href: "/admin/air-travel-bookings", icon: Plane, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Contact", href: "/admin/contact", icon: Mail, roles: ["ADMIN", "CONTENT_MANAGER"] },
+  { name: "Website Settings", href: "/admin/settings", icon: Settings, roles: ["ADMIN"] },
   { name: "Subscribers", href: "/admin/subscribers", icon: BookUser, roles: ["ADMIN", "CONTENT_MANAGER"] },
   { name: "Users", href: "/admin/users", icon: UserCog, roles: ["ADMIN"] },
   { name: "Profile", href: "/admin/profile", icon: User, roles: ["ADMIN", "CONTENT_MANAGER", "EDITOR"] },

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Phone, Mail, ChevronDown, ChevronRight, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/stores/auth-store";
+import { useWebsiteSettings } from "@/contexts/WebsiteSettingsContext";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -63,6 +64,7 @@ const resources = [
 ];
 
 export function Navbar() {
+  const settings = useWebsiteSettings();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<{
     services: boolean;
@@ -95,18 +97,24 @@ export function Navbar() {
         <div className="container-elegant">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4" />
-                <span>+250 787 095 392</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4" />
-                <span>info@elegantrwanda.com</span>
-              </div>
+              {settings.phonePrimary && (
+                <div className="flex items-center space-x-2">
+                  <Phone className="h-4 w-4" />
+                  <span>{settings.phonePrimary}</span>
+                </div>
+              )}
+              {settings.emailPrimary && (
+                <div className="flex items-center space-x-2">
+                  <Mail className="h-4 w-4" />
+                  <span>{settings.emailPrimary}</span>
+                </div>
+              )}
             </div>
-            <div className="hidden md:flex items-center space-x-4">
-              <span>Mon to Sun 24/7</span>
-            </div>
+            {settings.businessHours && (
+              <div className="hidden md:flex items-center space-x-4">
+                <span className="whitespace-pre-line">{settings.businessHours.split("\n")[0] ?? settings.businessHours}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Instagram, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { Facebook, Instagram, Twitter, Linkedin, Youtube, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { newsletterSchema, type NewsletterForm } from "@/lib/schemas";
@@ -9,13 +9,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { subscribeToNewsletter } from "@/lib/client-submit";
+import { useWebsiteSettings } from "@/contexts/WebsiteSettingsContext";
 
-const socialLinks = [
-  { icon: Facebook, href: "https://facebook.com/elegant_travel_tours", label: "Facebook" },
-  // { icon: X, href: "https://twitter.com/elegant_travel_tours", label: "X" },
-  { icon: Instagram, href: "https://instagram.com/elegant_travel_tours", label: "Instagram" },
-  // { icon: Linkedin, href: "https://linkedin.com/company/elegant_travel_tours", label: "LinkedIn" },
-];
+const SOCIAL_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  facebook: Facebook,
+  instagram: Instagram,
+  twitter: Twitter,
+  linkedin: Linkedin,
+  youtube: Youtube,
+  pinterest: Mail,
+  tiktok: Mail,
+  other: Mail,
+};
 
 const services = [
   { name: "Unique Tours", href: "/tours" },
@@ -36,6 +41,7 @@ const quickLinks = [
 ];
 
 export function Footer() {
+  const settings = useWebsiteSettings();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -75,33 +81,36 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <div>
-                <span className="text-2xl font-display font-bold text-yellow-500">Elegant Travel & Tours</span>
+                <span className="text-2xl font-display font-bold text-yellow-500">
+                  {settings.siteName || "Elegant Travel & Tours"}
+                </span>
               </div>
             </div>
             <p className="text-white/90 leading-relaxed">
-              Experience Rwanda&apos;s elegance with our premium tours, Unique accommodations, and personalized travel experiences.
+              {settings.tagline ||
+                "Experience Rwanda's elegance with our premium tours, Unique accommodations, and personalized travel experiences."}
             </p>
 
             {/* Contact Info */}
             <div className="space-y-3 pt-4">
-              <div className="flex items-center space-x-3">
-                <MapPin className="h-4 w-4 text-accent" />
-                <span className="text-sm text-white/90">
-                  KG 123 St, Kigali, Rwanda
-                </span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="h-4 w-4 text-accent" />
-                <span className="text-sm text-white/90">
-                  +250 787 095 392
-                </span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-accent" />
-                <span className="text-sm text-white/90">
-                  info@elegantrwanda.com
-                </span>
-              </div>
+              {settings.address && (
+                <div className="flex items-center space-x-3">
+                  <MapPin className="h-4 w-4 text-accent" />
+                  <span className="text-sm text-white/90">{settings.address}</span>
+                </div>
+              )}
+              {settings.phonePrimary && (
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-4 w-4 text-accent" />
+                  <span className="text-sm text-white/90">{settings.phonePrimary}</span>
+                </div>
+              )}
+              {settings.emailPrimary && (
+                <div className="flex items-center space-x-3">
+                  <Mail className="h-4 w-4 text-accent" />
+                  <span className="text-sm text-white/90">{settings.emailPrimary}</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -172,23 +181,28 @@ export function Footer() {
             </div>
 
             {/* Social Links */}
-            <div className="pt-4">
-              <p className="text-sm text-white/80 mb-3">Follow us on social media</p>
-              <div className="flex space-x-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
-                    aria-label={social.label}
-                  >
-                    <social.icon className="h-5 w-5 text-white" />
-                  </a>
-                ))}
+            {settings.socialLinks?.length > 0 && (
+              <div className="pt-4">
+                <p className="text-sm text-white/80 mb-3">Follow us on social media</p>
+                <div className="flex space-x-3">
+                  {settings.socialLinks.map((social, i) => {
+                    const Icon = SOCIAL_ICONS[social.platform] ?? Mail;
+                    return (
+                      <a
+                        key={i}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                        aria-label={social.label || social.platform}
+                      >
+                        <Icon className="h-5 w-5 text-white" />
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { PageWrapper } from "@/components/layout/PageWrapper";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import ContactForm from "@/components/forms/ContactForm";
+import { ContactInfoBlock } from "@/components/contact/ContactInfoBlock";
 import { buildMetadata, buildOrganizationJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 
@@ -72,71 +72,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Information */}
           <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-display font-semibold mb-6">Contact Information</h2>
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl"><MapPin className="h-6 w-6" /></span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-2xl">Office Address</h3>
-                    <p className="text-muted-foreground">
-                      KG 123 Street<br />
-                      Kigali, Rwanda
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl"><Phone className="h-6 w-6" /></span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-2xl">Phone</h3>
-                    <p className="text-muted-foreground">
-                      +250 787 095 392<br />
-                      {/* +250 788 123 457 */}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl"><Mail className="h-6 w-6" /></span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-2xl">Email</h3>
-                    <p className="text-muted-foreground">
-                      info@elegantrwanda.com<br />
-                      bookings@elegantrwanda.com
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl"><Clock className="h-6 w-6" /></span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-2xl">Business Hours</h3>
-                    <p className="text-muted-foreground">
-                      Monday - Friday: 8:00 AM - 6:00 PM<br />
-                      Saturday: 9:00 AM - 4:00 PM<br />
-                      Sunday: Closed
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-linear-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border border-primary/20">
-              <h3 className="text-lg font-semibold mb-3">Emergency Support</h3>
-              <p className="text-muted-foreground text-sm mb-3">
-                For urgent matters outside business hours, please call our 24/7 emergency line:
-              </p>
-              <p className="text-primary font-semibold">+250 787 095 392</p>
-            </div>
+            <ContactInfoBlock />
           </div>
 
           {/* Contact Form */}
