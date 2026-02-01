@@ -46,12 +46,21 @@ export default function ContactForm() {
     });
 
     const onSubmit = async (data: ContactFormData) => {
+        const name = `${data.firstName} ${data.lastName}`.trim();
+        const payload = {
+            name,
+            email: data.email,
+            phone: data.phone || undefined,
+            subject: data.subject,
+            message: data.message,
+            serviceType: data.subject,
+        };
         try {
             await submitFormToEmail({
                 formType: "contact",
-                data: data as unknown as Record<string, unknown>,
+                data: payload,
                 userEmail: data.email,
-                userName: `${data.firstName} ${data.lastName}`.trim(),
+                userName: name,
             });
             toast.success("Thank you for contacting us. We’ve received your request.");
             reset();

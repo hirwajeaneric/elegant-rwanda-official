@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -99,12 +99,30 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
         open.push(item.name);
       }
     });
-    return open.length ? open : ["Tours", "Car Rental", "Events"];
+    return open;
   });
 
   const toggle = (name: string) => {
     setExpanded((prev) => (prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]));
   };
+
+  useEffect(() => {
+    const toOpen: string[] = [];
+    allNavigationItems.forEach((item) => {
+      if (!item.children?.length) return;
+      const isPathUnderChild = item.children.some(
+        (c) => pathname === c.href || pathname.startsWith(c.href + "/")
+      );
+      if (isPathUnderChild) toOpen.push(item.name);
+    });
+    if (toOpen.length > 0) {
+      setExpanded((prev) => {
+        const next = new Set(prev);
+        toOpen.forEach((name) => next.add(name));
+        return prev.length === next.size && toOpen.every((n) => prev.includes(n)) ? prev : [...next];
+      });
+    }
+  }, [pathname]);
 
   const handleLogout = () => {
     logout();
@@ -161,7 +179,8 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
                     <ul className="ml-4 mt-1 space-y-0.5 border-l border-border pl-3">
                       {item.children.map((child) => {
                         const childActive =
-                          pathname === child.href || pathname.startsWith(child.href + "/");
+                          pathname === child.href ||
+                          (child.href !== item.href && pathname.startsWith(child.href + "/"));
                         return (
                           <li key={child.href}>
                             <Link

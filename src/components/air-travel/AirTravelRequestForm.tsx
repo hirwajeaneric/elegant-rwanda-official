@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { airTravelSchema, type AirTravelForm } from "@/lib/schemas";
+import { COUNTRY_NAMES } from "@/data/countries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CheckCircle, Plane, Users, User, Luggage, DollarSign, Phone } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
@@ -69,6 +72,13 @@ export function AirTravelRequestForm() {
   const watchedServices = watch("services");
   const tripType = watch("tripType");
 
+  useEffect(() => {
+    if (tripType === "One-way") {
+      setValue("returnDate", undefined);
+      setValue("returnTime", "");
+    }
+  }, [tripType, setValue]);
+
   const handleServiceChange = (service: "Visa Assistance" | "Airport Pickup" | "Hotel Booking" | "Transportation" | "Other" | "Ticket Booking") => {
     const currentServices = watchedServices;
     if (currentServices.includes(service)) {
@@ -79,11 +89,16 @@ export function AirTravelRequestForm() {
   };
 
   const onSubmit = async (values: AirTravelForm) => {
+    const returnDate =
+      values.tripType !== "One-way" && values.returnDate instanceof Date && !Number.isNaN(values.returnDate.getTime())
+        ? values.returnDate.toISOString()
+        : null;
     try {
       const payload = {
         ...values,
         departureDate: values.departureDate?.toISOString(),
-        returnDate: values.returnDate ? values.returnDate.toISOString() : null,
+        returnDate,
+        returnTime: values.tripType !== "One-way" ? values.returnTime : null,
       };
 
       await submitFormToEmail({
@@ -108,15 +123,17 @@ export function AirTravelRequestForm() {
 
   if (isSubmitted) {
     return (
-      <Card className="text-center py-12">
-        <CardContent>
-          <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h3 className="text-2xl font-display font-semibold mb-2">Request Submitted!</h3>
-          <p className="text-muted-foreground">
-            We&apos;ve received your air travel assistance request and will respond within 2 hours.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="mx-auto py-8 bg-[url('/airplane-rwandair.jpg')] bg-cover bg-center bg-no-repeat rounded-0">
+        <Card className="text-center py-12 ">
+          <CardContent>
+            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <h3 className="text-2xl font-display font-semibold mb-2">Request Submitted!</h3>
+            <p className="text-muted-foreground">
+              We&apos;ve received your air travel assistance request and will respond within 2 hours.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
@@ -301,14 +318,23 @@ export function AirTravelRequestForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <Label className="text-base font-medium">Cabin Class *</Label>
-                  <select
-                    {...register("travelClass")}
-                    className="w-full border border-gray-300 rounded-md h-11 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  <RadioGroup
+                    value={watch("travelClass")}
+                    onValueChange={(value) => setValue("travelClass", value as AirTravelForm["travelClass"], { shouldValidate: true })}
+                    className="grid grid-cols-2 md:grid-cols-4 gap-3"
                   >
-                    {["Economy", "Premium Economy", "Business", "First"].map((cls) => (
-                      <option key={cls} value={cls}>{cls}</option>
+                    {(["Economy", "Premium Economy", "Business", "First"] as const).map((cls) => (
+                      <div key={cls} className="flex items-center space-x-2">
+                        <RadioGroupItem value={cls} id={`travelClass-${cls.replace(/\s+/g, "-").toLowerCase()}`} />
+                        <Label
+                          htmlFor={`travelClass-${cls.replace(/\s+/g, "-").toLowerCase()}`}
+                          className="text-sm font-normal cursor-pointer"
+                        >
+                          {cls}
+                        </Label>
+                      </div>
                     ))}
-                  </select>
+                  </RadioGroup>
                   {errors.travelClass && <p className="text-sm text-destructive">{errors.travelClass.message}</p>}
                 </div>
                 <div className="space-y-3">
@@ -378,11 +404,21 @@ export function AirTravelRequestForm() {
                 </div>
                 <div className="space-y-3">
                   <Label className="text-base font-medium">Nationality *</Label>
-                  <Input
-                    {...register("travelerDetails.nationality")}
-                    placeholder="Nationality"
-                    className="border-gray-300"
-                  />
+                  <Select
+                    value={watch("travelerDetails.nationality")}
+                    onValueChange={(value) => setValue("travelerDetails.nationality", value, { shouldValidate: true })}
+                  >
+                    <SelectTrigger className="border-gray-300 w-full">
+                      <SelectValue placeholder="Select nationality" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {COUNTRY_NAMES.map((country) => (
+                        <SelectItem key={country} value={country}>
+                          {country}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {errors.travelerDetails?.nationality && (
                     <p className="text-sm text-destructive">{errors.travelerDetails.nationality.message}</p>
                   )}
@@ -579,12 +615,21 @@ export function AirTravelRequestForm() {
                   <Label htmlFor="contactInfo.country" className="text-base font-medium">
                     Country *
                   </Label>
-                  <Input
-                    {...register("contactInfo.country")}
-                    id="contactInfo.country"
-                    placeholder="Enter your country"
-                    className="border-gray-300"
-                  />
+                  <Select
+                    value={watch("contactInfo.country")}
+                    onValueChange={(value) => setValue("contactInfo.country", value, { shouldValidate: true })}
+                  >
+                    <SelectTrigger id="contactInfo.country" className="border-gray-300 w-full">
+                      <SelectValue placeholder="Select your country" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {COUNTRY_NAMES.map((country) => (
+                        <SelectItem key={country} value={country}>
+                          {country}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {errors.contactInfo?.country && (
                     <p className="text-sm text-destructive">{errors.contactInfo.country.message}</p>
                   )}

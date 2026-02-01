@@ -92,28 +92,7 @@ export default function ContactInquiryDetailPage() {
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="col-span-1">
-          <CardContent className="pt-6 space-y-4">
-            <div>
-              <Label className="text-muted-foreground">Name</Label>
-              <p className="font-medium">{inquiry.name}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Email</Label>
-              <p className="font-medium">{inquiry.email}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Phone</Label>
-              <p className="font-medium">{inquiry.phone ?? "—"}</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="col-span-2">
-          <ContactInquiryDetail booking={inquiry} />
-        </div>
-      </div>
+      <ContactInquiryDetail booking={inquiry} />
     </div>
   );
 }

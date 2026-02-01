@@ -70,13 +70,6 @@ export default function ContactInquiriesPage() {
       render: (item: ContactInquiryItem) => item.serviceType ?? "—",
     },
     {
-      key: "message",
-      label: "Message",
-      sortable: false,
-      render: (item: ContactInquiryItem) =>
-        item.message.length > 60 ? `${item.message.slice(0, 60)}…` : item.message,
-    },
-    {
       key: "createdAt",
       label: "Date",
       sortable: true,
