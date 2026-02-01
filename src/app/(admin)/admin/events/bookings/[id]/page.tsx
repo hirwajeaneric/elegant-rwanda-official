@@ -4,28 +4,17 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, CalendarCheck } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { EventRegistrationDetail } from "@/components/dashboard/bookings/EventRegistrationDetail";
-
-interface EventRegistration {
-  id: string;
-  status: string;
-  numberOfParticipants: number;
-  name: string;
-  email: string;
-  phone: string;
-  organization: string | null;
-  specialRequests: string | null;
-  dietaryRestrictions: string | null;
-  createdAt: string;
-  event?: { id: string; title: string; slug: string } | null;
-}
+import {
+  EventRegistrationDetail,
+  type EventRegistration,
+} from "@/components/dashboard/bookings/EventRegistrationDetail";
 
 export default function EventRegistrationDetailPage() {
   const params = useParams();
@@ -100,13 +89,34 @@ export default function EventRegistrationDetailPage() {
     );
   }
 
+  const eventLabel = booking.event?.title ?? "Event registration";
+  const submittedAt = booking.createdAt
+    ? new Date(booking.createdAt).toLocaleString(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    : null;
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <DashboardBreadcrumbs />
-          <div className="flex items-center gap-3 mt-4">
-            <h1 className="text-3xl font-bold">Event Registration</h1>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+              <CalendarCheck className="h-6 w-6 text-primary" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                Event Registration
+              </h1>
+              <p className="mt-1 text-muted-foreground">{eventLabel}</p>
+              {submittedAt && (
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Submitted {submittedAt}
+                </p>
+              )}
+            </div>
             <Badge
               variant={
                 booking.status === "COMPLETED"
@@ -115,44 +125,32 @@ export default function EventRegistrationDetailPage() {
                     ? "secondary"
                     : "outline"
               }
+              className="shrink-0"
             >
               {booking.status.replace("_", " ")}
             </Badge>
           </div>
-          <p className="text-muted-foreground mt-1">
-            {booking.event?.title ?? "—"} · {new Date(booking.createdAt).toLocaleString()}
-          </p>
         </div>
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild className="shrink-0">
           <Link href="/admin/events/bookings">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            Back to list
           </Link>
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="col-span-1">
-          <CardContent className="pt-6 space-y-4">
-            <div>
-              <Label className="text-muted-foreground">Name</Label>
-              <p className="font-medium">{booking.name}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Email</Label>
-              <p className="font-medium">{booking.email}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Phone</Label>
-              <p className="font-medium">{booking.phone}</p>
-            </div>
-            {booking.event && (
-              <Button variant="link" className="px-0" asChild>
-                <Link href={`/admin/events/${booking.event.id}`}>View event</Link>
-              </Button>
-            )}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <EventRegistrationDetail booking={booking} />
+        </div>
+        <Card className="h-fit border-2">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Status</CardTitle>
+            <CardDescription>Update registration status</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div className="flex flex-col gap-2">
-              <Label className="text-muted-foreground">Status</Label>
+              <Label className="text-muted-foreground">Current status</Label>
               <Select
                 value={booking.status}
                 onValueChange={handleStatusChange}
@@ -171,10 +169,6 @@ export default function EventRegistrationDetailPage() {
             </div>
           </CardContent>
         </Card>
-
-        <div className="col-span-2">
-          <EventRegistrationDetail booking={booking} />
-        </div>
       </div>
     </div>
   );

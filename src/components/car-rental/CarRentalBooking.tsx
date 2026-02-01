@@ -47,10 +47,24 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
     setIsSubmitting(true);
 
     try {
+      const vehicleId = (vehicle as { id?: string }).id;
       const bookingData = {
+        vehicleId: vehicleId ?? undefined,
         vehicle: vehicle.name,
         vehicleCategory: vehicle.category,
-        ...formData,
+        rentalType: formData.rentalType,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        pickupLocation: formData.pickupLocation || undefined,
+        dropoffLocation: formData.dropoffLocation || undefined,
+        passengers: formData.passengers,
+        driverName: formData.driverName || undefined,
+        driverLicense: formData.driverLicense || undefined,
+        driverLicenseExpiry: formData.driverLicenseExpiry || undefined,
+        name: formData.driverName,
+        email: formData.email,
+        phone: formData.phone,
+        specialRequests: formData.specialRequests || undefined,
         rentalDays: calculateDays(),
       };
 
@@ -59,7 +73,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
         data: bookingData,
         userEmail: formData.email,
         userName: formData.driverName || "Guest",
-        vehicleId: (vehicle as { id?: string }).id,
+        vehicleId: vehicleId ?? undefined,
       });
 
       successShownRef.current = true;

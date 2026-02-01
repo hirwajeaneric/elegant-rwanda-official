@@ -222,8 +222,8 @@ export default function EventDetailPage() {
                 event.status === "Open"
                   ? "default"
                   : event.status === "Filling Fast"
-                  ? "secondary"
-                  : "destructive"
+                    ? "secondary"
+                    : "destructive"
               }
             >
               {event.status}
@@ -398,7 +398,7 @@ export default function EventDetailPage() {
                     value={formData.status || "Open"}
                     onValueChange={(value: ApiEvent["status"]) => setFormData({ ...formData, status: value })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -414,8 +414,8 @@ export default function EventDetailPage() {
                       event.status === "Open"
                         ? "default"
                         : event.status === "Filling Fast"
-                        ? "secondary"
-                        : "destructive"
+                          ? "secondary"
+                          : "destructive"
                     }
                   >
                     {event.status}
@@ -434,7 +434,7 @@ export default function EventDetailPage() {
                       setFormData({ ...formData, categoryId: value })
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder={categoryList.length === 0 ? "No categories" : "Select category"} />
                     </SelectTrigger>
                     <SelectContent>
@@ -532,7 +532,7 @@ export default function EventDetailPage() {
                 </div>
                 <div className="space-y-1">
                   {(formData.highlights || []).map((highlight, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                    <div key={index} className="flex items-center justify-between px-2 bg-muted rounded">
                       <span className="text-sm">{highlight}</span>
                       <Button
                         type="button"
@@ -584,7 +584,7 @@ export default function EventDetailPage() {
                 </div>
                 <div className="space-y-1">
                   {(formData.activities || []).map((activity, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                    <div key={index} className="flex items-center justify-between px-2 bg-muted rounded">
                       <span className="text-sm">{activity}</span>
                       <Button
                         type="button"
@@ -684,8 +684,9 @@ export default function EventDetailPage() {
             )}
           </CardContent>
         </Card>
-
-        <EntityBookingsList entityType="event" entityId={event.id} />
+        <div className="md:col-span-2">
+          <EntityBookingsList entityType="event" entityId={event.id} />
+        </div>
       </div>
     </div>
   );

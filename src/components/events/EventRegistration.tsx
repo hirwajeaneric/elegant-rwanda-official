@@ -1,18 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Users, MapPin, CheckCircle, AlertCircle, Ticket, User, MapPin as LocationIcon } from "lucide-react";
+import {
+  Calendar,
+  Users,
+  MapPin,
+  CheckCircle,
+  AlertCircle,
+  Ticket,
+  User,
+  Loader2,
+  Building2,
+  UtensilsCrossed,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import type { Event } from "@/data/events";
 import { submitFormToEmail } from "@/lib/client-submit";
 import { toast } from "sonner";
+
+const DIETARY_OPTIONS = [
+  "None",
+  "Vegetarian",
+  "Vegan",
+  "Gluten-Free",
+  "Halal",
+  "Kosher",
+  "Other",
+] as const;
 
 interface EventRegistrationProps {
   event: Event;
@@ -27,7 +49,9 @@ interface RegistrationFormData {
   country: string;
   city: string;
   town: string;
+  organization: string;
   participants: number;
+  dietaryRestrictions: string;
   additionalInfo: string;
 }
 
@@ -47,15 +71,17 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
   const [isRegistering, setIsRegistering] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formData, setFormData] = useState<RegistrationFormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    country: '',
-    city: '',
-    town: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    country: "",
+    city: "",
+    town: "",
+    organization: "",
     participants: 1,
-    additionalInfo: ''
+    dietaryRestrictions: "None",
+    additionalInfo: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -137,48 +163,61 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setIsRegistering(true);
 
-    try {
-      const registrationData = {
-        ...formData,
-        eventId: event.id,
-        eventTitle: event.title,
-        eventDate: event.date,
-        eventEndDate: event.endDate,
-        eventLocation: event.location,
-        registrationDate: new Date().toISOString()
-      };
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    const locationParts = [formData.country, formData.city, formData.town].filter(Boolean);
+    const locationLine = locationParts.length > 0 ? `Location: ${locationParts.join(", ")}` : "";
+    const specialRequestsParts = [locationLine, formData.additionalInfo].filter(Boolean);
+    const specialRequests = specialRequestsParts.join("\n\n") || undefined;
 
+    // Payload matches create-booking EVENT_REGISTRATION: eventId, numberOfParticipants, name, email, phone, organization, specialRequests, dietaryRestrictions
+    const payload = {
+      eventId: event.id,
+      numberOfParticipants: formData.participants,
+      name: fullName,
+      email: formData.email,
+      phone: formData.phone,
+      organization: formData.organization.trim() || undefined,
+      specialRequests,
+      dietaryRestrictions:
+        formData.dietaryRestrictions && formData.dietaryRestrictions !== "None"
+          ? formData.dietaryRestrictions
+          : undefined,
+    };
+
+    try {
       await submitFormToEmail({
         formType: "event-registration",
-        data: registrationData,
+        data: payload,
         userEmail: formData.email,
-        userName: `${formData.firstName} ${formData.lastName}`.trim(),
+        userName: fullName,
         eventId: event.id,
       });
-      
-      toast.success('Registration submitted successfully! We will contact you soon.');
+
+      toast.success("Registration submitted successfully! We will contact you soon.");
       setIsFormOpen(false);
       setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        country: '',
-        city: '',
-        town: '',
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        country: "",
+        city: "",
+        town: "",
+        organization: "",
         participants: 1,
-        additionalInfo: ''
+        dietaryRestrictions: "None",
+        additionalInfo: "",
       });
     } catch (error) {
       console.error(error);
-      toast.error('Registration failed. Please try again.');
+      toast.error("Registration failed. Please try again.");
     } finally {
       setIsRegistering(false);
     }
@@ -187,99 +226,86 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
   return (
     <div className="space-y-6">
       {/* Registration Card */}
-      <Card className="sticky top-8">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Ticket className="h-6 w-6 text-primary" />
-            <span>Event Registration</span>
-          </CardTitle>
+      <Card className="sticky top-8 border-2 shadow-sm">
+        <CardHeader className="pb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+              <Ticket className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <CardTitle className="text-xl">Event Registration</CardTitle>
+              <CardDescription>Register to attend this event</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-2">
+        <CardContent className="space-y-4">
           {/* Event Status */}
-          <div className="text-start">
+          <div className="flex flex-wrap gap-2">
             {!isUpcoming ? (
-              <Badge variant="secondary" className="text-sm">
-                <AlertCircle className="h-4 w-4 mr-1" />
+              <Badge variant="secondary" className="text-sm gap-1">
+                <AlertCircle className="h-3.5 w-3.5" />
                 Event Completed
               </Badge>
             ) : !canRegister ? (
-              <Badge variant="destructive" className="text-sm rounded-full">
-                <AlertCircle className="h-4 w-4 mr-1" />
-                {event.status === 'Closed' ? 'Registration Closed' : 
-                 !isEventNotPast ? 'Event Ended' : 
-                 spotsLeft <= 0 ? 'Fully Booked' :
-                 'Registration Closed'}
+              <Badge variant="destructive" className="text-sm gap-1 rounded-full">
+                <AlertCircle className="h-3.5 w-3.5" />
+                {event.status === "Closed"
+                  ? "Registration Closed"
+                  : !isEventNotPast
+                    ? "Event Ended"
+                    : spotsLeft <= 0
+                      ? "Fully Booked"
+                      : "Registration Closed"}
               </Badge>
             ) : !isRegistrationOpen ? (
-              <Badge variant="default" className="text-sm bg-orange-500">
-                <AlertCircle className="h-4 w-4 mr-1" />
+              <Badge variant="default" className="text-sm gap-1 bg-orange-500 hover:bg-orange-600">
+                <AlertCircle className="h-3.5 w-3.5" />
                 Late Registration
               </Badge>
             ) : (
-              <Badge variant="default" className="text-sm bg-green-500">
-                <CheckCircle className="h-4 w-4 mr-1" />
+              <Badge variant="default" className="text-sm gap-1 bg-green-600 hover:bg-green-700">
+                <CheckCircle className="h-3.5 w-3.5" />
                 Registration Open
               </Badge>
             )}
           </div>
 
           {/* Event Quick Info */}
-          <div className="space-y-2">
-            <div className="flex items-center space-x-3 text-sm">
-              <Calendar className="h-4 w-4 text-gray-500" />
-              <span className="text-gray-600">{formatDate(event.date)}</span>
+          <div className="space-y-3 rounded-lg border bg-muted/30 p-3">
+            <div className="flex items-center gap-3 text-sm">
+              <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="text-muted-foreground">{formatDate(event.date)}</span>
             </div>
-
-            <div className="flex items-center space-x-3 text-sm">
-              <MapPin className="h-4 w-4 text-gray-500" />
-              <span className="text-gray-600">{event.location}</span>
+            <div className="flex items-center gap-3 text-sm">
+              <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="text-muted-foreground">{event.location}</span>
             </div>
-
-            <div className="flex items-center space-x-3 text-sm">
-              <Users className="h-4 w-4 text-gray-500" />
-              <span className="text-gray-600">
-                {event.currentParticipants}/{event.maxParticipants} participants
+            <div className="flex items-center gap-3 text-sm">
+              <Users className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="text-muted-foreground">
+                {spotsLeft} {spotsLeft === 1 ? "spot" : "spots"} available
               </span>
             </div>
           </div>
 
           {/* Registration Deadline Warning */}
           {canRegister && !isRegistrationOpen && (
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-              <div className="flex items-start space-x-2">
-                <AlertCircle className="h-4 w-4 text-orange-600 mt-0.5  shrink-0" />
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/30">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-500 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-orange-800">Late Registration</p>
-                  <p className="text-xs text-orange-700">
-                    Registration deadline has passed, but spots are still available. 
-                    Contact us to confirm availability.
+                  <p className="text-sm font-medium text-amber-800 dark:text-amber-200">Late Registration</p>
+                  <p className="text-xs text-amber-700 dark:text-amber-300">
+                    Registration deadline has passed, but spots are still available. Contact us to confirm
+                    availability.
                   </p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Spots Available */}
-          {canRegister && (
-            <div className="bg-gray-50 rounded-lg p-2">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">Spots Available</span>
-                <span className="text-sm font-bold text-primary">{spotsLeft}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-primary h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${Math.min((event.currentParticipants / event.maxParticipants) * 100, 100)}%` }}
-                />
-              </div>
-              <p className="text-xs text-gray-500 mt-2">
-                {spotsLeft <= 5 ? "Hurry! Only a few spots left" : "Registration is filling up fast"}
-              </p>
-            </div>
-          )}
-
           {/* Action Buttons */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             {canRegister ? (
               <Button
                 onClick={handleRegistration}
@@ -288,7 +314,10 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
                 size="lg"
               >
                 {isRegistering ? (
-                  "Processing..."
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
                 ) : spotsLeft <= 0 ? (
                   "Fully Booked"
                 ) : !isRegistrationOpen ? (
@@ -298,57 +327,33 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
                 )}
               </Button>
             ) : !isUpcoming ? (
-              <Button
-                disabled
-                variant="outline"
-                className="w-full rounded-full"
-                size="lg"
-              >
+              <Button disabled variant="outline" className="w-full rounded-full" size="lg">
                 Event Completed
               </Button>
             ) : (
-              <Button
-                disabled
-                variant="outline"
-                className="w-full rounded-full"
-                size="lg"
-              >
-                {event.status === 'Closed' ? 'Registration Closed' : 
-                 !isEventNotPast ? 'Event Ended' : 
-                 'Registration Closed'}
+              <Button disabled variant="outline" className="w-full rounded-full" size="lg">
+                {event.status === "Closed"
+                  ? "Registration Closed"
+                  : !isEventNotPast
+                    ? "Event Ended"
+                    : "Registration Closed"}
               </Button>
             )}
-
             <Button
               variant="outline"
               className="w-full rounded-full"
-              onClick={() => window.location.href = '/contact'}
+              size="lg"
+              onClick={() => (window.location.href = "/contact")}
             >
               Contact Us
             </Button>
           </div>
 
-          {/* Event Highlights */}
-          <div>
-            <h4 className="font-semibold text-lg text-gray-900 mb-3">What&apos;s Included</h4>
-            <div className="space-y-2">
-              {event.highlights.slice(0, 4).map((highlight, index) => (
-                <div key={index} className="flex items-start space-x-2">
-                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <span className="text-sm text-gray-600">{highlight}</span>
-                </div>
-              ))}
-              {event.highlights.length > 4 && (
-                <p className="text-xs text-gray-500">
-                  +{event.highlights.length - 4} more highlights
-                </p>
-              )}
-            </div>
-          </div>
+          <Separator />
 
-          <div className="pt-6">
-            <h4 className="font-semibold text-lg text-gray-900 mb-3">Share This Event</h4>
-            <div className="flex space-x-2">
+          <div>
+            <h4 className="mb-3 font-semibold text-lg text-foreground">Share this event</h4>
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -357,17 +362,17 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
                   toast.success("Event link copied to clipboard!");
                 }}
               >
-                Copy Link
+                Copy link
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => {
-                  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this amazing event: ${event.title}`)}&url=${encodeURIComponent(window.location.href)}`;
-                  window.open(url, '_blank');
+                  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this event: ${event.title}`)}&url=${encodeURIComponent(window.location.href)}`;
+                  window.open(url, "_blank");
                 }}
               >
-                Share on Twitter
+                Share on X
               </Button>
             </div>
           </div>
@@ -378,208 +383,247 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2">
+            <DialogTitle className="flex items-center gap-2">
               <Ticket className="h-6 w-6 text-primary" />
-              <span>Register for {event.title}</span>
+              Register for {event.title}
             </DialogTitle>
+            <DialogDescription>
+              Fill in your details below. All fields marked with * are required.
+            </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleFormSubmit} className="space-y-6">
-            {/* Event Information Summary */}
-            <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-              <h4 className="font-semibold text-gray-900">Event Details</h4>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+            {/* Event Summary */}
+            <div className="rounded-lg border bg-muted/30 p-4">
+              <h4 className="mb-3 text-base font-semibold text-foreground">Event details</h4>
+              <div className="grid gap-3 text-sm sm:grid-cols-2">
                 <div>
-                  <span className="font-medium">Date:</span> {formatDate(event.date)}
-                  {event.endDate && (
-                    <span> - {formatDate(event.endDate)}</span>
-                  )}
+                  <span className="font-medium text-muted-foreground">Date</span>
+                  <p className="text-foreground">
+                    {formatDate(event.date)}
+                    {event.endDate && ` – ${formatDate(event.endDate)}`}
+                  </p>
                 </div>
                 <div>
-                  <span className="font-medium">Location:</span> {event.location}
+                  <span className="font-medium text-muted-foreground">Location</span>
+                  <p className="text-foreground">{event.location}</p>
                 </div>
                 <div>
-                  <span className="font-medium">Available Spots:</span> {spotsLeft}
+                  <span className="font-medium text-muted-foreground">Spots available</span>
+                  <p className="text-foreground">{spotsLeft}</p>
                 </div>
                 <div>
-                  <span className="font-medium">Category:</span> {event.category}
+                  <span className="font-medium text-muted-foreground">Category</span>
+                  <p className="text-foreground">{event.category}</p>
                 </div>
               </div>
             </div>
 
             {/* Personal Information */}
             <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <User className="h-5 w-5" />
-                <span>Personal Information</span>
+              <h4 className="flex text-base items-center gap-2 font-semibold text-foreground">
+                <User className="h-5 w-5 text-primary" />
+                Personal information
               </h4>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name *</Label>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First name *</Label>
                   <Input
                     id="firstName"
                     value={formData.firstName}
-                    onChange={(e) => handleInputChange('firstName', e.target.value)}
-                    className={errors.firstName ? 'border-red-500' : ''}
-                    placeholder="Enter your first name"
+                    onChange={(e) => handleInputChange("firstName", e.target.value)}
+                    className={errors.firstName ? "border-destructive" : ""}
+                    placeholder="Your first name"
                   />
                   {errors.firstName && (
-                    <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                    <p className="text-sm text-destructive">{errors.firstName}</p>
                   )}
                 </div>
-
-                <div>
-                  <Label htmlFor="lastName">Last Name *</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last name *</Label>
                   <Input
                     id="lastName"
                     value={formData.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    className={errors.lastName ? 'border-red-500' : ''}
-                    placeholder="Enter your last name"
+                    onChange={(e) => handleInputChange("lastName", e.target.value)}
+                    className={errors.lastName ? "border-destructive" : ""}
+                    placeholder="Your last name"
                   />
                   {errors.lastName && (
-                    <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                    <p className="text-sm text-destructive">{errors.lastName}</p>
                   )}
                 </div>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="email">Email Address *</Label>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email *</Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    className={errors.email ? 'border-red-500' : ''}
-                    placeholder="Enter your email address"
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    className={errors.email ? "border-destructive" : ""}
+                    placeholder="you@example.com"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                    <p className="text-sm text-destructive">{errors.email}</p>
                   )}
                 </div>
-
-                <div>
-                  <Label htmlFor="phone">Phone Number *</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone *</Label>
                   <Input
                     id="phone"
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className={errors.phone ? 'border-red-500' : ''}
-                    placeholder="Enter your phone number"
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    className={errors.phone ? "border-destructive" : ""}
+                    placeholder="+250 123 456 789"
                   />
                   {errors.phone && (
-                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                    <p className="text-sm text-destructive">{errors.phone}</p>
                   )}
                 </div>
               </div>
-            </div>
-
-            {/* Location Information */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <LocationIcon className="h-5 w-5" />
-                <span>Current Location</span>
-              </h4>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="country">Country *</Label>
-                  <Input
-                    id="country"
-                    value={formData.country}
-                    onChange={(e) => handleInputChange('country', e.target.value)}
-                    className={errors.country ? 'border-red-500' : ''}
-                    placeholder="Enter your country"
-                  />
-                  {errors.country && (
-                    <p className="text-red-500 text-sm mt-1">{errors.country}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="city">City *</Label>
-                  <Input
-                    id="city"
-                    value={formData.city}
-                    onChange={(e) => handleInputChange('city', e.target.value)}
-                    className={errors.city ? 'border-red-500' : ''}
-                    placeholder="Enter your city"
-                  />
-                  {errors.city && (
-                    <p className="text-red-500 text-sm mt-1">{errors.city}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="town">Town/District *</Label>
-                  <Input
-                    id="town"
-                    value={formData.town}
-                    onChange={(e) => handleInputChange('town', e.target.value)}
-                    className={errors.town ? 'border-red-500' : ''}
-                    placeholder="Enter your town/district"
-                  />
-                  {errors.town && (
-                    <p className="text-red-500 text-sm mt-1">{errors.town}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Event Participation */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <Users className="h-5 w-5" />
-                <span>Participation Details</span>
-              </h4>
-              
-              <div>
-                <Label htmlFor="participants">Number of Participants *</Label>
-                <Select
-                  value={formData.participants.toString()}
-                  onValueChange={(value) => handleInputChange('participants', parseInt(value))}
-                >
-                  <SelectTrigger className={errors.participants ? 'border-red-500' : ''}>
-                    <SelectValue placeholder="Select number of participants" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: Math.min(spotsLeft, 10) }, (_, i) => i + 1).map((num) => (
-                      <SelectItem key={num} value={num.toString()}>
-                        {num} participant{num > 1 ? 's' : ''}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.participants && (
-                  <p className="text-red-500 text-sm mt-1">{errors.participants}</p>
-                )}
-                <p className="text-sm text-gray-500 mt-1">
-                  Maximum {spotsLeft} spots available
-                </p>
-              </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900">Additional Information</h4>
-              
-              <div>
-                <Label htmlFor="additionalInfo">Questions or Additional Information</Label>
-                <Textarea
-                  id="additionalInfo"
-                  value={formData.additionalInfo}
-                  onChange={(e) => handleInputChange('additionalInfo', e.target.value)}
-                  placeholder="Any questions, special requirements, or additional information you'd like to share..."
-                  rows={4}
+              <div className="space-y-2">
+                <Label htmlFor="organization">Organization (optional)</Label>
+                <Input
+                  id="organization"
+                  value={formData.organization}
+                  onChange={(e) => handleInputChange("organization", e.target.value)}
+                  placeholder="Company or organization"
                 />
               </div>
             </div>
 
-            {/* Form Actions */}
-            <div className="flex space-x-4 pt-6">
+            {/* Location */}
+            <div className="space-y-4">
+              <h4 className="flex text-base items-center gap-2 font-semibold text-foreground">
+                <MapPin className="h-5 w-5 text-primary" />
+                Current location
+              </h4>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="space-y-2">
+                  <Label htmlFor="country">Country *</Label>
+                  <Input
+                    id="country"
+                    value={formData.country}
+                    onChange={(e) => handleInputChange("country", e.target.value)}
+                    className={errors.country ? "border-destructive" : ""}
+                    placeholder="e.g. Rwanda"
+                  />
+                  {errors.country && (
+                    <p className="text-sm text-destructive">{errors.country}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="city">City *</Label>
+                  <Input
+                    id="city"
+                    value={formData.city}
+                    onChange={(e) => handleInputChange("city", e.target.value)}
+                    className={errors.city ? "border-destructive" : ""}
+                    placeholder="e.g. Kigali"
+                  />
+                  {errors.city && (
+                    <p className="text-sm text-destructive">{errors.city}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="town">Town / District *</Label>
+                  <Input
+                    id="town"
+                    value={formData.town}
+                    onChange={(e) => handleInputChange("town", e.target.value)}
+                    className={errors.town ? "border-destructive" : ""}
+                    placeholder="Town or district"
+                  />
+                  {errors.town && (
+                    <p className="text-sm text-destructive">{errors.town}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Participation & dietary */}
+            <div className="space-y-4">
+              <h4 className="flex text-base items-center gap-2 font-semibold text-foreground">
+                <Users className="h-5 w-5 text-primary" />
+                Participation
+              </h4>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="participants">Number of participants *</Label>
+                  <Select
+                    value={formData.participants.toString()}
+                    onValueChange={(value) =>
+                      handleInputChange("participants", parseInt(value, 10))
+                    }
+                  >
+                    <SelectTrigger
+                      className={errors.participants ? "border-destructive w-full" : "w-full"}
+                    >
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from(
+                        { length: Math.min(spotsLeft, 20) },
+                        (_, i) => i + 1
+                      ).map((num) => (
+                        <SelectItem key={num} value={num.toString()}>
+                          {num} participant{num > 1 ? "s" : ""}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.participants && (
+                    <p className="text-sm text-destructive">{errors.participants}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Maximum {spotsLeft} spots available
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="dietaryRestrictions">Dietary restrictions (optional)</Label>
+                  <Select
+                    value={formData.dietaryRestrictions}
+                    onValueChange={(value) =>
+                      handleInputChange("dietaryRestrictions", value)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DIETARY_OPTIONS.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional info */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="additionalInfo">
+                  Questions or special requirements (optional)
+                </Label>
+                <Textarea
+                  id="additionalInfo"
+                  value={formData.additionalInfo}
+                  onChange={(e) => handleInputChange("additionalInfo", e.target.value)}
+                  placeholder="Accessibility needs, questions, or other notes..."
+                  rows={4}
+                  className="resize-none"
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="flex gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
@@ -589,18 +633,14 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                className="flex-1"
-                disabled={isRegistering}
-              >
+              <Button type="submit" className="flex-1" disabled={isRegistering}>
                 {isRegistering ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Submitting...
                   </>
                 ) : (
-                  'Submit Registration'
+                  "Submit registration"
                 )}
               </Button>
             </div>

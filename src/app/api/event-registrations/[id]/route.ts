@@ -36,16 +36,47 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
     const allowed = ["PENDING", "IN_PROGRESS", "COMPLETED", "ARCHIVED"];
-    const status = allowed.includes(body.status) ? body.status : undefined;
-    if (!status) {
+    const newStatus = allowed.includes(body.status) ? body.status : undefined;
+    if (!newStatus) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
     }
 
-    const booking = await prisma.eventRegistration.update({
+    const existing = await prisma.eventRegistration.findUnique({
       where: { id },
-      data: { status },
-      include: { event: { select: { id: true, title: true, slug: true } } },
+      select: { status: true, eventId: true, numberOfParticipants: true },
     });
+    if (!existing) {
+      return NextResponse.json({ error: "Registration not found" }, { status: 404 });
+    }
+
+    const wasCompleted = existing.status === "COMPLETED";
+    const isNowCompleted = newStatus === "COMPLETED";
+    const delta =
+      isNowCompleted && !wasCompleted
+        ? existing.numberOfParticipants
+        : !isNowCompleted && wasCompleted
+          ? -existing.numberOfParticipants
+          : 0;
+
+    const booking = await prisma.$transaction(async (tx) => {
+      const updated = await tx.eventRegistration.update({
+        where: { id },
+        data: { status: newStatus },
+        include: { event: { select: { id: true, title: true, slug: true } } },
+      });
+
+      if (existing.eventId && delta !== 0) {
+        await tx.event.update({
+          where: { id: existing.eventId },
+          data: {
+            currentParticipants: { increment: delta },
+          },
+        });
+      }
+
+      return updated;
+    });
+
     return NextResponse.json({ success: true, booking });
   } catch (error) {
     console.error("Update event registration error:", error);

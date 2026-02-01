@@ -7,21 +7,21 @@ const processSteps = [
     icon: FileText,
     title: "Submit Request",
     description: "Fill out our comprehensive form with your travel requirements and service needs.",
-    duration: "5-10 minutes",
+    duration: "2-5 minutes",
     color: "bg-primary"
   },
   {
     icon: Clock,
     title: "Review & Quotation",
-    description: "Our experts review your request and provide a detailed quotation within 2 hours.",
-    duration: "2 hours",
+    description: "Our experts review your request and provide a detailed quotation within 1 hour.",
+    duration: "1 hour",
     color: "bg-primary"
   },
   {
     icon: CheckCircle,
     title: "Confirmation & Payment",
     description: "Confirm your services and complete payment to secure your booking.",
-    duration: "30 minutes",
+    duration: "15 minutes",
     color: "bg-primary"
   },
   {

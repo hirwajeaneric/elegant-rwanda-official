@@ -97,10 +97,10 @@ export function EventHero({ event }: EventHeroProps) {
             <div className="flex flex-col justify-start items-start space-y-2 text-white">
               <div className="flex items-center space-x-3">
                 <Users className="h-6 w-6 text-white" />
-                <p className="text-sm text-white/70">Participants</p>
+                <p className="text-sm text-white/70">Spots available</p>
               </div>
               <p className="font-semibold text-yellow-500">
-                {event.currentParticipants}/{event.maxParticipants}
+                {Math.max(0, event.maxParticipants - event.currentParticipants)} spots left
               </p>
             </div>
 

@@ -56,7 +56,7 @@ export async function createBooking(input: CreateBookingInput): Promise<{ id: st
       const booking = await prisma.carRentalBooking.create({
         data: {
           status: "PENDING",
-          vehicleId: strOrNull(rental.vehicleId) ?? undefined,
+          vehicleId: strOrNull(vehicleId ?? rental.vehicleId) ?? undefined,
           startDate: str(rental.startDate ?? (rental.rentalPeriod as Record<string, unknown>)?.startDate),
           endDate: str(rental.endDate ?? (rental.rentalPeriod as Record<string, unknown>)?.endDate),
           rentalType: strOrNull(rental.rentalType) ?? undefined,
@@ -127,6 +127,11 @@ export async function createBooking(input: CreateBookingInput): Promise<{ id: st
     case "AIR_TRAVEL": {
       const airData = data as Record<string, unknown>;
       const airContact = airData.contactInfo as Record<string, unknown> | undefined;
+      const passengers = airData.passengers as Record<string, unknown> | undefined;
+      const travelerDetails = airData.travelerDetails as Record<string, unknown> | undefined;
+      const luggage = airData.luggage as Record<string, unknown> | undefined;
+      const services = airData.services;
+      const servicesArray = Array.isArray(services) ? services : undefined;
       const booking = await prisma.airTravelRequest.create({
         data: {
           tripType: strOrNull(airData.tripType) ?? undefined,
@@ -137,10 +142,25 @@ export async function createBooking(input: CreateBookingInput): Promise<{ id: st
           returnDate: strOrNull(airData.returnDate) ?? undefined,
           returnTime: strOrNull(airData.returnTime) ?? undefined,
           travelClass: strOrNull(airData.travelClass) ?? undefined,
+          services: servicesArray ?? undefined,
+          passengersAdults: passengers != null && typeof passengers.adults === "number" ? passengers.adults : undefined,
+          passengersChildren: passengers != null && typeof passengers.children === "number" ? passengers.children : undefined,
+          passengersInfants: passengers != null && typeof passengers.infants === "number" ? passengers.infants : undefined,
+          primaryTravelerName: strOrNull(travelerDetails?.primaryTravelerName) ?? undefined,
+          nationality: strOrNull(travelerDetails?.nationality) ?? undefined,
+          passportNumber: strOrNull(travelerDetails?.passportNumber) ?? undefined,
+          passportExpiry: strOrNull(travelerDetails?.passportExpiry) ?? undefined,
+          luggageCheckedBags: luggage != null && typeof luggage.checkedBags === "number" ? luggage.checkedBags : undefined,
+          luggageCabinBags: luggage != null && typeof luggage.cabinBags === "number" ? luggage.cabinBags : undefined,
+          luggageSpecialItems: strOrNull(luggage?.specialItems) ?? undefined,
+          seatPreference: strOrNull(airData.seatPreference) ?? undefined,
+          loyaltyProgram: strOrNull(airData.loyaltyProgram) ?? undefined,
+          budgetRange: strOrNull(airData.budgetRange) ?? undefined,
+          preferences: strOrNull(airData.preferences) ?? undefined,
           name: str(airContact?.name ?? airData.name),
           email: str(airContact?.email ?? airData.email),
           phone: str(airContact?.phone ?? airData.phone),
-          preferences: strOrNull(airData.preferences) ?? undefined,
+          country: strOrNull(airContact?.country ?? airData.country) ?? undefined,
         },
       });
       return { id: booking.id };

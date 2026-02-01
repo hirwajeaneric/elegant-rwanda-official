@@ -46,7 +46,7 @@ export function EventGallery({ event }: EventGalleryProps) {
     <section className="py-20 bg-white">
       <div className="">
         <div className="text-start mb-8">
-          <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-display text-gray-900 mb-4">
             Event Gallery
           </h2>
           <p className="text-xl text-start text-gray-600 max-w-3xl">

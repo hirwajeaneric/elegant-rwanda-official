@@ -15,11 +15,16 @@ interface CabBookingItem {
   serviceType: string;
   vehicleType: string;
   pickupLocation: string;
+  dropoffLocation: string;
   pickupDate: string;
   pickupTime: string;
+  passengers: string;
+  luggage: string | null;
+  specialRequests: string | null;
   name: string;
   email: string;
   phone: string;
+  preferredContact: string | null;
   createdAt: string;
 }
 
@@ -50,6 +55,37 @@ export default function CabBookingsPage() {
 
   const columns = [
     {
+      key: "serviceType",
+      label: "Service",
+      sortable: true,
+      render: (item: CabBookingItem) => item.serviceType.toUpperCase(),
+    },
+    {
+      key: "vehicleType",
+      label: "Vehicle",
+      sortable: true,
+      render: (item: CabBookingItem) => item.vehicleType,
+    },
+    {
+      key: "pickupLocation",
+      label: "Pickup",
+      sortable: false,
+      render: (item: CabBookingItem) => item.pickupLocation ?? "—",
+    },
+    {
+      key: "dropoffLocation",
+      label: "Drop-off",
+      sortable: false,
+      render: (item: CabBookingItem) => item.dropoffLocation ?? "—",
+    },
+    {
+      key: "pickupDate",
+      label: "Date & time",
+      sortable: true,
+      render: (item: CabBookingItem) =>
+        [item.pickupDate, item.pickupTime].filter(Boolean).join(" ") || "—",
+    },
+    {
       key: "status",
       label: "Status",
       sortable: true,
@@ -66,42 +102,6 @@ export default function CabBookingsPage() {
           {item.status.replace("_", " ")}
         </Badge>
       ),
-    },
-    {
-      key: "serviceType",
-      label: "Service",
-      sortable: true,
-      render: (item: CabBookingItem) => item.serviceType,
-    },
-    {
-      key: "vehicleType",
-      label: "Vehicle",
-      sortable: true,
-      render: (item: CabBookingItem) => item.vehicleType,
-    },
-    {
-      key: "pickupLocation",
-      label: "Pickup",
-      sortable: false,
-      render: (item: CabBookingItem) => item.pickupLocation,
-    },
-    {
-      key: "pickupDate",
-      label: "Date",
-      sortable: true,
-      render: (item: CabBookingItem) => `${item.pickupDate} ${item.pickupTime}`,
-    },
-    {
-      key: "name",
-      label: "Contact",
-      sortable: true,
-      render: (item: CabBookingItem) => item.name,
-    },
-    {
-      key: "email",
-      label: "Email",
-      sortable: true,
-      render: (item: CabBookingItem) => item.email,
     },
     {
       key: "createdAt",
@@ -128,7 +128,7 @@ export default function CabBookingsPage() {
   ];
 
   if (loading) {
-    return <DataTableLoader columnCount={9} rowCount={8} />;
+    return <DataTableLoader columnCount={11} rowCount={8} />;
   }
 
   return (

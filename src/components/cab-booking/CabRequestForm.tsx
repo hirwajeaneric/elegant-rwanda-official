@@ -34,20 +34,45 @@ export function CabRequestForm() {
     e.preventDefault();
     successShownRef.current = false;
     setIsSubmitting(true);
-    const formData = new FormData(e.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
+    const payload = {
+      serviceType,
+      vehicleType,
+      pickupLocation,
+      dropoffLocation,
+      pickupDate,
+      pickupTime,
+      passengers,
+      luggage: luggage || undefined,
+      specialRequests: specialRequests || undefined,
+      name,
+      phone,
+      email,
+      preferredContact: preferredContact || undefined,
+    };
 
     try {
       await submitFormToEmail({
         formType: "cab-booking",
         data: payload,
-        userEmail: String(formData.get("email") || ""),
-        userName: String(formData.get("name") || ""),
+        userEmail: email,
+        userName: name,
       });
       successShownRef.current = true;
       toast.success("Cab request received. We’ll confirm with a quotation soon.");
       setIsSubmitted(true);
-      e.currentTarget.reset();
+      setServiceType("");
+      setVehicleType("");
+      setPickupLocation("");
+      setDropoffLocation("");
+      setPickupDate("");
+      setPickupTime("");
+      setPassengers("");
+      setLuggage("");
+      setSpecialRequests("");
+      setName("");
+      setPhone("");
+      setEmail("");
+      setPreferredContact("phone");
       setTimeout(() => setIsSubmitted(false), 4000);
     } catch (error) {
       console.error(error);

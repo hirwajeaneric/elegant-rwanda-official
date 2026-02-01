@@ -4,34 +4,18 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Car, Info } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { CarRentalBookingDetail } from "@/components/dashboard/bookings/CarRentalBookingDetail";
-
-interface CarRentalBooking {
-  id: string;
-  status: string;
-  startDate: string;
-  endDate: string;
-  rentalType: string | null;
-  name: string;
-  email: string;
-  phone: string;
-  specialRequests: string | null;
-  driverName: string | null;
-  driverLicense: string | null;
-  driverLicenseExpiry: string | null;
-  pickupLocation: string | null;
-  dropoffLocation: string | null;
-  passengers: number | null;
-  createdAt: string;
-  vehicle?: { id: string; name: string; slug: string } | null;
-}
+import {
+  CarRentalBookingDetail,
+  type CarRentalBooking,
+} from "@/components/dashboard/bookings/CarRentalBookingDetail";
+import { VehicleInfoModal } from "@/components/dashboard/VehicleInfoModal";
 
 export default function CarRentalBookingDetailPage() {
   const params = useParams();
@@ -39,6 +23,7 @@ export default function CarRentalBookingDetailPage() {
   const [booking, setBooking] = useState<CarRentalBooking | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [vehicleModalOpen, setVehicleModalOpen] = useState(false);
 
   useEffect(() => {
     fetchBooking();
@@ -106,13 +91,54 @@ export default function CarRentalBookingDetailPage() {
     );
   }
 
+  const dateRange =
+    booking.startDate && booking.endDate ? `${booking.startDate} – ${booking.endDate}` : null;
+  const submittedAt = booking.createdAt
+    ? new Date(booking.createdAt).toLocaleString(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    })
+    : null;
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <DashboardBreadcrumbs />
-          <div className="flex items-center gap-3 mt-4">
-            <h1 className="text-3xl font-bold">Car Rental Booking</h1>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+              <Car className="h-6 w-6 text-primary" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                Car Rental Booking
+              </h1>
+              <p className="mt-1 text-muted-foreground">
+                {booking.vehicle ? (
+                  <>
+                    <Link
+                      href={`/admin/car-rental/${booking.vehicle.id}`}
+                      className="font-medium text-primary hover:underline"
+                    >
+                      {booking.vehicle.name}
+                    </Link>
+                    {dateRange && (
+                      <>
+                        <span className="mx-1.5">·</span>
+                        <span>{dateRange}</span>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  dateRange || "Car rental booking"
+                )}
+              </p>
+              {submittedAt && (
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Submitted {submittedAt}
+                </p>
+              )}
+            </div>
             <Badge
               variant={
                 booking.status === "COMPLETED"
@@ -121,44 +147,50 @@ export default function CarRentalBookingDetailPage() {
                     ? "secondary"
                     : "outline"
               }
+              className="shrink-0"
             >
               {booking.status.replace("_", " ")}
             </Badge>
           </div>
-          <p className="text-muted-foreground mt-1">
-            {booking.vehicle?.name ?? "—"} · {new Date(booking.createdAt).toLocaleString()}
-          </p>
         </div>
-        <Button variant="outline" asChild>
-          <Link href="/admin/car-rental/bookings">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2 shrink-0">
+          {booking.vehicle && (
+            <Button
+              variant="default"
+              onClick={() => setVehicleModalOpen(true)}
+            >
+              <Info className="h-4 w-4 mr-2" />
+              Vehicle info
+            </Button>
+          )}
+          <Button variant="outline" asChild>
+            <Link href="/admin/car-rental/bookings">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to list
+            </Link>
+          </Button>
+        </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="col-span-1">
-          <CardContent className="pt-6 space-y-4">
-            <div>
-              <Label className="text-muted-foreground">Name</Label>
-              <p className="font-medium">{booking.name}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Email</Label>
-              <p className="font-medium">{booking.email}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Phone</Label>
-              <p className="font-medium">{booking.phone}</p>
-            </div>
-            {booking.vehicle && (
-              <Button variant="link" className="px-0" asChild>
-                <Link href={`/admin/car-rental/${booking.vehicle.id}`}>View vehicle</Link>
-              </Button>
-            )}
+      <VehicleInfoModal
+        open={vehicleModalOpen}
+        onOpenChange={setVehicleModalOpen}
+        vehicleId={booking.vehicle?.id ?? null}
+        vehicleName={booking.vehicle?.name ?? null}
+      />
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <CarRentalBookingDetail booking={booking} />
+        </div>
+        <Card className="h-fit border-2">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Status</CardTitle>
+            <CardDescription>Update booking status</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div className="flex flex-col gap-2">
-              <Label className="text-muted-foreground">Status</Label>
+              <Label className="text-muted-foreground">Current status</Label>
               <Select
                 value={booking.status}
                 onValueChange={handleStatusChange}
@@ -177,10 +209,6 @@ export default function CarRentalBookingDetailPage() {
             </div>
           </CardContent>
         </Card>
-
-        <div className="col-span-2">
-          <CarRentalBookingDetail booking={booking} />
-        </div>
       </div>
     </div>
   );

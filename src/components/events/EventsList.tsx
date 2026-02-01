@@ -241,7 +241,9 @@ export function EventsList() {
                     </div>
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
                       <Users className="h-4 w-4" />
-                      <span>{event.currentParticipants}/{event.maxParticipants} participants</span>
+                      <span>
+                        {Math.max(0, event.maxParticipants - event.currentParticipants)} spots available
+                      </span>
                     </div>
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
                       <Clock className="h-4 w-4" />

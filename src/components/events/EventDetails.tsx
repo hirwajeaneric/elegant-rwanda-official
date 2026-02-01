@@ -26,9 +26,6 @@ export function EventDetails({ event }: EventDetailsProps) {
     <div className="space-y-12">
       {/* Event Overview */}
       <section>
-        <h2 className="text-3xl font-display font-bold text-gray-900 mb-6">
-          Event Overview
-        </h2>
         <div className="prose prose-lg max-w-none text-gray-600">
           <p className="text-xl leading-relaxed mb-6">
             {event.description}
@@ -38,7 +35,7 @@ export function EventDetails({ event }: EventDetailsProps) {
 
       {/* Event Information */}
       <section>
-        <h2 className="text-3xl font-display font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl font-display text-gray-900 mb-6">
           Event Information
         </h2>
         <div className="bg-gray-50 rounded-2xl p-8">
@@ -60,22 +57,6 @@ export function EventDetails({ event }: EventDetailsProps) {
                 <div>
                   <h3 className="font-semibold text-lg text-gray-900">Location</h3>
                   <p className="text-gray-600">{event.location}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-3">
-                <Users className="h-6 w-6 text-primary mt-1" />
-                <div>
-                  <h3 className="font-semibold text-lg text-gray-900">Group Size</h3>
-                  <p className="text-gray-600">
-                    {event.currentParticipants} of {event.maxParticipants} participants
-                  </p>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div 
-                      className="bg-primary h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min((event.currentParticipants / event.maxParticipants) * 100, 100)}%` }}
-                    />
-                  </div>
                 </div>
               </div>
             </div>
@@ -121,13 +102,13 @@ export function EventDetails({ event }: EventDetailsProps) {
 
       {/* Highlights */}
       <section>
-        <h2 className="text-3xl font-display font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl font-display text-gray-900 mb-6">
           Event Highlights
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {event.highlights.map((highlight, index) => (
             <div key={index} className="flex items-start space-x-2">
-              <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+              <CheckCircle className="h-4 w-4 text-primary mt-1 shrink-0" />
               <p className="text-gray-700">{highlight}</p>
             </div>
           ))}
@@ -136,13 +117,13 @@ export function EventDetails({ event }: EventDetailsProps) {
 
       {/* Activities */}
       <section>
-        <h2 className="text-3xl font-display font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl font-display text-gray-900 mb-6">
           What&apos;s Included
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {event.activities.map((activity, index) => (
             <div key={index} className="flex items-start space-x-2">
-              <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+              <CheckCircle className="h-4 w-4 text-primary mt-1 shrink-0" />
               <p className="text-gray-700">{activity}</p>
             </div>
           ))}

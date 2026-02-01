@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { airTravelSchema, type AirTravelForm } from "@/lib/schemas";
 import { COUNTRY_NAMES } from "@/data/countries";
@@ -29,9 +29,9 @@ export function AirTravelRequestForm() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<AirTravelForm>({
-    resolver: zodResolver(airTravelSchema),
+    resolver: zodResolver(airTravelSchema) as Resolver<AirTravelForm>,
     defaultValues: {
-      tripType: "Round-trip",
+      tripType: "One-way",
       services: [],
       origin: "",
       destination: "",
@@ -129,7 +129,7 @@ export function AirTravelRequestForm() {
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
             <h3 className="text-2xl font-display font-semibold mb-2">Request Submitted!</h3>
             <p className="text-muted-foreground">
-              We&apos;ve received your air travel assistance request and will respond within 2 hours.
+              We&apos;ve received your air travel assistance request and will respond within 1 hour.
             </p>
           </CardContent>
         </Card>
@@ -324,7 +324,7 @@ export function AirTravelRequestForm() {
                     className="grid grid-cols-2 md:grid-cols-4 gap-3"
                   >
                     {(["Economy", "Premium Economy", "Business", "First"] as const).map((cls) => (
-                      <div key={cls} className="flex items-center space-x-2">
+                      <div key={cls} className="flex items-start space-x-2 cursor-pointer">
                         <RadioGroupItem value={cls} id={`travelClass-${cls.replace(/\s+/g, "-").toLowerCase()}`} />
                         <Label
                           htmlFor={`travelClass-${cls.replace(/\s+/g, "-").toLowerCase()}`}
@@ -663,7 +663,7 @@ export function AirTravelRequestForm() {
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground">
                     <CheckCircle className="h-4 w-4 inline mr-1 text-primary" />
-                    We&apos;ll get back to you within 2 hours with a tailored quotation
+                    We&apos;ll get back to you within 1 hour with a tailored quotation
                   </p>
                 </div>
               </div>

@@ -166,21 +166,36 @@ model ContactInquiry {
 }
 
 model AirTravelRequest {
-  id              String   @id @default(cuid())
-  tripType        String?
-  origin          String?
-  destination     String?
-  departureDate   String?
-  departureTime   String?
-  returnDate      String?
-  returnTime      String?
-  travelClass     String?
-  name            String
-  email           String
-  phone           String
-  preferences     String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                   String   @id @default(cuid())
+  tripType             String?
+  origin               String?
+  destination          String?
+  departureDate        String?
+  departureTime        String?
+  returnDate           String?
+  returnTime           String?
+  travelClass          String?
+  services             Json?    // ["Visa Assistance", "Airport Pickup", ...]
+  passengersAdults     Int?
+  passengersChildren  Int?
+  passengersInfants   Int?
+  primaryTravelerName String?
+  nationality         String?
+  passportNumber      String?
+  passportExpiry      String?
+  luggageCheckedBags   Int?
+  luggageCabinBags    Int?
+  luggageSpecialItems String?
+  seatPreference      String?
+  loyaltyProgram      String?
+  budgetRange         String?
+  preferences         String?
+  name                String
+  email               String
+  phone               String
+  country             String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@index([createdAt])
 }

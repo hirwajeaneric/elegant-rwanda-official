@@ -166,6 +166,7 @@ export default function NewEventPage() {
                 <Input
                   id="title"
                   value={formData.title}
+                  placeholder="e.g. Gorilla Trekking Adventure"
                   onChange={(e) => {
                     const title = e.target.value;
                     setFormData((prev) => ({
@@ -193,6 +194,7 @@ export default function NewEventPage() {
                 <Textarea
                   id="description"
                   value={formData.description}
+                  placeholder="e.g. Join us for an exclusive gorilla trekking adventure in Rwanda. Limited to 8 participants for an intimate and personalized adventure."
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={4}
                   required
@@ -227,6 +229,7 @@ export default function NewEventPage() {
                 <Input
                   id="location"
                   value={formData.location}
+                  placeholder="e.g. Volcanoes National Park, Rwanda"
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   required
                 />
@@ -289,7 +292,7 @@ export default function NewEventPage() {
                       setFormData({ ...formData, status: value })
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -310,7 +313,7 @@ export default function NewEventPage() {
                         setFormData({ ...formData, categoryId: value })
                       }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder={categoryList.length === 0 ? "No categories" : "Select category"} />
                       </SelectTrigger>
                       <SelectContent>
@@ -405,7 +408,7 @@ export default function NewEventPage() {
                 </div>
                 <div className="space-y-1">
                   {formData.highlights.map((highlight, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                    <div key={index} className="flex items-center justify-between px-2 bg-muted rounded">
                       <span className="text-sm">{highlight}</span>
                       <Button
                         type="button"
@@ -447,7 +450,7 @@ export default function NewEventPage() {
                 </div>
                 <div className="space-y-1">
                   {formData.activities.map((activity, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                    <div key={index} className="flex items-center justify-between px-2 bg-muted rounded">
                       <span className="text-sm">{activity}</span>
                       <Button
                         type="button"

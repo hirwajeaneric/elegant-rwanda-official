@@ -4,33 +4,17 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Car } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { CabBookingDetail } from "@/components/dashboard/bookings/CabBookingDetail";
-
-interface CabBooking {
-  id: string;
-  status: string;
-  serviceType: string;
-  vehicleType: string;
-  pickupLocation: string;
-  dropoffLocation: string;
-  pickupDate: string;
-  pickupTime: string;
-  passengers: string;
-  luggage: string | null;
-  specialRequests: string | null;
-  name: string;
-  phone: string;
-  email: string;
-  preferredContact: string | null;
-  createdAt: string;
-}
+import {
+  CabBookingDetail,
+  type CabBooking,
+} from "@/components/dashboard/bookings/CabBookingDetail";
 
 export default function CabBookingDetailPage() {
   const params = useParams();
@@ -105,13 +89,36 @@ export default function CabBookingDetailPage() {
     );
   }
 
+  const routeLabel =
+    [booking.pickupLocation, booking.dropoffLocation].filter(Boolean).join(" → ") ||
+    "Cab booking";
+  const submittedAt = booking.createdAt
+    ? new Date(booking.createdAt).toLocaleString(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    : null;
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <DashboardBreadcrumbs />
-          <div className="flex items-center gap-3 mt-4">
-            <h1 className="text-3xl font-bold">Cab Booking</h1>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+              <Car className="h-6 w-6 text-primary" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                Cab Booking
+              </h1>
+              <p className="mt-1 text-muted-foreground">{routeLabel}</p>
+              {submittedAt && (
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Submitted {submittedAt}
+                </p>
+              )}
+            </div>
             <Badge
               variant={
                 booking.status === "COMPLETED"
@@ -120,39 +127,32 @@ export default function CabBookingDetailPage() {
                     ? "secondary"
                     : "outline"
               }
+              className="shrink-0"
             >
               {booking.status.replace("_", " ")}
             </Badge>
           </div>
-          <p className="text-muted-foreground mt-1">
-            {booking.pickupLocation} → {booking.dropoffLocation} · {new Date(booking.createdAt).toLocaleString()}
-          </p>
         </div>
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild className="shrink-0">
           <Link href="/admin/cab-bookings">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            Back to list
           </Link>
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="col-span-1">
-          <CardContent className="pt-6 space-y-4">
-            <div>
-              <Label className="text-muted-foreground">Name</Label>
-              <p className="font-medium">{booking.name}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Email</Label>
-              <p className="font-medium">{booking.email}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Phone</Label>
-              <p className="font-medium">{booking.phone}</p>
-            </div>
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <CabBookingDetail booking={booking} />
+        </div>
+        <Card className="h-fit border-2">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Status</CardTitle>
+            <CardDescription>Update booking status</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div className="flex flex-col gap-2">
-              <Label className="text-muted-foreground">Status</Label>
+              <Label className="text-muted-foreground">Current status</Label>
               <Select
                 value={booking.status}
                 onValueChange={handleStatusChange}
@@ -171,10 +171,6 @@ export default function CabBookingDetailPage() {
             </div>
           </CardContent>
         </Card>
-
-        <div className="col-span-2">
-          <CabBookingDetail booking={booking} />
-        </div>
       </div>
     </div>
   );

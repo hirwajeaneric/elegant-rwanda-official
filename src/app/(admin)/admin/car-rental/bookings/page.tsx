@@ -4,19 +4,25 @@ import { useState, useEffect } from "react";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
+import { VehicleInfoModal } from "@/components/dashboard/VehicleInfoModal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Car } from "lucide-react";
 
 interface CarRentalBookingItem {
   id: string;
   status: string;
   startDate: string;
   endDate: string;
+  rentalType: string | null;
   name: string;
   email: string;
   phone: string;
+  pickupLocation: string | null;
+  dropoffLocation: string | null;
+  passengers: number | null;
   createdAt: string;
   vehicle?: { id: string; name: string; slug: string } | null;
 }
@@ -24,6 +30,9 @@ interface CarRentalBookingItem {
 export default function CarRentalBookingsPage() {
   const [bookings, setBookings] = useState<CarRentalBookingItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [vehicleModalOpen, setVehicleModalOpen] = useState(false);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
+  const [selectedVehicleName, setSelectedVehicleName] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBookings();
@@ -44,6 +53,13 @@ export default function CarRentalBookingsPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const formatRentalType = (v: string | null) => {
+    if (!v) return "—";
+    if (v === "self-drive") return "Self Drive";
+    if (v === "chauffeur") return "Chauffeur";
+    return v;
   };
 
   const columns = [
@@ -84,20 +100,14 @@ export default function CarRentalBookingsPage() {
       render: (item: CarRentalBookingItem) => item.endDate,
     },
     {
-      key: "name",
-      label: "Contact",
-      sortable: true,
-      render: (item: CarRentalBookingItem) => item.name,
-    },
-    {
-      key: "email",
-      label: "Email",
-      sortable: true,
-      render: (item: CarRentalBookingItem) => item.email,
+      key: "pickupLocation",
+      label: "Pickup",
+      sortable: false,
+      render: (item: CarRentalBookingItem) => item.pickupLocation ?? "—",
     },
     {
       key: "createdAt",
-      label: "Date",
+      label: "Submitted",
       sortable: true,
       render: (item: CarRentalBookingItem) => {
         const d = new Date(item.createdAt);
@@ -112,15 +122,31 @@ export default function CarRentalBookingsPage() {
       key: "actions",
       label: "Actions",
       render: (item: CarRentalBookingItem) => (
-        <Button variant="outline" size="sm" asChild>
-          <Link href={`/admin/car-rental/bookings/${item.id}`}>View</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" asChild>
+            <Link href={`/admin/car-rental/bookings/${item.id}`}>View</Link>
+          </Button>
+          {item.vehicle && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSelectedVehicleId(item.vehicle!.id);
+                setSelectedVehicleName(item.vehicle!.name);
+                setVehicleModalOpen(true);
+              }}
+            >
+              <Car className="h-4 w-4 mr-1" />
+              Vehicle info
+            </Button>
+          )}
+        </div>
       ),
     },
   ];
 
   if (loading) {
-    return <DataTableLoader columnCount={8} rowCount={8} />;
+    return <DataTableLoader columnCount={11} rowCount={8} />;
   }
 
   return (
@@ -151,6 +177,13 @@ export default function CarRentalBookingsPage() {
             ],
           },
         ]}
+      />
+
+      <VehicleInfoModal
+        open={vehicleModalOpen}
+        onOpenChange={setVehicleModalOpen}
+        vehicleId={selectedVehicleId}
+        vehicleName={selectedVehicleName}
       />
     </div>
   );
