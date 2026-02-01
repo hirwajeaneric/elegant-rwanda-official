@@ -29,23 +29,27 @@ export function TourBooking({ tour }: TourBookingProps) {
     successShownRef.current = false;
 
     const formData = new FormData(e.currentTarget);
+    const tourId = (tour as { id?: string }).id;
     const payload = {
+      tourId: tourId ?? undefined,
       tour: tour.title,
-      travelers: travelers || formData.get("travelers"),
-      preferredStartDate: startDate || formData.get("startDate"),
-      specialRequests: formData.get("specialRequests"),
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
+      numberOfPeople: parseInt(String(travelers || formData.get("travelers")), 10) || 1,
+      preferredStart: startDate || formData.get("startDate") || undefined,
+      preferredStartDate: startDate || formData.get("startDate") || undefined,
+      specialRequests: formData.get("specialRequests") || undefined,
+      name: String(formData.get("name") || ""),
+      email: String(formData.get("email") || ""),
+      phone: String(formData.get("phone") || ""),
+      country: formData.get("country") || undefined,
     };
 
     try {
       await submitFormToEmail({
         formType: "tour-booking",
         data: payload,
-        userEmail: String(payload.email || ""),
-        userName: String(payload.name || ""),
-        tourId: (tour as { id?: string }).id || undefined,
+        userEmail: payload.email,
+        userName: payload.name,
+        tourId: tourId ?? undefined,
       });
       successShownRef.current = true;
       toast.success("Booking request sent. We’ll send a quote shortly.");
@@ -155,6 +159,14 @@ export function TourBooking({ tour }: TourBookingProps) {
                     type="tel"
                     required
                     placeholder="+250..."
+                  />
+                </div>
+                <div className="space-y-2 w-full">
+                  <Label htmlFor="country">Country</Label>
+                  <Input
+                    id="country"
+                    name="country"
+                    placeholder="e.g. Rwanda"
                   />
                 </div>
               </div>

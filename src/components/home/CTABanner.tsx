@@ -56,7 +56,7 @@ export function CTABanner() {
                 </p>
                 <p className="flex items-center space-x-2">
                   <LucideClock className="h-4 w-4" />
-                  <span>Mon - Fri: 8:00 AM - 6:00 PM</span>
+                  <span>24/7</span>
                 </p>
               </div>
             </div>

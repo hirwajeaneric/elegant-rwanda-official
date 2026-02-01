@@ -13,9 +13,12 @@ interface TourBookingItem {
   id: string;
   status: string;
   numberOfPeople: number;
+  preferredStart: string | null;
+  specialRequests: string | null;
   name: string;
   email: string;
-  preferredStart: string | null;
+  phone: string;
+  country: string | null;
   createdAt: string;
   tour?: { id: string; title: string; slug: string } | null;
 }
@@ -92,11 +95,20 @@ export default function TourBookingsPage() {
       key: "preferredStart",
       label: "Preferred start",
       sortable: false,
-      render: (item: TourBookingItem) => item.preferredStart ?? "—",
+      render: (item: TourBookingItem) => {
+        const v = item.preferredStart;
+        if (!v) return "—";
+        try {
+          const d = new Date(v);
+          return Number.isNaN(d.getTime()) ? v : d.toLocaleDateString(undefined, { dateStyle: "medium" });
+        } catch {
+          return v;
+        }
+      },
     },
     {
       key: "createdAt",
-      label: "Date",
+      label: "Submitted",
       sortable: true,
       render: (item: TourBookingItem) => {
         const d = new Date(item.createdAt);

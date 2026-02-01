@@ -4,28 +4,17 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, MapPin, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { TourBookingDetail } from "@/components/dashboard/bookings/TourBookingDetail";
-
-interface TourBooking {
-  id: string;
-  status: string;
-  numberOfPeople: number;
-  preferredStart: string | null;
-  specialRequests: string | null;
-  name: string;
-  email: string;
-  phone: string;
-  country: string | null;
-  createdAt: string;
-  tour?: { id: string; title: string; slug: string } | null;
-}
+import {
+  TourBookingDetail,
+  type TourBooking,
+} from "@/components/dashboard/bookings/TourBookingDetail";
 
 export default function TourBookingDetailPage() {
   const params = useParams();
@@ -100,13 +89,62 @@ export default function TourBookingDetailPage() {
     );
   }
 
+  const preferredStartFormatted = booking.preferredStart
+    ? (() => {
+        try {
+          const d = new Date(booking.preferredStart!);
+          return Number.isNaN(d.getTime()) ? booking.preferredStart : d.toLocaleDateString(undefined, { dateStyle: "medium" });
+        } catch {
+          return booking.preferredStart;
+        }
+      })()
+    : null;
+  const submittedAt = booking.createdAt
+    ? new Date(booking.createdAt).toLocaleString(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    : null;
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <DashboardBreadcrumbs />
-          <div className="flex items-center gap-3 mt-4">
-            <h1 className="text-3xl font-bold">Tour Booking</h1>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+              <MapPin className="h-6 w-6 text-primary" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                Tour Booking
+              </h1>
+              <p className="mt-1 text-muted-foreground">
+                {booking.tour ? (
+                  <>
+                    <Link
+                      href={`/admin/tours/${booking.tour.id}`}
+                      className="font-medium text-primary hover:underline"
+                    >
+                      {booking.tour.title}
+                    </Link>
+                    {preferredStartFormatted && (
+                      <>
+                        <span className="mx-1.5">·</span>
+                        <span>{preferredStartFormatted}</span>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  preferredStartFormatted || "Tour booking"
+                )}
+              </p>
+              {submittedAt && (
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Submitted {submittedAt}
+                </p>
+              )}
+            </div>
             <Badge
               variant={
                 booking.status === "COMPLETED"
@@ -115,55 +153,56 @@ export default function TourBookingDetailPage() {
                     ? "secondary"
                     : "outline"
               }
+              className="shrink-0"
             >
               {booking.status.replace("_", " ")}
             </Badge>
           </div>
-          <p className="text-muted-foreground mt-1">
-            {booking.tour?.title ?? "—"} · {new Date(booking.createdAt).toLocaleString()}
-          </p>
         </div>
-        <Button variant="outline" asChild>
-          <Link href="/admin/tours/bookings">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2 shrink-0">
+          {booking.tour && (
+            <Button variant="default" asChild>
+              <Link href={`/admin/tours/${booking.tour.id}`}>
+                <ExternalLink className="h-4 w-4 mr-2" />
+                View tour
+              </Link>
+            </Button>
+          )}
+          <Button variant="outline" asChild>
+            <Link href="/admin/tours/bookings">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to list
+            </Link>
+          </Button>
+        </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="col-span-1">
-          <CardHeader>
-            <CardTitle>Status &amp; Contact</CardTitle>
-            <CardDescription>Update status and view contact</CardDescription>
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <TourBookingDetail booking={booking} />
+        </div>
+        <Card className="h-fit border-2">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Status</CardTitle>
+            <CardDescription>Update booking status</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <Label className="text-muted-foreground">Name</Label>
-              <p className="font-medium">{booking.name}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Email</Label>
-              <p className="font-medium">{booking.email}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground">Phone</Label>
-              <p className="font-medium">{booking.phone}</p>
-            </div>
-            {booking.tour && (
-              <Button variant="link" className="px-0" asChild>
-                <Link href={`/admin/tours/${booking.tour.id}`}>View tour</Link>
-              </Button>
-            )}
             <div className="flex flex-col gap-2">
-              <Label className="text-muted-foreground">Status</Label>
+              <Label className="text-muted-foreground">Current status</Label>
               <Select
                 value={booking.status}
                 onValueChange={handleStatusChange}
                 disabled={updating}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue />
+                  {updating ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Updating...
+                    </span>
+                  ) : (
+                    <SelectValue />
+                  )}
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="PENDING">Pending</SelectItem>
@@ -175,10 +214,6 @@ export default function TourBookingDetailPage() {
             </div>
           </CardContent>
         </Card>
-
-        <div className="col-span-2">
-          <TourBookingDetail booking={booking} />
-        </div>
       </div>
     </div>
   );
