@@ -28,7 +28,7 @@ export default function ConfirmOTPPage() {
 
   useEffect(() => {
     if (!email) {
-      router.push("/auth/create-account");
+      router.push("/auth/login");
     }
   }, [email, router]);
 
@@ -63,9 +63,9 @@ export default function ConfirmOTPPage() {
       const registrationData = sessionStorage.getItem(registrationKey);
       
       if (!registrationData) {
-        toast.error("Registration session expired. Please register again.");
-        setError("Registration session expired. Please register again.");
-        router.push("/auth/create-account");
+        toast.error("Session expired. Please contact an administrator.");
+        setError("Session expired. Please contact an administrator.");
+        router.push("/auth/login");
         return;
       }
 

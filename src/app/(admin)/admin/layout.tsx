@@ -30,6 +30,12 @@ export default function AdminLayout({
       return;
     }
 
+    // Check if password reset is required
+    if (isAuthenticated && user?.requirePasswordReset && pathname !== "/auth/force-password-reset") {
+      router.push("/auth/force-password-reset");
+      return;
+    }
+
     // Check role-based access
     if (isAuthenticated && user && !canAccessRoute(user.role, pathname)) {
       // Redirect to dashboard if user doesn't have access
@@ -38,6 +44,11 @@ export default function AdminLayout({
   }, [isAuthenticated, user, router, pathname]);
 
   if (!isAuthenticated) {
+    return null;
+  }
+
+  // Redirect if password reset is required
+  if (user?.requirePasswordReset && pathname !== "/auth/force-password-reset") {
     return null;
   }
 

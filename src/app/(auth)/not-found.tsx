@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, LogIn, UserPlus, Lock } from "lucide-react";
+import { ArrowLeft, LogIn, Lock } from "lucide-react";
 
 export default function NotFound() {
   const router = useRouter();
@@ -26,13 +26,6 @@ export default function NotFound() {
             <Link href="/auth/login">
               <LogIn className="h-4 w-4 mr-2" />
               Login
-            </Link>
-          </Button>
-          
-          <Button asChild className="w-full" variant="outline">
-            <Link href="/auth/create-account">
-              <UserPlus className="h-4 w-4 mr-2" />
-              Create Account
             </Link>
           </Button>
           

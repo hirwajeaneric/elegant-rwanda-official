@@ -127,6 +127,7 @@ export async function POST(request: NextRequest) {
           os: session.os,
           ipAddress: session.ipAddress,
         },
+        requirePasswordReset: user.requirePasswordReset, // Flag to indicate if password reset is required
         csrfToken, // Also return in response for client-side use
       },
       {

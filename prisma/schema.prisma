@@ -245,18 +245,19 @@ enum RequestStatus {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String
-  password      String    // Hashed password
-  role          UserRole  @default(EDITOR)
-  active        Boolean   @default(true)
-  emailVerified Boolean   @default(false)
-  lastLogin     DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  createdBy     String?   // ID of user who created this account
-  updatedBy     String?   // ID of user who last updated this account
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  name                String
+  password            String    // Hashed password
+  role                UserRole  @default(EDITOR)
+  active              Boolean   @default(true)
+  emailVerified       Boolean   @default(false)
+  requirePasswordReset Boolean  @default(false) // If true, user must reset password on next login
+  lastLogin           DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  createdBy           String?   // ID of user who created this account
+  updatedBy           String?   // ID of user who last updated this account
   sessions      Session[] // User sessions
   passwordResetTokens PasswordResetToken[] // Password reset tokens
   otpVerifications    OTPVerification[]    // OTP verifications

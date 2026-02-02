@@ -31,6 +31,7 @@ export default function NewUserPage() {
     confirmPassword: "",
     role: "EDITOR" as UserRole,
     active: true,
+    requirePasswordReset: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,6 +95,7 @@ export default function NewUserPage() {
           password: formData.password,
           role: formData.role,
           active: formData.active,
+          requirePasswordReset: formData.requirePasswordReset,
         }),
       });
 
@@ -236,11 +238,34 @@ export default function NewUserPage() {
               </CardContent>
             </Card>
 
+            {/* Password Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Password Settings</CardTitle>
+                <CardDescription>Configure password requirements</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="requirePasswordReset"
+                    checked={formData.requirePasswordReset}
+                    onCheckedChange={(checked) => setFormData({ ...formData, requirePasswordReset: checked })}
+                  />
+                  <Label htmlFor="requirePasswordReset" className="text-sm font-normal cursor-pointer">
+                    Require password reset on first login
+                  </Label>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  If enabled, the user will be required to change their password immediately after logging in for the first time.
+                </p>
+              </CardContent>
+            </Card>
+
             {/* Password Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Password</CardTitle>
-                <CardDescription>Set initial password</CardDescription>
+                <CardTitle>Initial Password</CardTitle>
+                <CardDescription>Set initial password for the user</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">

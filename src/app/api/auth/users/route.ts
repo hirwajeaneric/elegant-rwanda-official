@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { name, email, password, role, active } = validation.data;
+    const { name, email, password, role, active, requirePasswordReset } = validation.data;
 
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
@@ -102,6 +102,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await hashPassword(password);
 
     // Create user in database
+    // Admin-created users: emailVerified = true, requirePasswordReset optional
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -109,6 +110,8 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         role,
         active: active ?? true,
+        emailVerified: true, // Admin-created users are automatically verified
+        requirePasswordReset: requirePasswordReset ?? false,
         createdBy: authResult.auth.userId,
       },
       select: {
@@ -117,6 +120,8 @@ export async function POST(request: NextRequest) {
         name: true,
         role: true,
         active: true,
+        emailVerified: true,
+        requirePasswordReset: true,
         lastLogin: true,
         createdAt: true,
         updatedAt: true,

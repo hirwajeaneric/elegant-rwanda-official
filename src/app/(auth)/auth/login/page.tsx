@@ -29,8 +29,13 @@ export default function LoginPage() {
     try {
       const result = await login(email, password);
       if (result.success) {
-        toast.success("Welcome back!");
-        router.push("/admin/dashboard");
+        if (result.requirePasswordReset) {
+          toast.info("Password reset required. Please change your password.");
+          router.push("/auth/force-password-reset");
+        } else {
+          toast.success("Welcome back!");
+          router.push("/admin/dashboard");
+        }
       } else {
         const msg = result.error || "Invalid email or password";
         setError(msg);
@@ -106,13 +111,6 @@ export default function LoginPage() {
             {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
-        <div className="mt-4 space-y-2 text-sm text-center text-muted-foreground">
-          <p>Don&apos;t have an account?{" "}
-            <Link href="/auth/create-account" className="text-primary hover:underline">
-              Create Account
-            </Link>
-          </p>
-        </div>
       </CardContent>
     </Card>
   );

@@ -9,6 +9,7 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
+  requirePasswordReset?: boolean;
 }
 
 export interface Session {
@@ -28,7 +29,7 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   csrfToken: string | null;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; requirePasswordReset?: boolean; error?: string }>;
   logout: () => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   forgotPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
@@ -95,6 +96,7 @@ function createAuthMethods(set: (partial: Partial<AuthState>) => void, get: () =
       const result = await apiRequest<{
         user: User;
         csrfToken: string;
+        requirePasswordReset?: boolean;
         session: {
           id: string;
           device: string | null;
@@ -113,7 +115,10 @@ function createAuthMethods(set: (partial: Partial<AuthState>) => void, get: () =
           isAuthenticated: true,
           csrfToken: result.data.csrfToken,
         });
-        return { success: true };
+        return {
+          success: true,
+          requirePasswordReset: result.data.requirePasswordReset ?? false,
+        };
       }
 
       return { success: false, error: result.error };

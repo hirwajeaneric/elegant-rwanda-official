@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
         email: sessionData.user.email,
         name: sessionData.user.name,
         role: sessionData.user.role,
+        requirePasswordReset: sessionData.user.requirePasswordReset,
       },
       session: {
         id: sessionData.session.id,

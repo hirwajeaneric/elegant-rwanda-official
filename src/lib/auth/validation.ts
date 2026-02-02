@@ -51,6 +51,7 @@ export const createUserSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
   role: z.enum(["ADMIN", "CONTENT_MANAGER", "EDITOR"]),
   active: z.boolean().optional().default(true),
+  requirePasswordReset: z.boolean().optional().default(false),
 });
 
 export const updateUserSchema = z.object({
