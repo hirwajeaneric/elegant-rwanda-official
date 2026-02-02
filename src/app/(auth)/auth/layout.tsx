@@ -23,7 +23,7 @@ export default function AuthPagesLayout({
   }, [isAuthenticated, router, pathname]);
 
   const customStyles = {
-    background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/Bisate-Lodge-Image-from-Arcadiasafaris-1024x499.jpg')",
+    background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/nyungwe_national_park.jpg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -44,6 +44,14 @@ export default function AuthPagesLayout({
       </div>
 
       {children}
+
+      {/* Copyright */}
+      <div className="mt-8 text-center">
+        <p className="text-sm text-white/80">
+          © {new Date().getFullYear()} Elegant Travel & Tours. All Rights Reserved.
+        </p>
+      </div>
+
       <Toaster position="top-center" richColors closeButton />
     </div>
   );
