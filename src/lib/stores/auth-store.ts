@@ -30,7 +30,7 @@ interface AuthState {
   isAuthenticated: boolean;
   csrfToken: string | null;
   login: (email: string, password: string) => Promise<{ success: boolean; requirePasswordReset?: boolean; error?: string }>;
-  logout: () => Promise<void>;
+  logout: (intentional?: boolean) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   forgotPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
   resetPassword: (email: string, token: string, newPassword: string) => Promise<{ success: boolean; error?: string }>;
@@ -123,11 +123,31 @@ function createAuthMethods(set: (partial: Partial<AuthState>) => void, get: () =
 
       return { success: false, error: result.error };
     },
-    logout: async () => {
+    logout: async (intentional: boolean = false) => {
       const csrfToken = get().csrfToken;
       await apiRequest("/api/auth/logout", {
         method: "POST",
       }, csrfToken);
+      
+      if (typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
+        
+        // Save redirect path only if logout was NOT intentional
+        // (e.g., token expiry, session invalidated)
+        if (!intentional) {
+          // Don't save auth pages or dashboard as redirect
+          if (!currentPath.startsWith("/auth/") && currentPath !== "/admin/dashboard") {
+            sessionStorage.setItem("redirectAfterLogin", currentPath);
+          }
+        } else {
+          // Clear redirect when intentionally logging out from sidebar
+          // But preserve redirect if logging out from password reset page (so user can return after login)
+          if (currentPath !== "/auth/force-password-reset") {
+            sessionStorage.removeItem("redirectAfterLogin");
+          }
+        }
+      }
+      
       set({ user: null, isAuthenticated: false, csrfToken: null });
     },
     register: async (name: string, email: string, password: string) => {
@@ -248,7 +268,14 @@ function createAuthMethods(set: (partial: Partial<AuthState>) => void, get: () =
         return { success: true };
       }
 
-      // If refresh fails, logout
+      // If refresh fails, save redirect path before clearing auth state
+      if (typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
+        if (!currentPath.startsWith("/auth/") && currentPath !== "/admin/dashboard") {
+          sessionStorage.setItem("redirectAfterLogin", currentPath);
+        }
+      }
+
       set({ user: null, isAuthenticated: false, csrfToken: null });
       return { success: false, error: result.error };
     },
@@ -273,6 +300,14 @@ function createAuthMethods(set: (partial: Partial<AuthState>) => void, get: () =
           isAuthenticated: true,
         });
         return { success: true };
+      }
+
+      // If session check fails, save redirect path before clearing auth state
+      if (typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
+        if (!currentPath.startsWith("/auth/") && currentPath !== "/admin/dashboard") {
+          sessionStorage.setItem("redirectAfterLogin", currentPath);
+        }
       }
 
       set({ user: null, isAuthenticated: false, csrfToken: null });

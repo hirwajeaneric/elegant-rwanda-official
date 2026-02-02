@@ -16,8 +16,8 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "Elegant Travel and Tours: Unique Tours, Car Rentals & Travel Services in Rwanda",
-    template: "%s | Elegant Travel and Tours"
+    default: "Elegant Travel & Tours: Unique Tours, Car Rentals & Travel Services in Rwanda",
+    template: "%s | Elegant Travel & Tours"
   },
   description: "Explore Rwanda's elegance with our Unique tours, premium car rentals, cab services, and air travel assistance. Experience the heart of Africa with personalized Unique travel services.",
   keywords: [
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     "Wildlife tours Africa",
     "Unique safari Rwanda"
   ],
-  authors: [{ name: "Elegant Travel and Tours" }],
-  creator: "Elegant Travel and Tours",
-  publisher: "Elegant Travel and Tours",
+  authors: [{ name: "Elegant Travel & Tours" }],
+  creator: "Elegant Travel & Tours",
+  publisher: "Elegant Travel & Tours",
   formatDetection: {
     email: false,
     address: false,
@@ -50,21 +50,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://elegantrwanda.com",
-    title: "Elegant Travel and Tours: Unique Tours & Travel Services",
+    title: "Elegant Travel & Tours: Unique Tours & Travel Services",
     description: "Explore Rwanda's elegance with our Unique tours, premium car rentals, and personalized travel services.",
-    siteName: "Elegant Travel and Tours",
+    siteName: "Elegant Travel & Tours",
     images: [
       {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Elegant Travel and Tours - Unique Travel in Rwanda",
+        alt: "Elegant Travel & Tours - Unique Travel in Rwanda",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elegant Travel and Tours: Unique Tours & Travel Services",
+    title: "Elegant Travel & Tours: Unique Tours & Travel Services",
     description: "Explore Rwanda's elegance with our Unique tours, premium car rentals, and personalized travel services.",
     images: ["/images/twitter-image.jpg"],
   },

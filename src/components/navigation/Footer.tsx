@@ -213,7 +213,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
               <p className="text-white/80 text-sm">
-                © {new Date().getFullYear()} Elegant Travel and Tours. All Rights Reserved.
+                © {new Date().getFullYear()} Elegant Travel & Tours. All Rights Reserved.
               </p>
             </div>
           </div>

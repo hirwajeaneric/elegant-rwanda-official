@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { Mail, ArrowLeft } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
@@ -53,11 +52,6 @@ export default function ForgotPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Alert>
-            <AlertDescription>
-              If an account exists with {email}, you will receive a password reset link shortly.
-            </AlertDescription>
-          </Alert>
           <div className="mt-4 text-sm text-center text-muted-foreground">
             <Link href="/auth/login" className="text-primary hover:underline">
               <ArrowLeft className="inline h-4 w-4 mr-1" />
@@ -79,11 +73,6 @@ export default function ForgotPasswordPage() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">

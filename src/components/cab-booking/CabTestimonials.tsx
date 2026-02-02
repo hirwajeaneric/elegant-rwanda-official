@@ -139,7 +139,7 @@ export function CabTestimonials() {
               Ready to Experience the Best Cab Service in Rwanda?
             </h3>
             <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-              Join our satisfied customers and discover why Elegant Travel and Tours is the preferred choice 
+              Join our satisfied customers and discover why Elegant Travel & Tours is the preferred choice 
               for premium transportation services.
             </p>
             <button className="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-colors">

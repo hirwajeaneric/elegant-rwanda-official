@@ -6,14 +6,14 @@ import { JsonLd } from "@/components/seo/JsonLd";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
-  title: "Rwanda Photo Gallery: Stunning Tours & Travel Moments | Elegant Travel and Tours",
+  title: "Rwanda Photo Gallery: Stunning Tours & Travel Moments | Elegant Travel & Tours",
   description:
     "Explore our stunning photo gallery showcasing Rwanda's beauty, wildlife, culture, and luxury travel experiences. Discover the magic of Rwanda through our curated collection of travel photography.",
   path: "gallery",
   keywords:
     "Rwanda photo gallery, gorilla photos, Rwanda wildlife, cultural photos Rwanda, travel photography Rwanda",
   openGraph: {
-    title: "Rwanda Photo Gallery: Stunning Tours & Travel Moments | Elegant Travel and Tours",
+    title: "Rwanda Photo Gallery: Stunning Tours & Travel Moments | Elegant Travel & Tours",
     description:
       "Explore our stunning photo gallery showcasing Rwanda's beauty, wildlife, culture, and luxury travel experiences.",
     type: "website",

@@ -26,6 +26,10 @@ export default function AdminLayout({
 
   useEffect(() => {
     if (!isAuthenticated && pathname !== "/auth/login") {
+      // Save current path for redirect after login (only if not already an auth page)
+      if (typeof window !== "undefined" && !pathname.startsWith("/auth/")) {
+        sessionStorage.setItem("redirectAfterLogin", pathname);
+      }
       router.push("/auth/login");
       return;
     }

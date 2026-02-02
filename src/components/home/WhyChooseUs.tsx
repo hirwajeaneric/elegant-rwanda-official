@@ -97,7 +97,7 @@ export function WhyChooseUs() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
             Why Choose{" "}
-            <span className="text-yellow-500">Elegant Travel and Tours</span>
+            <span className="text-yellow-500">Elegant Travel & Tours</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             We&apos;re not just another travel company. We&apos;re your partners in creating extraordinary 

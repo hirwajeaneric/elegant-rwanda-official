@@ -1,6 +1,6 @@
 # Elegant Rwanda - Travel and Tours Platform
 
-A modern Next.js 15 application for Elegant Travel and Tours, a unique travel company specializing in Rwanda tours, car rentals, cab services, and air travel assistance.
+A modern Next.js 15 application for Elegant Travel & Tours, a unique travel company specializing in Rwanda tours, car rentals, cab services, and air travel assistance.
 
 ## 🚀 Tech Stack
 

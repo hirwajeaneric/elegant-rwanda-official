@@ -77,7 +77,7 @@ export const blogPosts: BlogPost[] = [
         <h2>Booking Your Trek</h2>
         <p>
           Gorilla trekking permits in Rwanda cost <strong>$1,500</strong> per person and should be booked well in advance. 
-          Elegant Travel and Tours can help you secure permits and arrange all logistics for your trekking adventure.
+          Elegant Travel & Tours can help you secure permits and arrange all logistics for your trekking adventure.
         </p>
 
         <h2>Conservation Impact</h2>
@@ -103,7 +103,7 @@ export const blogPosts: BlogPost[] = [
     featuredImage: '/volcanoes-national-park-gorilla_AJ723tqm4-Photo-from-Getty-Images.jpg',
     featured: true,
     slug: 'ultimate-guide-gorilla-trekking-rwanda',
-    metaTitle: 'Ultimate Guide to Gorilla Trekking in Rwanda - Wildlife Tours | Elegant Travel and Tours',
+    metaTitle: 'Ultimate Guide to Gorilla Trekking in Rwanda - Wildlife Tours | Elegant Travel & Tours',
     metaDescription: 'Everything you need to know about planning your once-in-a-lifetime gorilla trekking adventure in Rwanda\'s Volcanoes National Park. Expert tips and guidance.',
     
     // Dashboard-specific fields
@@ -190,7 +190,7 @@ export const blogPosts: BlogPost[] = [
     featuredImage: '/Umuganura-Muhondo-Gakenke-Paying-tribute-to-the-king.jpg',
     featured: true,
     slug: 'discovering-rwandas-hidden-cultural-gems',
-    metaTitle: 'Discovering Rwanda\'s Hidden Cultural Gems - Cultural Tours | Elegant Travel and Tours',
+    metaTitle: 'Discovering Rwanda\'s Hidden Cultural Gems - Cultural Tours | Elegant Travel & Tours',
     metaDescription: 'Explore the rich cultural heritage of Rwanda beyond the typical tourist destinations, from traditional villages to contemporary art scenes.',
     
     // Dashboard-specific fields
@@ -273,7 +273,7 @@ export const blogPosts: BlogPost[] = [
     featuredImage: '/landscape-on-edge-of-lake-kivu-rwanda-east-africa.jpg',
     featured: false,
     slug: 'Unique-travel-rwanda-beyond-ordinary',
-    metaTitle: 'Unique Travel in Rwanda: Beyond the Ordinary - Premium Tours | Elegant Travel and Tours',
+    metaTitle: 'Unique Travel in Rwanda: Beyond the Ordinary - Premium Tours | Elegant Travel & Tours',
     metaDescription: 'Experience Rwanda\'s finest Unique accommodations, exclusive experiences, and personalized services that redefine Unique travel in Africa.',
     status: 'published',
     views: 2100,
@@ -419,7 +419,7 @@ export const blogPostsExtended: BlogPost[] = [
     featuredImage: '/gorilla-trekking-rwanda.jpg',
     featured: false,
     slug: 'rwanda-wildlife-photography-tips-locations',
-    metaTitle: 'Rwanda Wildlife Photography: Tips & Best Locations | Elegant Travel and Tours',
+    metaTitle: 'Rwanda Wildlife Photography: Tips & Best Locations | Elegant Travel & Tours',
     metaDescription: 'Master the art of wildlife photography in Rwanda with expert tips, best locations, and techniques for capturing stunning images.',
     status: 'published',
     views: 2100,
@@ -558,7 +558,7 @@ export const blogPostsExtended: BlogPost[] = [
     featuredImage: '/rwanda-green-city.jpg',
     featured: true,
     slug: 'sustainable-tourism-rwanda-complete-guide',
-    metaTitle: 'Sustainable Tourism in Rwanda: A Complete Guide | Elegant Travel and Tours',
+    metaTitle: 'Sustainable Tourism in Rwanda: A Complete Guide | Elegant Travel & Tours',
     metaDescription: 'Discover how Rwanda leads the way in sustainable tourism practices and how you can travel responsibly while supporting local communities.',
     status: 'published',
     views: 2100,

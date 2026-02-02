@@ -28,14 +28,14 @@ export const team: TeamMember[] = [
     id: 'team-1',
     name: 'Aime Yves Ngirimana',
     role: 'Founder & CEO',
-    bio: 'A passionate tourism professional with over 15 years of experience in Unique travel across East Africa. Aime Yves founded Elegant Travel and Tours with a vision to showcase Rwanda\'s beauty through exceptional service and sustainable tourism practices.',
+    bio: 'A passionate tourism professional with over 15 years of experience in Unique travel across East Africa. Aime Yves founded Elegant Travel & Tours with a vision to showcase Rwanda\'s beauty through exceptional service and sustainable tourism practices.',
     image: '/images/team/jean-pierre.jpg',
     experience: '15+ years in Unique tourism',
     specialties: ['Unique tour planning', 'Sustainable tourism', 'Business development', 'Cultural experiences'],
     email: 'jean-pierre@elegantrwanda.com',
     linkedin: 'https://linkedin.com/in/jean-pierre-uwimana',
-    metaTitle: 'Jean-Pierre Uwimana - Founder & CEO | Elegant Travel and Tours',
-    metaDescription: 'Meet Jean-Pierre Uwimana, Founder & CEO of Elegant Travel and Tours. A passionate tourism professional with over 15 years of experience in Unique travel across East Africa.',
+    metaTitle: 'Jean-Pierre Uwimana - Founder & CEO | Elegant Travel & Tours',
+    metaDescription: 'Meet Jean-Pierre Uwimana, Founder & CEO of Elegant Travel & Tours. A passionate tourism professional with over 15 years of experience in Unique travel across East Africa.',
     
     // Dashboard-specific fields
     phone: '+250 788 123 456',
@@ -58,7 +58,7 @@ export const team: TeamMember[] = [
     specialties: ['Wildlife tours', 'Gorilla trekking', 'Photography', 'Conservation'],
     email: 'john@elegantrwanda.com',
     linkedin: 'https://linkedin.com/in/john-doe-guide',
-    metaTitle: 'John Doe - Senior Tour Guide | Elegant Travel and Tours',
+    metaTitle: 'John Doe - Senior Tour Guide | Elegant Travel & Tours',
     metaDescription: 'Meet John Doe, our experienced wildlife guide specializing in gorilla trekking and wildlife photography.',
     
     // Dashboard-specific fields
@@ -82,7 +82,7 @@ export const team: TeamMember[] = [
     specialties: ['Operations management', 'Customer service', 'Logistics', 'Quality control'],
     email: 'jane@elegantrwanda.com',
     linkedin: 'https://linkedin.com/in/jane-smith-operations',
-    metaTitle: 'Jane Smith - Operations Manager | Elegant Travel and Tours',
+    metaTitle: 'Jane Smith - Operations Manager | Elegant Travel & Tours',
     metaDescription: 'Meet Jane Smith, our Operations Manager ensuring smooth tour operations and exceptional customer service.',
     
     // Dashboard-specific fields
@@ -106,7 +106,7 @@ export const team: TeamMember[] = [
     specialties: ['Cultural tours', 'Traditional villages', 'Art and crafts', 'Local experiences'],
     email: 'mike@elegantrwanda.com',
     linkedin: 'https://linkedin.com/in/mike-johnson-cultural',
-    metaTitle: 'Mike Johnson - Cultural Guide | Elegant Travel and Tours',
+    metaTitle: 'Mike Johnson - Cultural Guide | Elegant Travel & Tours',
     metaDescription: 'Meet Mike Johnson, our cultural guide specializing in Rwanda\'s rich heritage and traditional experiences.',
     
     // Dashboard-specific fields
@@ -130,7 +130,7 @@ export const team: TeamMember[] = [
     specialties: ['Customer relations', 'Booking management', 'Client support', 'Feedback collection'],
     email: 'sarah@elegantrwanda.com',
     linkedin: 'https://linkedin.com/in/sarah-wilson-customer',
-    metaTitle: 'Sarah Wilson - Customer Relations Specialist | Elegant Travel and Tours',
+    metaTitle: 'Sarah Wilson - Customer Relations Specialist | Elegant Travel & Tours',
     metaDescription: 'Meet Sarah Wilson, our Customer Relations Specialist ensuring every client has an exceptional experience.',
     
     // Dashboard-specific fields

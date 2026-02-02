@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 
@@ -20,6 +19,31 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const login = useAuthStore((state) => state.login);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const getRedirectPath = () => {
+    // Priority: 1) Query param, 2) SessionStorage, 3) Default dashboard
+    const queryRedirect = searchParams.get("redirect");
+    const sessionRedirect = typeof window !== "undefined" ? sessionStorage.getItem("redirectAfterLogin") : null;
+    
+    if (queryRedirect) {
+      // Clear sessionStorage if we have a query param
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("redirectAfterLogin");
+      }
+      return queryRedirect;
+    }
+    
+    if (sessionRedirect) {
+      // Clear sessionStorage after reading
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("redirectAfterLogin");
+      }
+      return sessionRedirect;
+    }
+    
+    return "/admin/dashboard";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +58,8 @@ export default function LoginPage() {
           router.push("/auth/force-password-reset");
         } else {
           toast.success("Welcome back!");
-          router.push("/admin/dashboard");
+          const redirectPath = getRedirectPath();
+          router.push(redirectPath);
         }
       } else {
         const msg = result.error || "Invalid email or password";
@@ -60,11 +85,6 @@ export default function LoginPage() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">

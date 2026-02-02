@@ -131,7 +131,7 @@ export default function NotFound() {
         {/* Footer Note */}
         <div className="mt-12 text-muted-foreground text-sm">
           <p>
-            © 2025 Elegant Travel and Tours. All Rights Reserved. | Designed with ♥ in Rwanda
+            © 2025 Elegant Travel & Tours. All Rights Reserved. | Designed with ♥ in Rwanda
           </p>
         </div>
       </div>

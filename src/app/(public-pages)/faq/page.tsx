@@ -8,13 +8,13 @@ import { JsonLd } from "@/components/seo/JsonLd";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
-  title: "Frequently Asked Questions - Elegant Travel and Tours Travel Services",
+  title: "Frequently Asked Questions - Elegant Travel & Tours Travel Services",
   description:
     "Find answers to common questions about our luxury tours, cab booking, car rental, and air travel assistance services in Rwanda.",
   path: "faq",
   keywords: "Rwanda travel FAQ, gorilla trekking questions, Rwanda tours FAQ, travel assistance Rwanda",
   openGraph: {
-    title: "Frequently Asked Questions - Elegant Travel and Tours Travel Services",
+    title: "Frequently Asked Questions - Elegant Travel & Tours Travel Services",
     description:
       "Find answers to common questions about our luxury tours, cab booking, car rental, and air travel assistance services in Rwanda.",
     type: "website",

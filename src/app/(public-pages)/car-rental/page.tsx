@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 export const metadata = buildMetadata({
   title: "Luxury Car Rentals in Rwanda: Self-Drive or Chauffeur Options | Elegant Travel & Tours",
   description:
-    "Rent luxury cars in Rwanda with Elegant Travel and Tours. Choose between self-drive and chauffeur-driven options. Premium vehicles for business and leisure travel.",
+    "Rent luxury cars in Rwanda with Elegant Travel & Tours. Choose between self-drive and chauffeur-driven options. Premium vehicles for business and leisure travel.",
   path: "car-rental",
   keywords:
     "car rental Rwanda, luxury car hire Rwanda, self-drive Rwanda, chauffeur service Rwanda, vehicle rental Rwanda, car rental near me, car near me, car to book near me, car rental near me, car rental to book near me, car rental to book near me in Rwanda, tour guide near me, trip planner near me, events near me, car near me, car to book near me, car to book near me in Rwanda",

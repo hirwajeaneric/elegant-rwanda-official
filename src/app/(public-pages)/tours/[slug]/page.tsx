@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: TourPageProps) {
 
   if (!apiTour) {
     return buildMetadata({
-      title: "Tour Not Found | Elegant Travel and Tours",
+      title: "Tour Not Found | Elegant Travel & Tours",
       description: "The requested tour could not be found.",
       path: "tours",
       noIndex: true,
@@ -95,7 +95,7 @@ export async function generateMetadata({ params }: TourPageProps) {
   const description =
     tour.metaDescription || tour.description.replace(/<[^>]*>/g, "").substring(0, 160);
   return buildMetadata({
-    title: `${tour.metaTitle || tour.title} - Rwanda Tours | Elegant Travel and Tours`,
+    title: `${tour.metaTitle || tour.title} - Rwanda Tours | Elegant Travel & Tours`,
     description,
     path: `tours/${tour.slug}`,
     keywords: tour.highlights.join(", ") + ", " + (tour.category || "Rwanda tours") + ", Rwanda tours",

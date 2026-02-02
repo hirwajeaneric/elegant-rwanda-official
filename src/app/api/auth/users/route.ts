@@ -4,6 +4,7 @@ import { requireAuth } from "@/lib/auth/middleware";
 import { validateRequest, createUserSchema } from "@/lib/auth/validation";
 import { hashPassword } from "@/lib/auth/password";
 import { rateLimit } from "@/lib/auth/rate-limit";
+import { sendNewUserAccountEmail } from "@/lib/auth/email-templates";
 
 // GET /api/auth/users - Get all users (Admin only)
 export async function GET(request: NextRequest) {
@@ -86,6 +87,9 @@ export async function POST(request: NextRequest) {
 
     const { name, email, password, role, active, requirePasswordReset } = validation.data;
 
+    // Store plain password for email (before hashing)
+    const plainPassword = password;
+
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
@@ -127,6 +131,24 @@ export async function POST(request: NextRequest) {
         updatedAt: true,
       },
     });
+
+    // Send welcome email with credentials (don't fail user creation if email fails)
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+      const loginUrl = `${baseUrl}/auth/login`;
+      await sendNewUserAccountEmail(
+        email,
+        name,
+        plainPassword, // Send plain password (stored before hashing)
+        role,
+        requirePasswordReset ?? false,
+        loginUrl
+      );
+    } catch (emailError) {
+      // Log error but don't fail user creation
+      console.error("Failed to send new user account email:", emailError);
+      // User is still created successfully
+    }
 
     return NextResponse.json({ user: newUser }, { status: 201 });
   } catch (error) {

@@ -92,7 +92,7 @@ export function CabBenefits() {
             Ready to Experience Premium Cab Service?
           </h3>
           <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who choose Elegant Travel and Tours for their transportation needs.
+            Join thousands of satisfied customers who choose Elegant Travel & Tours for their transportation needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-colors">

@@ -78,7 +78,7 @@ export default async function AboutPage() {
   const hasHistorical =
     aboutContent.historicalBackground &&
     aboutContent.historicalBackground.trim().length > 0;
-  const defaultHistorical = `Founded with a passion for showcasing Rwanda's natural beauty and rich cultural heritage, Elegant Travel and Tours has been at the forefront of unique tourism in East Africa for over a decade.
+  const defaultHistorical = `Founded with a passion for showcasing Rwanda's natural beauty and rich cultural heritage, Elegant Travel & Tours has been at the forefront of unique tourism in East Africa for over a decade.
 
 What started as a small family business has grown into Rwanda's premier unique travel company, serving discerning travelers from around the world who seek authentic, personalized experiences.
 
@@ -99,7 +99,7 @@ We believe that unique travel should not only provide comfort and exclusivity bu
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">
             About{" "}
-            <span className="text-primary">Elegant Travel and Tours</span>
+            <span className="text-primary">Elegant Travel & Tours</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Crafting Timeless Journeys in the Heart of Africa

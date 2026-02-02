@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
@@ -89,11 +88,6 @@ export default function ResetPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Alert>
-            <AlertDescription>
-              You will be redirected to the login page shortly...
-            </AlertDescription>
-          </Alert>
           <div className="mt-4 text-center">
             <Button asChild className="w-full">
               <Link href="/auth/login">Go to Login</Link>
@@ -114,11 +108,6 @@ export default function ResetPasswordPage() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
           <div className="space-y-2">
             <Label htmlFor="password">New Password</Label>
             <div className="relative">

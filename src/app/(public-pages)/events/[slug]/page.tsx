@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: EventPageProps) {
 
   if (!event) {
     return buildMetadata({
-      title: "Event Not Found | Elegant Travel and Tours",
+      title: "Event Not Found | Elegant Travel & Tours",
       description: "The requested event could not be found.",
       path: "events",
       noIndex: true,

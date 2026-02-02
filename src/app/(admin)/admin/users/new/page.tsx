@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -154,14 +155,6 @@ export default function NewUserPage() {
             </Link>
           </Button>
         </div>
-
-        {submitError && (
-          <Card className="border-destructive">
-            <CardContent className="pt-6">
-              <p className="text-destructive">{submitError}</p>
-            </CardContent>
-          </Card>
-        )}
 
         <form onSubmit={handleSubmit}>
           <div className="grid gap-6 md:grid-cols-2">

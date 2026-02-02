@@ -147,7 +147,7 @@ export async function generateMetadata({ params }: CarRentalPageProps) {
 
   if (!vehicle) {
     return buildMetadata({
-      title: "Vehicle Not Found | Elegant Travel and Tours",
+      title: "Vehicle Not Found | Elegant Travel & Tours",
       description: "The requested vehicle could not be found.",
       path: "car-rental",
       noIndex: true,
@@ -158,7 +158,7 @@ export async function generateMetadata({ params }: CarRentalPageProps) {
     vehicle.shortDescription ||
     vehicle.description.replace(/<[^>]*>/g, "").substring(0, 160);
   return buildMetadata({
-    title: `${vehicle.name} - Car Rental in Rwanda | Elegant Travel and Tours`,
+    title: `${vehicle.name} - Car Rental in Rwanda | Elegant Travel & Tours`,
     description,
     path: `car-rental/${vehicle.slug}`,
     keywords: `car rental Rwanda, ${vehicle.name}, ${vehicle.category} rental, luxury car hire Rwanda`,

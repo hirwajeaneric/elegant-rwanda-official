@@ -52,7 +52,7 @@ export default function ProfilePage() {
   }, []);
 
   const handleChangePassword = async () => {
-    await logout();
+    await logout(true); // Intentional logout after password change
     router.push("/auth/forgot-password");
   };
 
@@ -62,7 +62,7 @@ export default function ProfilePage() {
     setRevokingId(null);
     if (result.success) {
       if (isCurrent) {
-        await logout();
+        await logout(true); // Intentional logout when revoking own session
         router.push("/auth/login");
         return;
       }

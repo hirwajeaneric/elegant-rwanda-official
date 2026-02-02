@@ -128,7 +128,7 @@ const SidebarContent = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   }, [pathname]);
 
   const handleLogout = () => {
-    logout();
+    logout(true); // Mark as intentional logout
     router.push("/auth/login");
     onLinkClick?.();
   };

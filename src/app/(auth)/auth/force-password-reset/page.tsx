@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { Lock, Eye, EyeOff, ShieldAlert } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
@@ -36,7 +35,10 @@ export default function ForcePasswordResetPage() {
         return;
       }
       // If user doesn't require password reset, redirect to dashboard
-      // This check will be done server-side, but we can add client-side check too
+      if (currentUser && !currentUser.requirePasswordReset) {
+        router.push("/admin/dashboard");
+        return;
+      }
     });
   }, [checkSession, router]);
 
@@ -94,8 +96,8 @@ export default function ForcePasswordResetPage() {
       }
 
       toast.success("Password changed successfully. Please login again.");
-      // Clear session and redirect to login
-      useAuthStore.getState().logout();
+      // Clear session and redirect to login (intentional logout after password reset)
+      useAuthStore.getState().logout(true);
       setTimeout(() => {
         router.push("/auth/login");
       }, 1500);
@@ -108,123 +110,116 @@ export default function ForcePasswordResetPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center mb-2">
-            <ShieldAlert className="h-12 w-12 text-primary" />
+    <Card className="w-full max-w-md">
+      <CardHeader className="space-y-1">
+        <div className="flex items-center justify-center mb-2">
+          <ShieldAlert className="h-12 w-12 text-primary" />
+        </div>
+        <CardTitle className="text-2xl font-bold text-center">
+          Password Reset Required
+        </CardTitle>
+        <CardDescription className="text-center">
+          You must change your password before continuing. This is required for security purposes.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="currentPassword">Current Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="currentPassword"
+                type={showCurrentPassword ? "text" : "password"}
+                placeholder="Enter current password"
+                value={formData.currentPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, currentPassword: e.target.value })
+                }
+                className="pl-10 pr-10"
+                required
+                autoFocus
+              />
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showCurrentPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-center">
-            Password Reset Required
-          </CardTitle>
-          <CardDescription className="text-center">
-            You must change your password before continuing. This is required for security purposes.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="currentPassword">Current Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="currentPassword"
-                  type={showCurrentPassword ? "text" : "password"}
-                  placeholder="Enter current password"
-                  value={formData.currentPassword}
-                  onChange={(e) =>
-                    setFormData({ ...formData, currentPassword: e.target.value })
-                  }
-                  className="pl-10 pr-10"
-                  required
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showCurrentPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
+          <div className="space-y-2">
+            <Label htmlFor="newPassword">New Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                placeholder="Enter new password (min 8 characters)"
+                value={formData.newPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, newPassword: e.target.value })
+                }
+                className="pl-10 pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="newPassword">New Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="newPassword"
-                  type={showNewPassword ? "text" : "password"}
-                  placeholder="Enter new password (min 8 characters)"
-                  value={formData.newPassword}
-                  onChange={(e) =>
-                    setFormData({ ...formData, newPassword: e.target.value })
-                  }
-                  className="pl-10 pr-10"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showNewPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Password must be at least 8 characters long
-              </p>
+            <p className="text-xs text-muted-foreground">
+              Password must be at least 8 characters long
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm New Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm new password"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
+                className="pl-10 pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm New Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm new password"
-                  value={formData.confirmPassword}
-                  onChange={(e) =>
-                    setFormData({ ...formData, confirmPassword: e.target.value })
-                  }
-                  className="pl-10 pr-10"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Changing Password..." : "Change Password"}
-            </Button>
-          </form>
-          <p className="mt-4 text-xs text-center text-muted-foreground">
-            After changing your password, you will be logged out and redirected to the login page.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+          </div>
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Changing Password..." : "Change Password"}
+          </Button>
+        </form>
+        <p className="mt-4 text-xs text-center text-muted-foreground">
+          After changing your password, you will be logged out and redirected to the login page.
+        </p>
+      </CardContent>
+    </Card>
   );
 }

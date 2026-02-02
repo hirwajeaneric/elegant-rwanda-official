@@ -12,15 +12,21 @@ export default function AuthPagesLayout({
   children: React.ReactNode;
 }) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
   const router = useRouter();
   const pathname = usePathname();
 
   // Redirect authenticated users away from auth pages
+  // Exception: allow /auth/force-password-reset if password reset is required
   useEffect(() => {
     if (isAuthenticated && pathname.startsWith("/auth/")) {
+      // Allow force-password-reset page if password reset is required
+      if (pathname === "/auth/force-password-reset" && user?.requirePasswordReset) {
+        return;
+      }
       router.push("/admin/dashboard");
     }
-  }, [isAuthenticated, router, pathname]);
+  }, [isAuthenticated, user, router, pathname]);
 
   const customStyles = {
     background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/nyungwe_national_park.jpg')",
