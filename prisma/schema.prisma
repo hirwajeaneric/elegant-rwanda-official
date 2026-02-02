@@ -14,7 +14,7 @@ datasource db {
 }
 
 model NewsletterSubscriber {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   email     String   @unique
   firstName String?
   source    String?  // Where they subscribed from (footer, events, blog, etc.)
@@ -30,7 +30,7 @@ model NewsletterSubscriber {
 
 // Legacy: kept for existing data only; new submissions use typed booking models only
 model Request {
-  id        String        @id @default(cuid())
+  id        String        @id @default(uuid())
   type      RequestType
   status    RequestStatus @default(PENDING)
   data      Json?
@@ -63,7 +63,7 @@ enum BookingStatus {
 
 // Standalone booking models: each service has its own table, no Request linkage
 model CabBooking {
-  id               String        @id @default(cuid())
+  id               String        @id @default(uuid())
   status           BookingStatus @default(PENDING)
   serviceType      String
   vehicleType      String
@@ -86,7 +86,7 @@ model CabBooking {
 }
 
 model TourBooking {
-  id              String        @id @default(cuid())
+  id              String        @id @default(uuid())
   status          BookingStatus @default(PENDING)
   tourId          String?
   tour            Tour?         @relation(fields: [tourId], references: [id], onDelete: SetNull)
@@ -106,7 +106,7 @@ model TourBooking {
 }
 
 model CarRentalBooking {
-  id                   String        @id @default(cuid())
+  id                   String        @id @default(uuid())
   status               BookingStatus @default(PENDING)
   vehicleId            String?
   vehicle              Vehicle?      @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
@@ -132,7 +132,7 @@ model CarRentalBooking {
 }
 
 model EventRegistration {
-  id                    String        @id @default(cuid())
+  id                    String        @id @default(uuid())
   status                BookingStatus @default(PENDING)
   eventId               String?
   event                 Event?        @relation(fields: [eventId], references: [id], onDelete: SetNull)
@@ -152,7 +152,7 @@ model EventRegistration {
 }
 
 model ContactInquiry {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   name        String
   email       String
   phone       String?
@@ -192,7 +192,7 @@ model AboutPageContent {
 }
 
 model AirTravelRequest {
-  id                   String   @id @default(cuid())
+  id                   String   @id @default(uuid())
   tripType             String?
   origin               String?
   destination          String?
@@ -245,7 +245,7 @@ enum RequestStatus {
 }
 
 model User {
-  id                  String    @id @default(cuid())
+  id                  String    @id @default(uuid())
   email               String    @unique
   name                String
   password            String    // Hashed password
@@ -278,7 +278,7 @@ model User {
 }
 
 model Session {
-  id            String   @id @default(cuid())
+  id            String   @id @default(uuid())
   userId        String
   token         String   @unique
   refreshToken  String?  @unique
@@ -310,7 +310,7 @@ model Session {
 }
 
 model PasswordResetToken {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   userId    String
   token     String   @unique
   expiresAt DateTime
@@ -325,7 +325,7 @@ model PasswordResetToken {
 }
 
 model OTPVerification {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   userId    String?  // null for registration, set after user creation
   email     String
   otp       String
@@ -356,7 +356,7 @@ enum OTPPurpose {
 }
 
 model Image {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   publicId   String   @unique // Cloudinary public_id
   url        String   // Cloudinary secure URL
   urlRaw     String?  // Raw URL without transformations
@@ -389,7 +389,7 @@ model Image {
 }
 
 model Category {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   name        String
   slug        String   @unique
   description String?
@@ -426,7 +426,7 @@ enum CategoryType {
 }
 
 model Blog {
-  id              String   @id @default(cuid())
+  id              String   @id @default(uuid())
   title           String
   slug            String   @unique
   excerpt         String
@@ -467,7 +467,7 @@ enum BlogStatus {
 }
 
 model FAQ {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   question    String
   answer      String   // HTML content
   categoryId  String?
@@ -488,7 +488,7 @@ model FAQ {
 }
 
 model Team {
-  id            String   @id @default(cuid())
+  id            String   @id @default(uuid())
   name          String
   role          String
   bio           String
@@ -511,7 +511,7 @@ enum TeamStatus {
 }
 
 model Testimonial {
-  id              String   @id @default(cuid())
+  id              String   @id @default(uuid())
   name            String   // Customer name
   location        String?  // Customer location
   rating          Int      @default(5) // 1-5
@@ -540,7 +540,7 @@ enum EventStatus {
 }
 
 model Event {
-  id                    String         @id @default(cuid())
+  id                    String         @id @default(uuid())
   slug                  String         @unique
   title                 String
   description           String
@@ -593,7 +593,7 @@ enum VehicleStatus {
 }
 
 model Vehicle {
-  id                 String          @id @default(cuid())
+  id                 String          @id @default(uuid())
   slug               String         @unique
   name               String
   category           VehicleCategory
@@ -643,7 +643,7 @@ enum TourStatus {
 }
 
 model Tour {
-  id              String         @id @default(cuid())
+  id              String         @id @default(uuid())
   slug            String         @unique
   title           String
   description     String         // HTML content (rich text)
