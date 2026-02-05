@@ -347,7 +347,7 @@ export function CarRentalBooking({ vehicle }: CarRentalBookingProps) {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/90"
+            className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-full hover:bg-primary/90"
             size="lg"
           >
             {isSubmitting ? (
