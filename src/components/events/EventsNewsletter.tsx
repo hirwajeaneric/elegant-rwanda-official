@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Bell, Calendar, Users, CheckCircle } from "lucide-react";
+import { Mail, Bell, Calendar, Users, CheckCircle, Loader2 } from "lucide-react";
 import { subscribeToNewsletter } from "@/lib/client-submit";
 import { toast } from "sonner";
 
 export function EventsNewsletter() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState("");
   const [preferences, setPreferences] = useState({
     newEvents: true,
@@ -27,6 +28,7 @@ export function EventsNewsletter() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       await subscribeToNewsletter({
@@ -55,6 +57,8 @@ export function EventsNewsletter() {
       console.error(error);
       const message = error instanceof Error ? error.message : "Failed to subscribe. Please try again.";
       toast.error(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -118,22 +122,6 @@ export function EventsNewsletter() {
                 <span className="text-white/90">Personalized event recommendations</span>
               </div>
             </div>
-
-            {/* Stats */}
-            {/* <div className="grid grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-400 mb-1">500+</div>
-                <div className="text-sm text-white/80">Subscribers</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-400 mb-1">12+</div>
-                <div className="text-sm text-white/80">Events/Year</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-400 mb-1">24h</div>
-                <div className="text-sm text-white/80">Response Time</div>
-              </div>
-            </div> */}
           </div>
 
           {/* Right Column - Newsletter Form */}
@@ -211,9 +199,17 @@ export function EventsNewsletter() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-yellow-500 rounded-full text-black font-semibold py-3 px-6 hover:bg-yellow-400 transition-colors duration-200"
+                disabled={isSubmitting}
+                className="w-full bg-yellow-500 rounded-full text-black font-semibold py-3 px-6 hover:bg-yellow-400 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-yellow-500 flex items-center justify-center gap-2"
               >
-                Subscribe to Newsletter
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
+                    <span>Subscribing...</span>
+                  </>
+                ) : (
+                  "Subscribe to Newsletter"
+                )}
               </button>
             </form>
 

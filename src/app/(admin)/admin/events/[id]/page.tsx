@@ -641,8 +641,8 @@ export default function EventDetailPage() {
                               src={image}
                               alt={`Event image ${index + 1}`}
                               className="w-full h-full object-cover"
-                              width={100}
-                              height={100}
+                              width={300}
+                              height={300}
                             />
                             <Button
                               type="button"

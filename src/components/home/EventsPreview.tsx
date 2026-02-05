@@ -147,21 +147,21 @@ export function EventsPreview({ events, loading }: EventsPreviewProps) {
                     </div>
                   )}
 
-                  <div className="absolute top-4 right-4">
+                  {event.category && event.category.length > 0 && < div className="absolute top-4 right-4">
                     <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
                       {event.category}
                     </span>
-                  </div>
+                  </div>}
 
                   <div className="absolute bottom-4 left-4">
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium ${!eventIsUpcoming
-                          ? "bg-gray-500 text-white"
-                          : daysUntil <= 7
-                            ? "bg-red-500 text-white"
-                            : daysUntil <= 30
-                              ? "bg-orange-500 text-white"
-                              : "bg-green-500 text-white"
+                        ? "bg-gray-500 text-white"
+                        : daysUntil <= 7
+                          ? "bg-red-500 text-white"
+                          : daysUntil <= 30
+                            ? "bg-orange-500 text-white"
+                            : "bg-green-500 text-white"
                         }`}
                     >
                       {!eventIsUpcoming
@@ -232,6 +232,6 @@ export function EventsPreview({ events, loading }: EventsPreviewProps) {
           </Link>
         </div>
       </div>
-    </section>
+    </section >
   );
 }
