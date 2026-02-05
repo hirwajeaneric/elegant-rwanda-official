@@ -11,12 +11,12 @@ import {
   buildEventJsonLd,
 } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-
-const BASE = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+import { getServerBaseUrl } from "@/lib/utils";
 
 async function getEventBySlug(slug: string) {
   try {
-    const res = await fetch(`${BASE}/api/public/events/${slug}`, { cache: "no-store" });
+    const base = getServerBaseUrl();
+    const res = await fetch(`${base}/api/public/events/${slug}`, { cache: "no-store" });
     const data = await res.json();
     return data.success ? data.event : null;
   } catch {
@@ -26,7 +26,8 @@ async function getEventBySlug(slug: string) {
 
 async function getRelatedEvents(category: string, excludeSlug: string, limit = 3) {
   try {
-    const res = await fetch(`${BASE}/api/public/events?limit=50`, { cache: "no-store" });
+    const base = getServerBaseUrl();
+    const res = await fetch(`${base}/api/public/events?limit=50`, { cache: "no-store" });
     const data = await res.json();
     if (!data.success || !Array.isArray(data.events)) return [];
     return data.events

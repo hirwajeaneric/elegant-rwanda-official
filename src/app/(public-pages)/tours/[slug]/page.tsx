@@ -12,6 +12,7 @@ import {
   buildTourJsonLd,
 } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { getServerBaseUrl } from "@/lib/utils";
 
 interface TourPageProps {
   params: Promise<{ slug: string }>;
@@ -19,7 +20,8 @@ interface TourPageProps {
 
 async function getTourBySlug(slug: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/public/tours/${slug}`, {
+    const base = getServerBaseUrl();
+    const res = await fetch(`${base}/api/public/tours/${slug}`, {
       cache: "no-store",
     });
     const data = await res.json();
@@ -33,7 +35,8 @@ async function getTourBySlug(slug: string) {
 async function getRelatedTours(categoryId: string, excludeId: string) {
   if (!categoryId) return [];
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/public/tours?categoryId=${categoryId}&limit=10`, {
+    const base = getServerBaseUrl();
+    const res = await fetch(`${base}/api/public/tours?categoryId=${categoryId}&limit=10`, {
       cache: "no-store",
     });
     const data = await res.json();
@@ -119,7 +122,7 @@ export async function generateMetadata({ params }: TourPageProps) {
 export default async function TourPage({ params }: TourPageProps) {
   const { slug } = await params;
   const apiTour = await getTourBySlug(slug);
-  
+
   if (!apiTour) {
     notFound();
   }

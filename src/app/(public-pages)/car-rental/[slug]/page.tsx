@@ -11,6 +11,7 @@ import {
   buildProductJsonLd,
 } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { getServerBaseUrl } from "@/lib/utils";
 
 interface CarRentalPageProps {
   params: Promise<{ slug: string }>;
@@ -46,7 +47,7 @@ type ApiVehicle = {
 function mapApiVehicleToVehicle(apiVehicle: ApiVehicle): Vehicle {
   const spec = apiVehicle.specifications as Vehicle["specifications"];
   const ins = apiVehicle.insurance as Vehicle["insurance"];
-  
+
   return {
     id: apiVehicle.id,
     slug: apiVehicle.slug,
@@ -98,9 +99,7 @@ function mapApiVehicleToVehicle(apiVehicle: ApiVehicle): Vehicle {
 
 async function getVehicleBySlug(slug: string): Promise<Vehicle | null> {
   try {
-    // Use absolute URL for server-side fetching
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+    const baseUrl = getServerBaseUrl();
     const res = await fetch(`${baseUrl}/api/public/vehicles/${slug}`, {
       cache: "no-store",
     });
@@ -119,9 +118,7 @@ async function getVehicleBySlug(slug: string): Promise<Vehicle | null> {
 
 async function getRelatedVehicles(category: string, excludeSlug: string): Promise<Vehicle[]> {
   try {
-    // Use absolute URL for server-side fetching
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+    const baseUrl = getServerBaseUrl();
     const res = await fetch(`${baseUrl}/api/public/vehicles?category=${category}&limit=10`, {
       cache: "no-store",
     });
@@ -182,7 +179,7 @@ export async function generateMetadata({ params }: CarRentalPageProps) {
 export default async function CarRentalPage({ params }: CarRentalPageProps) {
   const { slug } = await params;
   const vehicle = await getVehicleBySlug(slug);
-  
+
   if (!vehicle) {
     notFound();
   }
@@ -215,7 +212,7 @@ export default async function CarRentalPage({ params }: CarRentalPageProps) {
       <JsonLd data={carRentalJsonLd} />
       {/* Gallery Hero Section */}
       <CarRentalGalleryHero vehicle={vehicle} />
-      
+
       {/* Main Content Section with Sticky Booking */}
       <section className="py-6 bg-white">
         <div className="container-elegant">
