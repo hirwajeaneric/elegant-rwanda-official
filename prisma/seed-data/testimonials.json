@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Sarah Johnson",
+    "location": "New York, USA",
+    "rating": 5,
+    "review": "The gorilla trekking experience was absolutely incredible! Elegant Travel & Tours handled everything perfectly - from airport pickup to the final goodbye. Our guide was knowledgeable and the lodge was luxurious. Worth every penny!",
+    "service": "Tour",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618305/elegant-rwanda/file_zdfnou.jpg",
+    "active": true,
+    "metaTitle": "Sarah Johnson - Gorilla Trekking Review | Elegant Travel & Tours",
+    "metaDescription": "Read Sarah Johnson's 5-star review of her gorilla trekking experience with Elegant Travel & Tours. Perfect service from airport pickup to final goodbye.",
+    "title": "Amazing Gorilla Trekking Experience"
+  },
+  {
+    "name": "Michael Chen",
+    "location": "London, UK",
+    "rating": 5,
+    "review": "Outstanding service for our cab booking needs. Professional drivers, clean vehicles, and punctual pickups throughout our stay in Rwanda. Highly recommend for anyone visiting Kigali.",
+    "service": "Cab Booking",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618325/elegant-rwanda/file_cjyo3d.jpg",
+    "active": true,
+    "metaTitle": "Michael Chen - Cab Booking Review | Elegant Travel & Tours",
+    "metaDescription": "Read Michael Chen's 5-star review of Elegant Travel & Tours's cab booking service. Professional drivers and punctual pickups throughout Rwanda.",
+    "title": "Professional Service"
+  },
+  {
+    "name": "Emma Rodriguez",
+    "location": "Toronto, Canada",
+    "rating": 5,
+    "review": "The Lake Kivu retreat exceeded all expectations. The team at Elegant Travel & Tours created a perfect blend of Unique and adventure. The spa treatments and water activities were world-class.",
+    "service": "Tour",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618312/elegant-rwanda/file_pewgmd.jpg",
+    "active": true,
+    "metaTitle": "Emma Rodriguez - Lake Kivu Retreat Review | Elegant Travel & Tours",
+    "metaDescription": "Read Emma Rodriguez's 5-star review of the Lake Kivu retreat. Perfect blend of Unique and adventure with world-class spa treatments.",
+    "title": "Lake Kivu Retreat"
+  },
+  {
+    "name": "David Thompson",
+    "location": "Sydney, Australia",
+    "rating": 5,
+    "review": "Car rental service was seamless. They provided a perfect 4x4 for our safari adventure. The vehicle was in excellent condition and the support team was always available when needed.",
+    "service": "Car Rental",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618344/elegant-rwanda/file_emzqnt.jpg",
+    "active": true,
+    "metaTitle": "David Thompson - Car Rental Review | Elegant Travel & Tours",
+    "metaDescription": "Read David Thompson's 5-star review of Elegant Travel & Tours's car rental service. Perfect 4x4 for safari adventures with excellent support.",
+    "title": "Car Rental Service"
+  },
+  {
+    "name": "Lisa Wang",
+    "location": "Singapore",
+    "rating": 5,
+    "review": "Air travel assistance was invaluable. They handled our visa applications and airport transfers perfectly. Made our arrival in Rwanda stress-free and enjoyable.",
+    "service": "Air Travel Assistance",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618329/elegant-rwanda/file_qo3wky.jpg",
+    "active": true,
+    "metaTitle": "Lisa Wang - Air Travel Assistance Review | Elegant Travel & Tours",
+    "metaDescription": "Read Lisa Wang's 5-star review of Elegant Travel & Tours's air travel assistance. Perfect visa handling and stress-free airport transfers.",
+    "title": "Air Travel Assistance"
+  },
+  {
+    "name": "James Wilson",
+    "location": "Dublin, Ireland",
+    "rating": 5,
+    "review": "Attended the cultural festival and it was an amazing experience. Elegant Travel & Tours organized everything flawlessly. The traditional performances and workshops were authentic and engaging.",
+    "service": "Event",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618307/elegant-rwanda/file_jifkpa.jpg",
+    "active": true,
+    "metaTitle": "James Wilson - Cultural Festival Review | Elegant Travel & Tours",
+    "metaDescription": "Read James Wilson's 5-star review of the cultural festival organized by Elegant Travel & Tours. Authentic performances and engaging workshops.",
+    "title": "Cultural Festival"
+  },
+  {
+    "name": "Maria Garcia",
+    "location": "Madrid, Spain",
+    "rating": 5,
+    "review": "Our family tour was perfectly tailored to our needs. The kids loved the cultural activities and we appreciated the Unique accommodations. Professional service from start to finish.",
+    "service": "Tour",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617647/elegant-rwanda/file_cglweq.jpg",
+    "active": true,
+    "metaTitle": "Maria Garcia - Family Tour Review | Elegant Travel & Tours",
+    "metaDescription": "Read Maria Garcia's 5-star review of their family tour with Elegant Travel & Tours. Perfectly tailored experiences for all ages.",
+    "title": "Family Tour"
+  },
+  {
+    "name": "Robert Kim",
+    "location": "Seoul, South Korea",
+    "rating": 5,
+    "review": "Exceptional cab service during our business trip. The drivers were professional and the vehicles were always clean and comfortable. Perfect for corporate travel needs.",
+    "service": "Cab Booking",
+    "image": "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617645/elegant-rwanda/file_rsb3if.jpg",
+    "active": true,
+    "metaTitle": "Robert Kim - Business Travel Review | Elegant Travel & Tours",
+    "metaDescription": "Read Robert Kim's 5-star review of Elegant Travel & Tours's cab service for business travel. Professional drivers and clean vehicles.",
+    "title": "Business Travel"
+  }
+]

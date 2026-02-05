@@ -1,0 +1,195 @@
+[
+  {
+    "name": "General Travel",
+    "slug": "general-travel",
+    "description": "General travel information and tips",
+    "type": [
+      "FAQ",
+      "BLOG",
+      "GENERAL"
+    ],
+    "color": "#3B82F6",
+    "icon": null,
+    "order": 1,
+    "active": true
+  },
+  {
+    "name": "Gorilla Trekking",
+    "slug": "gorilla-trekking",
+    "description": "Gorilla trekking experiences and information",
+    "type": [
+      "FAQ",
+      "BLOG",
+      "EVENT",
+      "TOUR",
+      "IMAGE"
+    ],
+    "color": "#10B981",
+    "icon": null,
+    "order": 2,
+    "active": true
+  },
+  {
+    "name": "Tours & Packages",
+    "slug": "tours-packages",
+    "description": "Tour packages and itineraries",
+    "type": [
+      "FAQ",
+      "BLOG",
+      "TOUR"
+    ],
+    "color": "#8B5CF6",
+    "icon": null,
+    "order": 3,
+    "active": true
+  },
+  {
+    "name": "Transportation",
+    "slug": "transportation",
+    "description": "Transportation services and information",
+    "type": [
+      "FAQ",
+      "BLOG",
+      "GENERAL"
+    ],
+    "color": "#F59E0B",
+    "icon": null,
+    "order": 4,
+    "active": true
+  },
+  {
+    "name": "Accommodation",
+    "slug": "accommodation",
+    "description": "Accommodation options and information",
+    "type": [
+      "FAQ",
+      "BLOG",
+      "GENERAL"
+    ],
+    "color": "#EF4444",
+    "icon": null,
+    "order": 5,
+    "active": true
+  },
+  {
+    "name": "Wildlife",
+    "slug": "wildlife",
+    "description": "Wildlife experiences and safaris",
+    "type": [
+      "BLOG",
+      "EVENT",
+      "TOUR",
+      "IMAGE"
+    ],
+    "color": "#14B8A6",
+    "icon": null,
+    "order": 6,
+    "active": true
+  },
+  {
+    "name": "Cultural",
+    "slug": "cultural",
+    "description": "Cultural experiences and heritage",
+    "type": [
+      "BLOG",
+      "EVENT",
+      "TOUR",
+      "IMAGE"
+    ],
+    "color": "#EC4899",
+    "icon": null,
+    "order": 7,
+    "active": true
+  },
+  {
+    "name": "Adventure",
+    "slug": "adventure",
+    "description": "Adventure activities and experiences",
+    "type": [
+      "BLOG",
+      "EVENT",
+      "TOUR",
+      "IMAGE"
+    ],
+    "color": "#F97316",
+    "icon": null,
+    "order": 8,
+    "active": true
+  },
+  {
+    "name": "Unique",
+    "slug": "unique",
+    "description": "Unique and premium experiences",
+    "type": [
+      "BLOG",
+      "EVENT",
+      "TOUR",
+      "IMAGE"
+    ],
+    "color": "#6366F1",
+    "icon": null,
+    "order": 9,
+    "active": true
+  },
+  {
+    "name": "Nature",
+    "slug": "nature",
+    "description": "Nature and landscape experiences",
+    "type": [
+      "TOUR",
+      "IMAGE"
+    ],
+    "color": "#22C55E",
+    "icon": null,
+    "order": 10,
+    "active": true
+  },
+  {
+    "name": "Group Tour",
+    "slug": "group-tour",
+    "description": "Group tour experiences",
+    "type": [
+      "EVENT"
+    ],
+    "color": "#06B6D4",
+    "icon": null,
+    "order": 11,
+    "active": true
+  },
+  {
+    "name": "Cultural Event",
+    "slug": "cultural-event",
+    "description": "Cultural events and festivals",
+    "type": [
+      "EVENT"
+    ],
+    "color": "#A855F7",
+    "icon": null,
+    "order": 12,
+    "active": true
+  },
+  {
+    "name": "Tips",
+    "slug": "tips",
+    "description": "Travel tips and advice",
+    "type": [
+      "BLOG"
+    ],
+    "color": "#84CC16",
+    "icon": null,
+    "order": 13,
+    "active": true
+  },
+  {
+    "name": "News",
+    "slug": "news",
+    "description": "Travel news and updates",
+    "type": [
+      "BLOG"
+    ],
+    "color": "#64748B",
+    "icon": null,
+    "order": 14,
+    "active": true
+  }
+]

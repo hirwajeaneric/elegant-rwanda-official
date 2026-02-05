@@ -1,0 +1,349 @@
+[
+  {
+    "slug": "gorilla-trekking-adventure",
+    "title": "Gorilla Trekking Adventure",
+    "description": "<div><p>Experience the magic of encountering mountain gorillas in their natural habitat. This exclusive tour takes you deep into the misty forests of Volcanoes National Park for an unforgettable wildlife encounter.</p></div>",
+    "duration": "3 Days / 2 Nights",
+    "location": "North",
+    "difficulty": "Moderate",
+    "maxGroupSize": 8,
+    "highlights": [
+      "Gorilla trekking permit included",
+      "Expert local guides",
+      "Unique lodge accommodation",
+      "Cultural village visit",
+      "Scenic mountain views"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival & Welcome",
+        "description": "Arrive in Kigali and transfer to Volcanoes National Park area",
+        "activities": [
+          "Airport pickup",
+          "Scenic drive to Musanze",
+          "Lodge check-in",
+          "Welcome dinner"
+        ],
+        "accommodation": "Unique Lodge",
+        "meals": [
+          "Dinner"
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Gorilla Trekking",
+        "description": "Early morning trek to find and observe mountain gorillas",
+        "activities": [
+          "Gorilla trekking",
+          "Photography",
+          "Lodge relaxation",
+          "Optional cultural visit"
+        ],
+        "accommodation": "Unique Lodge",
+        "meals": [
+          "Breakfast",
+          "Lunch",
+          "Dinner"
+        ]
+      },
+      {
+        "day": 3,
+        "title": "Departure",
+        "description": "Morning at leisure before return to Kigali",
+        "activities": [
+          "Optional activities",
+          "Return to Kigali",
+          "Airport drop-off"
+        ],
+        "meals": [
+          "Breakfast"
+        ]
+      }
+    ],
+    "inclusions": [
+      "Gorilla trekking permit",
+      "All accommodation",
+      "Meals as specified",
+      "Professional guide",
+      "Transportation",
+      "Park fees"
+    ],
+    "exclusions": [
+      "International flights",
+      "Travel insurance",
+      "Personal expenses",
+      "Tips for guides"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617639/elegant-rwanda/file_qmjplz.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617641/elegant-rwanda/file_ocj6bz.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617645/elegant-rwanda/file_rsb3if.jpg"
+    ],
+    "categoryId": null,
+    "featured": true,
+    "availableDates": [
+      "2025-01-15",
+      "2025-02-20",
+      "2025-03-25"
+    ],
+    "price": 1500,
+    "status": "active",
+    "bookings": 12,
+    "capacity": 8,
+    "guide": "John Doe",
+    "rating": 4.9,
+    "reviews": 45,
+    "metaTitle": "Gorilla Trekking Adventure - Unique Rwanda Tours | Elegant Travel & Tours",
+    "metaDescription": "Experience the magic of encountering mountain gorillas in their natural habitat. Book your Unique gorilla trekking adventure in Rwanda with Elegant Travel & Tours."
+  },
+  {
+    "slug": "lake-kivu-retreat",
+    "title": "Lake Kivu Unique Retreat",
+    "description": "<div><p>Unwind in the serene beauty of Lake Kivu with this exclusive lakeside retreat. Enjoy water activities, spa treatments, and breathtaking sunset views.</p></div>",
+    "duration": "4 Days / 3 Nights",
+    "location": "West",
+    "difficulty": "Easy",
+    "maxGroupSize": 12,
+    "highlights": [
+      "Lakeside Unique resort",
+      "Water activities",
+      "Spa treatments",
+      "Fishing",
+      "Sunset boat cruises",
+      "Gourmet dining"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival & Relaxation",
+        "description": "Arrive at Lake Kivu and settle into your Unique accommodation",
+        "activities": [
+          "Resort check-in",
+          "Welcome drink",
+          "Lakeside dinner",
+          "Spa session"
+        ],
+        "accommodation": "Unique Lakeside Resort",
+        "meals": [
+          "Dinner"
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Water Activities",
+        "description": "Full day of water activities and relaxation",
+        "activities": [
+          "Swimming",
+          "Kayaking",
+          "Fishing",
+          "Beach relaxation",
+          "Sunset cruise"
+        ],
+        "accommodation": "Unique Lakeside Resort",
+        "meals": [
+          "Breakfast",
+          "Lunch",
+          "Dinner"
+        ]
+      },
+      {
+        "day": 3,
+        "title": "Cultural Experience",
+        "description": "Explore local culture and enjoy resort amenities",
+        "activities": [
+          "Village visit",
+          "Cooking class",
+          "Spa treatments",
+          "Evening entertainment"
+        ],
+        "accommodation": "Unique Lakeside Resort",
+        "meals": [
+          "Breakfast",
+          "Lunch",
+          "Dinner"
+        ]
+      },
+      {
+        "day": 4,
+        "title": "Departure",
+        "description": "Morning at leisure before departure",
+        "activities": [
+          "Final relaxation",
+          "Check-out",
+          "Return to Kigali"
+        ],
+        "meals": [
+          "Breakfast"
+        ]
+      }
+    ],
+    "inclusions": [
+      "Unique resort accommodation",
+      "All meals",
+      "Water activities",
+      "Spa treatments",
+      "Transportation",
+      "Cultural activities"
+    ],
+    "exclusions": [
+      "International flights",
+      "Travel insurance",
+      "Personal expenses",
+      "Optional activities"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617641/elegant-rwanda/file_ocj6bz.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617643/elegant-rwanda/file_rzswto.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617645/elegant-rwanda/file_rsb3if.jpg"
+    ],
+    "categoryId": null,
+    "featured": true,
+    "availableDates": [
+      "2025-01-20",
+      "2025-02-25",
+      "2025-03-30"
+    ],
+    "price": 1200,
+    "status": "active",
+    "bookings": 8,
+    "capacity": 12,
+    "guide": "Jane Smith",
+    "rating": 4.8,
+    "reviews": 32,
+    "metaTitle": "Lake Kivu Unique Retreat - Premium Rwanda Tours | Elegant Travel & Tours",
+    "metaDescription": "Unwind in the serene beauty of Lake Kivu with our exclusive lakeside retreat. Experience Unique accommodation and water activities in Rwanda."
+  },
+  {
+    "slug": "cultural-heritage-tour",
+    "title": "Cultural Heritage Tour",
+    "description": "<div><p>Immerse yourself in Rwanda's rich cultural heritage with visits to historical sites, traditional villages, and cultural performances.</p></div>",
+    "duration": "5 Days / 4 Nights",
+    "location": "Kigali",
+    "difficulty": "Easy",
+    "maxGroupSize": 10,
+    "highlights": [
+      "Kigali Genocide Memorial",
+      "Traditional dance performances",
+      "Craft workshops",
+      "Historical site visits",
+      "Local cuisine tasting"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Kigali Introduction",
+        "description": "Explore the capital city and its history",
+        "activities": [
+          "City tour",
+          "Kigali Genocide Memorial",
+          "Local market visit",
+          "Traditional dinner"
+        ],
+        "accommodation": "Boutique Hotel",
+        "meals": [
+          "Dinner"
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Cultural Villages",
+        "description": "Visit traditional villages and learn local customs",
+        "activities": [
+          "Village tours",
+          "Craft demonstrations",
+          "Traditional dance",
+          "Local lunch"
+        ],
+        "accommodation": "Cultural Lodge",
+        "meals": [
+          "Breakfast",
+          "Lunch",
+          "Dinner"
+        ]
+      },
+      {
+        "day": 3,
+        "title": "Historical Sites",
+        "description": "Explore Rwanda's historical landmarks",
+        "activities": [
+          "Palace visits",
+          "Museum tours",
+          "Historical walks",
+          "Cultural dinner"
+        ],
+        "accommodation": "Cultural Lodge",
+        "meals": [
+          "Breakfast",
+          "Lunch",
+          "Dinner"
+        ]
+      },
+      {
+        "day": 4,
+        "title": "Art & Craft",
+        "description": "Participate in traditional arts and crafts",
+        "activities": [
+          "Pottery workshop",
+          "Basket weaving",
+          "Art gallery visit",
+          "Farewell celebration"
+        ],
+        "accommodation": "Cultural Lodge",
+        "meals": [
+          "Breakfast",
+          "Lunch",
+          "Dinner"
+        ]
+      },
+      {
+        "day": 5,
+        "title": "Departure",
+        "description": "Return to Kigali with cultural memories",
+        "activities": [
+          "Final cultural activities",
+          "Return to Kigali",
+          "Airport drop-off"
+        ],
+        "meals": [
+          "Breakfast"
+        ]
+      }
+    ],
+    "inclusions": [
+      "All accommodation",
+      "Cultural activities",
+      "Workshop materials",
+      "Professional guide",
+      "Transportation",
+      "Entrance fees"
+    ],
+    "exclusions": [
+      "International flights",
+      "Travel insurance",
+      "Personal expenses",
+      "Optional activities"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618343/elegant-rwanda/file_ycs9rm.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618325/elegant-rwanda/file_cjyo3d.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618305/elegant-rwanda/file_zdfnou.jpg"
+    ],
+    "categoryId": null,
+    "featured": false,
+    "availableDates": [
+      "2025-01-25",
+      "2025-02-28",
+      "2025-04-05"
+    ],
+    "price": 800,
+    "status": "active",
+    "bookings": 5,
+    "capacity": 15,
+    "guide": "Mike Johnson",
+    "rating": 4.6,
+    "reviews": 28,
+    "metaTitle": "Cultural Heritage Tour - Rwanda Cultural Experiences | Elegant Travel & Tours",
+    "metaDescription": "Immerse yourself in Rwanda's rich cultural heritage with visits to historical sites, traditional villages, and cultural performances."
+  }
+]

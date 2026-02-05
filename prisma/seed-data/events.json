@@ -1,0 +1,225 @@
+[
+  {
+    "slug": "group-gorilla-trek-2025",
+    "title": "Group Gorilla Trek Adventure",
+    "description": "Join like-minded adventurers for an exclusive group gorilla trekking experience. Limited to 8 participants for an intimate and personalized adventure.",
+    "date": "2025-10-15T08:00:00.000Z",
+    "endDate": "2025-10-18T18:00:00.000Z",
+    "location": "Volcanoes National Park",
+    "maxParticipants": 8,
+    "currentParticipants": 6,
+    "categoryId": null,
+    "highlights": [
+      "Exclusive group experience",
+      "Professional photography guide",
+      "Unique lodge accommodation",
+      "Cultural village visit",
+      "Group bonding activities"
+    ],
+    "activities": [
+      "Gorilla trekking",
+      "Photography workshops",
+      "Cultural experiences",
+      "Group dinners",
+      "Nature walks"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617639/elegant-rwanda/file_qmjplz.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618343/elegant-rwanda/file_ycs9rm.jpg"
+    ],
+    "featured": true,
+    "registrationDeadline": "2025-01-15T23:59:59.000Z",
+    "status": "Filling_Fast",
+    "time": "08:00 AM",
+    "price": 1500,
+    "active": true,
+    "metaTitle": "Group Gorilla Trek Adventure 2025 - Rwanda Wildlife Tours | Elegant Travel & Tours",
+    "metaDescription": "Join like-minded adventurers for an exclusive group gorilla trekking experience in Rwanda. Limited to 8 participants for an intimate adventure."
+  },
+  {
+    "slug": "rwanda-culture-festival",
+    "title": "Rwanda Cultural Festival",
+    "description": "Celebrate Rwanda's rich cultural heritage with traditional performances, craft workshops, and authentic cuisine experiences.",
+    "date": "2025-09-20T08:00:00.000Z",
+    "endDate": "2025-09-22T18:00:00.000Z",
+    "location": "Kigali & Surrounding Areas",
+    "maxParticipants": 25,
+    "currentParticipants": 18,
+    "categoryId": null,
+    "highlights": [
+      "Traditional dance performances",
+      "Craft workshops",
+      "Local cuisine tasting",
+      "Historical site visits",
+      "Cultural exchange opportunities"
+    ],
+    "activities": [
+      "Dance performances",
+      "Craft workshops",
+      "Food tours",
+      "Historical tours",
+      "Cultural discussions"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618343/elegant-rwanda/file_ycs9rm.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618325/elegant-rwanda/file_cjyo3d.jpg"
+    ],
+    "featured": false,
+    "registrationDeadline": "2025-02-20T23:59:59.000Z",
+    "status": "Open",
+    "time": "08:00 AM",
+    "price": 1500,
+    "active": true,
+    "metaTitle": "Rwanda Cultural Festival 2025 - Traditional Arts & Culture | Elegant Travel & Tours",
+    "metaDescription": "Celebrate Rwanda's rich cultural heritage with traditional performances, craft workshops, and authentic cuisine experiences in March 2025."
+  },
+  {
+    "slug": "lake-kivu-unique-retreat",
+    "title": "Lake Kivu Unique Group Retreat",
+    "description": "Experience the ultimate Unique retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services.",
+    "date": "2025-10-10T08:00:00.000Z",
+    "endDate": "2025-10-14T18:00:00.000Z",
+    "location": "Lake Kivu",
+    "maxParticipants": 12,
+    "currentParticipants": 8,
+    "categoryId": null,
+    "highlights": [
+      "Exclusive resort access",
+      "Private beach areas",
+      "Personalized spa treatments",
+      "Gourmet dining experiences",
+      "Water sports activities"
+    ],
+    "activities": [
+      "Unique spa treatments",
+      "Water sports",
+      "Sunset cruises",
+      "Gourmet cooking classes",
+      "Wellness sessions"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617641/elegant-rwanda/file_ocj6bz.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617643/elegant-rwanda/file_rzswto.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617645/elegant-rwanda/file_rsb3if.jpg"
+    ],
+    "featured": false,
+    "registrationDeadline": "2025-03-10T23:59:59.000Z",
+    "status": "Open",
+    "time": "08:00 AM",
+    "price": 1500,
+    "active": true,
+    "metaTitle": "Lake Kivu Unique Group Retreat 2025 - Premium Rwanda Tours | Elegant Travel & Tours",
+    "metaDescription": "Experience the ultimate Unique retreat with a select group of travelers. Enjoy exclusive access to premium amenities and personalized services at Lake Kivu."
+  },
+  {
+    "slug": "adventure-challenge-2025",
+    "title": "Rwanda Adventure Challenge",
+    "description": "Push your limits with this multi-day adventure challenge featuring hiking, cycling, and water activities across Rwanda's diverse landscapes.",
+    "date": "2025-09-20T08:00:00.000Z",
+    "endDate": "2025-09-22T18:00:00.000Z",
+    "location": "Multiple Locations",
+    "maxParticipants": 20,
+    "currentParticipants": 15,
+    "categoryId": null,
+    "highlights": [
+      "Multi-activity challenge",
+      "Professional guides",
+      "Equipment provided",
+      "Accommodation included",
+      "Achievement certificates"
+    ],
+    "activities": [
+      "Mountain hiking",
+      "Cycling tours",
+      "Water activities",
+      "Team challenges",
+      "Adventure races"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769617647/elegant-rwanda/file_cglweq.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618347/elegant-rwanda/file_q03n1p.jpg"
+    ],
+    "featured": false,
+    "registrationDeadline": "2025-04-05T23:59:59.000Z",
+    "status": "Filling_Fast",
+    "time": "08:00 AM",
+    "price": 1500,
+    "active": true,
+    "metaTitle": "Rwanda Adventure Challenge 2025 - Multi-Activity Tours | Elegant Travel & Tours",
+    "metaDescription": "Push your limits with this multi-day adventure challenge featuring hiking, cycling, and water activities across Rwanda's diverse landscapes."
+  },
+  {
+    "slug": "coffee-tea-experience-2025",
+    "title": "Coffee & Tea Experience",
+    "description": "Discover Rwanda's world-renowned tea and coffee production. Tour plantations, learn processing methods, and enjoy tastings.",
+    "date": "2025-06-15T08:00:00.000Z",
+    "endDate": "2025-06-16T18:00:00.000Z",
+    "location": "Tea & Coffee Estates",
+    "maxParticipants": 12,
+    "currentParticipants": 8,
+    "categoryId": null,
+    "highlights": [
+      "Plantation tours",
+      "Processing demonstrations",
+      "Tasting sessions",
+      "Local market visits",
+      "Expert guidance"
+    ],
+    "activities": [
+      "Coffee plantation tour",
+      "Tea processing demo",
+      "Tasting sessions",
+      "Local market visit",
+      "Cultural exchange"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618331/elegant-rwanda/file_fhyrvk.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618329/elegant-rwanda/file_qo3wky.jpg"
+    ],
+    "featured": false,
+    "registrationDeadline": "2025-05-15T23:59:59.000Z",
+    "status": "Closed",
+    "time": "08:00 AM",
+    "price": 1500,
+    "active": true,
+    "metaTitle": "Coffee & Tea Experience 2025 - Rwanda Plantation Tours | Elegant Travel & Tours",
+    "metaDescription": "Discover Rwanda's world-renowned tea and coffee production. Tour plantations, learn processing methods, and enjoy tastings."
+  },
+  {
+    "slug": "bird-watching-expedition-2025",
+    "title": "Bird Watching Expedition",
+    "description": "Explore Rwanda's diverse bird species in the pristine Nyungwe Forest. Perfect for bird enthusiasts and nature photographers.",
+    "date": "2025-07-10T08:00:00.000Z",
+    "endDate": "2025-07-12T18:00:00.000Z",
+    "location": "Nyungwe Forest",
+    "maxParticipants": 10,
+    "currentParticipants": 6,
+    "categoryId": null,
+    "highlights": [
+      "Diverse bird species",
+      "Forest trail exploration",
+      "Expert ornithologist guide",
+      "Lodge accommodation",
+      "Photography opportunities"
+    ],
+    "activities": [
+      "Bird watching",
+      "Forest hiking",
+      "Photography workshops",
+      "Nature walks",
+      "Wildlife spotting"
+    ],
+    "images": [
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1770024739/wildlife/file_ve6kji.jpg",
+      "https://res.cloudinary.com/dshjd91l7/image/upload/v1769618333/elegant-rwanda/file_fs3fhn.jpg"
+    ],
+    "featured": false,
+    "registrationDeadline": "2025-06-10T23:59:59.000Z",
+    "status": "Closed",
+    "time": "08:00 AM",
+    "price": 1500,
+    "active": true,
+    "metaTitle": "Bird Watching Expedition 2025 - Nyungwe Forest Rwanda | Elegant Travel & Tours",
+    "metaDescription": "Explore Rwanda's diverse bird species in the pristine Nyungwe Forest. Perfect for bird enthusiasts and nature photographers."
+  }
+]
