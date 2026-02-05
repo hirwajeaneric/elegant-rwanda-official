@@ -47,7 +47,6 @@ export default function HomePage() {
       <ServicesOverview />
       <FeaturedTours />
       <TestimonialsSection />
-      <WhyChooseUs />
       <CTABanner />
       <LatestBlogPosts />
     </PageWrapper>

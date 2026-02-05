@@ -8,10 +8,10 @@ export function HeroSection() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <section className="hero-section relative">
+    <section className="min-h-[700px] flex items-center justify-center overflow-hidden relative">
       {/* Background Video/Image */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-linear-to-r from-black/50 via-black/70 to-black/60 z-10" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/40 via-black/50 to-black/40 z-10" />
 
         <div className="w-full h-full inset-0 bg-linear-to-r from-black/50 via-black/70 to-black/60">
           <div className="absolute inset-0 bg-[url('/hero-image.jpg')] bg-cover bg-center bg-no-repeat" />
@@ -26,11 +26,7 @@ export function HeroSection() {
             <span className="text-yellow-500">Elegance</span> Through Travel.
           </h1>
 
-          {/* <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-light leading-relaxed max-w-4xl mx-auto italic">
-            Tailored Tours & The Best Travel Experience
-          </p> */}
-
-          <p className="text-lg md:text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-tight">
+          <p className="text-lg md:text-xl mb-12 text-white/80 max-w-3xl mx-auto">
             From the misty mountains of Volcanoes National Park to the serene shores of Lake Kivu,
             experience Rwanda&apos;s natural beauty and rich culture through our unique travel services.
           </p>
