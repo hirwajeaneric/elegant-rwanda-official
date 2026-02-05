@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,34 +25,18 @@ interface BlogPost {
   featuredImage: string | null;
 }
 
-export function LatestBlogPosts() {
+interface LatestBlogPostsProps {
+  posts: BlogPost[];
+  loading: boolean;
+}
+
+export function LatestBlogPosts({ posts: recentPosts, loading }: LatestBlogPostsProps) {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchRecentPosts = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/public/blogs?limit=3&featured=false");
-        const data = await response.json();
-        if (data.success) {
-          setRecentPosts(data.blogs || []);
-        }
-      } catch (error) {
-        console.error("Failed to fetch recent posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecentPosts();
-  }, []);
 
   if (loading) {
     return (
-      <section className="section-padding bg-gradient-to-br from-muted/30 to-muted/50">
+      <section className="section-padding bg-linear-to-r from-muted/30 to-muted/50">
         <div className="container-elegant">
           {/* Section Header Skeleton */}
           <div className="text-center mb-16">
@@ -128,7 +112,7 @@ export function LatestBlogPosts() {
   };
 
   return (
-    <section className="section-padding bg-gradient-to-br from-muted/30 to-muted/50">
+    <section className="section-padding bg-linear-to-r from-muted/30 to-muted/50">
       <div className="container-elegant">
         {/* Section Header */}
         <div className="text-center mb-16">

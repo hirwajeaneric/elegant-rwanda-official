@@ -5,7 +5,7 @@ import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumb
 import { GalleryTableView } from "@/components/dashboard/GalleryTableView";
 import { GalleryGridView } from "@/components/dashboard/GalleryGridView";
 import { Button } from "@/components/ui/button";
-import { Upload, Table2, Grid3x3, Loader2, X } from "lucide-react";
+import { Upload, Table2, Grid3x3, Loader2, X, FileSpreadsheet } from "lucide-react";
 import { DataTableLoader } from "@/components/dashboard/DataTableLoader";
 import { useCategories } from "@/lib/hooks/use-categories";
 import Image from "next/image";
@@ -65,8 +65,8 @@ interface CloudinaryImage {
 
 export default function GalleryPage() {
   const { categories: categoryList } = useCategories({ type: ['IMAGE'], active: true });
-  const availableCategories = useMemo(() => 
-    categoryList.map(cat => ({ id: cat.id, name: cat.name })), 
+  const availableCategories = useMemo(() =>
+    categoryList.map(cat => ({ id: cat.id, name: cat.name })),
     [categoryList]
   );
   const [images, setImages] = useState<CloudinaryImage[]>([]);
@@ -95,6 +95,15 @@ export default function GalleryPage() {
     featured: false,
     active: true,
   });
+  const [isSeedDialogOpen, setIsSeedDialogOpen] = useState(false);
+  const [seedFile, setSeedFile] = useState<File | null>(null);
+  const [seeding, setSeeding] = useState(false);
+  const [seedResults, setSeedResults] = useState<{
+    total: number;
+    created: number;
+    skipped: number;
+    errors: Array<{ row: number; error: string }>;
+  } | null>(null);
 
   // Load images from API (higher limit so client-side search/filter/sort have enough data)
   const loadImages = useCallback(async () => {
@@ -291,6 +300,63 @@ export default function GalleryPage() {
     setUploadFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleSeedExcel = async () => {
+    if (!seedFile) {
+      toast.error("Please select an Excel file");
+      return;
+    }
+
+    setSeeding(true);
+    setSeedResults(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", seedFile);
+
+      const response = await fetch("/api/images/seed-excel", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSeedResults(data.results);
+        toast.success(data.message || "Images seeded successfully");
+        if (data.results.created > 0) {
+          // Reload images if any were created
+          loadImages();
+        }
+      } else {
+        toast.error("Seeding failed", {
+          description: data.error || "Unknown error",
+        });
+      }
+    } catch (error) {
+      toast.error("Seeding failed");
+      console.error("Seed error:", error);
+    } finally {
+      setSeeding(false);
+    }
+  };
+
+  const handleSeedFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const validExtensions = [".xlsx", ".xls"];
+      const fileName = file.name.toLowerCase();
+      const isValidFile = validExtensions.some((ext) => fileName.endsWith(ext));
+
+      if (!isValidFile) {
+        toast.error("Invalid file type. Please upload an Excel file (.xlsx or .xls)");
+        return;
+      }
+
+      setSeedFile(file);
+      setSeedResults(null);
+    }
+  };
+
   // Convert CloudinaryImage to GalleryImage format for compatibility
   const convertedImages = useMemo(() => {
     return images.map((img) => ({
@@ -365,6 +431,84 @@ export default function GalleryPage() {
               ))}
             </SelectContent>
           </Select>
+          <Dialog open={isSeedDialogOpen} onOpenChange={setIsSeedDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                <FileSpreadsheet className="h-4 w-4 mr-2" />
+                Seed from Excel
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Seed Images from Excel</DialogTitle>
+                <DialogDescription>
+                  Upload an Excel file to bulk import images. The file should contain columns: publicId, url, urlRaw, title, alt, description, category, folder, width, height, format, bytes, tags, featured, active
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Excel File (.xlsx or .xls)</Label>
+                  <Input
+                    type="file"
+                    accept=".xlsx,.xls"
+                    onChange={handleSeedFileChange}
+                    disabled={seeding}
+                  />
+                  {seedFile && (
+                    <p className="text-sm text-muted-foreground">
+                      Selected: {seedFile.name}
+                    </p>
+                  )}
+                </div>
+
+                {seedResults && (
+                  <div className="space-y-2 p-4 border rounded-lg">
+                    <h4 className="font-semibold text-xl">Seeding Results</h4>
+                    <div className="space-y-1 text-sm">
+                      <p>Total rows: {seedResults.total}</p>
+                      <p className="text-green-600">Created: {seedResults.created}</p>
+                      <p className="text-yellow-600">Skipped: {seedResults.skipped}</p>
+                      {seedResults.errors.length > 0 && (
+                        <div className="mt-2">
+                          <p className="font-medium text-red-600">Errors:</p>
+                          <div className="max-h-40 overflow-y-auto">
+                            {seedResults.errors.slice(0, 10).map((error, idx) => (
+                              <p key={idx} className="text-xs text-red-600">
+                                Row {error.row}: {error.error}
+                              </p>
+                            ))}
+                            {seedResults.errors.length > 10 && (
+                              <p className="text-xs text-muted-foreground">
+                                ... and {seedResults.errors.length - 10} more errors
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <Button
+                  className="w-full"
+                  onClick={handleSeedExcel}
+                  disabled={seeding || !seedFile}
+                >
+                  {seeding ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Seeding...
+                    </>
+                  ) : (
+                    <>
+                      <FileSpreadsheet className="h-4 w-4 mr-2" />
+                      Seed Images
+                    </>
+                  )}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
           <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
             <DialogTrigger asChild>
               <Button>
