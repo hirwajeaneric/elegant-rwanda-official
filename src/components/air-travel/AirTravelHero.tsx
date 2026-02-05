@@ -14,29 +14,9 @@ export function AirTravelHero() {
               Your Gateway to <span className="text-yellow-500">Effortless Travel</span>
             </h1>
             <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              From visa applications to airport pickups, we handle all your air travel needs in Rwanda. 
+              From visa applications to airport pickups, we handle all your air travel needs in Rwanda.
               Experience seamless travel coordination with our expert assistance services.
             </p>
-            
-            {/* Quick Stats */}
-            <div className="grid grid-cols-4 gap-6 mb-8">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">24/7</div>
-                <div className="text-sm text-white/80">Support</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">100%</div>
-                <div className="text-sm text-white/80">Success Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">Fast</div>
-                <div className="text-sm text-white/80">Processing</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">Global</div>
-                <div className="text-sm text-white/80">Coverage</div>
-              </div>
-            </div>
 
             {/* Features */}
             <div className="space-y-3">

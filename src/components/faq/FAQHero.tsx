@@ -2,7 +2,7 @@
 
 export function FAQHero() {
   return (
-    <section className="relative py-24 bg-[url('/kigali.jpeg')] bg-cover bg-center bg-no-repeat">
+    <section className="relative py-24 bg-[url('/hero-image.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/70 to-black/60" />
       <div className="container-elegant relative z-10 text-center">
         <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-6">

@@ -49,8 +49,6 @@ export function AirTravelProcess() {
 
         {/* Horizontal Timeline */}
         <div className="relative">
-          {/* Timeline Line - Horizontal */}
-          <div className="absolute top-16 left-0 right-0 h-0.5 bg-gray-200 hidden lg:block" />
 
           {/* Steps Grid */}
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
@@ -81,33 +79,8 @@ export function AirTravelProcess() {
           </div>
         </div>
 
-        {/* Process Benefits */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <FileText className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Simple Process</h3>
-            <p className="text-gray-600">Easy-to-follow steps with clear communication at every stage</p>
-          </div>
-          <div className="text-center">
-            <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <Clock className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Fast Response</h3>
-            <p className="text-gray-600">Quick turnaround times with urgent request options available</p>
-          </div>
-          <div className="text-center">
-            <div className="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <CheckCircle className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Quality Assurance</h3>
-            <p className="text-gray-600">Expert handling with attention to detail and customer satisfaction</p>
-          </div>
-        </div>
-
         {/* CTA Section */}
-        <div className="mt-16 bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 text-center text-white">
+        < div className="mt-16 bg-linear-to-r from-primary to-primary/80 rounded-2xl p-8 text-center text-white">
           <h3 className="text-2xl font-display font-semibold mb-4">
             Ready to Get Started?
           </h3>
@@ -128,6 +101,6 @@ export function AirTravelProcess() {
           </button>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

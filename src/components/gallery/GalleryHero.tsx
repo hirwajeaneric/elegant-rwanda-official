@@ -13,7 +13,7 @@ export function GalleryHero({ totalPhotos, totalCategories, statsLoading }: Gall
   const categoriesLabel = totalCategories != null ? String(totalCategories) : "—";
 
   return (
-    <section className="relative py-24 bg-[url('/pexels-gjpzoom-33707404.jpg')] bg-cover bg-center bg-no-repeat">
+    <section className="relative py-24 bg-[url('/leopard-on-car.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/70 to-black/60" />
       <div className="container-elegant relative z-10 text-center">
         <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-6">
