@@ -149,15 +149,15 @@ export function FleetGallery() {
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
             >
-              {category === "All" 
-                ? `All (${categoryCounts.all || vehicles.length})` 
+              {category === "All"
+                ? `All (${categoryCounts.all || vehicles.length})`
                 : `${category} (${categoryCounts[category] || 0})`}
             </button>
           ))}
         </div>
 
         {/* Vehicle Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {vehicles.length > 0 && <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {vehicles.map((vehicle, index) => (
             <Link
               key={index}
@@ -232,7 +232,11 @@ export function FleetGallery() {
               </div>
             </Link>
           ))}
-        </div>
+        </div>}
+
+        {vehicles.length === 0 && <div className="text-center">
+          <p className="text-muted-foreground">No vehicles found in this category</p>
+        </div>}
 
         {/* Load More Button */}
         {pagination && pagination.hasMore && (
@@ -257,7 +261,7 @@ export function FleetGallery() {
         )}
 
         {/* Fleet Stats */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="text-center">
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Car className="h-8 w-8 text-primary" />
@@ -286,8 +290,8 @@ export function FleetGallery() {
             <div className="text-3xl font-bold text-primary mb-2">1000+</div>
             <div className="text-muted-foreground">Happy Customers</div>
           </div>
-        </div>
+        </div> */}
       </div>
-    </section>
+    </section >
   );
 }

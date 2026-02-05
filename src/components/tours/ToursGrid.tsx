@@ -55,11 +55,11 @@ export function ToursGrid() {
 
   // Filter tours based on selected criteria
   let filteredTours = tours;
-  
+
   if (selectedCategory !== "all") {
     filteredTours = filteredTours.filter(tour => tour.category?.id === selectedCategory);
   }
-  
+
   if (selectedDuration !== "all") {
     filteredTours = filteredTours.filter(tour => {
       const days = parseInt(tour.duration.split(" ")[0]);
@@ -69,7 +69,7 @@ export function ToursGrid() {
       return true;
     });
   }
-  
+
   if (searchQuery) {
     filteredTours = filteredTours.filter(tour =>
       tour.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -128,11 +128,10 @@ export function ToursGrid() {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    selectedCategory === category.id
-                      ? "bg-primary text-white shadow-lg"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 ${selectedCategory === category.id
+                    ? "bg-primary text-white shadow-lg"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
                 >
                   {category.name} ({category.count})
                 </button>
@@ -149,11 +148,10 @@ export function ToursGrid() {
                   <button
                     key={duration.id}
                     onClick={() => setSelectedDuration(duration.id)}
-                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      selectedDuration === duration.id
-                        ? "bg-primary text-white shadow-lg"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    }`}
+                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 ${selectedDuration === duration.id
+                      ? "bg-primary text-white shadow-lg"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      }`}
                   >
                     {duration.name}
                   </button>
@@ -178,131 +176,131 @@ export function ToursGrid() {
           {/* Tours Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredTours.map((tour) => (
-          <article
-            key={tour.id}
-            className="bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group"
-          >
-            {/* Featured Image */}
-            <div className="relative h-48 overflow-hidden">
-              <div
-                className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
-                style={{
-                  backgroundImage: `url('${tour.images[0]}')`
-                }}
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
-              
-              {/* Category Badge - uses category color from API when available */}
-              {tour.category && (
-                <div className="absolute top-4 left-4">
-                  <Badge
-                    variant="secondary"
-                    className={
-                      tour.category.color
-                        ? tour.category.color
-                        : `${getCategoryColor(tour.category.name)} text-black`
-                    }
-                  >
-                    {tour.category.name}
-                  </Badge>
-                </div>
-              )}
+              <article
+                key={tour.id}
+                className="bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group"
+              >
+                {/* Featured Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <div
+                    className="w-full h-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-500"
+                    style={{
+                      backgroundImage: `url('${tour.images[0]}')`
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
 
-              {/* Featured Badge */}
-              {tour.featured && (
-                <div className="absolute bottom-4 left-4">
-                  <Badge variant="secondary" className="bg-yellow-500 text-white">
-                    Featured
-                  </Badge>
-                </div>
-              )}
-            </div>
+                  {/* Category Badge - uses category color from API when available */}
+                  {tour.category && (
+                    <div className="absolute top-4 left-4">
+                      <Badge
+                        variant="secondary"
+                        className={
+                          tour.category.color
+                            ? tour.category.color
+                            : `${getCategoryColor(tour.category.name)} text-black`
+                        }
+                      >
+                        {tour.category.name}
+                      </Badge>
+                    </div>
+                  )}
 
-            {/* Content */}
-            <div className="p-6">
-              {/* Title */}
-              <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                <Link href={`/tours/${tour.slug}`} className="hover:underline">
-                  {tour.title}
-                </Link>
-              </h3>
-
-              {/* Description - HTML from API, sanitized before render */}
-              <div
-                className="text-muted-foreground mb-4 leading-relaxed line-clamp-3 prose prose-sm prose-muted max-w-none *:my-0 [&>*:last-child]:mb-0"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(tour.description ?? "") }}
-              />
-
-              {/* Tour Details */}
-              <div className="space-y-3 mb-4">
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span>{tour.location}</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4" />
-                  <span>{tour.duration}</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                  <Users className="h-4 w-4" />
-                  <span>Max {tour.maxGroupSize} people</span>
-                </div>
-              </div>
-
-              {/* Highlights */}
-              <div className="mb-4">
-                <h4 className="text-sm font-medium text-foreground mb-2">Highlights:</h4>
-                <div className="flex flex-wrap gap-1">
-                  {tour.highlights.slice(0, 3).map((highlight) => (
-                    <span
-                      key={highlight}
-                      className="px-2 py-1 bg-muted text-xs text-muted-foreground rounded-md"
-                    >
-                      {highlight}
-                    </span>
-                  ))}
-                  {tour.highlights.length > 3 && (
-                    <span className="px-2 py-1 bg-muted text-xs text-muted-foreground rounded-md">
-                      +{tour.highlights.length - 3} more
-                    </span>
+                  {/* Featured Badge */}
+                  {tour.featured && (
+                    <div className="absolute bottom-4 left-4">
+                      <Badge variant="secondary" className="bg-yellow-500 text-white">
+                        Featured
+                      </Badge>
+                    </div>
                   )}
                 </div>
-              </div>
 
-              {/* Price and CTA */}
-              <div className="flex items-center justify-between">
-                <Link
-                  href={`/tours/${tour.slug}`}
-                  className="inline-flex items-center text-primary hover:text-primary/80 font-medium group-hover:translate-x-1 transition-all duration-200"
-                >
-                  View Details
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Link>
-              </div>
-            </div>
-          </article>
+                {/* Content */}
+                <div className="p-6">
+                  {/* Title */}
+                  <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                    <Link href={`/tours/${tour.slug}`} className="hover:underline">
+                      {tour.title}
+                    </Link>
+                  </h3>
+
+                  {/* Description - HTML from API, sanitized before render */}
+                  <div
+                    className="text-muted-foreground mb-4 leading-relaxed line-clamp-3 prose prose-sm prose-muted max-w-none *:my-0 [&>*:last-child]:mb-0"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(tour.description ?? "") }}
+                  />
+
+                  {/* Tour Details */}
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4" />
+                      <span>{tour.location}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                      <Calendar className="h-4 w-4" />
+                      <span>{tour.duration}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                      <Users className="h-4 w-4" />
+                      <span>Max {tour.maxGroupSize} people</span>
+                    </div>
+                  </div>
+
+                  {/* Highlights */}
+                  <div className="mb-4">
+                    <h4 className="text-sm font-medium text-foreground mb-2">Highlights:</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {tour.highlights.slice(0, 3).map((highlight) => (
+                        <span
+                          key={highlight}
+                          className="px-2 py-1 bg-muted text-xs text-muted-foreground rounded-md"
+                        >
+                          {highlight}
+                        </span>
+                      ))}
+                      {tour.highlights.length > 3 && (
+                        <span className="px-2 py-1 bg-muted text-xs text-muted-foreground rounded-md">
+                          +{tour.highlights.length - 3} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Price and CTA */}
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href={`/tours/${tour.slug}`}
+                      className="inline-flex items-center text-primary hover:text-primary/80 font-medium group-hover:translate-x-1 transition-all duration-200"
+                    >
+                      View Details
+                      <ArrowRight className="h-4 w-4 ml-1" />
+                    </Link>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
 
           {/* No Results */}
           {filteredTours.length === 0 && (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-display font-semibold mb-2">No tours found</h3>
-          <p className="text-muted-foreground mb-6">
-            Try adjusting your search criteria or browse all our available tours.
-          </p>
-          <button
-            onClick={() => {
-              setSearchQuery("");
-              setSelectedCategory("all");
-              setSelectedDuration("all");
-            }}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-          >
-            Clear All Filters
-          </button>
-        </div>
+            <div className="text-center py-16">
+              <div className="text-6xl mb-4"><Search className="h-10 w-10 text-primary text-center mx-auto" /></div>
+              <h3 className="text-xl font-display font-semibold mb-2">No tours found</h3>
+              <p className="text-muted-foreground mb-6">
+                Try adjusting your search criteria or browse all our available tours.
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("all");
+                  setSelectedDuration("all");
+                }}
+                className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Clear All Filters
+              </button>
+            </div>
           )}
         </>
       )}

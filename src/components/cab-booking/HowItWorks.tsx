@@ -39,7 +39,7 @@ export function HowItWorks() {
         {/* Desktop Timeline Layout */}
         <div className="hidden md:block relative">
           {/* Horizontal Connector Line */}
-          <div className="absolute top-24 left-0 right-0 h-0.5 bg-primary/20" />
+          {/* <div className="absolute top-24 left-0 right-0 h-0.5 bg-primary/20" /> */}
 
           <div className="grid grid-cols-3 gap-8 relative">
             {steps.map((step, index) => {

@@ -10,23 +10,9 @@ export function BlogHero() {
           <span className="text-yellow-500">Rwanda</span> Through Stories
         </h1>
         <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-          Expert travel tips, cultural insights, wildlife encounters, and insider knowledge 
+          Expert travel tips, cultural insights, wildlife encounters, and insider knowledge
           to help you plan the perfect Rwanda adventure.
         </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm border border-white/30">
-            Travel Tips
-          </span>
-          <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm border border-white/30">
-            Wildlife
-          </span>
-          <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm border border-white/30">
-            Culture
-          </span>
-          <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm border border-white/30">
-            Unique Travel
-          </span>
-        </div>
       </div>
     </section>
   );

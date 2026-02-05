@@ -14,28 +14,12 @@ export function EventsHero() {
               Join <span className="text-yellow-500">Extraordinary</span> Events
             </h1>
             <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              Discover upcoming tourism events, group travels, and special experiences in Rwanda. 
+              Discover upcoming tourism events, group travels, and special experiences in Rwanda.
               Connect with like-minded adventurers and create unforgettable memories together.
             </p>
-            
-            {/* Quick Stats */}
-            <div className="grid grid-cols-4 gap-6 mb-8">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">12+</div>
-                <div className="text-sm text-white/80">Events This Year</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">500+</div>
-                <div className="text-sm text-white/80">Happy Participants</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">24/7</div>
-                <div className="text-sm text-white/80">Support</div>
-              </div>
-            </div>
 
             {/* Features */}
-            <div className="space-y-3">
+            < div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Calendar className="h-5 w-5 text-yellow-500" />
                 <span className="text-white/90">Curated Event Calendar</span>
@@ -56,6 +40,6 @@ export function EventsHero() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

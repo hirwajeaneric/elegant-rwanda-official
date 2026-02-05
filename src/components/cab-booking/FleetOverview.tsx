@@ -47,7 +47,7 @@ export function FleetOverview() {
             Our <span className="text-primary">Fleet</span> Overview
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Choose from our diverse fleet of well-maintained vehicles, each designed to provide 
+            Choose from our diverse fleet of well-maintained vehicles, each designed to provide
             comfort, safety, and Unique for your journey across Rwanda.
           </p>
         </div>
@@ -64,7 +64,7 @@ export function FleetOverview() {
                   height={192}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-4 left-4 text-white">
                   <h3 className="text-lg font-semibold mb-1">{vehicle.name}</h3>
                   <p className="text-sm text-white/90">{vehicle.capacity}</p>
@@ -79,7 +79,7 @@ export function FleetOverview() {
                   <div className="space-y-2">
                     {vehicle.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
+                        <div className="w-2 h-2 bg-primary rounded-full shrink-0" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </div>
                     ))}
@@ -91,20 +91,13 @@ export function FleetOverview() {
                   <h4 className="text-sm font-medium text-muted-foreground mb-2">Best For</h4>
                   <p className="text-sm text-muted-foreground">{vehicle.bestFor}</p>
                 </div>
-
-                {/* Icon */}
-                <div className="flex justify-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <vehicle.icon className="h-6 w-6 text-primary" />
-                  </div>
-                </div>
               </div>
             </div>
           ))}
         </div>
 
         {/* Fleet Stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+        {/* <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="text-center">
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Car className="h-8 w-8 text-primary" />
@@ -133,7 +126,7 @@ export function FleetOverview() {
             <div className="text-3xl font-bold text-primary mb-2">100%</div>
             <div className="text-muted-foreground">Climate Controlled</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

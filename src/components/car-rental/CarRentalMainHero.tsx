@@ -18,26 +18,6 @@ export function CarRentalMainHero() {
               Choose between self-drive or chauffeur-driven options for the ultimate travel experience.
             </p>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-4 gap-6 mb-8">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">50+</div>
-                <div className="text-sm text-white/80">Vehicles Available</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">24/7</div>
-                <div className="text-sm text-white/80">Support</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">100%</div>
-                <div className="text-sm text-white/80">Insurance</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500 mb-2">Flexible</div>
-                <div className="text-sm text-white/80">Rental Periods</div>
-              </div>
-            </div>
-
             {/* Features */}
             <div className="space-y-3">
               <div className="flex items-center space-x-3">

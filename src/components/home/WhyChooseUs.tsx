@@ -1,11 +1,11 @@
 "use client";
 
-import { 
-  CheckCircle, 
-  Users, 
-  Award, 
-  Shield, 
-  Heart, 
+import {
+  CheckCircle,
+  Users,
+  Award,
+  Shield,
+  Heart,
   Globe,
   Star,
   Clock
@@ -100,7 +100,7 @@ export function WhyChooseUs() {
             <span className="text-yellow-500">Elegant Travel & Tours</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            We&apos;re not just another travel company. We&apos;re your partners in creating extraordinary 
+            We&apos;re not just another travel company. We&apos;re your partners in creating extraordinary
             memories in one of Africa&apos;s most beautiful countries.
           </p>
         </div>
@@ -138,7 +138,7 @@ export function WhyChooseUs() {
               {stats.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className="text-center p-6 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl border border-border hover:shadow-lg transition-all duration-300 hover:scale-105"
+                  className="text-center p-6 bg-linear-to-br from-muted/50 to-muted/30 rounded-xl border border-border hover:shadow-lg transition-all duration-300 hover:scale-105"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-white flex items-center justify-center shadow-sm`}>
@@ -155,16 +155,16 @@ export function WhyChooseUs() {
             </div>
 
             {/* Additional Info */}
-            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 border border-primary/20">
+            <div className="bg-linear-to-br from-primary/5 to-accent/5 rounded-2xl p-8 border border-primary/20">
               <h3 className="text-2xl font-display font-semibold mb-4 text-foreground">
                 Our Commitment to Excellence
               </h3>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                We&apos;re committed to providing not just a service, but an experience that exceeds 
-                your expectations. Every detail matters, from the moment you contact us until 
+                We&apos;re committed to providing not just a service, but an experience that exceeds
+                your expectations. Every detail matters, from the moment you contact us until
                 you return home with unforgettable memories.
               </p>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-primary" />

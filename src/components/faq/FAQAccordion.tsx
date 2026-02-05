@@ -114,11 +114,10 @@ export function FAQAccordion() {
         <div className="flex flex-wrap gap-3">
           <button
             onClick={() => setActiveCategory("all")}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-              activeCategory === "all"
-                ? "bg-primary text-white shadow-lg"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${activeCategory === "all"
+              ? "bg-primary text-white shadow-lg"
+              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
           >
             All Categories
           </button>
@@ -126,11 +125,10 @@ export function FAQAccordion() {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                activeCategory === category
-                  ? "bg-primary text-white shadow-lg"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${activeCategory === category
+                ? "bg-primary text-white shadow-lg"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
             >
               {category}
             </button>
@@ -167,7 +165,7 @@ export function FAQAccordion() {
       {/* No Results */}
       {Object.keys(filteredFAQs).length === 0 && (
         <div className="text-center py-16">
-          <div className="text-6xl mb-4">🔍</div>
+          <div className="text-6xl mb-4"><Search className="h-10 w-10 text-primary text-center mx-auto" /></div>
           <h3 className="text-xl font-display font-semibold mb-2">No questions found</h3>
           <p className="text-muted-foreground mb-6">
             Try adjusting your search terms or browse all categories.

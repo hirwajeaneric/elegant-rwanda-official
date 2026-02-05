@@ -12,7 +12,7 @@ export function HeroSection() {
       {/* Background Video/Image */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-linear-to-r from-black/50 via-black/70 to-black/60 z-10" />
-        
+
         <div className="w-full h-full inset-0 bg-linear-to-r from-black/50 via-black/70 to-black/60">
           <div className="absolute inset-0 bg-[url('/hero-image.jpg')] bg-cover bg-center bg-no-repeat" />
         </div>
@@ -25,26 +25,26 @@ export function HeroSection() {
             Explore Rwanda&apos;s{" "}
             <span className="text-yellow-500">Elegance</span> Through Travel.
           </h1>
-          
-          <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-light leading-relaxed max-w-4xl mx-auto italic">
+
+          {/* <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 font-light leading-relaxed max-w-4xl mx-auto italic">
             Tailored Tours & The Best Travel Experience
-          </p>
-          
+          </p> */}
+
           <p className="text-lg md:text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-tight">
-            From the misty mountains of Volcanoes National Park to the serene shores of Lake Kivu, 
+            From the misty mountains of Volcanoes National Park to the serene shores of Lake Kivu,
             experience Rwanda&apos;s natural beauty and rich culture through our unique travel services.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button  
+            <button
               className="btn-primary hover:bg-white hover:text-primary rounded-full text-lg px-8 py-4 hover:scale-105 transition-transform duration-200"
               onClick={() => setShowModal(true)}
             >
               Request a Quote
             </button>
-            
-            <Link 
+
+            <Link
               className="btn-outline text-lg px-8 py-4 border-2 rounded-full border-white text-white hover:bg-white hover:text-foreground hover:scale-105 transition-all duration-200"
               href="/tours"
             >
@@ -52,28 +52,28 @@ export function HeroSection() {
             </Link>
           </div>
 
-          {/* Trust Indicators */}
-          <div className="mt-16 flex flex-wrap justify-center items-center gap-8 text-white/70">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-accent">500+</div>
-              <div className="text-sm">Satisfied Travelers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-accent">50+</div>
-              <div className="text-sm">Unique Tours</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-accent">5★</div>
-              <div className="text-sm">Service Rating</div>
-            </div>
-          </div>
+          {/*
+            <div className="mt-16 flex flex-wrap justify-center items-center gap-8 text-white/70">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-accent">500+</div>
+                <div className="text-sm">Satisfied Travelers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-accent">50+</div>
+                <div className="text-sm">Unique Tours</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-accent">5★</div>
+                <div className="text-sm">Service Rating</div>
+              </div>
+            </div> */}
         </div>
       </div>
 
       {/* General Inquiry Modal */}
-      <GeneralInquiryModal 
-        open={showModal} 
-        onOpenChange={setShowModal} 
+      <GeneralInquiryModal
+        open={showModal}
+        onOpenChange={setShowModal}
       />
     </section>
   );

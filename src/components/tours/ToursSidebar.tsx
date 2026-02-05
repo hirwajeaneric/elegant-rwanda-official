@@ -111,49 +111,22 @@ export function ToursSidebar() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                      {tour.title}
-                    </h4>
-                    <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-1">
-                      <MapPin className="h-3 w-3" />
-                      <span>{tour.location}</span>
+                      <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {tour.title}
+                      </h4>
+                      <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-1">
+                        <MapPin className="h-3 w-3" />
+                        <span>{tour.location}</span>
+                      </div>
+                      <div className="text-xs text-primary font-medium mt-1">
+
+                      </div>
                     </div>
-                    <div className="text-xs text-primary font-medium mt-1">
-  
-                    </div>
-                  </div>
                   </div>
                 </Link>
               </article>
             ))
           )}
-        </div>
-      </div>
-
-      {/* Why Choose Us */}
-      <div className="bg-muted/80 rounded-xl p-6">
-        <h3 className="text-lg font-display font-semibold mb-4">Why Choose Us</h3>
-        <div className="space-y-3 text-sm text-muted-foreground">
-          <div className="flex items-start space-x-2">
-            <Star className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />
-            <span>15+ years of experience in Rwanda tourism</span>
-          </div>
-          <div className="flex items-start space-x-2">
-            <Star className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />
-            <span>Expert local guides and drivers</span>
-          </div>
-          <div className="flex items-start space-x-2">
-            <Star className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />
-            <span>Unique accommodations and vehicles</span>
-          </div>
-          <div className="flex items-start space-x-2">
-            <Star className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />
-            <span>Personalized itineraries and service</span>
-          </div>
-          <div className="flex items-start space-x-2">
-            <Star className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />
-            <span>24/7 support throughout your journey</span>
-          </div>
         </div>
       </div>
 
