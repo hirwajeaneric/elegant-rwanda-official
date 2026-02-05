@@ -27,17 +27,17 @@ export function EventsNewsletter() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       await subscribeToNewsletter({
         email,
         source: "events-newsletter",
         preferences,
       });
-      
+
       toast.success("Successfully subscribed to our events newsletter!");
       setIsSubmitted(true);
-      
+
       setTimeout(() => {
         setIsSubmitted(false);
         setEmail("");
@@ -68,7 +68,7 @@ export function EventsNewsletter() {
               Successfully Subscribed!
             </h2>
             <p className="text-xl text-green-700 mb-8">
-              Thank you for subscribing to our events newsletter! You&apos;ll now receive 
+              Thank you for subscribing to our events newsletter! You&apos;ll now receive
               updates about new events, special offers, and exclusive experiences.
             </p>
             <div className="bg-white rounded-2xl p-6 shadow-sm">
@@ -86,7 +86,7 @@ export function EventsNewsletter() {
   }
 
   return (
-    <section className="py-20 bg-linear-to-r from-black to-primary">
+    <section className="py-20 bg-[url('/hero-image.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="container-elegant">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
@@ -95,10 +95,10 @@ export function EventsNewsletter() {
               Stay Updated with Our Events
             </h2>
             <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              Never miss out on exciting events and special experiences. Subscribe to our newsletter 
+              Never miss out on exciting events and special experiences. Subscribe to our newsletter
               and be the first to know about new adventures, exclusive offers, and early bird discounts.
             </p>
-            
+
             {/* Benefits */}
             <div className="space-y-4 mb-8">
               <div className="flex items-center space-x-3">
@@ -120,7 +120,7 @@ export function EventsNewsletter() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-6">
+            {/* <div className="grid grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="text-2xl font-bold text-yellow-400 mb-1">500+</div>
                 <div className="text-sm text-white/80">Subscribers</div>
@@ -133,15 +133,15 @@ export function EventsNewsletter() {
                 <div className="text-2xl font-bold text-yellow-400 mb-1">24h</div>
                 <div className="text-sm text-white/80">Response Time</div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Column - Newsletter Form */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border">
             <h3 className="text-2xl font-display font-semibold text-white mb-6">
               Subscribe to Our Newsletter
             </h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Input */}
               <div>
@@ -165,18 +165,44 @@ export function EventsNewsletter() {
                 <label className="block text-sm font-medium text-white/90 mb-3">
                   Notification Preferences
                 </label>
-                <div className="space-y-2">
+                <div className="flex flex-wrap gap-2">
                   {Object.entries(preferences).map(([key, value]) => (
-                    <label key={key} className="flex items-center space-x-2 cursor-pointer">
+                    <label
+                      key={key}
+                      className={`
+                        inline-flex items-center gap-2.5 cursor-pointer select-none
+                        rounded-full px-4 py-2.5 text-sm font-medium
+                        border transition-all duration-200
+                        focus-within:ring-2 focus-within:ring-yellow-500 focus-within:ring-offset-2 focus-within:ring-offset-transparent
+                        ${value
+                          ? "bg-yellow-500/25 border-yellow-400/60 text-yellow-100 shadow-[inset_0_0_0_1px_rgba(250,204,21,0.2)]"
+                          : "bg-white/15 border-white/25 text-white/85 hover:bg-white/25 hover:border-white/35"
+                        }
+                      `}
+                    >
+                      <span
+                        className={`
+                          flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors
+                          ${value ? "border-yellow-400 bg-yellow-500/90" : "border-white/40 bg-white/10"}
+                        `}
+                        aria-hidden
+                      >
+                        {value && (
+                          <svg className="h-3 w-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </span>
+                      <span className="capitalize">
+                        {key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
+                      </span>
                       <input
                         type="checkbox"
                         checked={value}
                         onChange={() => handlePreferenceChange(key)}
-                        className="rounded-full border-white/30 text-yellow-500 focus:ring-yellow-500 bg-white/20"
+                        className="sr-only"
+                        aria-label={`Toggle ${key.replace(/([A-Z])/g, " $1")}`}
                       />
-                      <span className="text-sm text-white/90 capitalize">
-                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                      </span>
                     </label>
                   ))}
                 </div>
@@ -197,6 +223,6 @@ export function EventsNewsletter() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

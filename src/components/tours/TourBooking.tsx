@@ -102,24 +102,48 @@ export function TourBooking({ tour }: TourBookingProps) {
 
             <div className="space-y-2 w-full">
               <Label htmlFor="startDate">Preferred Start Date</Label>
-              <Select value={startDate} onValueChange={setStartDate} required>
-                <SelectTrigger id="startDate" aria-label="Select preferred start date" className="w-full">
-                  <SelectValue placeholder="Select a date" />
-                </SelectTrigger>
-                <SelectContent className="w-full">
-                  {tour.availableDates.map((date) => (
-                    <SelectItem key={date} value={date}>
-                      {new Date(date).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <input type="hidden" name="startDate" value={startDate} />
+              {(() => {
+                // Filter to only show future dates (after today)
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const futureDates = tour.availableDates.filter((date) => {
+                  const availableDate = new Date(date);
+                  availableDate.setHours(0, 0, 0, 0);
+                  return availableDate > today;
+                });
+
+                if (futureDates.length === 0) {
+                  return (
+                    <div className="text-sm text-muted-foreground p-3 bg-muted/50 rounded-md">
+                      No future dates available. Please contact us for availability.
+                    </div>
+                  );
+                }
+
+                return (
+                  <>
+                    <Select value={startDate} onValueChange={setStartDate} required>
+                      <SelectTrigger id="startDate" aria-label="Select preferred start date" className="w-full">
+                        <SelectValue placeholder="Select a date" />
+                      </SelectTrigger>
+                      <SelectContent className="w-full">
+                        {futureDates.map((date) => (
+                          <SelectItem key={date} value={date}>
+                            {new Date(date).toLocaleDateString('en-US', {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <input type="hidden" name="startDate" value={startDate} />
+                  </>
+                );
+              })()}
             </div>
 
             <div className="space-y-2 w-full">
@@ -236,15 +260,15 @@ export function TourBooking({ tour }: TourBookingProps) {
         <h4 className="text-lg font-semibold mb-4">What Happens Next?</h4>
         <div className="space-y-3 text-sm text-muted-foreground">
           <div className="flex items-start space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
+            <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
             <span>We&apos;ll review your request and send a personalized quote within 24 hours</span>
           </div>
           <div className="flex items-start space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
+            <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
             <span>Once confirmed, we&apos;ll handle all logistics and provide detailed travel documents</span>
           </div>
           <div className="flex items-start space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
+            <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
             <span>Our team will be available 24/7 throughout your journey for support</span>
           </div>
         </div>

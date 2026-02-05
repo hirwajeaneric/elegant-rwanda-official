@@ -1,8 +1,9 @@
 "use client";
 
-import { Calendar, MapPin, Users, Clock, Star } from "lucide-react";
+import { Calendar, MapPin, Users, Clock, Star, ArrowLeft } from "lucide-react";
 import type { Event } from "@/data/events";
 import Image from "next/image";
+import Link from "next/link";
 
 interface EventHeroProps {
   event: Event;
@@ -43,20 +44,31 @@ export function EventHero({ event }: EventHeroProps) {
             priority
           />
         ) : (
-          <div className="w-full h-full bg-linear-to-br from-primary/20 to-primary/40" />
+          <div className="w-full h-full bg-linear-to-br from-primary/60 to-primary/60" />
         )}
         <div className="absolute inset-0 bg-black/50" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 container-elegant py-20 w-full flex justify-start items-start">
-        <div className="max-w-4xl">
-          {/* Category Badge */}
+        <div className="max-w-4xl w-full">
+          {/* Back Button */}
           <div className="mb-6">
+            <Link
+              href="/events"
+              className="inline-flex items-center space-x-2 text-white hover:text-yellow-500 transition-colors duration-200 group"
+            >
+              <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-200" />
+              <span className="font-medium">Back to Events</span>
+            </Link>
+          </div>
+
+          {/* Category Badge */}
+          {event.category && < div className="mb-6">
             <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary text-white">
               {event.category}
             </span>
-          </div>
+          </div>}
 
           {/* Title */}
           <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-6 leading-tight">
@@ -69,7 +81,7 @@ export function EventHero({ event }: EventHeroProps) {
           </p>
 
           {/* Event Meta */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="flex flex-col justify-start items-start space-y-2 text-white">
               <div className="flex items-center space-x-3">
                 <Calendar className="h-6 w-6 text-white" />
@@ -111,10 +123,10 @@ export function EventHero({ event }: EventHeroProps) {
               </div>
               <p className="font-semibold text-yellow-500">{event.status}</p>
             </div>
-          </div>
+          </div> */}
 
           {/* Status Badge */}
-          <div className="flex flex-wrap gap-4">
+          {/* <div className="flex flex-wrap gap-4">
             {isUpcoming && (
               <div className="flex flex-col justify-start items-start space-x-2">
                 <Star className="h-5 w-5 text-yellow-400" />
@@ -132,7 +144,7 @@ export function EventHero({ event }: EventHeroProps) {
                 <span className="text-white font-medium">Featured Event</span>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
 
       </div>

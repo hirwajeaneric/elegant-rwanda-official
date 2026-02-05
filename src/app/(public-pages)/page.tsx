@@ -86,8 +86,18 @@ async function getVehicles() {
 
 async function getEvents() {
   try {
+    // Get today's date at midnight for comparison
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const events = await prisma.event.findMany({
-      where: { active: true },
+      where: {
+        active: true,
+        // Only include events where the date is today or in the future
+        date: {
+          gte: today,
+        },
+      },
       take: 10,
       orderBy: { date: "asc" },
       include: {

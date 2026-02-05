@@ -5,7 +5,8 @@ import { prisma } from "@/lib/prisma";
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const categoryId = searchParams.get("categoryId") || searchParams.get("category");
+    const categoryId =
+      searchParams.get("categoryId") || searchParams.get("category");
     const featured = searchParams.get("featured");
     const search = searchParams.get("search");
     const limit = parseInt(searchParams.get("limit") || "50");
@@ -34,12 +35,30 @@ export async function GET(request: NextRequest) {
       where,
       take: limit,
       orderBy: { createdAt: "desc" },
-      include: { category: { select: { id: true, name: true, slug: true, color: true } } },
+      include: {
+        category: { select: { id: true, name: true, slug: true, color: true } },
+      },
+    });
+
+    // Filter tours to only include those with at least one future available date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const futureTours = tours.filter((tour) => {
+      if (!tour.availableDates || tour.availableDates.length === 0) {
+        return false; // Exclude tours with no available dates
+      }
+      // Check if at least one available date is today or in the future
+      return tour.availableDates.some((dateStr) => {
+        const date = new Date(dateStr);
+        date.setHours(0, 0, 0, 0);
+        return date >= today;
+      });
     });
 
     return NextResponse.json({
       success: true,
-      tours,
+      tours: futureTours,
     });
   } catch (error) {
     console.error("List public tours error:", error);

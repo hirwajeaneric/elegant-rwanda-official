@@ -77,7 +77,7 @@ export function TermsConditions() {
             Terms & <span className="text-primary">Conditions</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Please read our rental terms and conditions carefully. These terms ensure a smooth 
+            Please read our rental terms and conditions carefully. These terms ensure a smooth
             and enjoyable car rental experience for all our customers.
           </p>
         </div>
@@ -98,20 +98,19 @@ export function TermsConditions() {
                       {section.title}
                     </h3>
                   </div>
-                  <ChevronDown 
-                    className={`h-6 w-6 text-muted-foreground transition-transform duration-200 ${
-                      openSection === key ? 'rotate-180' : ''
-                    }`} 
+                  <ChevronDown
+                    className={`h-6 w-6 text-muted-foreground transition-transform duration-200 ${openSection === key ? 'rotate-180' : ''
+                      }`}
                   />
                 </div>
               </button>
-              
+
               {openSection === key && (
                 <div className="mt-4 bg-muted/20 rounded-xl p-6 border border-border/50">
                   <ul className="space-y-3">
                     {section.content.map((item, index) => (
                       <li key={index} className="flex items-start space-x-3">
-                        <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0 mt-2" />
+                        <div className="w-2 h-2 bg-primary rounded-full shrink-0 mt-2" />
                         <span className="text-muted-foreground">{item}</span>
                       </li>
                     ))}
@@ -126,7 +125,7 @@ export function TermsConditions() {
         <div className="mt-16 max-w-4xl mx-auto">
           <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center shrink-0">
                 <AlertTriangle className="h-6 w-6 text-yellow-600" />
               </div>
               <div>
@@ -135,15 +134,15 @@ export function TermsConditions() {
                 </h3>
                 <div className="text-yellow-700 space-y-3">
                   <p>
-                    By proceeding with your car rental, you acknowledge that you have read, 
+                    By proceeding with your car rental, you acknowledge that you have read,
                     understood, and agree to all the terms and conditions outlined above.
                   </p>
                   <p>
-                    Failure to comply with these terms may result in additional charges, 
+                    Failure to comply with these terms may result in additional charges,
                     rental termination, or legal action.
                   </p>
                   <p>
-                    For any questions about these terms, please contact our customer service 
+                    For any questions about these terms, please contact our customer service
                     team before making your booking.
                   </p>
                 </div>
@@ -154,12 +153,12 @@ export function TermsConditions() {
 
         {/* Contact Information */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
+          <div className="bg-linear-to-r from-primary to-secondary rounded-2xl p-8 text-white">
             <h3 className="text-3xl font-display font-bold mb-4">
               Questions About Our Terms?
             </h3>
             <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-              Our customer service team is here to help clarify any terms or conditions 
+              Our customer service team is here to help clarify any terms or conditions
               before you make your booking.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

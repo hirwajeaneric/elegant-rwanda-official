@@ -476,7 +476,7 @@ export function EventRegistration({ event, isUpcoming }: EventRegistrationProps)
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     className={errors.phone ? "border-destructive" : ""}
-                    placeholder="+250 123 456 789"
+                    placeholder="+250 788 456 789"
                   />
                   {errors.phone && (
                     <p className="text-sm text-destructive">{errors.phone}</p>

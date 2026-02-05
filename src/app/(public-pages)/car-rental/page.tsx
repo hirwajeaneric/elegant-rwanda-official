@@ -53,8 +53,6 @@ export default function CarRentalPage() {
       <JsonLd data={carRentalJsonLd} />
       <CarRentalMainHero />
       <FleetGallery />
-      {/* <RentalOptions />
-      <CarBookingForm /> */}
       <TermsConditions />
       <CarRentalFAQ />
     </PageWrapper>
